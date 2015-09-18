@@ -24,7 +24,9 @@ import android.widget.TextView;
 
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.base.BaseFragment;
-import com.darly.activities.model.HomtFragmentModel;
+import com.darly.activities.common.ToastApp;
+import com.darly.activities.model.HomeFragmentModel;
+import com.darly.activities.model.HomeSingleOne;
 import com.darly.activities.ui.R;
 import com.darly.activities.widget.carousel.Carousel;
 import com.darly.activities.widget.carousel.ImageHandler;
@@ -72,7 +74,7 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	 * TODO轮播数据集合
 	 */
 	private ArrayList<String> datas;
-	private ArrayList<HomtFragmentModel> data;
+	private ArrayList<HomeFragmentModel> data;
 	/**
 	 * TODO轮播控件
 	 */
@@ -102,13 +104,21 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	}
 
 	/**
-	 * @auther Darly Fronch 2015 下午4:45:38 TODO集合添加数据
+	 * @auther Darly Fronch 2015 下午4:45:38 TODO集合添加数据 9月18日，变更首页数据。测试数据。
+	 * 
 	 */
 	private void setLoader() {
 		// TODO Auto-generated method stub
+		ArrayList<HomeSingleOne> more = new ArrayList<HomeSingleOne>();
 		for (int i = 0; i < IMAGES.length; i++) {
-			data.add(new HomtFragmentModel(IMAGES[i], IMAGES[i]));
+			more.add(new HomeSingleOne(IMAGES[i], IMAGES[i]));
 		}
+		for (int j = 0; j < IMAGES.length; j++) {
+			data.add(new HomeFragmentModel(new HomeSingleOne(IMAGES[j],
+					IMAGES[j]), null));
+			data.add(new HomeFragmentModel(null, more));
+		}
+
 	}
 
 	/*
@@ -121,7 +131,7 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 		// TODO Auto-generated method stub
 		title.setText(getClass().getSimpleName());
 		datas = new ArrayList<String>();
-		data = new ArrayList<HomtFragmentModel>();
+		data = new ArrayList<HomeFragmentModel>();
 
 		for (int i = 0; i < IMAGES.length; i++) {
 			datas.add(IMAGES[i]);
@@ -134,6 +144,7 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 		// 设置xlistview可以加载、刷新
 		xlist.setPullLoadEnable(true);
 		xlist.setPullRefreshEnable(true);
+		setLoader();
 		adapter = new XAdapter(data, 0, getActivity(), imageLoader, options);
 		xlist.setAdapter(adapter);
 	}
@@ -183,6 +194,13 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		Object obj = parent.getItemAtPosition(position);
+		if (obj instanceof HomeFragmentModel) {
+			HomeFragmentModel home = (HomeFragmentModel) obj;
+			if (home.getSingle()!=null) {
+				ToastApp.showToast(getActivity(), home.getSingle().getName());
+			}
+		}
 	}
 
 	/*

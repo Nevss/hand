@@ -1,24 +1,24 @@
 /**
- * 2015年9月17日
- * HomtFragmentModel.java
+ * 2015年9月18日
+ * HomeSingleOne.java
  * com.darly.activities.model
  * @auther Darly Fronch
- * 下午6:00:12
- * HomtFragmentModel
+ * 上午10:04:25
+ * HomeSingleOne
  * TODO
  */
 package com.darly.activities.model;
 
 /**
- * 2015年9月17日 HomtFragmentModel.java com.darly.activities.model
+ * 2015年9月18日 HomeSingleOne.java com.darly.activities.model
  * 
- * @auther Darly Fronch 下午6:00:12 HomtFragmentModel TODO
+ * @auther Darly Fronch 上午10:04:25 HomeSingleOne TODO
  */
-public class HomtFragmentModel {
+public class HomeSingleOne {
 	private String name;
 	private String url;
 
-	public HomtFragmentModel(String name, String url) {
+	public HomeSingleOne(String name, String url) {
 		super();
 		this.name = name;
 		this.url = url;
