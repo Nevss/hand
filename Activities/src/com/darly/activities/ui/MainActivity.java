@@ -91,6 +91,8 @@ public class MainActivity extends BaseActivity implements
 		LogUtils.customTagPrefix = "xUtilsSample"; // 方便调试时过滤 adb logcat 输出
 		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出
 		ViewUtils.inject(this);// 注入view和事件
+		
+		
 	}
 
 	/*
@@ -103,6 +105,7 @@ public class MainActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 		group.setOnCheckedChangeListener(this);
 		buttom.setChecked(true);
+		
 	}
 
 	/*

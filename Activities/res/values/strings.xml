@@ -9,12 +9,18 @@
     <string name="me">我的</string>
     <string name="travel_free">自游出行</string>
     <string name="out">退出</string>
-    
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
     <string name="xlistview_header_hint_loading">正在加载...</string>
     <string name="xlistview_header_last_time">上次更新时间：</string>
     <string name="xlistview_footer_hint_normal">查看更多</string>
     <string name="xlistview_footer_hint_ready">松开载入更多</string>
+
+    <string-array name="degrees">
+        <item>初中及以下</item>
+        <item>高中</item>
+        <item>大学</item>
+        <item>研究生及以上</item>
+    </string-array>
 
 </resources>

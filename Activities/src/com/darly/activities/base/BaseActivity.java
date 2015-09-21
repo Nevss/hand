@@ -1,15 +1,16 @@
 package com.darly.activities.base;
 
 import java.util.List;
-
+import android.annotation.TargetApi;
 import android.graphics.Bitmap.Config;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-
+import android.view.WindowManager;
 import com.androidquery.AQuery;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.NetUtils;
@@ -31,6 +32,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
  * @date 2014年12月15日 上午8:49:27
  *
  */
+@TargetApi(19)
 public abstract class BaseActivity extends FragmentActivity implements
 		OnClickListener {
 	protected SnoteTable table;
@@ -45,6 +47,9 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
+		//透明状态栏  
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  
+		
 		// 初始化LOG
 		if (table == null) {
 			table = new SnoteTable(this);
@@ -82,7 +87,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 		initView();
 		initData();
 	}
-
+	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub

@@ -2,9 +2,13 @@
 <resources>
 
     <color name="main_bottom_text">#ecf9cb</color>
-    <color name="set_list_line">#888888</color>
+    <color name="set_list_line">#ffffff</color>
     
     <color name="roundedimageview_color">#546513</color>
     <color name="roundedimageview_no_color">#789842</color>
+    
+    <color name="item_tible">#F8F8FF</color>
+    
+    <color name="main_header_title">#a9a9a9</color>
 
 </resources>
