@@ -38,6 +38,7 @@ public class XadapterItem extends LinearLayout {
 		view.setOrientation(LinearLayout.HORIZONTAL);
 		view.setGravity(Gravity.CENTER_VERTICAL);
 		LayoutParams lp = new LayoutParams(Literal.width / 4, Literal.width / 4);
+		lp.setMargins(10, 10, 10, 10);
 		iv = new RoundedImageView(context);
 		iv.setCornerRadius(20f);
 		iv.setBorderWidth(2f);
@@ -45,7 +46,6 @@ public class XadapterItem extends LinearLayout {
 		iv.setScaleType(ScaleType.FIT_XY);
 		iv.setBorderColor(context.getResources().getColor(
 				R.color.roundedimageview_color));
-		iv.setPadding(10, 10, 10, 10);
 
 		LinearLayout secView = new LinearLayout(context);
 		secView.setOrientation(LinearLayout.VERTICAL);
