@@ -63,14 +63,18 @@ public class XListViewHeader extends LinearLayout {
 		mHintTextView = (TextView) findViewById(R.id.xlistview_header_hint_textview);
 		mProgressBar = (ProgressBar) findViewById(R.id.xlistview_header_progressbar);
 
-		mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
+		mRotateUpAnim = new RotateAnimation(0f, 360f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
+		mRotateUpAnim.setRepeatCount(Animation.INFINITE);
+		mRotateUpAnim.setRepeatMode(Animation.REVERSE);
 		mRotateUpAnim.setDuration(ROTATE_ANIM_DURATION);
 		mRotateUpAnim.setFillAfter(true);
-		mRotateDownAnim = new RotateAnimation(-180.0f, 0.0f,
+		mRotateDownAnim = new RotateAnimation(0f, 360f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
+		mRotateDownAnim.setRepeatCount(Animation.INFINITE);
+		mRotateDownAnim.setRepeatMode(Animation.REVERSE);
 		mRotateDownAnim.setDuration(ROTATE_ANIM_DURATION);
 		mRotateDownAnim.setFillAfter(true);
 	}
