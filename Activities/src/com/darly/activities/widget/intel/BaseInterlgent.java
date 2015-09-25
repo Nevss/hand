@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.darly.activities.common.LogApp;
 import com.darly.activities.model.RoomInfor;
 import com.darly.activities.ui.R;
 
@@ -56,6 +57,7 @@ public class BaseInterlgent extends SurfaceView implements
 		super(context);
 		// TODO Auto-generated constructor stub
 		this.pointList = pointList;
+
 		init();
 	}
 
@@ -86,7 +88,7 @@ public class BaseInterlgent extends SurfaceView implements
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		// TODO Auto-generated method stub
-
+		LogApp.i(width+"----------"+height);
 	}
 
 	/*

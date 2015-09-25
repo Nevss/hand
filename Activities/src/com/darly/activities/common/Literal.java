@@ -54,4 +54,6 @@ public class Literal {
 
 	public static boolean isShowMktprice = false;
 	public static boolean FragmentMeisShow;
+	public static double bitmapheight;
+	public static double bitmapwidth;
 }

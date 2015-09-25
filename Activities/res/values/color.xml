@@ -8,5 +8,6 @@
     <color name="color_1">#f70000</color>
     <color name="color_2">#dc6b6b</color>
     <color name="color_3">#ffffff</color>
+    <color name="guide_show_back">#9cd7d5</color>
 
 </resources>

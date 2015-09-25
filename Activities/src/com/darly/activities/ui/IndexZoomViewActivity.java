@@ -8,16 +8,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
@@ -40,6 +37,8 @@ import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
+import com.nineoldandroids.animation.AnimatorSet;
+import com.nineoldandroids.animation.ObjectAnimator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
@@ -47,14 +46,9 @@ import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
  * @author Zhangyuhui IndexShowViewActivity 上午9:01:37 TODO
  *         展示机构平面图页面，取自帮忙医项目的智能导检。
  */
-@ContentView(R.layout.activity_index_show_view)
-public class IndexShowViewActivity extends BaseActivity {
+@ContentView(R.layout.activity_index_zoom_view)
+public class IndexZoomViewActivity extends BaseActivity {
 
-	/**
-	 * TODO顶部标签卡
-	 */
-	@ViewInject(R.id.main_header_text)
-	private TextView title;
 	/**
 	 * TODO线程管理
 	 */
@@ -66,7 +60,7 @@ public class IndexShowViewActivity extends BaseActivity {
 	/**
 	 * TODO图层容器
 	 */
-	@ViewInject(R.id.main_container)
+	@ViewInject(R.id.index_zoom_container)
 	private RelativeLayout main_container;
 	/**
 	 * TODO计时器
@@ -105,6 +99,14 @@ public class IndexShowViewActivity extends BaseActivity {
 	private ProgressDialogUtil loading;
 
 	/**
+	 * 下午2:07:13
+	 * 
+	 * @author Zhangyuhui IndexZoomViewActivity.java TODO关闭按钮
+	 */
+	@ViewInject(R.id.ia_show_image_consel)
+	private ImageView consel;
+
+	/**
 	 * TODOActivity中使用网络请求，对应的数据返回区。
 	 */
 	@SuppressLint("HandlerLeak")
@@ -130,11 +132,11 @@ public class IndexShowViewActivity extends BaseActivity {
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
-		case R.id.main_container:
-			Intent intent = new Intent(this,IndexZoomViewActivity.class);
-			startActivity(intent);
+		case R.id.index_zoom_container:
 			break;
-
+		case R.id.ia_show_image_consel:
+			finish();
+			break;
 		default:
 			break;
 		}
@@ -147,9 +149,12 @@ public class IndexShowViewActivity extends BaseActivity {
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 		loading.show();
-		main_container.setLayoutParams(new LinearLayout.LayoutParams(Literal.width, Literal.width
-				* IAPoisDataConfig.babaibanh / IAPoisDataConfig.babaibanw));
-		
+		main_container.setLayoutParams(new LayoutParams(Literal.width,
+				Literal.width * IAPoisDataConfig.babaibanh
+						/ IAPoisDataConfig.babaibanw));
+		Literal.bitmapheight = Literal.width * IAPoisDataConfig.babaibanh
+				/ IAPoisDataConfig.babaibanw;
+		Literal.bitmapwidth = Literal.width;
 		initImageAndThread();
 		firstStep();
 	}
@@ -200,7 +205,7 @@ public class IndexShowViewActivity extends BaseActivity {
 			par.add(new BasicNameValuePair("param", object.toString()));
 			manager.start();
 			// 获取屏幕的宽高。这几
-			manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this,
+			manager.addAsyncTask(new HttpTasker(IndexZoomViewActivity.this,
 					par, infoUrl, null, handler, true, Literal.GET_HANDLER,
 					true));
 			// 请求服务器平面图数据。
@@ -223,9 +228,10 @@ public class IndexShowViewActivity extends BaseActivity {
 		// -----------如何建立关系----------
 		main_container.removeAllViews();
 		interlgent = new BaseInterlgent(this, roomInfo);
+		LayoutParams lp = new LayoutParams(Literal.width, Literal.width
+				* IAPoisDataConfig.babaibanh / IAPoisDataConfig.babaibanw);
 		ImageView iv = new ImageView(this);
-		iv.setLayoutParams(new LayoutParams(Literal.width, Literal.width
-				* IAPoisDataConfig.babaibanh / IAPoisDataConfig.babaibanw));
+		iv.setLayoutParams(lp);
 		DisplayImageOptions options_mo = new DisplayImageOptions.Builder()
 				.showImageOnLoading(R.drawable.ic_launcher) // 加载图片时的图片
 				.showImageForEmptyUri(R.drawable.ic_launcher) // 没有图片资源时的默认图片
@@ -237,27 +243,26 @@ public class IndexShowViewActivity extends BaseActivity {
 				.build();
 		imageLoader.displayImage(roomOrgpari.Organizationplan, iv, options_mo);
 		main_container.addView(interlgent);
-		main_container.addView(iv);
+		// main_container.addView(iv);
 		nextCheck = new ImageView(this);
 		next = new LayoutParams(96, 44);
 		nextCheck.setLayoutParams(next);
 		nextCheck.setImageResource(R.drawable.next_check);
 		nextCheck.setVisibility(View.INVISIBLE);
-		main_container.addView(nextCheck);
-		
-		main_container.setOnClickListener(this);
+		// main_container.addView(nextCheck);
+		setViewFullScreen();
 	}
 
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		title.setText(getClass().getSimpleName());
+		consel.setOnClickListener(this);
 	}
 
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
-		Log.i("handler", "IALiteral.GETINFO");
+		Log.i("handler", "Literal.GETINFO");
 		if (object != null) {
 			String jsonInfo = (String) object;
 			PreferencesJsonCach.putValue("GETINFO" + 31, jsonInfo, this);
@@ -273,7 +278,7 @@ public class IndexShowViewActivity extends BaseActivity {
 	@Override
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
-		Log.i("handler", "IALiteral.GETDATA");
+		Log.i("handler", "Literal.GETDATA");
 		if (object != null) {
 			String jsonData = (String) object;
 			PreferencesJsonCach.putValue("GETDATA" + 31, jsonData, this);
@@ -407,8 +412,72 @@ public class IndexShowViewActivity extends BaseActivity {
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
-		manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this, par,
+		manager.addAsyncTask(new HttpTasker(IndexZoomViewActivity.this, par,
 				dataUrl, null, handler, true, Literal.POST_HANDLER, true));
+	}
+
+	/**
+	 * @auther Darly Fronch 2015 上午9:22:51 TODO起始进来后放大到全屏状态。
+	 */
+	private void setViewFullScreen() {
+
+		// 横屏：width<height
+
+		double screen = (double) Literal.height / (double) Literal.width;
+		// 图片 if(width>height)
+		double image = (double) IAPoisDataConfig.babaibanw
+				/ (double) IAPoisDataConfig.babaibanh;
+
+		double a = 0;
+		if (screen > image) {
+			// 按照手机高度放大
+			a = (double) Literal.bitmapheight / (double) Literal.width;
+			if (a < 1) {
+				a = 1 / a;
+			}
+
+		} else if (screen < image) {
+			// 按照手机宽度放大
+			a = (double) Literal.bitmapwidth / (double) Literal.height;
+			if (a < 1) {
+				a = 1 / a;
+			}
+		} else {
+			// 等比放大
+			a = (double) Literal.bitmapwidth / (double) Literal.width;
+			if (a < 1) {
+				a = 1 / a;
+			}
+		}
+
+		// 整个RelativeLayout布局放置大小
+		AnimatorSet conanimSet = new AnimatorSet();// 定义一个AnimatorSet对象
+		ObjectAnimator conStart = ObjectAnimator.ofFloat(interlgent, "scaleX",
+				1f, (float) (a));
+		ObjectAnimator conStop = ObjectAnimator.ofFloat(interlgent, "scaleY",
+				1f, (float) (a));
+		conanimSet.play(conStart).with(conStop);
+		conanimSet.setDuration(0);
+		conanimSet.start();
+		// 整个RelativeLayout布局放置大小
+		AnimatorSet animSet = new AnimatorSet();// 定义一个AnimatorSet对象
+		ObjectAnimator Start = ObjectAnimator.ofFloat(main_container, "scaleX", 1f,
+				(float) (a));
+		ObjectAnimator Stop = ObjectAnimator.ofFloat(main_container, "scaleY", 1f,
+				(float) (a));
+		animSet.play(Start).with(Stop);
+		animSet.setDuration(0);
+		animSet.start();
+
+	};
+
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+		if (timer != null) {
+			timer.cancel();
+		}
+		super.finish();
 	}
 
 	@Override
