@@ -3,11 +3,14 @@ package com.darly.activities.widget.intel;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,6 +18,7 @@ import android.view.SurfaceView;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.model.RoomInfor;
 import com.darly.activities.ui.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 2015年9月15日 BaseInterlgent.java com.darly.interlgent.widget
@@ -137,6 +141,12 @@ public class BaseInterlgent extends SurfaceView implements
 						paintView(pointList.get(i).getRoomPoint(), canvas,
 								paint, pointList.get(i).getRoomStauts());
 					}
+					Drawable drawable = getResources().getDrawable(R.drawable.next_check);  
+					//实际上这是一个BitmapDrawable对象  
+					BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  
+					//可以在调用getBitmap方法，得到这个位图  
+					Bitmap bitmap=bitmapDrawable.getBitmap();
+					canvas.drawBitmap(bitmap, 00, 152, paint);
 				}
 				Thread.sleep(100);
 			} catch (Exception e) {

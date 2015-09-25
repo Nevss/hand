@@ -9,7 +9,11 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -35,6 +39,7 @@ import com.darly.activities.model.RoomInfor;
 import com.darly.activities.poll.HttpTasker;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
+import com.darly.activities.widget.intel.MySurfaceView;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -68,6 +73,11 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.main_container)
 	private RelativeLayout main_container;
+	/**
+	 * TODO图层容器
+	 */
+	@ViewInject(R.id.index_container)
+	private RelativeLayout index_container;
 	/**
 	 * TODO计时器
 	 */
@@ -252,6 +262,18 @@ public class IndexShowViewActivity extends BaseActivity {
 	public void initData() {
 		// TODO Auto-generated method stub
 		title.setText(getClass().getSimpleName());
+//		index_container.removeAllViews();
+		MySurfaceView surfaceView = new MySurfaceView(this, null);
+		Drawable drawable = getResources().getDrawable(R.drawable.login_table_bg);  
+		//实际上这是一个BitmapDrawable对象  
+		BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  
+		//可以在调用getBitmap方法，得到这个位图  
+		Bitmap bitmap=bitmapDrawable.getBitmap();
+		surfaceView.setBitmap(bitmap);
+		surfaceView.setOnTouchListener(surfaceView);
+//		index_container.addView(surfaceView);
+		
+		
 	}
 
 	@Override
