@@ -33,7 +33,6 @@ public class ImageHandler<BaseFragment> extends Handler {
 
 	// 使用弱引用避免Handler泄露.这里的泛型参数可以不是Activity，也可以是Fragment等
 	private WeakReference<BaseFragment> weakReference;
-	private int currentItem = 0;
 
 	public ImageHandler(WeakReference<BaseFragment> wk) {
 		weakReference = wk;

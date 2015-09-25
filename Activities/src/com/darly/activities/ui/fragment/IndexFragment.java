@@ -13,7 +13,8 @@ import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,12 +22,12 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
-
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
+import com.darly.activities.ui.IndexShowViewActivity;
 import com.darly.activities.ui.R;
 import com.darly.activities.widget.carousel.Carousel;
 import com.darly.activities.widget.carousel.ImageHandler;
@@ -68,8 +69,9 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	/**
 	 * TODO轮播开始循环使用的Handler
 	 */
-	public ImageHandler imagehandler = new ImageHandler(
-			new WeakReference<IndexFragment>(this));
+	WeakReference<IndexFragment> weak = new WeakReference<IndexFragment>(this);
+	public ImageHandler<IndexFragment> imagehandler = new ImageHandler<IndexFragment>(
+			weak);
 	/**
 	 * TODO轮播数据集合
 	 */
@@ -135,8 +137,8 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 		}
 
 		// 添加轮播效果。以及轮播点击效果。
-		Carousel carousel = new Carousel(getActivity(), datas, imageLoader,
-				options, imagehandler);
+		Carousel<IndexFragment> carousel = new Carousel<IndexFragment>(
+				getActivity(), datas, imageLoader, options, imagehandler);
 		header = carousel.view;
 		xlist.addHeaderView(header);
 		// 设置xlistview可以加载、刷新
@@ -196,8 +198,9 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 				.getItemAtPosition(position);
 		if (base.getData() == null) {
 			ToastApp.showToast(getActivity(), base.getName());
+			startActivity(new Intent(getActivity(), IndexShowViewActivity.class));
 		}
-		
+
 	}
 
 	/*
@@ -227,6 +230,7 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	/**
 	 * @auther Darly Fronch 2015 下午4:46:07 TODO加载动画
 	 */
+	@SuppressLint("SimpleDateFormat")
 	private void onLoad() {
 		xlist.stopRefresh();
 		xlist.stopLoadMore();

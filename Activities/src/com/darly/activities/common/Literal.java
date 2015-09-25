@@ -44,6 +44,7 @@ public class Literal {
 
 	public static int height = 0;
 
+	@SuppressWarnings("deprecation")
 	public static void getWidth(Context context) {
 		WindowManager wm = (WindowManager) context
 				.getSystemService(Context.WINDOW_SERVICE);

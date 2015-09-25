@@ -14,11 +14,8 @@ import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.db.SnoteTable;
 import com.darly.activities.ui.R;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 /**
  * @ClassName: BaseFragment
@@ -53,6 +50,7 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 
 	};
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -63,16 +61,6 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 		aq = new AQuery(getActivity());
 		if (table == null) {
 			table = new SnoteTable(getActivity());
-		}
-		if (!imageLoader.isInited()) {
-			ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
-					getActivity()).threadPoolSize(5)
-					.threadPriority(Thread.NORM_PRIORITY - 1)
-					.denyCacheImageMultipleSizesInMemory()
-					.memoryCacheSize(4 * 1024 * 1024)
-					.discCacheFileNameGenerator(new Md5FileNameGenerator())
-					.tasksProcessingOrder(QueueProcessingType.LIFO).build();
-			imageLoader.init(configuration);
 		}
 		// 设置参数，加载每个图片的详细参数和是否存储、缓存的问题。
 		options = new DisplayImageOptions.Builder()

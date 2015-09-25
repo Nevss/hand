@@ -16,11 +16,8 @@ import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.db.SnoteTable;
 import com.darly.activities.ui.R;
-import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 
 /**
  * @ClassName: BaseActivity
@@ -41,6 +38,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions options_big;
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -50,18 +48,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 			table = new SnoteTable(this);
 		}
 		aq = new AQuery(this);
-
-		if (!imageLoader.isInited()) {
-
-			ImageLoaderConfiguration configuration = new ImageLoaderConfiguration.Builder(
-					this).threadPoolSize(5)
-					.threadPriority(Thread.NORM_PRIORITY - 1)
-					.denyCacheImageMultipleSizesInMemory()
-					.memoryCacheSize(4 * 1024 * 1024)
-					.discCacheFileNameGenerator(new Md5FileNameGenerator())
-					.tasksProcessingOrder(QueueProcessingType.LIFO).build();
-			imageLoader.init(configuration);
-		}
 		// 设置参数，加载每个图片的详细参数和是否存储、缓存的问题。
 		options = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.ic_launcher)

@@ -1,12 +1,23 @@
 package com.darly.activities.app;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.io.File;
 
-import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
-import com.darly.activities.common.LogApp;
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
+import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
+import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
+import com.nostra13.universalimageloader.utils.StorageUtils;
+
+
 
 /**
  * @ClassName: AppStack
@@ -16,86 +27,79 @@ import com.darly.activities.common.LogApp;
  *
  */
 public class AppStack extends Application {
-	private List<Activity> mList = new LinkedList<Activity>();
 	private static AppStack instance;
 
-	private AppStack() {
-	}
-
-	public synchronized static AppStack getInstance() {
+	/**
+	 * @return
+	 * 上午10:43:20
+	 * @author Zhangyuhui
+	 * AppStack.java
+	 * TODO获取APP应用信息启动单例，获取唯一的APP资源
+	 */
+	public static AppStack getInstance() {
 		if (null == instance) {
-			instance = new AppStack();
+			return null;
 		}
 		return instance;
 	}
-
-	// add Activity
+	
+	@Override
+	public void onCreate() {
+		// TODO Auto-generated method stub
+		super.onCreate();
+		instance = this;
+		initImageLoader();
+	}
 	/**
-	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午10:04:49 Project_Name:DFram
-	 * Description:TODO(对集合中的数据添加一个Activity) Throws Return:void
+	 * 
+	 * 上午10:44:40
+	 * @author Zhangyuhui
+	 * AppStack.java
+	 * TODO初始化单例模式下的ImageLoader
 	 */
-	public void addActivity(Activity activity) {
-		mList.add(activity);
-	}
+	private void initImageLoader() {
+		// TODO Auto-generated method stub
 
-	/**
-	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午10:05:19 Project_Name:DFram
-	 * Description:TODO(返回Activity集合) Throws Return:List<Activity>
-	 */
-	public List<Activity> getList() {
-		return mList;
-	}
-
-
-	/**
-	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午10:05:36 Project_Name:DFram
-	 * Description:TODO(移除某个Activity) Throws Return:void
-	 */
-	public void remove(Activity act) {
-		for (Activity activity : mList) {
-			if (activity == act) {
-				activity.finish();
-			}
-			LogApp.i("activity.finish()");
-		}
-	}
-
-	public Activity deleteLast() {
-		if (getSize() == 1) {
-			return null;
-		}
-		return mList.remove(getSize() - 1);
-	}
-
-	public void moveToIndex() {
-		while (getSize() != 1) {
-			LogApp.i(getSize() + "");
-			remove(deleteLast());
-		}
-	}
-
-	/**
-	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午10:05:53 Project_Name:DFram
-	 * Description:TODO(得到集合的长度) Throws Return:int
-	 */
-	public int getSize() {
-		return mList.size();
+		File cacheDir = StorageUtils.getOwnCacheDirectory(this,
+				"Act/Cache");
+		@SuppressWarnings("deprecation")
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				this)
+				.memoryCacheExtraOptions(480, 800)
+				// maxwidth, max height，即保存的每个缓存文件的最大长宽
+				.threadPoolSize(3)
+				// 线程池内加载的数量
+				.threadPriority(Thread.NORM_PRIORITY - 2)
+				.denyCacheImageMultipleSizesInMemory()
+				.memoryCache(new UsingFreqLimitedMemoryCache(2 * 1024 * 1024))
+				// You can pass your own memory cache
+				// implementation/你可以通过自己的内存缓存实现
+				.memoryCacheSize(2 * 1024 * 1024)
+				.discCacheSize(50 * 1024 * 1024)
+				.discCacheFileNameGenerator(new Md5FileNameGenerator())
+				// 将保存的时候的URI名称用MD5 加密
+				.tasksProcessingOrder(QueueProcessingType.LIFO)
+				.discCacheFileCount(100)
+				// 缓存的文件数量
+				.discCache(new UnlimitedDiscCache(cacheDir))
+				// 自定义缓存路径
+				.defaultDisplayImageOptions(DisplayImageOptions.createSimple())
+				.imageDownloader(
+						new BaseImageDownloader(this, 5 * 1000, 30 * 1000))
+				.writeDebugLogs() // Remove for releaseapp
+				.build();// 开始构建
+			ImageLoader.getInstance().init(config);
 	}
 
 	/**
-	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午10:06:09 Project_Name:DFram
-	 * Description:TODO(退出时清空集合) Throws Return:void
+	 * @param context
+	 * @return 上午9:23:50
+	 * @author Zhangyuhui AppStack.java TODO 判断网络连接状态
 	 */
-	public void exit() {
-		try {
-			for (Activity activity : mList) {
-				if (activity != null)
-					activity.finish();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			System.exit(0);
-		}
+	public static boolean isNetworkConnected(Context context) {
+		ConnectivityManager cm = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo ni = cm.getActiveNetworkInfo();
+		return ni != null && ni.isConnectedOrConnecting();
 	}
 }

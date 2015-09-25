@@ -3,8 +3,10 @@
 
     <color name="main_bottom_text">#ecf9cb</color>
     <color name="set_list_line">#888888</color>
-    
     <color name="roundedimageview_color">#546513</color>
     <color name="roundedimageview_no_color">#789842</color>
+    <color name="color_1">#f70000</color>
+    <color name="color_2">#dc6b6b</color>
+    <color name="color_3">#ffffff</color>
 
 </resources>

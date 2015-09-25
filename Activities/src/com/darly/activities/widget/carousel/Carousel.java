@@ -27,7 +27,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  *         为2张图片时，由于轮播效果为左右，2张无法满足，故而将两张的图片数据，变更为4张的图片数据。从而满足其状态。
  *         图片为空或没有图片时。不进行加载或加载空。 图片为多张时。正常加载。
  */
-public class Carousel implements OnPageChangeListener, OnClickListener {
+public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 
 	private Context context;
 	public static ViewPager pager;
@@ -43,7 +43,7 @@ public class Carousel implements OnPageChangeListener, OnClickListener {
 
 	public static int contents;
 
-	private ImageHandler imagehandler;
+	private ImageHandler<T> imagehandler;
 
 	private ArrayList<ImageView> viewlist = new ArrayList<ImageView>();
 	private ArrayList<ImageView> slide = new ArrayList<ImageView>();
@@ -56,7 +56,7 @@ public class Carousel implements OnPageChangeListener, OnClickListener {
 
 	public Carousel(Context context, ArrayList<String> data,
 			ImageLoader imageLoader, DisplayImageOptions options,
-			ImageHandler imagehandler) {
+			ImageHandler<T> imagehandler) {
 		// TODO Auto-generated constructor stub
 		this.context = context;
 		this.data = data;
