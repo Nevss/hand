@@ -34,20 +34,19 @@ import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.google.gson.Gson;
+import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 
 /**
- * @author Zhangyuhui
- * IndexShowViewActivity
- * 上午9:01:37
- * TODO 展示机构平面图页面，取自帮忙医项目的智能导检。
+ * @author Zhangyuhui IndexShowViewActivity 上午9:01:37 TODO
+ *         展示机构平面图页面，取自帮忙医项目的智能导检。
  */
 @ContentView(R.layout.activity_index_show_view)
 public class IndexShowViewActivity extends BaseActivity {
-	
+
 	/**
 	 * TODO线程管理
 	 */
@@ -92,13 +91,11 @@ public class IndexShowViewActivity extends BaseActivity {
 	private final int KEEP = 1000;
 	private final int NEXTKEEP = 10000;
 
-
 	/**
 	 * TODO 加载过场动画类
 	 */
 	private ProgressDialogUtil loading;
-	
-	
+
 	/**
 	 * TODOActivity中使用网络请求，对应的数据返回区。
 	 */
@@ -121,7 +118,6 @@ public class IndexShowViewActivity extends BaseActivity {
 
 	};
 
-
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -131,14 +127,17 @@ public class IndexShowViewActivity extends BaseActivity {
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
+		ViewUtils.inject(this);// 注入view和事件
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 		loading.show();
 		initImageAndThread();
 		firstStep();
 	}
+
 	/**
 	 * 上午11:00:34
+	 * 
 	 * @author Zhangyuhui MainActivity.java TODO初始化ImageLoader和线程池选项
 	 */
 	private void initImageAndThread() {
@@ -182,12 +181,13 @@ public class IndexShowViewActivity extends BaseActivity {
 			par.add(new BasicNameValuePair("param", object.toString()));
 			manager.start();
 			// 获取屏幕的宽高。这几
-			manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this, par,
-					infoUrl, null, handler, true, Literal.GET_HANDLER, true));
+			manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this,
+					par, infoUrl, null, handler, true, Literal.GET_HANDLER,
+					true));
 			// 请求服务器平面图数据。
 		}
 	}
-	
+
 	/**
 	 * @param roomOrgpari
 	 * @auther Darly Fronch 2015 下午2:20:34 TODO获取机构信息类，即获取房间功能对应表格roomOrgpari
@@ -227,9 +227,6 @@ public class IndexShowViewActivity extends BaseActivity {
 		main_container.addView(nextCheck);
 	}
 
-	
-	
-	
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
@@ -261,12 +258,9 @@ public class IndexShowViewActivity extends BaseActivity {
 			PreferencesJsonCach.putValue("GETDATA" + 31, jsonData, this);
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
-			interlgent.ReDraw(setInfoRoom(
-					base.getModel(), roomInfo));
+			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
 		}
 	}
-
-	
 
 	/**
 	 * @auther Darly Fronch 2015 下午2:12:53 TODO启动计时，每隔10s进行一次数据刷新
@@ -285,7 +279,7 @@ public class IndexShowViewActivity extends BaseActivity {
 			}, KEEP, NEXTKEEP);
 		}
 	}
-	
+
 	/**
 	 * @auther Darly Fronch 2015 下午2:54:39 TODO生成全部信息
 	 */
@@ -392,8 +386,8 @@ public class IndexShowViewActivity extends BaseActivity {
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
-		manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this, par, dataUrl,
-				null, handler, true, Literal.POST_HANDLER, true));
+		manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this, par,
+				dataUrl, null, handler, true, Literal.POST_HANDLER, true));
 	}
 
 	@Override
