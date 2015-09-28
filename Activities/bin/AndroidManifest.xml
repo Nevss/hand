@@ -39,6 +39,11 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
         </activity>
+        <activity
+            android:name="com.darly.activities.ui.MeDetailsAcitvity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

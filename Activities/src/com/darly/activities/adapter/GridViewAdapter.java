@@ -2,20 +2,18 @@ package com.darly.activities.adapter;
 
 import java.util.List;
 
-import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
-import com.darly.activities.model.GridViewData;
-import com.darly.activities.ui.R;
-import com.darly.activities.widget.roundedimage.RoundedImageView;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
+import com.darly.activities.common.Literal;
+import com.darly.activities.model.GridViewData;
+import com.darly.activities.ui.R;
+import com.darly.activities.widget.roundedimage.RoundedImageView;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class GridViewAdapter extends ParentAdapter<GridViewData> {
 
@@ -30,7 +28,6 @@ public class GridViewAdapter extends ParentAdapter<GridViewData> {
 	public View HockView(int position, View view, ViewGroup parent, int resID,
 			Context context, GridViewData t) {
 		// TODO Auto-generated method stub
-		LogApp.i(resID + "");
 		ViewHocker hocker = null;
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(resID, null);

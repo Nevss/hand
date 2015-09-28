@@ -11,6 +11,7 @@ package com.darly.activities.ui.fragment;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +24,9 @@ import android.widget.TextView;
 import com.darly.activities.adapter.GridViewAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.BaseData;
-import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.GridViewData;
+import com.darly.activities.ui.MeDetailsAcitvity;
 import com.darly.activities.ui.R;
-import com.darly.activities.widget.xlistview.XListView;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -141,17 +141,11 @@ public class MeFragment extends BaseFragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		// TODO Auto-generated method stub
-		switch (position) {
-		case 0:
-			//添加对话
-			
-			
-			break;
-
-		default:
-			ToastApp.showToast(getActivity(), "View "+position);
-			break;
-		}
+		// TODO Auto-generated method stub点击跳入详情。并附带留言效果。
+		GridViewData data = (GridViewData) parent.getItemAtPosition(position);
+		Intent intent = new Intent(getActivity(), MeDetailsAcitvity.class);
+		intent.putExtra("GridViewData", data);
+		startActivity(intent);
+		
 	}
 }
