@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <include layout="@layout/main_header"/>
+
+    <include layout="@layout/main_header" />
 
     <RelativeLayout
         android:id="@+id/main_container"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
     </RelativeLayout>
-    
-    <RelativeLayout 
+
+    <com.darly.activities.widget.intel.MySurfaceView3
         android:id="@+id/index_container"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        ></RelativeLayout>
+        android:layout_height="wrap_content" >
+    </com.darly.activities.widget.intel.MySurfaceView3>
 
 </LinearLayout>

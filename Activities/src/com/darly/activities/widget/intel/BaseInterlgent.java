@@ -9,8 +9,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -18,7 +16,6 @@ import android.view.SurfaceView;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.model.RoomInfor;
 import com.darly.activities.ui.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * 2015年9月15日 BaseInterlgent.java com.darly.interlgent.widget
@@ -44,6 +41,23 @@ public class BaseInterlgent extends SurfaceView implements
 	private boolean flag = true;
 
 	private int cout;
+
+	/**
+	 * 上午8:53:52
+	 * 
+	 * @author Zhangyuhui BaseInterlgent.java TODO 背景图片
+	 */
+	private Bitmap backGroud;
+
+	/**
+	 * 上午8:54:22
+	 * 
+	 * @author Zhangyuhui BaseInterlgent.java TODO 下一项图片。
+	 */
+	private Bitmap nextImage;
+
+	private int left;
+	private int top;
 
 	public BaseInterlgent(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -92,7 +106,7 @@ public class BaseInterlgent extends SurfaceView implements
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		// TODO Auto-generated method stub
-		LogApp.i(width+"----------"+height);
+		LogApp.i(width + "----------" + height);
 	}
 
 	/*
@@ -141,12 +155,14 @@ public class BaseInterlgent extends SurfaceView implements
 						paintView(pointList.get(i).getRoomPoint(), canvas,
 								paint, pointList.get(i).getRoomStauts());
 					}
-					Drawable drawable = getResources().getDrawable(R.drawable.next_check);  
-					//实际上这是一个BitmapDrawable对象  
-					BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  
-					//可以在调用getBitmap方法，得到这个位图  
-					Bitmap bitmap=bitmapDrawable.getBitmap();
-					canvas.drawBitmap(bitmap, 00, 152, paint);
+
+					if (backGroud != null) {
+						canvas.drawBitmap(backGroud, 0, 0, null);
+					}
+					if (nextImage != null) {
+						canvas.drawBitmap(nextImage, left, top, null);
+					}
+
 				}
 				Thread.sleep(100);
 			} catch (Exception e) {
@@ -232,6 +248,16 @@ public class BaseInterlgent extends SurfaceView implements
 	public void ReDraw(ArrayList<RoomInfor> pointList) {
 		this.pointList = pointList;
 		invalidate();
+	}
+
+	public void setBackGroud(Bitmap backGroud) {
+		this.backGroud = backGroud;
+	}
+
+	public void setNextImage(Bitmap nextImage, int left, int top) {
+		this.left = left;
+		this.top = top;
+		this.nextImage = nextImage;
 	}
 
 }

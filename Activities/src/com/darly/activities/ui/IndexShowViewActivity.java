@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -18,17 +17,16 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.model.IARoomName;
 import com.darly.activities.model.IARoomNameHttp;
@@ -39,14 +37,16 @@ import com.darly.activities.model.RoomInfor;
 import com.darly.activities.poll.HttpTasker;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
+import com.darly.activities.widget.intel.InterlgentUtil;
 import com.darly.activities.widget.intel.MySurfaceView;
+import com.darly.activities.widget.intel.MySurfaceView3;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * @author Zhangyuhui IndexShowViewActivity 上午9:01:37 TODO
@@ -77,7 +77,7 @@ public class IndexShowViewActivity extends BaseActivity {
 	 * TODO图层容器
 	 */
 	@ViewInject(R.id.index_container)
-	private RelativeLayout index_container;
+	private MySurfaceView3 index_container;
 	/**
 	 * TODO计时器
 	 */
@@ -87,15 +87,6 @@ public class IndexShowViewActivity extends BaseActivity {
 	 * TODO房间全部信息
 	 */
 	public ArrayList<RoomInfor> roomInfo;
-
-	/**
-	 * 下一项图片
-	 */
-	private ImageView nextCheck;
-	/**
-	 * 下一项数据
-	 */
-	private LayoutParams next;
 
 	/**
 	 * 咨询链接
@@ -141,7 +132,7 @@ public class IndexShowViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.main_container:
-			Intent intent = new Intent(this,IndexZoomViewActivity.class);
+			Intent intent = new Intent(this, IndexZoomViewActivity.class);
 			startActivity(intent);
 			break;
 
@@ -157,9 +148,10 @@ public class IndexShowViewActivity extends BaseActivity {
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 		loading.show();
-		main_container.setLayoutParams(new LinearLayout.LayoutParams(Literal.width, Literal.width
-				* IAPoisDataConfig.babaibanh / IAPoisDataConfig.babaibanw));
-		
+		main_container.setLayoutParams(new LinearLayout.LayoutParams(
+				Literal.width, Literal.width * IAPoisDataConfig.babaibanh
+						/ IAPoisDataConfig.babaibanw));
+
 		initImageAndThread();
 		firstStep();
 	}
@@ -233,47 +225,68 @@ public class IndexShowViewActivity extends BaseActivity {
 		// -----------如何建立关系----------
 		main_container.removeAllViews();
 		interlgent = new BaseInterlgent(this, roomInfo);
-		ImageView iv = new ImageView(this);
-		iv.setLayoutParams(new LayoutParams(Literal.width, Literal.width
-				* IAPoisDataConfig.babaibanh / IAPoisDataConfig.babaibanw));
-		DisplayImageOptions options_mo = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_launcher) // 加载图片时的图片
-				.showImageForEmptyUri(R.drawable.ic_launcher) // 没有图片资源时的默认图片
-				.showImageOnFail(R.drawable.ic_launcher) // 加载失败时的图片
-				.cacheInMemory(true) // 启用内存缓存
-				.cacheOnDisk(true) // 启用外存缓存
-				.considerExifParams(true) // 启用EXIF和JPEG图像格式
-				.displayer(new RoundedBitmapDisplayer(0)) // 设置显示风格这里是圆角矩形
-				.build();
-		imageLoader.displayImage(roomOrgpari.Organizationplan, iv, options_mo);
+		// 获取到背景图片后进行Bitmap缓存。
+		imageLoader.loadImage(roomOrgpari.Organizationplan,
+				new ImageLoadingListener() {
+
+					@Override
+					public void onLoadingStarted(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onLoadingFailed(String arg0, View arg1,
+							FailReason arg2) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onLoadingComplete(String arg0, View arg1,
+							Bitmap arg2) {
+						// TODO Auto-generated method stub
+
+						Bitmap back = InterlgentUtil.zoomImage(arg2,
+								Literal.width, Literal.width
+										* IAPoisDataConfig.babaibanh
+										/ IAPoisDataConfig.babaibanw);
+						LogApp.i(back.toString());
+						interlgent.setBackGroud(back);
+					}
+
+					@Override
+					public void onLoadingCancelled(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
+					}
+				});
 		main_container.addView(interlgent);
-		main_container.addView(iv);
-		nextCheck = new ImageView(this);
-		next = new LayoutParams(96, 44);
-		nextCheck.setLayoutParams(next);
-		nextCheck.setImageResource(R.drawable.next_check);
-		nextCheck.setVisibility(View.INVISIBLE);
-		main_container.addView(nextCheck);
-		
 		main_container.setOnClickListener(this);
+		
+		Drawable drawable = getResources().getDrawable(
+				R.drawable.ic_arrow_press);
+		Bitmap nextImage = ((BitmapDrawable) drawable)
+				.getBitmap();
+		index_container.setBitmap(nextImage);
 	}
 
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
 		title.setText(getClass().getSimpleName());
-//		index_container.removeAllViews();
+		// index_container.removeAllViews();
 		MySurfaceView surfaceView = new MySurfaceView(this, null);
-		Drawable drawable = getResources().getDrawable(R.drawable.login_table_bg);  
-		//实际上这是一个BitmapDrawable对象  
-		BitmapDrawable bitmapDrawable=(BitmapDrawable)drawable;  
-		//可以在调用getBitmap方法，得到这个位图  
-		Bitmap bitmap=bitmapDrawable.getBitmap();
+		Drawable drawable = getResources().getDrawable(
+				R.drawable.login_table_bg);
+		// 实际上这是一个BitmapDrawable对象
+		BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+		// 可以在调用getBitmap方法，得到这个位图
+		Bitmap bitmap = bitmapDrawable.getBitmap();
 		surfaceView.setBitmap(bitmap);
 		surfaceView.setOnTouchListener(surfaceView);
-//		index_container.addView(surfaceView);
-		
-		
+		// index_container.addView(surfaceView);
+
 	}
 
 	@Override
@@ -373,6 +386,7 @@ public class IndexShowViewActivity extends BaseActivity {
 			}
 			if (models.getNext() != null) {
 				for (int b = 0, lent = models.getNext().size(); b < lent; b++) {
+					
 					String num = models.getNext().get(b).getRoomID();
 					if (num.contains("-")) {
 						num = num.substring(0, num.indexOf("-"));
@@ -383,7 +397,6 @@ public class IndexShowViewActivity extends BaseActivity {
 					}
 					if (room.equals(num)) {
 						roomIn.get(i).setRoomStauts(2);
-
 						int X = 0;
 						int Y = 0;
 						ArrayList<Point> pos = null;
@@ -401,10 +414,16 @@ public class IndexShowViewActivity extends BaseActivity {
 								X += p.x;
 								Y += p.y;
 							}
-							next.leftMargin = X / lenth - 48;
-							next.topMargin = Y / lenth - 44;
-							nextCheck.setVisibility(View.VISIBLE);
-							nextCheck.setLayoutParams(next);
+							// 获取到背景图片后进行Bitmap缓存。
+							Drawable drawable = getResources().getDrawable(
+									R.drawable.next_check);
+							Bitmap nextImage = ((BitmapDrawable) drawable)
+									.getBitmap();
+							int heighe = nextImage.getHeight();
+							int width = nextImage.getWidth();
+							LogApp.i(nextImage.toString() + heighe + width);
+							interlgent.setNextImage(nextImage, X / lenth
+									- width / 2, Y / lenth - heighe);
 						}
 
 					}
