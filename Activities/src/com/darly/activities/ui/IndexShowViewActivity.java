@@ -17,17 +17,23 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.darly.activities.adapter.CityAdapter;
+import com.darly.activities.adapter.LocalAdapter;
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
+import com.darly.activities.model.BaseCityInfo;
+import com.darly.activities.model.BaseOrgInfo;
 import com.darly.activities.model.IARoomName;
 import com.darly.activities.model.IARoomNameHttp;
 import com.darly.activities.model.IARoomPoint;
@@ -41,6 +47,7 @@ import com.darly.activities.widget.intel.InterlgentUtil;
 import com.darly.activities.widget.intel.MySurfaceView;
 import com.darly.activities.widget.intel.MySurfaceView3;
 import com.darly.activities.widget.load.ProgressDialogUtil;
+import com.darly.activities.widget.spinner.BaseSpinner;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
@@ -60,6 +67,17 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.main_header_text)
 	private TextView title;
+
+	/**
+	 * TODO下拉菜单选择列表
+	 */
+	@ViewInject(R.id.main_city_spinner)
+	private BaseSpinner city_spinner;
+	/**
+	 * TODO下拉菜单选择列表
+	 */
+	@ViewInject(R.id.main_org_spinner)
+	private BaseSpinner org_spinner;
 	/**
 	 * TODO线程管理
 	 */
@@ -104,6 +122,20 @@ public class IndexShowViewActivity extends BaseActivity {
 	 * TODO 加载过场动画类
 	 */
 	private ProgressDialogUtil loading;
+
+	/**
+	 * 下午2:58:17
+	 * 
+	 * @author Zhangyuhui IndexShowViewActivity.java TODO 城市机构信息列表。
+	 */
+	private ArrayList<BaseCityInfo> city_Info;
+
+	/**
+	 * 下午3:39:31
+	 * 
+	 * @author Zhangyuhui IndexShowViewActivity.java TODO 选中的机构信息。
+	 */
+	private BaseOrgInfo selectOrg;
 
 	/**
 	 * TODOActivity中使用网络请求，对应的数据返回区。
@@ -152,8 +184,79 @@ public class IndexShowViewActivity extends BaseActivity {
 				Literal.width, Literal.width * IAPoisDataConfig.babaibanh
 						/ IAPoisDataConfig.babaibanw));
 
+		setSpinner();
+		// 初始化从第一项开始
+		city_spinner.getSpinner().setSelection(0);
+		org_spinner.getSpinner().setSelection(0);
+
 		initImageAndThread();
-		firstStep();
+	}
+
+	/**
+	 * 
+	 * 下午2:44:51
+	 * 
+	 * @author Zhangyuhui IndexShowViewActivity.java TODO 设置下拉列表。
+	 */
+	private void setSpinner() {
+		// 由于服务端没有城市机构信息。故而虚拟一下数据
+		city_Info = new ArrayList<BaseCityInfo>();
+
+		ArrayList<BaseOrgInfo> org = new ArrayList<BaseOrgInfo>();
+		org.add(new BaseOrgInfo(12, "静安", 1));
+		org.add(new BaseOrgInfo(24, "徐汇", 1));
+		org.add(new BaseOrgInfo(31, "八百", 1));
+
+		city_Info.add(new BaseCityInfo(2001, "上海", org));
+		city_Info.add(new BaseCityInfo(2002, "北京", org));
+
+		// TODO Auto-generated method stub
+		city_spinner.getSpinner().setAdapter(
+				new CityAdapter(city_Info, R.layout.ia_guide_item_city, this));
+
+		city_spinner.getSpinner().setOnItemSelectedListener(
+				new OnItemSelectedListener() {
+
+					@Override
+					public void onItemSelected(AdapterView<?> parent,
+							View view, int position, long id) {
+						// TODO Auto-generated method stub
+						BaseCityInfo info = (BaseCityInfo) parent
+								.getItemAtPosition(position);
+						org_spinner.getSpinner().setAdapter(
+								new LocalAdapter(info.city_org,
+										R.layout.ia_guide_item_city,
+										IndexShowViewActivity.this));
+						org_spinner.getSpinner().setOnItemSelectedListener(
+								new OnItemSelectedListener() {
+
+									@Override
+									public void onItemSelected(
+											AdapterView<?> parent, View view,
+											int position, long id) {
+										// TODO Auto-generated method stub
+										// 选择正确的机构。
+										selectOrg = (BaseOrgInfo) parent
+												.getItemAtPosition(position);
+										firstStep();
+									}
+
+									@Override
+									public void onNothingSelected(
+											AdapterView<?> parent) {
+										// TODO Auto-generated method stub
+
+									}
+								});
+					}
+
+					@Override
+					public void onNothingSelected(AdapterView<?> parent) {
+						// TODO Auto-generated method stub
+
+					}
+
+				});
 	}
 
 	/**
@@ -178,8 +281,10 @@ public class IndexShowViewActivity extends BaseActivity {
 				loading.dismiss();
 			}
 			Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
-			String info = PreferencesJsonCach.getInfo("GETINFO" + 31, this);
-			String data = PreferencesJsonCach.getInfo("GETDATA" + 31, this);
+			String info = PreferencesJsonCach.getInfo("GETINFO"
+					+ selectOrg.org_id, this);
+			String data = PreferencesJsonCach.getInfo("GETDATA"
+					+ selectOrg.org_id, this);
 			// 初次没有缓存则直接跳过
 			if (info != null) {
 				getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
@@ -194,7 +299,7 @@ public class IndexShowViewActivity extends BaseActivity {
 			// 请求服务器平面图数据。
 			JSONObject object = new JSONObject();
 			try {
-				object.put("OrganizationID", "31");
+				object.put("OrganizationID", "" + selectOrg.org_id);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -215,9 +320,23 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	public void getOrgAndPoint(IARoomNameHttp roomOrgpari) {
 		// -----------如何建立关系----------
-		ArrayList<IARoomPoint> point = IAPoisDataConfig
-				.getModelTest(getResources().getIntArray(
-						R.array.babaiban_roomnub));
+		int[] arg = null;
+		switch (selectOrg.org_id) {
+		case 12:
+			arg = getResources().getIntArray(R.array.jingan_roomnub);
+			break;
+		case 24:
+			arg = getResources().getIntArray(R.array.xuhui_roomnub);
+			break;
+		case 31:
+			arg = getResources().getIntArray(R.array.babaiban_roomnub);
+			break;
+		default:
+			break;
+		}
+
+		ArrayList<IARoomPoint> point = IAPoisDataConfig.getModelTest(arg,
+				selectOrg.org_id);
 		roomInfo = getRoomInfr(roomOrgpari.model, point/*
 														 * roomOrgpari.point
 														 * 由于服务器暂时还未传递，制造假数据
@@ -263,11 +382,10 @@ public class IndexShowViewActivity extends BaseActivity {
 				});
 		main_container.addView(interlgent);
 		main_container.setOnClickListener(this);
-		
+
 		Drawable drawable = getResources().getDrawable(
 				R.drawable.ic_arrow_press);
-		Bitmap nextImage = ((BitmapDrawable) drawable)
-				.getBitmap();
+		Bitmap nextImage = ((BitmapDrawable) drawable).getBitmap();
 		index_container.setBitmap(nextImage);
 	}
 
@@ -295,7 +413,8 @@ public class IndexShowViewActivity extends BaseActivity {
 		Log.i("handler", "IALiteral.GETINFO");
 		if (object != null) {
 			String jsonInfo = (String) object;
-			PreferencesJsonCach.putValue("GETINFO" + 31, jsonInfo, this);
+			PreferencesJsonCach.putValue("GETINFO" + selectOrg.org_id,
+					jsonInfo, this);
 			IARoomNameHttp roomOrgpari = new Gson().fromJson(jsonInfo,
 					IARoomNameHttp.class);
 			if (roomOrgpari != null && roomOrgpari.model != null) {
@@ -311,7 +430,8 @@ public class IndexShowViewActivity extends BaseActivity {
 		Log.i("handler", "IALiteral.GETDATA");
 		if (object != null) {
 			String jsonData = (String) object;
-			PreferencesJsonCach.putValue("GETDATA" + 31, jsonData, this);
+			PreferencesJsonCach.putValue("GETDATA" + selectOrg.org_id,
+					jsonData, this);
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
@@ -386,7 +506,7 @@ public class IndexShowViewActivity extends BaseActivity {
 			}
 			if (models.getNext() != null) {
 				for (int b = 0, lent = models.getNext().size(); b < lent; b++) {
-					
+
 					String num = models.getNext().get(b).getRoomID();
 					if (num.contains("-")) {
 						num = num.substring(0, num.indexOf("-"));
@@ -442,7 +562,7 @@ public class IndexShowViewActivity extends BaseActivity {
 		try {
 			// 测试数据
 			object.put("UserMobile", "18321127312");
-			object.put("OrganizationID", "31");
+			object.put("OrganizationID", "" + selectOrg.org_id);
 		} catch (Exception e) {
 			Log.i("getDataFHttp", e.getMessage().toString());
 		}

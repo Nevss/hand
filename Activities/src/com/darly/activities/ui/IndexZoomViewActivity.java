@@ -218,9 +218,8 @@ public class IndexZoomViewActivity extends BaseActivity {
 	 */
 	public void getOrgAndPoint(IARoomNameHttp roomOrgpari) {
 		// -----------如何建立关系----------
-		ArrayList<IARoomPoint> point = IAPoisDataConfig
-				.getModelTest(getResources().getIntArray(
-						R.array.babaiban_roomnub));
+		ArrayList<IARoomPoint> point = IAPoisDataConfig.getModelTest(
+				getResources().getIntArray(R.array.babaiban_roomnub), 31);
 		roomInfo = getRoomInfr(roomOrgpari.model, point/*
 														 * roomOrgpari.point
 														 * 由于服务器暂时还未传递，制造假数据
@@ -461,10 +460,10 @@ public class IndexZoomViewActivity extends BaseActivity {
 		conanimSet.start();
 		// 整个RelativeLayout布局放置大小
 		AnimatorSet animSet = new AnimatorSet();// 定义一个AnimatorSet对象
-		ObjectAnimator Start = ObjectAnimator.ofFloat(main_container, "scaleX", 1f,
-				(float) (a));
-		ObjectAnimator Stop = ObjectAnimator.ofFloat(main_container, "scaleY", 1f,
-				(float) (a));
+		ObjectAnimator Start = ObjectAnimator.ofFloat(main_container, "scaleX",
+				1f, (float) (a));
+		ObjectAnimator Stop = ObjectAnimator.ofFloat(main_container, "scaleY",
+				1f, (float) (a));
 		animSet.play(Start).with(Stop);
 		animSet.setDuration(0);
 		animSet.start();

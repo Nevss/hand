@@ -21,7 +21,6 @@ import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 
-import com.darly.activities.common.LogApp;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
