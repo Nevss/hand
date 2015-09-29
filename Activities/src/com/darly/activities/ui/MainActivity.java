@@ -1,6 +1,7 @@
 package com.darly.activities.ui;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
@@ -85,7 +86,7 @@ public class MainActivity extends BaseActivity implements
 	 * @see com.darly.activities.base.BaseActivity#initView()
 	 */
 	@Override
-	public void initView() {
+	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		LogUtils.customTagPrefix = "xUtilsSample"; // 方便调试时过滤 adb logcat 输出
 		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出

@@ -65,7 +65,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 			Literal.getWidth(this);
 		}
 
-		initView();
+		initView(savedInstanceState);
 		initData();
 	}
 
@@ -95,8 +95,9 @@ public abstract class BaseActivity extends FragmentActivity implements
 	/**
 	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午9:48:56 Project_Name:DFram
 	 * Description:初始化界面控件，获取界面XML的方法体，可以在这里对所有XML中的控件进行实例。 Throws
+	 * @param savedInstanceState 
 	 */
-	public abstract void initView();
+	public abstract void initView(Bundle savedInstanceState);
 
 	/**
 	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午9:49:13 Project_Name:DFram

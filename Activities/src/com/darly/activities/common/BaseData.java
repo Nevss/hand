@@ -1,6 +1,5 @@
 package com.darly.activities.common;
 
-import android.os.Environment;
 
 /**
 * @ClassName: BaseData
@@ -29,11 +28,4 @@ public class BaseData {
 	public static final String CREATE_SNOTE = "create table snote (id integer primary key autoincrement,title varchar,message varchar,date varchar)";
 	public static final String CREATE_IMAGE = "create table image (id integer primary key autoincrement,date varchar,message varchar,imagepath varchar)";
 
-	public static final String ROOT = Environment.getExternalStorageDirectory()
-			.getAbsolutePath() + "/study";
-	public static final String SROOT = ROOT + "/darly";
-	public static final String TROOT = SROOT + "/books";
-	public static final String IMAGE = SROOT + "/images";
-	public static final int REQUESTCODE_CAM = 1001;
-	public static final int REQUESTCODE_CAP = 1002;
 }

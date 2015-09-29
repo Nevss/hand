@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.graphics.Point;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -143,7 +144,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 	}
 
 	@Override
-	public void initView() {
+	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this);// 注入view和事件
 		loading = new ProgressDialogUtil(this);

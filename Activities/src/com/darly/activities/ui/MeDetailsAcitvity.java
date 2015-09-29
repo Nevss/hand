@@ -1,19 +1,27 @@
 package com.darly.activities.ui;
 
+import java.io.File;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.widget.load.ProgressDialogUtil;
+import com.darly.activities.widget.pop.PhotoPop;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -23,6 +31,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 @ContentView(R.layout.activity_me_details)
 public class MeDetailsAcitvity extends BaseActivity {
 
+	private GridViewData data;
 	/**
 	 * 下午5:38:14
 	 * 
@@ -35,6 +44,10 @@ public class MeDetailsAcitvity extends BaseActivity {
 	private ImageView back;
 	@ViewInject(R.id.main_header_text)
 	private TextView title;
+	@ViewInject(R.id.me_details_btn)
+	private Button btn;
+
+	private PhotoPop pop;
 
 	private int imageW;
 	private int imageH;
@@ -70,6 +83,9 @@ public class MeDetailsAcitvity extends BaseActivity {
 		case R.id.main_header_back:
 			finish();
 			break;
+		case R.id.me_details_btn:
+			pop.show(v);
+			break;
 
 		default:
 			break;
@@ -77,15 +93,23 @@ public class MeDetailsAcitvity extends BaseActivity {
 	}
 
 	@Override
-	public void initView() {
+	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		ViewUtils.inject(this); // 注入view和事件
-		GridViewData data = (GridViewData) getIntent().getSerializableExtra(
-				"GridViewData");
+		if (savedInstanceState == null) {
+			data = (GridViewData) getIntent().getSerializableExtra(
+					"GridViewData");
+		} else {
+			data = (GridViewData) savedInstanceState
+					.getSerializable("GridViewData");
+		}
+		
+		pop = PhotoPop.getPhotoPop(this);
 
 		title.setText("详细页面");
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
+		btn.setOnClickListener(this);
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 
@@ -126,6 +150,20 @@ public class MeDetailsAcitvity extends BaseActivity {
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.support.v4.app.FragmentActivity#onSaveInstanceState(android.os
+	 * .Bundle)
+	 */
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		super.onSaveInstanceState(outState);
+		outState.putSerializable("GridViewData", data);
+	}
+
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
@@ -149,6 +187,45 @@ public class MeDetailsAcitvity extends BaseActivity {
 	@Override
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.FragmentActivity#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode != RESULT_OK) {
+			return;
+		}
+		if (requestCode == Literal.REQUESTCODE_CUT) {
+			// 裁剪
+			if (data != null) {
+				Bundle extras = data.getExtras();
+				Bitmap head = extras.getParcelable("data");
+				LogApp.i(head.toString());
+			}
+		} else {
+			// 拍照或相册
+			String head_path = null;
+			if (data == null) {
+				head_path = /* pop.PopStringActivityResult(null,
+						Literal.REQUESTCODE_CAP);*/Literal.capUri; 
+			} else {
+				head_path = pop.PopStringActivityResult(data,
+						Literal.REQUESTCODE_CAM);
+
+			}
+			LogApp.i("返回的文件路径" + head_path);
+			File temp = new File(head_path);
+			pop.cropPhoto(Uri.fromFile(temp));// 裁剪图片
+
+		}
 
 	}
 
