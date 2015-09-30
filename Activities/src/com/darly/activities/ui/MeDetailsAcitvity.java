@@ -10,8 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
@@ -28,6 +28,9 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+/**
+ * @author Zhangyuhui MeDetailsAcitvity 下午2:57:21 TODO预览图片详情页面。
+ */
 @ContentView(R.layout.activity_me_details)
 public class MeDetailsAcitvity extends BaseActivity {
 
@@ -40,10 +43,15 @@ public class MeDetailsAcitvity extends BaseActivity {
 	@ViewInject(R.id.me_details_iv)
 	private ImageView iv;
 	/**
-	 * 上午9:27:39 TODO测试拍照功能模块的ImageView
+	 * 上午9:27:39 TODO添加更多图片按钮
 	 */
-	@ViewInject(R.id.me_details_test)
-	private ImageView test;
+	@ViewInject(R.id.me_details_more)
+	private ImageView more;
+	/**
+	 * 下午3:07:33 TODO更多图片横向排列。
+	 */
+	@ViewInject(R.id.me_details_linear)
+	private LinearLayout container;
 
 	/**
 	 * 上午9:28:13 TODO 标题栏返回按钮
@@ -55,11 +63,6 @@ public class MeDetailsAcitvity extends BaseActivity {
 	 */
 	@ViewInject(R.id.main_header_text)
 	private TextView title;
-	/**
-	 * 上午9:28:45 TODO 测试照相功能的按钮
-	 */
-	@ViewInject(R.id.me_details_btn)
-	private Button btn;
 
 	/**
 	 * 上午9:29:04 TODO 调出选项的POP窗口，主要为相机，相册，取消
@@ -109,7 +112,7 @@ public class MeDetailsAcitvity extends BaseActivity {
 		case R.id.main_header_back:
 			finish();
 			break;
-		case R.id.me_details_btn:
+		case R.id.me_details_more:
 			pop.show(v);
 			break;
 
@@ -135,7 +138,8 @@ public class MeDetailsAcitvity extends BaseActivity {
 		title.setText("详细页面");
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
-		btn.setOnClickListener(this);
+
+		more.setOnClickListener(this);
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 
@@ -234,8 +238,15 @@ public class MeDetailsAcitvity extends BaseActivity {
 			if (data != null) {
 				Bundle extras = data.getExtras();
 				Bitmap head = extras.getParcelable("data");
-				test.setImageBitmap(head);
-				LogApp.i(head.toString());
+				ImageView imageView = new ImageView(MeDetailsAcitvity.this);
+				LayoutParams lp = new LayoutParams(Literal.width / 5,
+						Literal.width / 5);
+				lp.setMargins(2, 2, 2, 2);
+				imageView.setLayoutParams(lp);
+				
+				imageView.setImageBitmap(head);
+				container.addView(imageView, container.getChildCount() - 1);
+
 			}
 		} else {
 			// 拍照或相册

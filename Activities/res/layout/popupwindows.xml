@@ -22,7 +22,7 @@
                 android:id="@+id/item_popupwindows_camera"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/color_2"
+                android:background="@color/color_3"
                 android:text="拍照"
                 android:textColor="#585858"
                 android:textSize="18sp" />
@@ -42,7 +42,7 @@
                 android:id="@+id/item_popupwindows_Photo"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/color_2"
+                android:background="@color/color_3"
                 android:text="从相册中选取"
                 android:textColor="#585858"
                 android:textSize="18sp" />
@@ -50,14 +50,14 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="2dp"
+            android:layout_height="1dp"
             android:background="@color/set_list_line" />
 
         <Button
             android:id="@+id/item_popupwindows_cancel"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="@color/color_2"
+            android:background="@color/color_3"
             android:text="取消"
             android:textColor="#585858"
             android:textSize="18sp" />
