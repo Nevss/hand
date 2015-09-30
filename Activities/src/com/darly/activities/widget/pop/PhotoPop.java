@@ -29,20 +29,20 @@ import com.darly.activities.ui.R;
 public class PhotoPop implements OnClickListener {
 
 	private final String TAG = getClass().getSimpleName();
-	
+
 	private static PhotoPop photoPop;
-	
+
 	private PhotoPop(Context context) {
 		super();
 		this.context = context;
 		init();
 	}
-	
+
 	/**
 	 * @return the photoPop
 	 */
 	public static PhotoPop getPhotoPop(Context context) {
-		if (photoPop==null) {
+		if (photoPop == null) {
 			photoPop = new PhotoPop(context);
 		}
 		return photoPop;
@@ -52,8 +52,6 @@ public class PhotoPop implements OnClickListener {
 	 * 下午1:29:10 TODO 系统参数。
 	 */
 	private Context context;
-	
-	
 
 	/**
 	 * 下午1:30:52 TODO pop窗口主键。
@@ -69,8 +67,6 @@ public class PhotoPop implements OnClickListener {
 	private Button item_popupwindows_cancel;
 
 	private Uri photoUri;
-
-	
 
 	/**
 	 * 
@@ -324,6 +320,13 @@ public class PhotoPop implements OnClickListener {
 	 */
 	public void show(View v) {
 		popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+	}
+
+	/**
+	 * @return the capUri
+	 */
+	public String getCapUri() {
+		return capUri;
 	}
 
 }
