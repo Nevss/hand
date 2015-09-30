@@ -2,7 +2,9 @@ package com.darly.activities.widget.pop;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -11,7 +13,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.Gravity;
@@ -25,38 +30,22 @@ import android.widget.PopupWindow;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.ui.R;
+import com.darly.activities.widget.load.ProgressDialogUtil;
 
-public class PhotoPop implements OnClickListener {
+public class PhotoPop extends PopupWindow implements OnClickListener {
 
 	private final String TAG = getClass().getSimpleName();
 
-	private static PhotoPop photoPop;
-
-	private PhotoPop(Context context) {
+	public PhotoPop(Context context) {
 		super();
 		this.context = context;
 		init();
 	}
 
 	/**
-	 * @return the photoPop
-	 */
-	public static PhotoPop getPhotoPop(Context context) {
-		if (photoPop == null) {
-			photoPop = new PhotoPop(context);
-		}
-		return photoPop;
-	}
-
-	/**
 	 * 下午1:29:10 TODO 系统参数。
 	 */
 	private Context context;
-
-	/**
-	 * 下午1:30:52 TODO pop窗口主键。
-	 */
-	private PopupWindow popupWindow;
 
 	private Button item_popupwindows_camera;
 
@@ -76,9 +65,9 @@ public class PhotoPop implements OnClickListener {
 	 */
 	private void init() {
 		// TODO Auto-generated method stub
+
 		View view = LayoutInflater.from(context).inflate(R.layout.popupwindows,
 				null);
-
 		item_popupwindows_camera = (Button) view
 				.findViewById(R.id.item_popupwindows_camera);
 		item_popupwindows_camera.setOnClickListener(this);
@@ -89,12 +78,11 @@ public class PhotoPop implements OnClickListener {
 				.findViewById(R.id.item_popupwindows_cancel);
 		item_popupwindows_cancel.setOnClickListener(this);
 
-		popupWindow = new PopupWindow();
-		popupWindow.setWidth(LayoutParams.MATCH_PARENT);
-		popupWindow.setHeight(LayoutParams.WRAP_CONTENT);
-		popupWindow.setFocusable(true);
-		popupWindow.setOutsideTouchable(true);
-		popupWindow.setContentView(view);
+		setWidth(LayoutParams.MATCH_PARENT);
+		setHeight(LayoutParams.WRAP_CONTENT);
+		setFocusable(true);
+		setOutsideTouchable(true);
+		setContentView(view);
 
 	}
 
@@ -120,7 +108,7 @@ public class PhotoPop implements OnClickListener {
 		default:
 			break;
 		}
-		popupWindow.dismiss();
+		dismiss();
 	}
 
 	/**
@@ -314,12 +302,43 @@ public class PhotoPop implements OnClickListener {
 	}
 
 	/**
+	 * @param path
+	 * @return 上午10:42:09
+	 * @author Zhangyuhui MeDetailsAcitvity.java TODO 获取图片的旋转角度。
+	 */
+	public int getBitmapDegree(String path) {
+		int degree = 0;
+		try {
+			// 从指定路径下读取图片，并获取其EXIF信息
+			ExifInterface exifInterface = new ExifInterface(path);
+			// 获取图片的旋转信息
+			int orientation = exifInterface.getAttributeInt(
+					ExifInterface.TAG_ORIENTATION,
+					ExifInterface.ORIENTATION_NORMAL);
+			switch (orientation) {
+			case ExifInterface.ORIENTATION_ROTATE_90:
+				degree = 90;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_180:
+				degree = 180;
+				break;
+			case ExifInterface.ORIENTATION_ROTATE_270:
+				degree = 270;
+				break;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return degree;
+	}
+
+	/**
 	 * @param v
 	 *            下午3:15:27
 	 * @author Zhangyuhui PhotoPop.java TODO 展示POP
 	 */
 	public void show(View v) {
-		popupWindow.showAtLocation(v, Gravity.CENTER, 0, 0);
+		showAtLocation(v, Gravity.CENTER, 0, 0);
 	}
 
 	/**
@@ -327,6 +346,130 @@ public class PhotoPop implements OnClickListener {
 	 */
 	public String getCapUri() {
 		return capUri;
+	}
+
+	public class ImageDegree extends AsyncTask<Object, Object, Object> {
+		private int degree;
+		private ProgressDialogUtil loading;
+		private String imageUrl;
+
+		public ImageDegree(int degree, String imageUrl,
+				ProgressDialogUtil loading) {
+			super();
+			this.degree = degree;
+			this.imageUrl = imageUrl;
+			this.loading = loading;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPreExecute()
+		 */
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			if (loading != null) {
+				loading.setMessage("图片处理中...");
+				loading.show();
+			}
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#doInBackground(java.lang.Object[])
+		 */
+		@Override
+		protected Object doInBackground(Object... params) {
+			// TODO Auto-generated method stub
+			try {
+				rotateBitmapByDegree(imageUrl, new Random().nextInt(360));
+				LogApp.i("返回的文件路径旋转图片" + degree + imageUrl);
+			} catch (Exception e) {
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
+		@Override
+		protected void onPostExecute(Object result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if (loading != null) {
+				loading.dismiss();
+			}
+			LogApp.i("返回的文件路径" + degree + imageUrl);
+			File temp = new File(imageUrl);
+			cropPhoto(Uri.fromFile(temp));// 裁剪图片
+		}
+
+		/**
+		 * @param bm需要旋转的图片
+		 * @param degree
+		 *            旋转角度
+		 * @return 旋转后的图片 上午10:44:08
+		 * @author Zhangyuhui MeDetailsAcitvity.java TODO将图片按照某个角度进行旋转
+		 */
+		private void rotateBitmapByDegree(String url, int degree) {
+			Bitmap bitmap = BitmapFactory.decodeFile(url);
+
+			Bitmap returnBm = null;
+
+			// 根据旋转角度，生成旋转矩阵
+			Matrix matrix = new Matrix();
+			matrix.postRotate(degree);
+			try {
+				// 将原始图片按照旋转矩阵进行旋转，并得到新的图片
+				returnBm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+						bitmap.getHeight(), matrix, true);
+				if (returnBm == null) {
+					returnBm = bitmap;
+				}
+				saveBitmap(url, returnBm);
+
+			} catch (OutOfMemoryError e) {
+				e.printStackTrace();
+			}
+			if (bitmap != returnBm) {
+				bitmap.recycle();
+			}
+
+		}
+
+		/**
+		 * @param url
+		 * @param bitmap
+		 *            上午10:53:39
+		 * @author Zhangyuhui MeDetailsAcitvity.java TODO 将Bitmap保存到文件。
+		 */
+		public void saveBitmap(String url, Bitmap bitmap) {
+			LogApp.i("保存图片");
+			File f = new File(url);
+			if (f.exists()) {
+				f.delete();
+			}
+			try {
+				FileOutputStream out = new FileOutputStream(f);
+				bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+				out.flush();
+				out.close();
+				LogApp.i("已经保存");
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

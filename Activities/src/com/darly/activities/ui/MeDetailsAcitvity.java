@@ -1,16 +1,10 @@
 package com.darly.activities.ui;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -136,7 +130,7 @@ public class MeDetailsAcitvity extends BaseActivity {
 					.getSerializable("GridViewData");
 		}
 
-		pop = PhotoPop.getPhotoPop(this);
+		pop = new PhotoPop(this);
 
 		title.setText("详细页面");
 		back.setVisibility(View.VISIBLE);
@@ -258,109 +252,15 @@ public class MeDetailsAcitvity extends BaseActivity {
 						Literal.REQUESTCODE_CAM);
 
 			}
-			int degree = getBitmapDegree(head_path);
+			int degree = pop.getBitmapDegree(head_path);
 			if (degree == 0) {
-
-				rotateBitmapByDegree(head_path, 90);
-				LogApp.i("返回的文件路径旋转图片" + 90 + head_path);
+				pop.new ImageDegree(degree, head_path, loading).execute();
+			} else {
+				LogApp.i("返回的文件路径" + degree + head_path);
+				File temp = new File(head_path);
+				pop.cropPhoto(Uri.fromFile(temp));// 裁剪图片
 			}
-
-			LogApp.i("返回的文件路径" + degree + head_path);
-			File temp = new File(head_path);
-			pop.cropPhoto(Uri.fromFile(temp));// 裁剪图片
-
-		}
-
-	}
-
-	/**
-	 * @param path
-	 * @return 上午10:42:09
-	 * @author Zhangyuhui MeDetailsAcitvity.java TODO 获取图片的旋转角度。
-	 */
-	private int getBitmapDegree(String path) {
-		int degree = 0;
-		try {
-			// 从指定路径下读取图片，并获取其EXIF信息
-			ExifInterface exifInterface = new ExifInterface(path);
-			// 获取图片的旋转信息
-			int orientation = exifInterface.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
-			switch (orientation) {
-			case ExifInterface.ORIENTATION_ROTATE_90:
-				degree = 90;
-				break;
-			case ExifInterface.ORIENTATION_ROTATE_180:
-				degree = 180;
-				break;
-			case ExifInterface.ORIENTATION_ROTATE_270:
-				degree = 270;
-				break;
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return degree;
-	}
-
-	/**
-	 * @param bm需要旋转的图片
-	 * @param degree
-	 *            旋转角度
-	 * @return 旋转后的图片 上午10:44:08
-	 * @author Zhangyuhui MeDetailsAcitvity.java TODO将图片按照某个角度进行旋转
-	 */
-	private void rotateBitmapByDegree(String url, int degree) {
-		Bitmap bitmap = BitmapFactory.decodeFile(url);
-
-		Bitmap returnBm = null;
-
-		// 根据旋转角度，生成旋转矩阵
-		Matrix matrix = new Matrix();
-		matrix.postRotate(degree);
-		try {
-			// 将原始图片按照旋转矩阵进行旋转，并得到新的图片
-			returnBm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-					bitmap.getHeight(), matrix, true);
-			if (returnBm == null) {
-				returnBm = bitmap;
-			}
-			saveBitmap(url, returnBm);
-
-		} catch (OutOfMemoryError e) {
-			e.printStackTrace();
-		}
-		if (bitmap != returnBm) {
-			bitmap.recycle();
-		}
-
-	}
-
-	/**
-	 * @param url
-	 * @param bitmap
-	 *            上午10:53:39
-	 * @author Zhangyuhui MeDetailsAcitvity.java TODO 将Bitmap保存到文件。
-	 */
-	public void saveBitmap(String url, Bitmap bitmap) {
-		LogApp.i("保存图片");
-		File f = new File(url);
-		if (f.exists()) {
-			f.delete();
-		}
-		try {
-			FileOutputStream out = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-			out.flush();
-			out.close();
-			LogApp.i("已经保存");
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
+
 }

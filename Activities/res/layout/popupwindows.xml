@@ -3,7 +3,7 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/guide_show_back" >
+    android:background="@color/pop_back">
 
     <LinearLayout
         android:id="@+id/ll_popup"
@@ -22,7 +22,7 @@
                 android:id="@+id/item_popupwindows_camera"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
-                android:background="@color/color_1"
+                android:background="@color/color_2"
                 android:text="拍照"
                 android:textColor="#585858"
                 android:textSize="18sp" />
@@ -57,7 +57,7 @@
             android:id="@+id/item_popupwindows_cancel"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:background="@color/color_3"
+            android:background="@color/color_2"
             android:text="取消"
             android:textColor="#585858"
             android:textSize="18sp" />
