@@ -264,7 +264,7 @@ public class MeDetailsAcitvity extends BaseActivity {
 
 			}
 			int degree = pop.getBitmapDegree(head_path);
-			if (degree == 0) {
+			if (degree != 0) {
 				pop.new ImageDegree(degree, head_path, loading).execute();
 			} else {
 				LogApp.i("返回的文件路径" + degree + head_path);

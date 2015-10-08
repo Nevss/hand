@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Random;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -385,7 +384,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		protected Object doInBackground(Object... params) {
 			// TODO Auto-generated method stub
 			try {
-				rotateBitmapByDegree(imageUrl, new Random().nextInt(360));
+				rotateBitmapByDegree(imageUrl, degree);
 				LogApp.i("返回的文件路径旋转图片" + degree + imageUrl);
 			} catch (Exception e) {
 				// TODO: handle exception
