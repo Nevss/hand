@@ -37,6 +37,10 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.darly.activities.ui.DisplayActivity"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.darly.activities.ui.IndexZoomViewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >

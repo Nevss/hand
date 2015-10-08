@@ -114,7 +114,7 @@ public class IndexShowViewActivity extends BaseActivity {
 	private String dataUrl = "http://test.rayelink.com/APIQueuingSystem/GetData";
 
 	private final int KEEP = 1000;
-	private final int NEXTKEEP = 10000;
+	private int NEXTKEEP = 10000;
 
 	/**
 	 * TODO 加载过场动画类
@@ -135,6 +135,8 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	private BaseOrgInfo selectOrg;
 
+	private boolean isStop = false;
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -142,6 +144,9 @@ public class IndexShowViewActivity extends BaseActivity {
 		case R.id.main_container:
 			Intent intent = new Intent(this, IndexZoomViewActivity.class);
 			startActivity(intent);
+			timer.cancel();
+			interlgent.setFlag(false);
+			isStop = true;
 			break;
 
 		default:
@@ -546,6 +551,22 @@ public class IndexShowViewActivity extends BaseActivity {
 		par.add(new BasicNameValuePair("param", object.toString()));
 		manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this, par,
 				dataUrl, null, handler, true, Literal.POST_HANDLER, true));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.darly.activities.base.BaseActivity#onResume()
+	 */
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		if (isStop) {
+			loading.show();
+			firstStep();
+			isStop = false;
+		}
+		super.onResume();
 	}
 
 	@Override

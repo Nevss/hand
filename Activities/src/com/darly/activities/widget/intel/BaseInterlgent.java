@@ -59,6 +59,13 @@ public class BaseInterlgent extends SurfaceView implements
 	private int left;
 	private int top;
 
+	/**
+	 * 下午4:15:37 TODO 缩放比率
+	 */
+	private float rate = 1;
+
+	private int sleepTime = 100;
+
 	public BaseInterlgent(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		// TODO Auto-generated constructor stub
@@ -151,6 +158,9 @@ public class BaseInterlgent extends SurfaceView implements
 			try {
 				synchronized (holder) {
 					canvas = holder.lockCanvas();
+					canvas.save();
+					canvas.scale(rate, rate);
+
 					for (int i = 0, length = pointList.size(); i < length; i++) {
 						paintView(pointList.get(i).getRoomPoint(), canvas,
 								paint, pointList.get(i).getRoomStauts());
@@ -164,11 +174,12 @@ public class BaseInterlgent extends SurfaceView implements
 					}
 
 				}
-				Thread.sleep(100);
+				Thread.sleep(sleepTime);
 			} catch (Exception e) {
 				// TODO: handle exception
 			} finally {
 				if (canvas != null) {
+					canvas.restore();
 					holder.unlockCanvasAndPost(canvas);
 				}
 			}
@@ -260,4 +271,27 @@ public class BaseInterlgent extends SurfaceView implements
 		this.nextImage = nextImage;
 	}
 
+	/**
+	 * @param rate
+	 *            the rate to set 设置缩放比率。
+	 */
+	public void setRate(float rate) {
+		this.rate = rate;
+	}
+
+	/**
+	 * @param flag
+	 *            the flag to set 关闭SurfaceView
+	 */
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
+	/**
+	 * @param sleepTime
+	 *            the sleepTime to set 设置睡眠时间。
+	 */
+	public void setSleepTime(int sleepTime) {
+		this.sleepTime = sleepTime;
+	}
 }

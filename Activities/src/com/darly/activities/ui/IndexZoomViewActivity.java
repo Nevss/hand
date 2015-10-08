@@ -7,10 +7,15 @@ import java.util.TimerTask;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -20,6 +25,7 @@ import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.model.IARoomName;
 import com.darly.activities.model.IARoomNameHttp;
@@ -30,15 +36,16 @@ import com.darly.activities.model.RoomInfor;
 import com.darly.activities.poll.HttpTasker;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
+import com.darly.activities.widget.intel.InterlgentUtil;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.nineoldandroids.animation.AnimatorSet;
-import com.nineoldandroids.animation.ObjectAnimator;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * @author Zhangyuhui IndexShowViewActivity 上午9:01:37 TODO
@@ -71,15 +78,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 	public ArrayList<RoomInfor> roomInfo;
 
 	/**
-	 * 下一项图片
-	 */
-	private ImageView nextCheck;
-	/**
-	 * 下一项数据
-	 */
-	private LayoutParams next;
-
-	/**
 	 * 咨询链接
 	 */
 	private String infoUrl = "http://test.rayelink.com/APIAccount/GetOrganizationInfo";
@@ -104,7 +102,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@ViewInject(R.id.ia_show_image_consel)
 	private ImageView consel;
 
-
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -122,13 +119,16 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		ViewUtils.inject(this);// 注入view和事件
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 		loading.show();
-		main_container.setLayoutParams(new LayoutParams(Literal.width,
-				Literal.width * IAPoisDataConfig.babaibanh
-						/ IAPoisDataConfig.babaibanw));
+		main_container.setLayoutParams(new LayoutParams(Literal.height,
+				Literal.width));
 		Literal.bitmapheight = Literal.width * IAPoisDataConfig.babaibanh
 				/ IAPoisDataConfig.babaibanw;
 		Literal.bitmapwidth = Literal.width;
@@ -219,13 +219,42 @@ public class IndexZoomViewActivity extends BaseActivity {
 				.build();
 		imageLoader.displayImage(roomOrgpari.Organizationplan, iv, options_mo);
 		main_container.addView(interlgent);
-		// main_container.addView(iv);
-		nextCheck = new ImageView(this);
-		next = new LayoutParams(96, 44);
-		nextCheck.setLayoutParams(next);
-		nextCheck.setImageResource(R.drawable.next_check);
-		nextCheck.setVisibility(View.INVISIBLE);
-		// main_container.addView(nextCheck);
+		imageLoader.loadImage(roomOrgpari.Organizationplan,
+				new ImageLoadingListener() {
+
+					@Override
+					public void onLoadingStarted(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onLoadingFailed(String arg0, View arg1,
+							FailReason arg2) {
+						// TODO Auto-generated method stub
+
+					}
+
+					@Override
+					public void onLoadingComplete(String arg0, View arg1,
+							Bitmap arg2) {
+						// TODO Auto-generated method stub
+
+						Bitmap back = InterlgentUtil.zoomImage(arg2,
+								Literal.width, Literal.width
+										* IAPoisDataConfig.babaibanh
+										/ IAPoisDataConfig.babaibanw);
+						LogApp.i(back.toString());
+						interlgent.setBackGroud(back);
+					}
+
+					@Override
+					public void onLoadingCancelled(String arg0, View arg1) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+
 		setViewFullScreen();
 	}
 
@@ -360,10 +389,16 @@ public class IndexZoomViewActivity extends BaseActivity {
 								X += p.x;
 								Y += p.y;
 							}
-							next.leftMargin = X / lenth - 48;
-							next.topMargin = Y / lenth - 44;
-							nextCheck.setVisibility(View.VISIBLE);
-							nextCheck.setLayoutParams(next);
+							// 获取到背景图片后进行Bitmap缓存。
+							Drawable drawable = getResources().getDrawable(
+									R.drawable.next_check);
+							Bitmap nextImage = ((BitmapDrawable) drawable)
+									.getBitmap();
+							int heighe = nextImage.getHeight();
+							int width = nextImage.getWidth();
+							LogApp.i(nextImage.toString() + heighe + width);
+							interlgent.setNextImage(nextImage, X / lenth
+									- width / 2, Y / lenth - heighe);
 						}
 
 					}
@@ -425,26 +460,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 				a = 1 / a;
 			}
 		}
-
-		// 整个RelativeLayout布局放置大小
-		AnimatorSet conanimSet = new AnimatorSet();// 定义一个AnimatorSet对象
-		ObjectAnimator conStart = ObjectAnimator.ofFloat(interlgent, "scaleX",
-				1f, (float) (a));
-		ObjectAnimator conStop = ObjectAnimator.ofFloat(interlgent, "scaleY",
-				1f, (float) (a));
-		conanimSet.play(conStart).with(conStop);
-		conanimSet.setDuration(0);
-		conanimSet.start();
-		// 整个RelativeLayout布局放置大小
-		AnimatorSet animSet = new AnimatorSet();// 定义一个AnimatorSet对象
-		ObjectAnimator Start = ObjectAnimator.ofFloat(main_container, "scaleX",
-				1f, (float) (a));
-		ObjectAnimator Stop = ObjectAnimator.ofFloat(main_container, "scaleY",
-				1f, (float) (a));
-		animSet.play(Start).with(Stop);
-		animSet.setDuration(0);
-		animSet.start();
-
+		interlgent.setRate((float) a);
 	};
 
 	@Override
@@ -453,6 +469,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		if (timer != null) {
 			timer.cancel();
 		}
+		interlgent.setFlag(false);
 		super.finish();
 	}
 
