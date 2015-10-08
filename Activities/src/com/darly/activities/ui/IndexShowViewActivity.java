@@ -42,8 +42,6 @@ import com.darly.activities.poll.HttpTasker;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
 import com.darly.activities.widget.intel.InterlgentUtil;
-import com.darly.activities.widget.intel.MySurfaceView;
-import com.darly.activities.widget.intel.MySurfaceView3;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.darly.activities.widget.spinner.BaseSpinner;
 import com.google.gson.Gson;
@@ -89,11 +87,6 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.main_container)
 	private RelativeLayout main_container;
-	/**
-	 * TODO图层容器
-	 */
-	@ViewInject(R.id.index_container)
-	private MySurfaceView3 index_container;
 	/**
 	 * TODO计时器
 	 */
@@ -364,27 +357,12 @@ public class IndexShowViewActivity extends BaseActivity {
 		main_container.addView(interlgent);
 		main_container.setOnClickListener(this);
 
-		Drawable drawable = getResources().getDrawable(
-				R.drawable.ic_arrow_press);
-		Bitmap nextImage = ((BitmapDrawable) drawable).getBitmap();
-		index_container.setBitmap(nextImage);
 	}
 
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
 		title.setText(getClass().getSimpleName());
-		// index_container.removeAllViews();
-		MySurfaceView surfaceView = new MySurfaceView(this, null);
-		Drawable drawable = getResources().getDrawable(
-				R.drawable.login_table_bg);
-		// 实际上这是一个BitmapDrawable对象
-		BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-		// 可以在调用getBitmap方法，得到这个位图
-		Bitmap bitmap = bitmapDrawable.getBitmap();
-		surfaceView.setBitmap(bitmap);
-		surfaceView.setOnTouchListener(surfaceView);
-		// index_container.addView(surfaceView);
 
 	}
 
