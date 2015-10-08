@@ -7,15 +7,12 @@ import java.util.TimerTask;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -137,28 +134,6 @@ public class IndexShowViewActivity extends BaseActivity {
 	 * @author Zhangyuhui IndexShowViewActivity.java TODO 选中的机构信息。
 	 */
 	private BaseOrgInfo selectOrg;
-
-	/**
-	 * TODOActivity中使用网络请求，对应的数据返回区。
-	 */
-	@SuppressLint("HandlerLeak")
-	public Handler handler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case Literal.GET_HANDLER:
-				refreshGet(msg.obj);
-				break;
-			case Literal.POST_HANDLER:
-				refreshPost(msg.obj);
-				break;
-			default:
-				break;
-			}
-		}
-
-	};
 
 	@Override
 	public void onClick(View v) {

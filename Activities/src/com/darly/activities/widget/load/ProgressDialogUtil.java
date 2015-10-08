@@ -30,6 +30,7 @@ public class ProgressDialogUtil extends Dialog {
 	 * 当窗口焦点改变时调用
 	 * 
 	 */
+	@Override
 	public void onWindowFocusChanged(boolean hasFocus) {
 		ImageView imageView = (ImageView) findViewById(R.id.spinnerImageView);
 		// 获取ImageView上的动画背景

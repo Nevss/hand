@@ -37,6 +37,8 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions options_big;
+	
+	protected BaseHandler handler;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -64,7 +66,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 		if (Literal.width == 0 || Literal.height == 0) {
 			Literal.getWidth(this);
 		}
-
+		handler = new BaseHandler(this);
 		initView(savedInstanceState);
 		initData();
 	}

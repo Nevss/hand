@@ -12,6 +12,7 @@
         android:spinnerMode="dropdown" />
 
     <ImageView
+        android:contentDescription="@string/app_name"
         android:id="@+id/spinner_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

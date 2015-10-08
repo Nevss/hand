@@ -17,11 +17,12 @@
     </RelativeLayout>
 
     <ImageView
+        android:contentDescription="@string/app_name"
         android:id="@+id/ia_show_image_consel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:padding="30px"
+        android:padding="30dp"
         android:src="@drawable/ia_backe_close" />
 
 </RelativeLayout>

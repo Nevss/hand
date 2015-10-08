@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/main_backgroud"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="horizontal" >
 
@@ -10,18 +10,19 @@
         android:id="@+id/item_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
         android:padding="5dp" />
 
     <TextView
         android:id="@+id/item_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="12" />
+        android:layout_weight="1" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name"
         android:padding="5dp"
         android:src="@drawable/ic_arrow_press" />
 

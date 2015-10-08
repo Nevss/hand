@@ -1,9 +1,6 @@
 package com.darly.activities.ui;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
@@ -12,7 +9,6 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.Literal;
 import com.darly.activities.ui.fragment.IndexFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
@@ -47,27 +43,6 @@ public class MainActivity extends BaseActivity implements
 	 */
 	private SetFragment set;
 
-	/**
-	 * TODOActivity中使用网络请求，对应的数据返回区。
-	 */
-	@SuppressLint("HandlerLeak")
-	public Handler handler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case Literal.GET_HANDLER:
-				refreshGet(msg.obj);
-				break;
-			case Literal.POST_HANDLER:
-				refreshPost(msg.obj);
-				break;
-			default:
-				break;
-			}
-		}
-
-	};
 
 	/*
 	 * (non-Javadoc)

@@ -18,6 +18,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.MediaStore.MediaColumns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -273,7 +274,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	 * @author Zhangyuhui PhotoPop.java TODO 获取图片路径
 	 */
 	public String getImagePath(Uri originalUri) {
-		String[] proj = { MediaStore.Images.Media.DATA };
+		String[] proj = { MediaColumns.DATA };
 
 		// 好像是android多媒体数据库的封装接口，具体的看Android文档
 		Cursor cursor = null;
@@ -282,7 +283,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 					null, null, null);
 			// 按我个人理解 这个是获得用户选择的图片的索引值
 			int column_index = cursor
-					.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+					.getColumnIndexOrThrow(MediaColumns.DATA);
 			// 将光标移至开头 ，这个很重要，不小心很容易引起越界
 			cursor.moveToFirst();
 			// 最后根据索引值获取图片路径

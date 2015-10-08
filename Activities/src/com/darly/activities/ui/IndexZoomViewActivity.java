@@ -7,11 +7,8 @@ import java.util.TimerTask;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import android.annotation.SuppressLint;
 import android.graphics.Point;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -107,27 +104,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@ViewInject(R.id.ia_show_image_consel)
 	private ImageView consel;
 
-	/**
-	 * TODOActivity中使用网络请求，对应的数据返回区。
-	 */
-	@SuppressLint("HandlerLeak")
-	public Handler handler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case Literal.GET_HANDLER:
-				refreshGet(msg.obj);
-				break;
-			case Literal.POST_HANDLER:
-				refreshPost(msg.obj);
-				break;
-			default:
-				break;
-			}
-		}
-
-	};
 
 	@Override
 	public void onClick(View v) {
@@ -431,20 +407,20 @@ public class IndexZoomViewActivity extends BaseActivity {
 		double a = 0;
 		if (screen > image) {
 			// 按照手机高度放大
-			a = (double) Literal.bitmapheight / (double) Literal.width;
+			a = Literal.bitmapheight / Literal.width;
 			if (a < 1) {
 				a = 1 / a;
 			}
 
 		} else if (screen < image) {
 			// 按照手机宽度放大
-			a = (double) Literal.bitmapwidth / (double) Literal.height;
+			a = Literal.bitmapwidth / Literal.height;
 			if (a < 1) {
 				a = 1 / a;
 			}
 		} else {
 			// 等比放大
-			a = (double) Literal.bitmapwidth / (double) Literal.width;
+			a = Literal.bitmapwidth / Literal.width;
 			if (a < 1) {
 				a = 1 / a;
 			}
