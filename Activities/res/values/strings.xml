@@ -20,5 +20,6 @@
     <string name="photo">拍照</string>
     <string name="grapht">从相册中选取</string>
     <string name="consel">取消</string>
+    <string name="reload">重新加载</string>
 
 </resources>
