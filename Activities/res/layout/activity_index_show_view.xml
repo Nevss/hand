@@ -29,10 +29,5 @@
         android:layout_height="wrap_content" >
     </RelativeLayout>
 
-    <com.darly.activities.widget.intel.MySurfaceView3
-        android:id="@+id/index_container"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-    </com.darly.activities.widget.intel.MySurfaceView3>
 
 </LinearLayout>

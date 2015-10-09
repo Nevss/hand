@@ -1,5 +1,6 @@
 package com.darly.activities.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -9,6 +10,7 @@ import org.json.JSONObject;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
+import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.BaseCityInfo;
 import com.darly.activities.model.BaseOrgInfo;
 import com.darly.activities.model.IARoomName;
@@ -45,7 +49,6 @@ import com.darly.activities.widget.intel.InterlgentUtil;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.darly.activities.widget.spinner.BaseSpinner;
 import com.google.gson.Gson;
-import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -63,6 +66,11 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.main_header_text)
 	private TextView title;
+	/**
+	 * 上午9:28:13 TODO 标题栏返回按钮
+	 */
+	@ViewInject(R.id.main_header_back)
+	private ImageView back;
 
 	/**
 	 * TODO下拉菜单选择列表
@@ -128,20 +136,24 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	private BaseOrgInfo selectOrg;
 
-	private boolean isStop = false;
-
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.main_container:
 			Intent intent = new Intent(this, IndexZoomViewActivity.class);
-			startActivity(intent);
-			timer.cancel();
-			interlgent.setFlag(false);
-			isStop = true;
+			intent.putExtra("selectOrg", selectOrg.org_id);
+			startActivityForResult(intent, Literal.CA_HANDLER);
+			if (timer != null) {
+				timer.cancel();
+			}
+			if (interlgent != null) {
+				interlgent.setFlag(false);
+			}
 			break;
-
+		case R.id.main_header_back:
+			finish();
+			break;
 		default:
 			break;
 		}
@@ -150,20 +162,19 @@ public class IndexShowViewActivity extends BaseActivity {
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		ViewUtils.inject(this);// 注入view和事件
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
-		loading.show();
+
 		main_container.setLayoutParams(new LinearLayout.LayoutParams(
 				Literal.width, Literal.width * IAPoisDataConfig.babaibanh
 						/ IAPoisDataConfig.babaibanw));
 
+		initImageAndThread();
 		setSpinner();
 		// 初始化从第一项开始
 		city_spinner.getSpinner().setSelection(0);
 		org_spinner.getSpinner().setSelection(0);
 
-		initImageAndThread();
 	}
 
 	/**
@@ -212,6 +223,10 @@ public class IndexShowViewActivity extends BaseActivity {
 										// 选择正确的机构。
 										selectOrg = (BaseOrgInfo) parent
 												.getItemAtPosition(position);
+										if (interlgent != null) {
+											interlgent.setFlag(false);
+											interlgent = null;
+										}
 										firstStep();
 									}
 
@@ -250,19 +265,22 @@ public class IndexShowViewActivity extends BaseActivity {
 	 *         TODO判断网络是否正常。正常则继续请求数据，异常状态使用上次缓存下来资料
 	 */
 	public void firstStep() {
+		loading.show();
+		String info = PreferencesJsonCach.getInfo("GETINFO" + selectOrg.org_id,
+				this);
+		// 初次没有缓存则直接跳过
+		if (info != null) {
+			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
+		}
+
+		LogApp.i("firstStep", info);
 		if (!AppStack.isNetworkConnected(this)) {
 			if (loading != null) {
 				loading.dismiss();
 			}
 			Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
-			String info = PreferencesJsonCach.getInfo("GETINFO"
-					+ selectOrg.org_id, this);
 			String data = PreferencesJsonCach.getInfo("GETDATA"
 					+ selectOrg.org_id, this);
-			// 初次没有缓存则直接跳过
-			if (info != null) {
-				getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
-			}
 			// 初次没有缓存则直接跳过
 			if (data != null) {
 				interlgent.ReDraw(setInfoRoom(
@@ -316,54 +334,71 @@ public class IndexShowViewActivity extends BaseActivity {
 														 * 由于服务器暂时还未传递，制造假数据
 														 */);
 		// -----------如何建立关系----------
-		main_container.removeAllViews();
-		interlgent = new BaseInterlgent(this, roomInfo);
-		// 获取到背景图片后进行Bitmap缓存。
-		imageLoader.loadImage(roomOrgpari.Organizationplan,
-				new ImageLoadingListener() {
+		if (interlgent == null) {
+			main_container.removeAllViews();
+			interlgent = new BaseInterlgent(this, roomInfo);
+			main_container.addView(interlgent);
+			main_container.setOnClickListener(this);
+		}
+		String url = roomOrgpari.Organizationplan;
+		final String name = url.substring(url.lastIndexOf("/") + 1,
+				url.length());
+		LogApp.i("url", name);
+		File file = new File(Literal.SROOT + name);
+		if (file.exists()) {
+			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
+			interlgent.setBackGroud(tempBitmap);
+		} else {
 
-					@Override
-					public void onLoadingStarted(String arg0, View arg1) {
-						// TODO Auto-generated method stub
+			// 获取到背景图片后进行Bitmap缓存。
+			imageLoader.loadImage(roomOrgpari.Organizationplan,
+					new ImageLoadingListener() {
 
-					}
+						@Override
+						public void onLoadingStarted(String arg0, View arg1) {
+							// TODO Auto-generated method stub
 
-					@Override
-					public void onLoadingFailed(String arg0, View arg1,
-							FailReason arg2) {
-						// TODO Auto-generated method stub
+						}
 
-					}
+						@Override
+						public void onLoadingFailed(String arg0, View arg1,
+								FailReason arg2) {
+							// TODO Auto-generated method stub
 
-					@Override
-					public void onLoadingComplete(String arg0, View arg1,
-							Bitmap arg2) {
-						// TODO Auto-generated method stub
+						}
 
-						Bitmap back = InterlgentUtil.zoomImage(arg2,
-								Literal.width, Literal.width
-										* IAPoisDataConfig.babaibanh
-										/ IAPoisDataConfig.babaibanw);
-						LogApp.i(back.toString());
-						interlgent.setBackGroud(back);
-					}
+						@Override
+						public void onLoadingComplete(String arg0, View arg1,
+								Bitmap arg2) {
+							// TODO Auto-generated method stub
 
-					@Override
-					public void onLoadingCancelled(String arg0, View arg1) {
-						// TODO Auto-generated method stub
+							Bitmap back = InterlgentUtil.zoomImage(arg2,
+									Literal.width, Literal.width
+											* IAPoisDataConfig.babaibanh
+											/ IAPoisDataConfig.babaibanw);
+							LogApp.i(back.toString());
+							interlgent.setBackGroud(back);
+							// 将Bitmap进行数据保存到文件。
+							PreferencesJsonCach.saveBitmap(
+									Literal.SROOT + name, back);
+						}
 
-					}
-				});
-		main_container.addView(interlgent);
-		main_container.setOnClickListener(this);
+						@Override
+						public void onLoadingCancelled(String arg0, View arg1) {
+							// TODO Auto-generated method stub
 
+						}
+					});
+
+		}
 	}
 
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
 		title.setText(getClass().getSimpleName());
-
+		back.setVisibility(View.VISIBLE);
+		back.setOnClickListener(this);
 	}
 
 	@Override
@@ -380,6 +415,11 @@ public class IndexShowViewActivity extends BaseActivity {
 				getOrgAndPoint(roomOrgpari);
 				getDataFHttp();
 			}
+		} else {
+			if (loading != null) {
+				loading.cancel();
+			}
+			ToastApp.showToast(this, "网络异常，请检查网络");
 		}
 	}
 
@@ -394,6 +434,11 @@ public class IndexShowViewActivity extends BaseActivity {
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
+		} else {
+			if (loading != null) {
+				loading.cancel();
+			}
+			ToastApp.showToast(this, "网络异常，请检查网络");
 		}
 	}
 
@@ -534,25 +579,39 @@ public class IndexShowViewActivity extends BaseActivity {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.darly.activities.base.BaseActivity#onResume()
+	 * @see android.support.v4.app.FragmentActivity#onActivityResult(int, int,
+	 * android.content.Intent)
 	 */
 	@Override
-	protected void onResume() {
+	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
 		// TODO Auto-generated method stub
-		if (isStop) {
-			loading.show();
-			firstStep();
-			isStop = false;
+		super.onActivityResult(arg0, arg1, arg2);
+		startTimer();
+		if (interlgent != null) {
+			interlgent.setFlag(true);
 		}
-		super.onResume();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.darly.activities.base.BaseActivity#finish()
+	 */
+	@Override
+	public void finish() {
+		// TODO Auto-generated method stub
+		if (timer != null) {
+			timer.cancel();
+		}
+		if (interlgent != null) {
+			interlgent.setFlag(false);
+		}
+		super.finish();
 	}
 
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		if (timer != null) {
-			timer.cancel();
-		}
 		super.onDestroy();
 	}
 }

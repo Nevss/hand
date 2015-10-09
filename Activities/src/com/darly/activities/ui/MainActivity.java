@@ -12,8 +12,6 @@ import com.darly.activities.base.BaseActivity;
 import com.darly.activities.ui.fragment.IndexFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.util.LogUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -63,9 +61,7 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		LogUtils.customTagPrefix = "xUtilsSample"; // 方便调试时过滤 adb logcat 输出
-		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出
-		ViewUtils.inject(this);// 注入view和事件
+		
 	}
 
 	/*

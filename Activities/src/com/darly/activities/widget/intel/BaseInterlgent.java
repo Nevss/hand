@@ -234,6 +234,7 @@ public class BaseInterlgent extends SurfaceView implements
 			}
 			break;
 		default:
+			_paint.setColor(Color.GREEN);
 			break;
 		}
 		if (points != null && points.size() > 0) {

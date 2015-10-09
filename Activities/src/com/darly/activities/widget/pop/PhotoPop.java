@@ -2,7 +2,6 @@ package com.darly.activities.widget.pop;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import android.app.Activity;
@@ -29,6 +28,7 @@ import android.widget.PopupWindow;
 
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
+import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.ui.R;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 
@@ -433,7 +433,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 				if (returnBm == null) {
 					returnBm = bitmap;
 				}
-				saveBitmap(url, returnBm);
+				PreferencesJsonCach.saveBitmap(url, returnBm);
 
 			} catch (OutOfMemoryError e) {
 				e.printStackTrace();
@@ -444,32 +444,6 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 
 		}
 
-		/**
-		 * @param url
-		 * @param bitmap
-		 *            上午10:53:39
-		 * @author Zhangyuhui MeDetailsAcitvity.java TODO 将Bitmap保存到文件。
-		 */
-		public void saveBitmap(String url, Bitmap bitmap) {
-			LogApp.i("保存图片");
-			File f = new File(url);
-			if (f.exists()) {
-				f.delete();
-			}
-			try {
-				FileOutputStream out = new FileOutputStream(f);
-				bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-				out.flush();
-				out.close();
-				LogApp.i("已经保存");
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
 	}
 
 }

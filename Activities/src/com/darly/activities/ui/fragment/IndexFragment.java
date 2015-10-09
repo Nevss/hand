@@ -26,7 +26,6 @@ import android.widget.TextView;
 
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.base.BaseFragment;
-import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
 import com.darly.activities.ui.IndexShowViewActivity;
@@ -199,7 +198,6 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 		HomtFragmentBase base = (HomtFragmentBase) parent
 				.getItemAtPosition(position);
 		if (base.getData() == null) {
-			ToastApp.showToast(getActivity(), base.getName());
 			startActivity(new Intent(getActivity(), IndexShowViewActivity.class));
 		}
 

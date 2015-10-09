@@ -20,7 +20,6 @@ import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.darly.activities.widget.pop.PhotoPop;
-import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -101,7 +100,6 @@ public class MeDetailsAcitvity extends BaseActivity {
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		ViewUtils.inject(this); // 注入view和事件
 		if (savedInstanceState == null) {
 			data = (GridViewData) getIntent().getSerializableExtra(
 					"GridViewData");

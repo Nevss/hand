@@ -1,5 +1,6 @@
 package com.darly.activities.ui;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,14 +9,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -39,12 +39,9 @@ import com.darly.activities.widget.intel.BaseInterlgent;
 import com.darly.activities.widget.intel.InterlgentUtil;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.google.gson.Gson;
-import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.display.RoundedBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
@@ -102,6 +99,8 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@ViewInject(R.id.ia_show_image_consel)
 	private ImageView consel;
 
+	private int selectOrgID;
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -119,14 +118,12 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
-		ViewUtils.inject(this);// 注入view和事件
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 		loading.show();
+
+		selectOrgID = getIntent().getIntExtra("selectOrg", 0);
+
 		main_container.setLayoutParams(new LayoutParams(Literal.height,
 				Literal.width));
 		Literal.bitmapheight = Literal.width * IAPoisDataConfig.babaibanh
@@ -153,18 +150,20 @@ public class IndexZoomViewActivity extends BaseActivity {
 	 *         TODO判断网络是否正常。正常则继续请求数据，异常状态使用上次缓存下来资料
 	 */
 	public void firstStep() {
+		String info = PreferencesJsonCach.getInfo("GETINFO" + selectOrgID, this);
+
+		// 初次没有缓存则直接跳过
+		if (info != null) {
+			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
+		}
+		// 初次没有缓存则直接跳过
+
 		if (!AppStack.isNetworkConnected(this)) {
 			if (loading != null) {
 				loading.dismiss();
 			}
 			Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
-			String info = PreferencesJsonCach.getInfo("GETINFO" + 31, this);
-			String data = PreferencesJsonCach.getInfo("GETDATA" + 31, this);
-			// 初次没有缓存则直接跳过
-			if (info != null) {
-				getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
-			}
-			// 初次没有缓存则直接跳过
+			String data = PreferencesJsonCach.getInfo("GETDATA" + selectOrgID, this);
 			if (data != null) {
 				interlgent.ReDraw(setInfoRoom(
 						new Gson().fromJson(data, OrgBase.class).getModel(),
@@ -174,7 +173,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 			// 请求服务器平面图数据。
 			JSONObject object = new JSONObject();
 			try {
-				object.put("OrganizationID", "31");
+				object.put("OrganizationID", selectOrgID);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -195,67 +194,86 @@ public class IndexZoomViewActivity extends BaseActivity {
 	 */
 	public void getOrgAndPoint(IARoomNameHttp roomOrgpari) {
 		// -----------如何建立关系----------
-		ArrayList<IARoomPoint> point = IAPoisDataConfig.getModelTest(
-				getResources().getIntArray(R.array.babaiban_roomnub), 31);
+		int[] arg = null;
+		switch (selectOrgID) {
+		case 12:
+			arg = getResources().getIntArray(R.array.jingan_roomnub);
+			break;
+		case 24:
+			arg = getResources().getIntArray(R.array.xuhui_roomnub);
+			break;
+		case 31:
+			arg = getResources().getIntArray(R.array.babaiban_roomnub);
+			break;
+		default:
+			break;
+		}
+
+		ArrayList<IARoomPoint> point = IAPoisDataConfig.getModelTest(arg,
+				selectOrgID);
 		roomInfo = getRoomInfr(roomOrgpari.model, point/*
 														 * roomOrgpari.point
 														 * 由于服务器暂时还未传递，制造假数据
 														 */);
 		// -----------如何建立关系----------
-		main_container.removeAllViews();
-		interlgent = new BaseInterlgent(this, roomInfo);
-		LayoutParams lp = new LayoutParams(Literal.width, Literal.width
-				* IAPoisDataConfig.babaibanh / IAPoisDataConfig.babaibanw);
-		ImageView iv = new ImageView(this);
-		iv.setLayoutParams(lp);
-		DisplayImageOptions options_mo = new DisplayImageOptions.Builder()
-				.showImageOnLoading(R.drawable.ic_launcher) // 加载图片时的图片
-				.showImageForEmptyUri(R.drawable.ic_launcher) // 没有图片资源时的默认图片
-				.showImageOnFail(R.drawable.ic_launcher) // 加载失败时的图片
-				.cacheInMemory(true) // 启用内存缓存
-				.cacheOnDisk(true) // 启用外存缓存
-				.considerExifParams(true) // 启用EXIF和JPEG图像格式
-				.displayer(new RoundedBitmapDisplayer(0)) // 设置显示风格这里是圆角矩形
-				.build();
-		imageLoader.displayImage(roomOrgpari.Organizationplan, iv, options_mo);
-		main_container.addView(interlgent);
-		imageLoader.loadImage(roomOrgpari.Organizationplan,
-				new ImageLoadingListener() {
+		if (interlgent == null) {
+			main_container.removeAllViews();
+			interlgent = new BaseInterlgent(this, roomInfo);
+			main_container.addView(interlgent);
+			setViewFullScreen();
+		}
+		String url = roomOrgpari.Organizationplan;
+		final String name = url.substring(url.lastIndexOf("/") + 1,
+				url.length());
+		LogApp.i("url", name);
+		File file = new File(Literal.SROOT + name);
+		if (file.exists()) {
+			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
+			interlgent.setBackGroud(tempBitmap);
+		} else {
 
-					@Override
-					public void onLoadingStarted(String arg0, View arg1) {
-						// TODO Auto-generated method stub
+			// 获取到背景图片后进行Bitmap缓存。
+			imageLoader.loadImage(roomOrgpari.Organizationplan,
+					new ImageLoadingListener() {
 
-					}
+						@Override
+						public void onLoadingStarted(String arg0, View arg1) {
+							// TODO Auto-generated method stub
 
-					@Override
-					public void onLoadingFailed(String arg0, View arg1,
-							FailReason arg2) {
-						// TODO Auto-generated method stub
+						}
 
-					}
+						@Override
+						public void onLoadingFailed(String arg0, View arg1,
+								FailReason arg2) {
+							// TODO Auto-generated method stub
 
-					@Override
-					public void onLoadingComplete(String arg0, View arg1,
-							Bitmap arg2) {
-						// TODO Auto-generated method stub
+						}
 
-						Bitmap back = InterlgentUtil.zoomImage(arg2,
-								Literal.width, Literal.width
-										* IAPoisDataConfig.babaibanh
-										/ IAPoisDataConfig.babaibanw);
-						LogApp.i(back.toString());
-						interlgent.setBackGroud(back);
-					}
+						@Override
+						public void onLoadingComplete(String arg0, View arg1,
+								Bitmap arg2) {
+							// TODO Auto-generated method stub
 
-					@Override
-					public void onLoadingCancelled(String arg0, View arg1) {
-						// TODO Auto-generated method stub
+							Bitmap back = InterlgentUtil.zoomImage(arg2,
+									Literal.width, Literal.width
+											* IAPoisDataConfig.babaibanh
+											/ IAPoisDataConfig.babaibanw);
+							LogApp.i(back.toString());
+							interlgent.setBackGroud(back);
+							// 将Bitmap进行数据保存到文件。
+							PreferencesJsonCach.saveBitmap(
+									Literal.SROOT + name, back);
+						}
 
-					}
-				});
+						@Override
+						public void onLoadingCancelled(String arg0, View arg1) {
+							// TODO Auto-generated method stub
 
-		setViewFullScreen();
+						}
+					});
+
+		}
+		
 	}
 
 	@Override
@@ -270,7 +288,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		Log.i("handler", "Literal.GETINFO");
 		if (object != null) {
 			String jsonInfo = (String) object;
-			PreferencesJsonCach.putValue("GETINFO" + 31, jsonInfo, this);
+			PreferencesJsonCach.putValue("GETINFO" + selectOrgID, jsonInfo, this);
 			IARoomNameHttp roomOrgpari = new Gson().fromJson(jsonInfo,
 					IARoomNameHttp.class);
 			if (roomOrgpari != null && roomOrgpari.model != null) {
@@ -286,7 +304,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		Log.i("handler", "Literal.GETDATA");
 		if (object != null) {
 			String jsonData = (String) object;
-			PreferencesJsonCach.putValue("GETDATA" + 31, jsonData, this);
+			PreferencesJsonCach.putValue("GETDATA" + selectOrgID, jsonData, this);
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
@@ -417,7 +435,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		try {
 			// 测试数据
 			object.put("UserMobile", "18321127312");
-			object.put("OrganizationID", "31");
+			object.put("OrganizationID", ""+selectOrgID);
 		} catch (Exception e) {
 			Log.i("getDataFHttp", e.getMessage().toString());
 		}
@@ -466,19 +484,21 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@Override
 	public void finish() {
 		// TODO Auto-generated method stub
+		setResult(Literal.CA_HANDLER);
 		if (timer != null) {
-			timer.cancel();
+			timer.cancel(); 
+			timer = null;
 		}
-		interlgent.setFlag(false);
+		if (interlgent != null) {
+			interlgent.setFlag(false);
+			interlgent = null;
+		}
 		super.finish();
 	}
 
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
-		if (timer != null) {
-			timer.cancel();
-		}
 		super.onDestroy();
 	}
 }
