@@ -16,6 +16,7 @@ import com.darly.activities.db.SnoteTable;
 import com.darly.activities.ui.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @ClassName: BaseFragment
@@ -55,6 +56,7 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		MobclickAgent.openActivityDurationTrack(false);
 		// 初始化LOG
 
 		// 设置ImageLoader初始化参数。设置线程，设置保存文件名等。
@@ -73,13 +75,15 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 				.showImageForEmptyUri(R.drawable.ic_launcher)
 				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 				.bitmapConfig(Config.RGB_565).cacheOnDisc(true).build();
+		
+		
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-
+		
 		initView();
 		initData();
 	}
@@ -92,6 +96,17 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络！");
 		}
 		super.onResume();
+		 MobclickAgent.onPageStart("MainScreen"); //统计页面
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onPause()
+	 */
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	    MobclickAgent.onPageEnd("MainScreen"); 
 	}
 
 	/**

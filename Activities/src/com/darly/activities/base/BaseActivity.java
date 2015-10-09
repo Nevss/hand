@@ -11,13 +11,16 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 
 import com.androidquery.AQuery;
+import com.darly.activities.app.AppStack;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.db.SnoteTable;
 import com.darly.activities.ui.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @ClassName: BaseActivity
@@ -37,7 +40,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions options_big;
-	
+
 	protected BaseHandler handler;
 
 	@SuppressWarnings("deprecation")
@@ -67,8 +70,10 @@ public abstract class BaseActivity extends FragmentActivity implements
 			Literal.getWidth(this);
 		}
 		handler = new BaseHandler(this);
+		MobclickAgent.updateOnlineConfig(this);
 		initView(savedInstanceState);
 		initData();
+		LogApp.i(AppStack.getDeviceInfo(this));
 	}
 
 	@Override
@@ -78,7 +83,21 @@ public abstract class BaseActivity extends FragmentActivity implements
 		if (!NetUtils.isConnected(this)) {
 			ToastApp.showToast(this, "网络连接异常，请检查网络！");
 		}
+
 		super.onResume();
+		MobclickAgent.onResume(this, "友盟统计", "onResume");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.FragmentActivity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 
 	@Override
@@ -97,7 +116,8 @@ public abstract class BaseActivity extends FragmentActivity implements
 	/**
 	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午9:48:56 Project_Name:DFram
 	 * Description:初始化界面控件，获取界面XML的方法体，可以在这里对所有XML中的控件进行实例。 Throws
-	 * @param savedInstanceState 
+	 * 
+	 * @param savedInstanceState
 	 */
 	public abstract void initView(Bundle savedInstanceState);
 
@@ -122,6 +142,5 @@ public abstract class BaseActivity extends FragmentActivity implements
 	 * Throws
 	 */
 	public abstract void refreshPost(Object object);
-
 
 }
