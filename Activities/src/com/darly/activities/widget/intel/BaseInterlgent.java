@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.PorterDuff.Mode;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -64,7 +65,7 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	private float rate = 1;
 
-	private int sleepTime = 500;
+	private int sleepTime = 50;
 
 	public BaseInterlgent(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -139,7 +140,7 @@ public class BaseInterlgent extends SurfaceView implements
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-
+		flag = false;
 	}
 
 	/*
@@ -150,17 +151,16 @@ public class BaseInterlgent extends SurfaceView implements
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		Canvas canvas = null;
 		while (flag) {
 			if (pointList == null) {
 				return;
 			}
-			Canvas canvas = null;
-			try {
-				synchronized (holder) {
+			synchronized (holder) {
+				try {
 					canvas = holder.lockCanvas();
-					canvas.save();
 					canvas.scale(rate, rate);
-					
+					canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
 					for (int i = 0, length = pointList.size(); i < length; i++) {
 						paintView(pointList.get(i).getRoomPoint(), canvas,
 								paint, pointList.get(i).getRoomStauts());
@@ -172,14 +172,14 @@ public class BaseInterlgent extends SurfaceView implements
 					if (nextImage != null) {
 						canvas.drawBitmap(nextImage, left, top, null);
 					}
-				}
-				Thread.sleep(sleepTime);
-			} catch (Exception e) {
-				// TODO: handle exception
-			} finally {
-				if (canvas != null) {
-					canvas.restore();
-					holder.unlockCanvasAndPost(canvas);
+
+					Thread.sleep(sleepTime);
+				} catch (Exception e) {
+					// TODO: handle exception
+				} finally {
+					if (canvas != null) {
+						holder.unlockCanvasAndPost(canvas);
+					}
 				}
 			}
 		}
@@ -285,5 +285,6 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	public void setFlag(boolean flag) {
 		this.flag = flag;
+		this.invalidate();
 	}
 }

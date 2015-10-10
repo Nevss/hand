@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,7 +32,6 @@ import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.BaseCityInfo;
@@ -137,25 +137,25 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	private BaseOrgInfo selectOrg;
 
-	/**
-	 * 上午11:01:34 TODO 异步任务是否执行完毕。
-	 */
-	private boolean flag;
+	private boolean isClick;
 
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.main_container:
-			Intent intent = new Intent(this, IndexZoomViewActivity.class);
-			intent.putExtra("selectOrg", selectOrg.org_id);
-			startActivityForResult(intent, Literal.CA_HANDLER);
+
 			if (timer != null) {
 				timer.cancel();
+				timer = null;
 			}
 			if (interlgent != null) {
 				interlgent.setFlag(false);
 			}
+			Intent intent = new Intent(this, IndexZoomViewActivity.class);
+			intent.putExtra("selectOrg", selectOrg.org_id);
+			startActivity(intent);
+			isClick = true;
 			break;
 		case R.id.main_header_back:
 			finish();
@@ -287,7 +287,7 @@ public class IndexShowViewActivity extends BaseActivity {
 				String data = PreferencesJsonCach.getInfo("GETDATA"
 						+ selectOrg.org_id, this);
 				// 初次没有缓存则直接跳过
-				if (data != null && flag) {
+				if (data != null) {
 					interlgent
 							.ReDraw(setInfoRoom(
 									new Gson().fromJson(data, OrgBase.class)
@@ -345,17 +345,21 @@ public class IndexShowViewActivity extends BaseActivity {
 		if (interlgent == null) {
 			main_container.removeAllViews();
 			interlgent = new BaseInterlgent(this, roomInfo);
+			interlgent.setZOrderOnTop(true);
+			interlgent.getHolder().setFormat(PixelFormat.TRANSLUCENT);
 			main_container.addView(interlgent);
 			main_container.setOnClickListener(this);
 		}
 		String url = roomOrgpari.Organizationplan;
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
-		LogApp.i(TAG, name);
 		File file = new File(Literal.SROOT + name);
 		if (file.exists()) {
 			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
-			interlgent.setBackGroud(tempBitmap);
+			Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width,
+					Literal.width * IAPoisDataConfig.babaibanh
+							/ IAPoisDataConfig.babaibanw);
+			interlgent.setBackGroud(back);
 		} else {
 
 			// 获取到背景图片后进行Bitmap缓存。
@@ -384,11 +388,10 @@ public class IndexShowViewActivity extends BaseActivity {
 									Literal.width, Literal.width
 											* IAPoisDataConfig.babaibanh
 											/ IAPoisDataConfig.babaibanw);
-							LogApp.i(TAG, back.toString());
 							interlgent.setBackGroud(back);
 							// 将Bitmap进行数据保存到文件。
 							PreferencesJsonCach.saveBitmap(
-									Literal.SROOT + name, back);
+									Literal.SROOT + name, arg2, TAG);
 						}
 
 						@Override
@@ -417,7 +420,6 @@ public class IndexShowViewActivity extends BaseActivity {
 		}
 		if (object != null) {
 			String jsonInfo = (String) object;
-			LogApp.i(TAG, jsonInfo);
 			PreferencesJsonCach.putValue("GETINFO" + selectOrg.org_id,
 					jsonInfo, this);
 			IARoomNameHttp roomOrgpari = new Gson().fromJson(jsonInfo,
@@ -439,16 +441,14 @@ public class IndexShowViewActivity extends BaseActivity {
 		if (loading != null) {
 			loading.dismiss();
 		}
-		if (object != null && flag) {
+		if (object != null) {
 			String jsonData = (String) object;
-			LogApp.i(TAG, jsonData);
 			PreferencesJsonCach.putValue("GETDATA" + selectOrg.org_id,
 					jsonData, this);
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
 		} else {
-
 			ToastApp.showToast(this, "网络异常，请检查网络");
 		}
 	}
@@ -550,15 +550,19 @@ public class IndexShowViewActivity extends BaseActivity {
 								Y += p.y;
 							}
 							// 获取到背景图片后进行Bitmap缓存。
-							Drawable drawable = getResources().getDrawable(
-									R.drawable.next_check);
-							Bitmap nextImage = ((BitmapDrawable) drawable)
-									.getBitmap();
+							Bitmap nextImage = null;
+							if (nextImage == null) {
+								Drawable drawable = getResources().getDrawable(
+										R.drawable.next_check);
+								nextImage = ((BitmapDrawable) drawable)
+										.getBitmap();
+							}
 							int heighe = nextImage.getHeight();
 							int width = nextImage.getWidth();
-							LogApp.i(TAG, nextImage.toString() + heighe + width);
-							interlgent.setNextImage(nextImage, X / lenth
-									- width / 2, Y / lenth - heighe);
+							if (interlgent != null) {
+								interlgent.setNextImage(nextImage, X / lenth
+										- width / 2, Y / lenth - heighe);
+							}
 						}
 
 					}
@@ -583,6 +587,7 @@ public class IndexShowViewActivity extends BaseActivity {
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
+		manager.start();
 		manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this, par,
 				dataUrl, null, handler, true, Literal.POST_HANDLER, true));
 	}
@@ -590,17 +595,19 @@ public class IndexShowViewActivity extends BaseActivity {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see android.support.v4.app.FragmentActivity#onActivityResult(int, int,
-	 * android.content.Intent)
+	 * @see com.darly.activities.base.BaseActivity#onResume()
 	 */
 	@Override
-	protected void onActivityResult(int arg0, int arg1, Intent arg2) {
+	protected void onResume() {
 		// TODO Auto-generated method stub
-		super.onActivityResult(arg0, arg1, arg2);
-		startTimer();
-		if (interlgent != null) {
-			interlgent.setFlag(true);
+		super.onResume();
+		if (isClick) {
+			startTimer();
+			if (interlgent != null) {
+				interlgent.setFlag(true);
+			}
 		}
+
 	}
 
 	/*
@@ -616,9 +623,6 @@ public class IndexShowViewActivity extends BaseActivity {
 		}
 		if (interlgent != null) {
 			interlgent.setFlag(false);
-		}
-		if (manager!=null) {
-			manager.stop();
 		}
 		super.finish();
 	}

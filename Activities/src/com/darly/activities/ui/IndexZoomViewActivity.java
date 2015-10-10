@@ -200,7 +200,10 @@ public class IndexZoomViewActivity extends BaseActivity {
 		File file = new File(Literal.SROOT + name);
 		if (file.exists()) {
 			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
-			interlgent.setBackGroud(tempBitmap);
+			Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width,
+					Literal.width * IAPoisDataConfig.babaibanh
+							/ IAPoisDataConfig.babaibanw);
+			interlgent.setBackGroud(back);
 		} else {
 			// 获取到背景图片后进行Bitmap缓存。
 			imageLoader.loadImage(roomOrgpari.Organizationplan,
@@ -228,11 +231,10 @@ public class IndexZoomViewActivity extends BaseActivity {
 									Literal.width, Literal.width
 											* IAPoisDataConfig.babaibanh
 											/ IAPoisDataConfig.babaibanw);
-							LogApp.i(back.toString());
 							interlgent.setBackGroud(back);
 							// 将Bitmap进行数据保存到文件。
 							PreferencesJsonCach.saveBitmap(
-									Literal.SROOT + name, back);
+									Literal.SROOT + name, arg2, TAG);
 						}
 
 						@Override
@@ -368,15 +370,20 @@ public class IndexZoomViewActivity extends BaseActivity {
 								Y += p.y;
 							}
 							// 获取到背景图片后进行Bitmap缓存。
-							Drawable drawable = getResources().getDrawable(
-									R.drawable.next_check);
-							Bitmap nextImage = ((BitmapDrawable) drawable)
-									.getBitmap();
+							Bitmap nextImage = null;
+							if (nextImage == null) {
+								Drawable drawable = getResources().getDrawable(
+										R.drawable.next_check);
+								nextImage = ((BitmapDrawable) drawable)
+										.getBitmap();
+							}
 							int heighe = nextImage.getHeight();
 							int width = nextImage.getWidth();
 							LogApp.i(nextImage.toString() + heighe + width);
-							interlgent.setNextImage(nextImage, X / lenth
-									- width / 2, Y / lenth - heighe);
+							if (interlgent != null) {
+								interlgent.setNextImage(nextImage, X / lenth
+										- width / 2, Y / lenth - heighe);
+							}
 						}
 
 					}
@@ -401,6 +408,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
+		manager.start();
 		manager.addAsyncTask(new HttpTasker(IndexZoomViewActivity.this, par,
 				dataUrl, null, handler, true, Literal.POST_HANDLER, true));
 	}
@@ -444,7 +452,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@Override
 	public void finish() {
 		// TODO Auto-generated method stub
-		setResult(Literal.CA_HANDLER);
+
 		if (timer != null) {
 			timer.cancel();
 			timer = null;
@@ -452,9 +460,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 		if (interlgent != null) {
 			interlgent.setFlag(false);
 			interlgent = null;
-		}
-		if (manager != null) {
-			manager.stop();
 		}
 		super.finish();
 	}

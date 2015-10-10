@@ -35,18 +35,18 @@ public class PreferencesJsonCach {
 	 *            上午10:53:39
 	 * @author Zhangyuhui MeDetailsAcitvity.java TODO 将Bitmap保存到文件。
 	 */
-	public static void saveBitmap(String url, Bitmap bitmap) {
-		LogApp.i("保存图片");
+	public static void saveBitmap(String url, Bitmap bitmap,String TAG) {
+		LogApp.i(TAG,"保存图片");
 		File f = new File(url);
 		if (f.exists()) {
 			f.delete();
 		}
 		try {
 			FileOutputStream out = new FileOutputStream(f);
-			bitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 			out.flush();
 			out.close();
-			LogApp.i("已经保存");
+			LogApp.i(TAG,"已经保存");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

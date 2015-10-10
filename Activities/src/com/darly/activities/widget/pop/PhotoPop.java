@@ -282,8 +282,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 			cursor = context.getContentResolver().query(originalUri, proj,
 					null, null, null);
 			// 按我个人理解 这个是获得用户选择的图片的索引值
-			int column_index = cursor
-					.getColumnIndexOrThrow(MediaColumns.DATA);
+			int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
 			// 将光标移至开头 ，这个很重要，不小心很容易引起越界
 			cursor.moveToFirst();
 			// 最后根据索引值获取图片路径
@@ -433,7 +432,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 				if (returnBm == null) {
 					returnBm = bitmap;
 				}
-				PreferencesJsonCach.saveBitmap(url, returnBm);
+				PreferencesJsonCach.saveBitmap(url, returnBm, TAG);
 
 			} catch (OutOfMemoryError e) {
 				e.printStackTrace();

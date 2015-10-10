@@ -50,6 +50,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "onCreate_a");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
@@ -86,12 +87,13 @@ public abstract class BaseActivity extends FragmentActivity implements
 		initView(savedInstanceState);
 		initData();
 		LogApp.i(TAG, AppStack.getDeviceInfo(this));
+	
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-
+		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "onCreate_ab");
 		if (!NetUtils.isConnected(this)) {
 			ToastApp.showToast(this, "网络连接异常，请检查网络！");
 		}
