@@ -225,7 +225,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		String url = roomOrgpari.Organizationplan;
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
-		LogApp.i("url", name);
+		LogApp.i(TAG, name);
 		File file = new File(Literal.SROOT + name);
 		if (file.exists()) {
 			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);

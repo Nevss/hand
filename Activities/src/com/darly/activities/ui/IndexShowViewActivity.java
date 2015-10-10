@@ -56,7 +56,8 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 /**
  * @author Zhangyuhui IndexShowViewActivity 上午9:01:37 TODO
- *         展示机构平面图页面，取自帮忙医项目的智能导检。
+ *         展示机构平面图页面，取自帮忙医项目的智能导检。耗时操作放到了主进程里面，所以现在要将耗时操作放到线程里面进行测试。是否可以进行对应调节。
+ *         OnCreate里面操作完成后才进行页面展示。页面并没有进行展示的原因就是因为OnCreate没有执行完毕。(失败)
  */
 @ContentView(R.layout.activity_index_show_view)
 public class IndexShowViewActivity extends BaseActivity {
@@ -135,6 +136,12 @@ public class IndexShowViewActivity extends BaseActivity {
 	 * @author Zhangyuhui IndexShowViewActivity.java TODO 选中的机构信息。
 	 */
 	private BaseOrgInfo selectOrg;
+	
+	/**
+	 * 上午11:01:34
+	 * TODO 异步任务是否执行完毕。
+	 */
+	private boolean flag;
 
 	@Override
 	public void onClick(View v) {
@@ -272,8 +279,6 @@ public class IndexShowViewActivity extends BaseActivity {
 		if (info != null) {
 			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
 		}
-
-		LogApp.i("firstStep", info);
 		if (!AppStack.isNetworkConnected(this)) {
 			if (loading != null) {
 				loading.dismiss();
@@ -282,7 +287,7 @@ public class IndexShowViewActivity extends BaseActivity {
 			String data = PreferencesJsonCach.getInfo("GETDATA"
 					+ selectOrg.org_id, this);
 			// 初次没有缓存则直接跳过
-			if (data != null) {
+			if (data != null&&flag) {
 				interlgent.ReDraw(setInfoRoom(
 						new Gson().fromJson(data, OrgBase.class).getModel(),
 						roomInfo));
@@ -343,7 +348,7 @@ public class IndexShowViewActivity extends BaseActivity {
 		String url = roomOrgpari.Organizationplan;
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
-		LogApp.i("url", name);
+		LogApp.i(TAG, name);
 		File file = new File(Literal.SROOT + name);
 		if (file.exists()) {
 			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
@@ -376,7 +381,7 @@ public class IndexShowViewActivity extends BaseActivity {
 									Literal.width, Literal.width
 											* IAPoisDataConfig.babaibanh
 											/ IAPoisDataConfig.babaibanw);
-							LogApp.i(back.toString());
+							LogApp.i(TAG,back.toString());
 							interlgent.setBackGroud(back);
 							// 将Bitmap进行数据保存到文件。
 							PreferencesJsonCach.saveBitmap(
@@ -427,7 +432,7 @@ public class IndexShowViewActivity extends BaseActivity {
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
 		Log.i("handler", "IALiteral.GETDATA");
-		if (object != null) {
+		if (object != null&&flag) {
 			String jsonData = (String) object;
 			PreferencesJsonCach.putValue("GETDATA" + selectOrg.org_id,
 					jsonData, this);
@@ -545,7 +550,7 @@ public class IndexShowViewActivity extends BaseActivity {
 									.getBitmap();
 							int heighe = nextImage.getHeight();
 							int width = nextImage.getWidth();
-							LogApp.i(nextImage.toString() + heighe + width);
+							LogApp.i(TAG,nextImage.toString() + heighe + width);
 							interlgent.setNextImage(nextImage, X / lenth
 									- width / 2, Y / lenth - heighe);
 						}
@@ -614,4 +619,5 @@ public class IndexShowViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
+
 }

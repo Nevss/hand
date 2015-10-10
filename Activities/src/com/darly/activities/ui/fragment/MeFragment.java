@@ -142,10 +142,9 @@ public class MeFragment extends BaseFragment implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub点击跳入详情。并附带留言效果。
-		GridViewData data = (GridViewData) parent.getItemAtPosition(position);
 		Intent intent = new Intent(getActivity(), MeDetailsAcitvity.class);
-		intent.putExtra("GridViewData", data);
+		intent.putParcelableArrayListExtra("GridViewData", gridData);
 		startActivity(intent);
-		
+
 	}
 }

@@ -28,11 +28,9 @@ import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 @ContentView(R.layout.activity_webview)
-public class WebViewActivity extends BaseActivity{
-	private final String TAG = getClass().getSimpleName();
+public class WebViewActivity extends BaseActivity {
 	/**
-	 * 上午11:51:49
-	 * TODO WebView 基础类
+	 * 上午11:51:49 TODO WebView 基础类
 	 */
 	private BaseWebView webview;
 	@ViewInject(R.id.id_rl)
@@ -55,7 +53,7 @@ public class WebViewActivity extends BaseActivity{
 		switch (v.getId()) {
 		case R.id.id_bt_update:
 			LogApp.i(TAG, "重新加载");
-			LogApp.i("paul", current_url);
+			LogApp.i(TAG, current_url);
 			break;
 
 		default:
@@ -107,10 +105,6 @@ public class WebViewActivity extends BaseActivity{
 		// TODO Auto-generated method stub
 
 	}
-
-
-	
-
 
 	private void webViewListener() {
 		webview.setWebViewClient(new WebViewClient() {
@@ -200,7 +194,6 @@ public class WebViewActivity extends BaseActivity{
 		});
 	}
 
-	
 	/**
 	 * 同步一下cookie
 	 */
@@ -213,6 +206,7 @@ public class WebViewActivity extends BaseActivity{
 		cookieManager.setCookie(url, "token=" + token + ";path=/");// cookies是在HttpClient中获得的cookie
 		CookieSyncManager.getInstance().sync();
 	}
+
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -279,6 +273,5 @@ public class WebViewActivity extends BaseActivity{
 
 		// finish();
 	}
-
 
 }

@@ -36,6 +36,7 @@ import com.umeng.analytics.MobclickAgent;
  */
 public abstract class BaseActivity extends FragmentActivity implements
 		OnClickListener {
+	protected String TAG = getClass().getName();
 	protected SnoteTable table;
 	protected AQuery aq;
 	protected List<View> pageviews;
@@ -82,7 +83,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 		MobclickAgent.updateOnlineConfig(this);
 		initView(savedInstanceState);
 		initData();
-		LogApp.i(AppStack.getDeviceInfo(this));
+		LogApp.i(TAG, AppStack.getDeviceInfo(this));
 	}
 
 	@Override
@@ -94,7 +95,9 @@ public abstract class BaseActivity extends FragmentActivity implements
 		}
 
 		super.onResume();
+		MobclickAgent.onPageStart("ActivityScreen"); // 统计页面
 		MobclickAgent.onResume(this, "友盟统计", "onResume");
+		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "");
 	}
 
 	/*
@@ -106,7 +109,9 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
+		MobclickAgent.onPageEnd("ActivityScreen");
 		MobclickAgent.onPause(this);
+		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "");
 	}
 
 	@Override

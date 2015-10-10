@@ -41,7 +41,6 @@ public class MainActivity extends BaseActivity implements
 	 */
 	private SetFragment set;
 
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -61,7 +60,7 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -166,5 +165,6 @@ public class MainActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 	}
+
 
 }

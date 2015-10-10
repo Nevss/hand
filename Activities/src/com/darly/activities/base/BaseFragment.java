@@ -96,7 +96,7 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络！");
 		}
 		super.onResume();
-		 MobclickAgent.onPageStart("MainScreen"); //统计页面
+		 MobclickAgent.onPageStart("FragmentScreen"); //统计页面
 	}
 	
 	/* (non-Javadoc)
@@ -106,7 +106,7 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 	public void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-	    MobclickAgent.onPageEnd("MainScreen"); 
+	    MobclickAgent.onPageEnd("FragmentScreen"); 
 	}
 
 	/**
