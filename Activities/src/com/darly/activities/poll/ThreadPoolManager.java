@@ -104,8 +104,10 @@ public class ThreadPoolManager {
 	 * 结束轮询，关闭线程池
 	 */
 	public void stop() {
-		poolThread.interrupt();
-		poolThread = null;
+		if (poolThread != null) {
+			poolThread.interrupt();
+			poolThread = null;
+		}
 	}
 
 	/**

@@ -79,7 +79,9 @@ public abstract class BaseActivity extends FragmentActivity implements
 		if (Literal.width == 0 || Literal.height == 0) {
 			Literal.getWidth(this);
 		}
-		handler = new BaseHandler(this);
+		if (handler == null) {
+			handler = new BaseHandler(this);
+		}
 		MobclickAgent.updateOnlineConfig(this);
 		initView(savedInstanceState);
 		initData();

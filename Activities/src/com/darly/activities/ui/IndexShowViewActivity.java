@@ -136,10 +136,9 @@ public class IndexShowViewActivity extends BaseActivity {
 	 * @author Zhangyuhui IndexShowViewActivity.java TODO 选中的机构信息。
 	 */
 	private BaseOrgInfo selectOrg;
-	
+
 	/**
-	 * 上午11:01:34
-	 * TODO 异步任务是否执行完毕。
+	 * 上午11:01:34 TODO 异步任务是否执行完毕。
 	 */
 	private boolean flag;
 
@@ -272,42 +271,46 @@ public class IndexShowViewActivity extends BaseActivity {
 	 *         TODO判断网络是否正常。正常则继续请求数据，异常状态使用上次缓存下来资料
 	 */
 	public void firstStep() {
-		loading.show();
 		String info = PreferencesJsonCach.getInfo("GETINFO" + selectOrg.org_id,
 				this);
-		// 初次没有缓存则直接跳过
+		// 初次没有缓存则直接跳过,没有缓存才去请求数据。有缓存则直接访问缓存数据。
 		if (info != null) {
 			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
-		}
-		if (!AppStack.isNetworkConnected(this)) {
-			if (loading != null) {
-				loading.dismiss();
-			}
-			Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
-			String data = PreferencesJsonCach.getInfo("GETDATA"
-					+ selectOrg.org_id, this);
-			// 初次没有缓存则直接跳过
-			if (data != null&&flag) {
-				interlgent.ReDraw(setInfoRoom(
-						new Gson().fromJson(data, OrgBase.class).getModel(),
-						roomInfo));
-			}
+			loading.show();
+			getDataFHttp();
 		} else {
-			// 请求服务器平面图数据。
-			JSONObject object = new JSONObject();
-			try {
-				object.put("OrganizationID", "" + selectOrg.org_id);
-			} catch (Exception e) {
-				// TODO: handle exception
+			if (!AppStack.isNetworkConnected(this)) {
+				if (loading != null) {
+					loading.dismiss();
+				}
+				Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
+				String data = PreferencesJsonCach.getInfo("GETDATA"
+						+ selectOrg.org_id, this);
+				// 初次没有缓存则直接跳过
+				if (data != null && flag) {
+					interlgent
+							.ReDraw(setInfoRoom(
+									new Gson().fromJson(data, OrgBase.class)
+											.getModel(), roomInfo));
+				}
+			} else {
+				// 请求服务器平面图数据。
+				loading.show();
+				JSONObject object = new JSONObject();
+				try {
+					object.put("OrganizationID", "" + selectOrg.org_id);
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+				ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
+				par.add(new BasicNameValuePair("param", object.toString()));
+				manager.start();
+				// 获取屏幕的宽高。这几
+				manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this,
+						par, infoUrl, null, handler, true, Literal.GET_HANDLER,
+						true));
+				// 请求服务器平面图数据。
 			}
-			ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
-			par.add(new BasicNameValuePair("param", object.toString()));
-			manager.start();
-			// 获取屏幕的宽高。这几
-			manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this,
-					par, infoUrl, null, handler, true, Literal.GET_HANDLER,
-					true));
-			// 请求服务器平面图数据。
 		}
 	}
 
@@ -381,7 +384,7 @@ public class IndexShowViewActivity extends BaseActivity {
 									Literal.width, Literal.width
 											* IAPoisDataConfig.babaibanh
 											/ IAPoisDataConfig.babaibanw);
-							LogApp.i(TAG,back.toString());
+							LogApp.i(TAG, back.toString());
 							interlgent.setBackGroud(back);
 							// 将Bitmap进行数据保存到文件。
 							PreferencesJsonCach.saveBitmap(
@@ -409,21 +412,23 @@ public class IndexShowViewActivity extends BaseActivity {
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
-		Log.i("handler", "IALiteral.GETINFO");
+		if (loading != null) {
+			loading.dismiss();
+		}
 		if (object != null) {
 			String jsonInfo = (String) object;
+			LogApp.i(TAG, jsonInfo);
 			PreferencesJsonCach.putValue("GETINFO" + selectOrg.org_id,
 					jsonInfo, this);
 			IARoomNameHttp roomOrgpari = new Gson().fromJson(jsonInfo,
 					IARoomNameHttp.class);
 			if (roomOrgpari != null && roomOrgpari.model != null) {
 				getOrgAndPoint(roomOrgpari);
+				loading.show();
 				getDataFHttp();
 			}
 		} else {
-			if (loading != null) {
-				loading.cancel();
-			}
+
 			ToastApp.showToast(this, "网络异常，请检查网络");
 		}
 	}
@@ -431,18 +436,19 @@ public class IndexShowViewActivity extends BaseActivity {
 	@Override
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
-		Log.i("handler", "IALiteral.GETDATA");
-		if (object != null&&flag) {
+		if (loading != null) {
+			loading.dismiss();
+		}
+		if (object != null && flag) {
 			String jsonData = (String) object;
+			LogApp.i(TAG, jsonData);
 			PreferencesJsonCach.putValue("GETDATA" + selectOrg.org_id,
 					jsonData, this);
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
 		} else {
-			if (loading != null) {
-				loading.cancel();
-			}
+
 			ToastApp.showToast(this, "网络异常，请检查网络");
 		}
 	}
@@ -550,7 +556,7 @@ public class IndexShowViewActivity extends BaseActivity {
 									.getBitmap();
 							int heighe = nextImage.getHeight();
 							int width = nextImage.getWidth();
-							LogApp.i(TAG,nextImage.toString() + heighe + width);
+							LogApp.i(TAG, nextImage.toString() + heighe + width);
 							interlgent.setNextImage(nextImage, X / lenth
 									- width / 2, Y / lenth - heighe);
 						}
@@ -610,6 +616,9 @@ public class IndexShowViewActivity extends BaseActivity {
 		}
 		if (interlgent != null) {
 			interlgent.setFlag(false);
+		}
+		if (manager!=null) {
+			manager.stop();
 		}
 		super.finish();
 	}

@@ -12,6 +12,7 @@
         <RelativeLayout
             android:id="@+id/index_zoom_container"
             android:layout_width="wrap_content"
+            android:background="@color/guide_show_back"
             android:layout_height="wrap_content" >
         </RelativeLayout>
     </RelativeLayout>

@@ -64,7 +64,7 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	private float rate = 1;
 
-	private int sleepTime = 100;
+	private int sleepTime = 500;
 
 	public BaseInterlgent(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -160,7 +160,7 @@ public class BaseInterlgent extends SurfaceView implements
 					canvas = holder.lockCanvas();
 					canvas.save();
 					canvas.scale(rate, rate);
-
+					
 					for (int i = 0, length = pointList.size(); i < length; i++) {
 						paintView(pointList.get(i).getRoomPoint(), canvas,
 								paint, pointList.get(i).getRoomStauts());
@@ -172,7 +172,6 @@ public class BaseInterlgent extends SurfaceView implements
 					if (nextImage != null) {
 						canvas.drawBitmap(nextImage, left, top, null);
 					}
-
 				}
 				Thread.sleep(sleepTime);
 			} catch (Exception e) {
@@ -286,13 +285,5 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	public void setFlag(boolean flag) {
 		this.flag = flag;
-	}
-
-	/**
-	 * @param sleepTime
-	 *            the sleepTime to set 设置睡眠时间。
-	 */
-	public void setSleepTime(int sleepTime) {
-		this.sleepTime = sleepTime;
 	}
 }

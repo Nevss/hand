@@ -47,6 +47,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 /**
  * @author Zhangyuhui IndexShowViewActivity 上午9:01:37 TODO
  *         展示机构平面图页面，取自帮忙医项目的智能导检。
+ *         由于参数是上个页面加载完成后点击进入此页面，故而初始数据已经缓存完成。没有必要重新加载。只用加载Timer即可。
  */
 @ContentView(R.layout.activity_index_zoom_view)
 public class IndexZoomViewActivity extends BaseActivity {
@@ -73,11 +74,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 	 * TODO房间全部信息
 	 */
 	public ArrayList<RoomInfor> roomInfo;
-
-	/**
-	 * 咨询链接
-	 */
-	private String infoUrl = "http://test.rayelink.com/APIAccount/GetOrganizationInfo";
 	/**
 	 * 数据链接
 	 */
@@ -120,8 +116,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
-		loading.show();
-
 		selectOrgID = getIntent().getIntExtra("selectOrg", 0);
 
 		main_container.setLayoutParams(new LayoutParams(Literal.height,
@@ -150,41 +144,18 @@ public class IndexZoomViewActivity extends BaseActivity {
 	 *         TODO判断网络是否正常。正常则继续请求数据，异常状态使用上次缓存下来资料
 	 */
 	public void firstStep() {
-		String info = PreferencesJsonCach.getInfo("GETINFO" + selectOrgID, this);
-
-		// 初次没有缓存则直接跳过
+		String info = PreferencesJsonCach
+				.getInfo("GETINFO" + selectOrgID, this);
+		// 初次没有缓存则直接跳过,没有缓存才去请求数据。有缓存则直接访问缓存数据。
 		if (info != null) {
 			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
 		}
 		// 初次没有缓存则直接跳过
-
 		if (!AppStack.isNetworkConnected(this)) {
-			if (loading != null) {
-				loading.dismiss();
-			}
 			Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
-			String data = PreferencesJsonCach.getInfo("GETDATA" + selectOrgID, this);
-			if (data != null) {
-				interlgent.ReDraw(setInfoRoom(
-						new Gson().fromJson(data, OrgBase.class).getModel(),
-						roomInfo));
-			}
 		} else {
-			// 请求服务器平面图数据。
-			JSONObject object = new JSONObject();
-			try {
-				object.put("OrganizationID", selectOrgID);
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-			ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
-			par.add(new BasicNameValuePair("param", object.toString()));
-			manager.start();
-			// 获取屏幕的宽高。这几
-			manager.addAsyncTask(new HttpTasker(IndexZoomViewActivity.this,
-					par, infoUrl, null, handler, true, Literal.GET_HANDLER,
-					true));
-			// 请求服务器平面图数据。
+			loading.show();
+			getDataFHttp();
 		}
 	}
 
@@ -231,7 +202,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
 			interlgent.setBackGroud(tempBitmap);
 		} else {
-
 			// 获取到背景图片后进行Bitmap缓存。
 			imageLoader.loadImage(roomOrgpari.Organizationplan,
 					new ImageLoadingListener() {
@@ -273,7 +243,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 					});
 
 		}
-		
+
 	}
 
 	@Override
@@ -285,26 +255,19 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
-		Log.i("handler", "Literal.GETINFO");
-		if (object != null) {
-			String jsonInfo = (String) object;
-			PreferencesJsonCach.putValue("GETINFO" + selectOrgID, jsonInfo, this);
-			IARoomNameHttp roomOrgpari = new Gson().fromJson(jsonInfo,
-					IARoomNameHttp.class);
-			if (roomOrgpari != null && roomOrgpari.model != null) {
-				getOrgAndPoint(roomOrgpari);
-				getDataFHttp();
-			}
-		}
 	}
 
 	@Override
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
-		Log.i("handler", "Literal.GETDATA");
+		LogApp.i(TAG, "getDataFHttp is down" + System.currentTimeMillis()
+				/ 1000);
+		loading.dismiss();
 		if (object != null) {
 			String jsonData = (String) object;
-			PreferencesJsonCach.putValue("GETDATA" + selectOrgID, jsonData, this);
+			LogApp.i(TAG, jsonData);
+			PreferencesJsonCach.putValue("GETDATA" + selectOrgID, jsonData,
+					this);
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
@@ -356,9 +319,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 		for (int i = 0, len = roomIn.size(); i < len; i++) {
 			// 判断获取到的数据假如没有此字段，则展示原始页面。
 			// 剔除不用体检的项目
-			if (loading != null) {
-				loading.dismiss();
-			}
 			if (models.getAll() != null) {
 				for (int s = 0, lent = models.getAll().length; s < lent; s++) {
 					if (roomIn.get(i).getDepartId() == Integer.parseInt(models
@@ -435,7 +395,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		try {
 			// 测试数据
 			object.put("UserMobile", "18321127312");
-			object.put("OrganizationID", ""+selectOrgID);
+			object.put("OrganizationID", "" + selectOrgID);
 		} catch (Exception e) {
 			Log.i("getDataFHttp", e.getMessage().toString());
 		}
@@ -486,12 +446,15 @@ public class IndexZoomViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		setResult(Literal.CA_HANDLER);
 		if (timer != null) {
-			timer.cancel(); 
+			timer.cancel();
 			timer = null;
 		}
 		if (interlgent != null) {
 			interlgent.setFlag(false);
 			interlgent = null;
+		}
+		if (manager != null) {
+			manager.stop();
 		}
 		super.finish();
 	}

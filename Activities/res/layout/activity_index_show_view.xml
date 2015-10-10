@@ -26,6 +26,7 @@
     <RelativeLayout
         android:id="@+id/main_container"
         android:layout_width="fill_parent"
+        android:background="@color/guide_show_back"
         android:layout_height="wrap_content" >
     </RelativeLayout>
 
