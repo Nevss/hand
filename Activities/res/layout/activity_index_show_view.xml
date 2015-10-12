@@ -29,6 +29,13 @@
         android:background="@color/main_header_back"
         android:layout_height="wrap_content" >
     </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/main_container_test"
+        android:layout_width="fill_parent"
+        android:background="@color/main_header_back"
+        android:layout_height="wrap_content" >
+    </RelativeLayout>
 
 
 </LinearLayout>

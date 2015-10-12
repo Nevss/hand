@@ -46,6 +46,8 @@ import com.darly.activities.poll.HttpTasker;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
 import com.darly.activities.widget.intel.InterlgentUtil;
+import com.darly.activities.widget.intel.RotateClockView;
+import com.darly.activities.widget.intel.RectRestoreSurfaceView;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.darly.activities.widget.spinner.BaseSpinner;
 import com.google.gson.Gson;
@@ -96,6 +98,12 @@ public class IndexShowViewActivity extends BaseActivity {
 	 */
 	@ViewInject(R.id.main_container)
 	private RelativeLayout main_container;
+	/**
+	 * TODO图层容器
+	 */
+	@ViewInject(R.id.main_container_test)
+	private RelativeLayout main_container_test;
+	
 	/**
 	 * TODO计时器
 	 */
@@ -410,6 +418,8 @@ public class IndexShowViewActivity extends BaseActivity {
 		title.setText(getClass().getSimpleName());
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
+		main_container_test.addView(new RectRestoreSurfaceView(this));
+		main_container_test.addView(new RotateClockView(this));
 	}
 
 	@Override
