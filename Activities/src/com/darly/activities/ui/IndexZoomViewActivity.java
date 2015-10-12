@@ -187,11 +187,13 @@ public class IndexZoomViewActivity extends BaseActivity {
 														 * 由于服务器暂时还未传递，制造假数据
 														 */);
 		// -----------如何建立关系----------
+		double radtio = 0;
 		if (interlgent == null) {
 			main_container.removeAllViews();
 			interlgent = new BaseInterlgent(this, roomInfo);
 			main_container.addView(interlgent);
-			setViewFullScreen();
+			radtio = setViewFullScreen();
+			interlgent.setRate((float) radtio);
 		}
 		String url = roomOrgpari.Organizationplan;
 		final String name = url.substring(url.lastIndexOf("/") + 1,
@@ -199,10 +201,17 @@ public class IndexZoomViewActivity extends BaseActivity {
 		LogApp.i(TAG, name);
 		File file = new File(Literal.SROOT + name);
 		if (file.exists()) {
-			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
-			Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width,
-					Literal.width * IAPoisDataConfig.babaibanh
-							/ IAPoisDataConfig.babaibanw);
+			 Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT +
+			 name);
+			 Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width*radtio,
+			 Literal.width * IAPoisDataConfig.babaibanh*radtio
+			 / IAPoisDataConfig.babaibanw);
+			// 方案不对。还是没有解决问题。
+//			Bitmap back = InterlgentUtil
+//					.getSmallBitmap(Literal.SROOT + name,
+//							(int) (Literal.width * radtio),
+//							(int) (Literal.width * IAPoisDataConfig.babaibanh
+//									* radtio / IAPoisDataConfig.babaibanw));
 			interlgent.setBackGroud(back);
 		} else {
 			// 获取到背景图片后进行Bitmap缓存。
@@ -416,7 +425,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 	/**
 	 * @auther Darly Fronch 2015 上午9:22:51 TODO起始进来后放大到全屏状态。
 	 */
-	private void setViewFullScreen() {
+	private double setViewFullScreen() {
 
 		// 横屏：width<height
 
@@ -446,7 +455,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 				a = 1 / a;
 			}
 		}
-		interlgent.setRate((float) a);
+		return a;
 	};
 
 	@Override

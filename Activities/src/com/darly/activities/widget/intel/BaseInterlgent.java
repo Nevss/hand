@@ -14,7 +14,6 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.darly.activities.common.LogApp;
 import com.darly.activities.model.RoomInfor;
 import com.darly.activities.ui.R;
 
@@ -65,6 +64,10 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	private float rate = 1;
 
+	private float backRate = 1;
+
+	private float nextRate = 1;
+
 	private int sleepTime = 50;
 
 	public BaseInterlgent(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -114,7 +117,6 @@ public class BaseInterlgent extends SurfaceView implements
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		// TODO Auto-generated method stub
-		LogApp.i(width + "----------" + height);
 	}
 
 	/*
@@ -153,26 +155,32 @@ public class BaseInterlgent extends SurfaceView implements
 		// TODO Auto-generated method stub
 		Canvas canvas = null;
 		while (flag) {
-			if (pointList == null) {
-				return;
-			}
+
 			synchronized (holder) {
 				try {
 					canvas = holder.lockCanvas();
-					canvas.scale(rate, rate);
 					canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
-					for (int i = 0, length = pointList.size(); i < length; i++) {
-						paintView(pointList.get(i).getRoomPoint(), canvas,
-								paint, pointList.get(i).getRoomStauts());
+					// 保存画布状态（图片问题之所以没有解决的根本问题就是没有深入研究Canvas，canvas.save();方法可以保存当前画布状态。通过回滚，回滚到保存的状态。）
+					canvas.save();
+					if (pointList != null) {
+						canvas.scale(rate, rate);
+						for (int i = 0, length = pointList.size(); i < length; i++) {
+							paintView(pointList.get(i).getRoomPoint(), canvas,
+									paint, pointList.get(i).getRoomStauts());
+						}
 					}
-
+					// 画布状态回滚
+					canvas.restore();
 					if (backGroud != null) {
+						canvas.scale(backRate, backRate);
 						canvas.drawBitmap(backGroud, 0, 0, null);
 					}
 					if (nextImage != null) {
+						canvas.scale(nextRate, nextRate);
 						canvas.drawBitmap(nextImage, left, top, null);
 					}
-
+					// 画布状态回滚
+					canvas.restore();
 					Thread.sleep(sleepTime);
 				} catch (Exception e) {
 					// TODO: handle exception
@@ -277,6 +285,8 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	public void setRate(float rate) {
 		this.rate = rate;
+		this.nextRate = rate;
+		this.invalidate();
 	}
 
 	/**

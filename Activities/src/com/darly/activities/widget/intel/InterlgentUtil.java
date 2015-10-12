@@ -1,6 +1,7 @@
 package com.darly.activities.widget.intel;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 
 public class InterlgentUtil {
@@ -20,4 +21,46 @@ public class InterlgentUtil {
 				(int) height, matrix, true);
 		return bitmap;
 	}
+
+	/**
+	 * @param options
+	 * @param reqW
+	 * @param reqH
+	 * @return 上午9:15:45
+	 * @author Zhangyuhui InterlgentUtil.java TODO 获取缩放比例值
+	 */
+	private static int calculateInSampleSize(BitmapFactory.Options options,
+			int reqW, int reqH) {
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+
+		int inSampleSize = 1;
+		if (height > reqH || width > reqW) {
+			final int hRatio = Math.round((float) height / (float) reqH);
+			final int wRatio = Math.round((float) width / (float) reqW);
+			inSampleSize = hRatio < wRatio ? hRatio : wRatio;
+
+		}
+		return inSampleSize;
+	}
+
+	/**
+	 * @param filePath
+	 * @param reqW
+	 * @param reqH
+	 * @return
+	 * 上午9:20:09
+	 * @author Zhangyuhui
+	 * InterlgentUtil.java
+	 * TODO 获取小图的方法
+	 */
+	public static Bitmap getSmallBitmap(String filePath, int reqW, int reqH) {
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(filePath, options);
+		options.inSampleSize = calculateInSampleSize(options, reqW, reqH);
+		options.inJustDecodeBounds = false;
+		return BitmapFactory.decodeFile(filePath, options);
+	}
+
 }
