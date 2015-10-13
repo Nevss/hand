@@ -12,6 +12,7 @@ package com.darly.activities.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.darly.activities.common.Literal;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.SetFragmentModel;
 import com.darly.activities.ui.R;
+import com.darly.activities.ui.qrcode.MipcaActivityCapture;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -54,9 +56,9 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 	@ViewInject(R.id.set_list)
 	private ListView list;
 
-	private String lebal[] = { "个人信息", "修改密码", "我的收藏", "我的评论" };
+	private String lebal[] = { "扫一扫","个人信息", "修改密码", "我的收藏", "我的评论" };
 
-	private int drawableId[] = { R.drawable.set_info, R.drawable.set_pass,
+	private int drawableId[] = { R.drawable.set_scan,R.drawable.set_info, R.drawable.set_pass,
 			R.drawable.set_see, R.drawable.set_word };
 
 	/**
@@ -170,7 +172,7 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 		// TODO Auto-generated method stub
 		switch (position) {
 		case 1:
-
+			startActivity(new Intent(getActivity(), MipcaActivityCapture.class));
 			break;
 		case 2:
 
@@ -179,6 +181,9 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 
 			break;
 		case 4:
+
+			break;
+		case 5:
 
 			break;
 		default:

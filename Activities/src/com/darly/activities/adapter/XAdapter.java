@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
 import com.darly.activities.ui.R;
+import com.darly.activities.ui.RotateAcitvity;
 import com.darly.activities.widget.item.XadapterItem;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -84,6 +86,7 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
 						ToastApp.showToast(context, model.getName());
+						context.startActivity(new Intent(context, RotateAcitvity.class));
 					}
 				});
 				layout.addView(iv);
