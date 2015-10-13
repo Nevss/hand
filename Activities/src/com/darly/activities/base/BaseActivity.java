@@ -93,14 +93,13 @@ public abstract class BaseActivity extends FragmentActivity implements
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "onCreate_ab");
 		if (!NetUtils.isConnected(this)) {
 			ToastApp.showToast(this, "网络连接异常，请检查网络！");
 		}
 
 		super.onResume();
 		MobclickAgent.onPageStart("ActivityScreen"); // 统计页面
-		MobclickAgent.onResume(this, "友盟统计", "onResume");
+		MobclickAgent.onResume(this);
 		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "");
 	}
 
