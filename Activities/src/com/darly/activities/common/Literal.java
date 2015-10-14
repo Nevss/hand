@@ -28,6 +28,7 @@ public class Literal {
 	public static final int POST_HANDLER = 0x00101;
 	public static final int SHOW_HANDLER = 0x00102;
 	public static final int HINT_HANDLER = 0x00110;
+	public static final int UI_HANDLER = 0x00111;
 
 	public static boolean isLogin;
 	public static boolean isCardEmpty = true;

@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.base.BaseFragment;
+import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
 import com.darly.activities.ui.IndexShowViewActivity;
@@ -195,10 +196,15 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		HomtFragmentBase base = (HomtFragmentBase) parent
-				.getItemAtPosition(position);
-		if (base.getData() == null) {
-			startActivity(new Intent(getActivity(), IndexShowViewActivity.class));
+		if (PreferenceUserInfor.isUserLogin("USER", getActivity())) {
+			HomtFragmentBase base = (HomtFragmentBase) parent
+					.getItemAtPosition(position);
+			if (base.getData() == null) {
+				startActivity(new Intent(getActivity(),
+						IndexShowViewActivity.class));
+			}
+		} else {
+			PreferenceUserInfor.intenTO(getActivity());
 		}
 
 	}

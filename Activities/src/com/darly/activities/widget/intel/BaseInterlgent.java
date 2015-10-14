@@ -82,11 +82,9 @@ public class BaseInterlgent extends SurfaceView implements
 		init();
 	}
 
-	public BaseInterlgent(Context context, ArrayList<RoomInfor> pointList) {
+	public BaseInterlgent(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		this.pointList = pointList;
-
 		init();
 	}
 
@@ -129,8 +127,7 @@ public class BaseInterlgent extends SurfaceView implements
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		Thread thread = new Thread(this);
-		thread.start();
+		new Thread(this).start();
 	}
 
 	/*
@@ -153,42 +150,50 @@ public class BaseInterlgent extends SurfaceView implements
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		Canvas canvas = null;
 		while (flag) {
+			if (pointList != null) {
+				onDraws();
+			}
+		}
+	}
 
-			synchronized (holder) {
-				try {
-					canvas = holder.lockCanvas();
-					canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
-					// 保存画布状态（图片问题之所以没有解决的根本问题就是没有深入研究Canvas，canvas.save();方法可以保存当前画布状态。通过回滚，回滚到保存的状态。）
-					canvas.save();
-					if (pointList != null) {
-						canvas.scale(rate, rate);
-						for (int i = 0, length = pointList.size(); i < length; i++) {
-							paintView(pointList.get(i).getRoomPoint(), canvas,
-									paint, pointList.get(i).getRoomStauts());
-						}
-					}
-					// 画布状态回滚
-					canvas.restore();
-					if (backGroud != null) {
-						canvas.scale(backRate, backRate);
-						canvas.drawBitmap(backGroud, 0, 0, null);
-					}
-					if (nextImage != null) {
-						canvas.scale(nextRate, nextRate);
-						canvas.drawBitmap(nextImage, left, top, null);
-					}
-					// 画布状态回滚
-					canvas.restore();
-					Thread.sleep(sleepTime);
-				} catch (Exception e) {
-					// TODO: handle exception
-				} finally {
-					if (canvas != null) {
-						holder.unlockCanvasAndPost(canvas);
-					}
+	/**
+	 * 
+	 * 下午2:39:48
+	 * 
+	 * @author Zhangyuhui BaseInterlgent.java TODO 绘制方法主题。
+	 */
+	private void onDraws() {
+		synchronized (holder) {
+			try {
+				Canvas canvas = holder.lockCanvas();
+				if (canvas == null) {
+					holder.unlockCanvasAndPost(canvas);
+					return;
 				}
+				canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
+				// 保存画布状态（图片问题之所以没有解决的根本问题就是没有深入研究Canvas，canvas.save();方法可以保存当前画布状态。通过回滚，回滚到保存的状态。）
+				canvas.save();
+				canvas.scale(rate, rate);
+				for (int i = 0, length = pointList.size(); i < length; i++) {
+					paintView(pointList.get(i).getRoomPoint(), canvas, paint,
+							pointList.get(i).getRoomStauts());
+				}
+				// 画布状态回滚
+				canvas.restore();
+				if (backGroud != null) {
+					canvas.scale(backRate, backRate);
+					canvas.drawBitmap(backGroud, 0, 0, null);
+				}
+				if (nextImage != null) {
+					canvas.scale(nextRate, nextRate);
+					canvas.drawBitmap(nextImage, left, top, null);
+				}
+				// 画布状态回滚
+				holder.unlockCanvasAndPost(canvas);
+				Thread.sleep(sleepTime);
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
 		}
 	}
@@ -266,7 +271,6 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	public void ReDraw(ArrayList<RoomInfor> pointList) {
 		this.pointList = pointList;
-		invalidate();
 	}
 
 	public void setBackGroud(Bitmap backGroud) {
@@ -297,4 +301,5 @@ public class BaseInterlgent extends SurfaceView implements
 		this.flag = flag;
 		this.invalidate();
 	}
+
 }

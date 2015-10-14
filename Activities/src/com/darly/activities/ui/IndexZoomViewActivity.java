@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
-import android.widget.Toast;
 
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
@@ -27,6 +26,7 @@ import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
+import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.IARoomName;
 import com.darly.activities.model.IARoomNameHttp;
 import com.darly.activities.model.IARoomPoint;
@@ -59,6 +59,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 	/**
 	 * TODO生成图层
 	 */
+	@ViewInject(R.id.index_zoom_container_inter)
 	public BaseInterlgent interlgent;
 	/**
 	 * TODO图层容器
@@ -116,15 +117,23 @@ public class IndexZoomViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
+		loading.show();
 		selectOrgID = getIntent().getIntExtra("selectOrg", 0);
 
 		main_container.setLayoutParams(new LayoutParams(Literal.height,
 				Literal.width));
+
 		Literal.bitmapheight = Literal.width * IAPoisDataConfig.babaibanh
 				/ IAPoisDataConfig.babaibanw;
 		Literal.bitmapwidth = Literal.width;
 		initImageAndThread();
 		firstStep();
+	}
+
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+		consel.setOnClickListener(this);
 	}
 
 	/**
@@ -146,15 +155,15 @@ public class IndexZoomViewActivity extends BaseActivity {
 	public void firstStep() {
 		String info = PreferencesJsonCach
 				.getInfo("GETINFO" + selectOrgID, this);
-		// 初次没有缓存则直接跳过,没有缓存才去请求数据。有缓存则直接访问缓存数据。
+		// 由于是上个页面直接跳入此页面，则缓存是已经存在的。不需要进行再次更新。
 		if (info != null) {
 			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
 		}
 		// 初次没有缓存则直接跳过
 		if (!AppStack.isNetworkConnected(this)) {
-			Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
+			loading.dismiss();
+			ToastApp.showToast(this, "网络异常，请检查网络！");
 		} else {
-			loading.show();
 			getDataFHttp();
 		}
 	}
@@ -187,32 +196,20 @@ public class IndexZoomViewActivity extends BaseActivity {
 														 * 由于服务器暂时还未传递，制造假数据
 														 */);
 		// -----------如何建立关系----------
-		double radtio = 0;
-		if (interlgent == null) {
-			main_container.removeAllViews();
-			interlgent = new BaseInterlgent(this, roomInfo);
-			main_container.addView(interlgent);
-			radtio = setViewFullScreen();
-			interlgent.setRate((float) radtio);
-		}
+		double radtio = setViewFullScreen();
+		interlgent.setRate((float) radtio);
+		interlgent.ReDraw(roomInfo);
 		String url = roomOrgpari.Organizationplan;
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
-		LogApp.i(TAG, name);
 		File file = new File(Literal.SROOT + name);
 		if (file.exists()) {
-			 Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT +
-			 name);
-			 Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width*radtio,
-			 Literal.width * IAPoisDataConfig.babaibanh*radtio
-			 / IAPoisDataConfig.babaibanw);
-			// 方案不对。还是没有解决问题。
-//			Bitmap back = InterlgentUtil
-//					.getSmallBitmap(Literal.SROOT + name,
-//							(int) (Literal.width * radtio),
-//							(int) (Literal.width * IAPoisDataConfig.babaibanh
-//									* radtio / IAPoisDataConfig.babaibanw));
+			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
+			Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width
+					* radtio, Literal.width * IAPoisDataConfig.babaibanh
+					* radtio / IAPoisDataConfig.babaibanw);
 			interlgent.setBackGroud(back);
+			interlgent.setNextImage(null, 0, 0);
 		} else {
 			// 获取到背景图片后进行Bitmap缓存。
 			imageLoader.loadImage(roomOrgpari.Organizationplan,
@@ -254,14 +251,8 @@ public class IndexZoomViewActivity extends BaseActivity {
 					});
 
 		}
-
 	}
 
-	@Override
-	public void initData() {
-		// TODO Auto-generated method stub
-		consel.setOnClickListener(this);
-	}
 
 	@Override
 	public void refreshGet(Object object) {
@@ -271,8 +262,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 	@Override
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
-		LogApp.i(TAG, "getDataFHttp is down" + System.currentTimeMillis()
-				/ 1000);
 		loading.dismiss();
 		if (object != null) {
 			String jsonData = (String) object;
@@ -282,6 +271,8 @@ public class IndexZoomViewActivity extends BaseActivity {
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
+		}else {
+			ToastApp.showToast(this, "网络异常，请检查网络！");
 		}
 	}
 
@@ -468,7 +459,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 		}
 		if (interlgent != null) {
 			interlgent.setFlag(false);
-			interlgent = null;
 		}
 		super.finish();
 	}
@@ -478,4 +468,5 @@ public class IndexZoomViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
+
 }

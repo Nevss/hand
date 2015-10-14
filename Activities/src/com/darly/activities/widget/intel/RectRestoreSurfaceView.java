@@ -12,6 +12,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
+import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -36,6 +37,32 @@ public class RectRestoreSurfaceView extends SurfaceView implements
 	private Rect rect;
 
 	private int cout;
+
+	/**
+	 * @param context
+	 * @param attrs
+	 * @param defStyle
+	 *            下午12:01:43
+	 * @author Zhangyuhui RectRestoreSurfaceView.java TODO
+	 */
+	public RectRestoreSurfaceView(Context context, AttributeSet attrs,
+			int defStyle) {
+		super(context, attrs, defStyle);
+		// TODO Auto-generated constructor stub
+		init(context);
+	}
+
+	/**
+	 * @param context
+	 * @param attrs
+	 *            下午12:01:36
+	 * @author Zhangyuhui RectRestoreSurfaceView.java TODO
+	 */
+	public RectRestoreSurfaceView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+		// TODO Auto-generated constructor stub
+		init(context);
+	}
 
 	/**
 	 * @param context
@@ -106,6 +133,15 @@ public class RectRestoreSurfaceView extends SurfaceView implements
 		flag = false;
 	}
 
+	/**
+	 * @param flag
+	 *            the flag to set
+	 */
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+		invalidate();
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -127,11 +163,10 @@ public class RectRestoreSurfaceView extends SurfaceView implements
 	 */
 	private void Draw() {
 		// TODO Auto-generated method stub
-
 		Canvas canvas = null;
 		synchronized (holder) {
 			try {
-				canvas = holder.lockCanvas();
+				canvas = holder.lockCanvas(rect);
 				canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
 				for (int i = 0; i < time; i++) {
 					if (i == time - 1) {
@@ -170,8 +205,8 @@ public class RectRestoreSurfaceView extends SurfaceView implements
 					// 画布回滚
 					canvas.restore();
 				}
-				Thread.sleep(time);
 				holder.unlockCanvasAndPost(canvas);
+				Thread.sleep(time);
 			} catch (Exception e) {
 				// TODO: handle exception
 			}

@@ -75,15 +75,14 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 				.showImageForEmptyUri(R.drawable.ic_launcher)
 				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 				.bitmapConfig(Config.RGB_565).cacheOnDisc(true).build();
-		
-		
+
 	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onActivityCreated(savedInstanceState);
-		
+
 		initView();
 		initData();
 	}
@@ -96,17 +95,19 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络！");
 		}
 		super.onResume();
-		 MobclickAgent.onPageStart("FragmentScreen"); //统计页面
+		MobclickAgent.onPageStart("FragmentScreen"); // 统计页面
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onPause()
 	 */
 	@Override
 	public void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-	    MobclickAgent.onPageEnd("FragmentScreen"); 
+		MobclickAgent.onPageEnd("FragmentScreen");
 	}
 
 	/**

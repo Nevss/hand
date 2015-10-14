@@ -11,7 +11,6 @@ import org.json.JSONObject;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,6 +22,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +32,7 @@ import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.BaseCityInfo;
@@ -46,8 +47,6 @@ import com.darly.activities.poll.HttpTasker;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
 import com.darly.activities.widget.intel.InterlgentUtil;
-import com.darly.activities.widget.intel.RotateClockView;
-import com.darly.activities.widget.intel.RectRestoreSurfaceView;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.darly.activities.widget.spinner.BaseSpinner;
 import com.google.gson.Gson;
@@ -92,18 +91,22 @@ public class IndexShowViewActivity extends BaseActivity {
 	/**
 	 * TODO生成图层
 	 */
+	@ViewInject(R.id.main_container_intel)
 	public BaseInterlgent interlgent;
 	/**
 	 * TODO图层容器
 	 */
 	@ViewInject(R.id.main_container)
 	private RelativeLayout main_container;
+
 	/**
 	 * TODO图层容器
 	 */
-	@ViewInject(R.id.main_container_test)
-	private RelativeLayout main_container_test;
-	
+	/*
+	 * @ViewInject(R.id.main_container_test) private RelativeLayout
+	 * main_container_test;
+	 */
+
 	/**
 	 * TODO计时器
 	 */
@@ -147,6 +150,13 @@ public class IndexShowViewActivity extends BaseActivity {
 
 	private boolean isClick;
 
+	private boolean isUpDataCache;
+
+	/**
+	 * 上午11:38:31 TODO 机构信息。
+	 */
+	private IARoomNameHttp roomOrgpari;
+
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -178,9 +188,13 @@ public class IndexShowViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
-
+		loading.show();
+		LogApp.i(TAG, "OnCreate还没加载interlgent。");
 		main_container.setLayoutParams(new LinearLayout.LayoutParams(
 				Literal.width, Literal.width * IAPoisDataConfig.babaibanh
+						/ IAPoisDataConfig.babaibanw));
+		interlgent.setLayoutParams(new LayoutParams(Literal.width,
+				Literal.width * IAPoisDataConfig.babaibanh
 						/ IAPoisDataConfig.babaibanw));
 
 		initImageAndThread();
@@ -188,7 +202,19 @@ public class IndexShowViewActivity extends BaseActivity {
 		// 初始化从第一项开始
 		city_spinner.getSpinner().setSelection(0);
 		org_spinner.getSpinner().setSelection(0);
+	}
 
+	@Override
+	public void initData() {
+		// TODO Auto-generated method stub
+		title.setText(getClass().getSimpleName());
+		back.setVisibility(View.VISIBLE);
+		back.setOnClickListener(this);
+		/*
+		 * main_container_test.addView(new RectRestoreSurfaceView(this));
+		 * main_container_test.addView(new RotateClockView(this));
+		 */
+		LogApp.i(TAG, "OnCreate已经跑完了。该展示页面了。");
 	}
 
 	/**
@@ -237,10 +263,10 @@ public class IndexShowViewActivity extends BaseActivity {
 										// 选择正确的机构。
 										selectOrg = (BaseOrgInfo) parent
 												.getItemAtPosition(position);
-										if (interlgent != null) {
-											interlgent.setFlag(false);
-											interlgent = null;
-										}
+										// if (interlgent != null) {
+										// interlgent.setFlag(false);
+										// interlgent = null;
+										// }
 										firstStep();
 									}
 
@@ -283,27 +309,20 @@ public class IndexShowViewActivity extends BaseActivity {
 				this);
 		// 初次没有缓存则直接跳过,没有缓存才去请求数据。有缓存则直接访问缓存数据。
 		if (info != null) {
-			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
-			loading.show();
+			roomOrgpari = new Gson().fromJson(info, IARoomNameHttp.class);
+			getOrgAndPoint(roomOrgpari);
+			firstSetSurface(roomOrgpari);
 			getDataFHttp();
+			isUpDataCache = true;
 		} else {
 			if (!AppStack.isNetworkConnected(this)) {
 				if (loading != null) {
 					loading.dismiss();
 				}
 				Toast.makeText(this, "网络异常，请检查网络！", KEEP).show();
-				String data = PreferencesJsonCach.getInfo("GETDATA"
-						+ selectOrg.org_id, this);
-				// 初次没有缓存则直接跳过
-				if (data != null) {
-					interlgent
-							.ReDraw(setInfoRoom(
-									new Gson().fromJson(data, OrgBase.class)
-											.getModel(), roomInfo));
-				}
 			} else {
 				// 请求服务器平面图数据。
-				loading.show();
+				isUpDataCache = false;
 				JSONObject object = new JSONObject();
 				try {
 					object.put("OrganizationID", "" + selectOrg.org_id);
@@ -342,22 +361,22 @@ public class IndexShowViewActivity extends BaseActivity {
 		default:
 			break;
 		}
-
 		ArrayList<IARoomPoint> point = IAPoisDataConfig.getModelTest(arg,
 				selectOrg.org_id);
 		roomInfo = getRoomInfr(roomOrgpari.model, point/*
 														 * roomOrgpari.point
 														 * 由于服务器暂时还未传递，制造假数据
 														 */);
-		// -----------如何建立关系----------
-		if (interlgent == null) {
-			main_container.removeAllViews();
-			interlgent = new BaseInterlgent(this, roomInfo);
-			interlgent.setZOrderOnTop(true);
-			interlgent.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-			main_container.addView(interlgent);
-			main_container.setOnClickListener(this);
-		}
+	}
+
+	/**
+	 * @param roomOrgpari
+	 *            上午11:24:08
+	 * @author Zhangyuhui IndexShowViewActivity.java TODO
+	 */
+	private void firstSetSurface(IARoomNameHttp roomOrgpari) {
+		interlgent.ReDraw(roomInfo);
+		main_container.setOnClickListener(this);
 		String url = roomOrgpari.Organizationplan;
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
@@ -368,6 +387,7 @@ public class IndexShowViewActivity extends BaseActivity {
 					Literal.width * IAPoisDataConfig.babaibanh
 							/ IAPoisDataConfig.babaibanw);
 			interlgent.setBackGroud(back);
+			interlgent.setNextImage(null, 0, 0);
 		} else {
 
 			// 获取到背景图片后进行Bitmap缓存。
@@ -413,16 +433,6 @@ public class IndexShowViewActivity extends BaseActivity {
 	}
 
 	@Override
-	public void initData() {
-		// TODO Auto-generated method stub
-		title.setText(getClass().getSimpleName());
-		back.setVisibility(View.VISIBLE);
-		back.setOnClickListener(this);
-		main_container_test.addView(new RectRestoreSurfaceView(this));
-		main_container_test.addView(new RotateClockView(this));
-	}
-
-	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
 		if (loading != null) {
@@ -432,15 +442,15 @@ public class IndexShowViewActivity extends BaseActivity {
 			String jsonInfo = (String) object;
 			PreferencesJsonCach.putValue("GETINFO" + selectOrg.org_id,
 					jsonInfo, this);
-			IARoomNameHttp roomOrgpari = new Gson().fromJson(jsonInfo,
-					IARoomNameHttp.class);
-			if (roomOrgpari != null && roomOrgpari.model != null) {
-				getOrgAndPoint(roomOrgpari);
-				loading.show();
-				getDataFHttp();
+			if (!isUpDataCache) {// 非直接更新缓存则需要走这里。
+				roomOrgpari = new Gson().fromJson(jsonInfo,
+						IARoomNameHttp.class);
+				if (roomOrgpari != null && roomOrgpari.model != null) {
+					firstSetSurface(roomOrgpari);
+					getDataFHttp();
+				}
 			}
 		} else {
-
 			ToastApp.showToast(this, "网络异常，请检查网络");
 		}
 	}
@@ -453,8 +463,11 @@ public class IndexShowViewActivity extends BaseActivity {
 		}
 		if (object != null) {
 			String jsonData = (String) object;
-			PreferencesJsonCach.putValue("GETDATA" + selectOrg.org_id,
-					jsonData, this);
+			// 不需要保存上次状态。
+			/*
+			 * PreferencesJsonCach.putValue("GETDATA" + selectOrg.org_id,
+			 * jsonData, this);
+			 */
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
@@ -577,6 +590,11 @@ public class IndexShowViewActivity extends BaseActivity {
 
 					}
 				}
+			} else {
+				if (interlgent != null) {
+					// 没有下一项。
+					interlgent.setNextImage(null, 0, 0);
+				}
 			}
 		}
 
@@ -642,5 +660,6 @@ public class IndexShowViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
+
 
 }

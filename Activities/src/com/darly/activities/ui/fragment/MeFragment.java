@@ -147,4 +147,5 @@ public class MeFragment extends BaseFragment implements OnItemClickListener {
 		startActivity(intent);
 
 	}
+
 }

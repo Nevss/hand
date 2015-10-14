@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.darly.activities.adapter.SetFragmentAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.SetFragmentModel;
 import com.darly.activities.ui.R;
@@ -56,10 +57,10 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 	@ViewInject(R.id.set_list)
 	private ListView list;
 
-	private String lebal[] = { "扫一扫","个人信息", "修改密码", "我的收藏", "我的评论" };
+	private String lebal[] = { "扫一扫", "个人信息", "修改密码", "我的收藏", "我的评论" };
 
-	private int drawableId[] = { R.drawable.set_scan,R.drawable.set_info, R.drawable.set_pass,
-			R.drawable.set_see, R.drawable.set_word };
+	private int drawableId[] = { R.drawable.set_scan, R.drawable.set_info,
+			R.drawable.set_pass, R.drawable.set_see, R.drawable.set_word };
 
 	/**
 	 * TODO用户信息，ListView的头部
@@ -92,8 +93,8 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 		switch (v.getId()) {
 		case R.id.item_footer_btn:
 			ToastApp.showToast(getActivity(), "item_footer_btn");
+			PreferenceUserInfor.cleanUserInfor(getActivity());
 			break;
-
 		default:
 			break;
 		}

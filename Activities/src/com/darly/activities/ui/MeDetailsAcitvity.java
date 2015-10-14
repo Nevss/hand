@@ -37,13 +37,13 @@ public class MeDetailsAcitvity extends BaseActivity {
 	 * 下午5:38:14
 	 * 
 	 * @author Zhangyuhui MeDetailsAcitvity.java TODO展示图片
-	 *//*
-	@ViewInject(R.id.me_details_iv)
-	private ImageView iv;*/
-	
+	 */
+	/*
+	 * @ViewInject(R.id.me_details_iv) private ImageView iv;
+	 */
+
 	/**
-	 * 上午10:14:52
-	 * TODO 多图展示。
+	 * 上午10:14:52 TODO 多图展示。
 	 */
 	@ViewInject(R.id.me_details_relative)
 	private RelativeLayout relative;
@@ -76,12 +76,15 @@ public class MeDetailsAcitvity extends BaseActivity {
 
 	/**
 	 * 上午9:29:49 TODO 首图的宽度。
-	 *//*
-	private int imageW;
-	*//**
+	 */
+	/*
+	 * private int imageW;
+	 *//**
 	 * 上午9:29:49 TODO 首图的高度。
-	 *//*
-	private int imageH;*/
+	 */
+	/*
+	 * private int imageH;
+	 */
 
 	/**
 	 * 上午9:30:17 TODO 加载动画。
@@ -138,45 +141,30 @@ public class MeDetailsAcitvity extends BaseActivity {
 		// 添加轮播效果。以及轮播点击效果。
 		Carousel<MeDetailsAcitvity> carousel = new Carousel<MeDetailsAcitvity>(
 				this, images, imageLoader, options, imagehandler);
-		LayoutParams lp = new LayoutParams(Literal.width, Literal.width
-				/3);
+		LayoutParams lp = new LayoutParams(Literal.width, Literal.width / 3);
 		relative.setLayoutParams(lp);
 		relative.addView(carousel.view);
-/*		// 获取到背景图片后进行Bitmap缓存。
-		imageLoader.loadImage(data.url, new ImageLoadingListener() {
-
-			@Override
-			public void onLoadingStarted(String arg0, View arg1) {
-				// TODO Auto-generated method stub
-				loading.show();
-			}
-
-			@Override
-			public void onLoadingFailed(String arg0, View arg1, FailReason arg2) {
-				// TODO Auto-generated method stub
-				loading.dismiss();
-				ToastApp.showToast(MeDetailsAcitvity.this, "网络异常，请检查网络");
-			}
-
-			@Override
-			public void onLoadingComplete(String arg0, View arg1, Bitmap arg2) {
-				// TODO Auto-generated method stub
-				loading.dismiss();
-				imageW = arg2.getWidth();
-				imageH = arg2.getHeight();
-				Message message = new Message();
-				message.what = Literal.GET_HANDLER;
-				message.obj = arg2;
-				handler.sendMessage(message);
-			}
-
-			@Override
-			public void onLoadingCancelled(String arg0, View arg1) {
-				// TODO Auto-generated method stub
-				loading.dismiss();
-			}
-		});
-*/
+		/*
+		 * // 获取到背景图片后进行Bitmap缓存。 imageLoader.loadImage(data.url, new
+		 * ImageLoadingListener() {
+		 * 
+		 * @Override public void onLoadingStarted(String arg0, View arg1) { //
+		 * TODO Auto-generated method stub loading.show(); }
+		 * 
+		 * @Override public void onLoadingFailed(String arg0, View arg1,
+		 * FailReason arg2) { // TODO Auto-generated method stub
+		 * loading.dismiss(); ToastApp.showToast(MeDetailsAcitvity.this,
+		 * "网络异常，请检查网络"); }
+		 * 
+		 * @Override public void onLoadingComplete(String arg0, View arg1,
+		 * Bitmap arg2) { // TODO Auto-generated method stub loading.dismiss();
+		 * imageW = arg2.getWidth(); imageH = arg2.getHeight(); Message message
+		 * = new Message(); message.what = Literal.GET_HANDLER; message.obj =
+		 * arg2; handler.sendMessage(message); }
+		 * 
+		 * @Override public void onLoadingCancelled(String arg0, View arg1) { //
+		 * TODO Auto-generated method stub loading.dismiss(); } });
+		 */
 	}
 
 	/*
@@ -202,15 +190,13 @@ public class MeDetailsAcitvity extends BaseActivity {
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
-		/*if (object == null) {
-			return;
-		}
-
-		Bitmap bitmap = (Bitmap) object;
-		LayoutParams lp = new LayoutParams(Literal.width, Literal.width
-				* imageH / imageW);
-		iv.setLayoutParams(lp);
-		iv.setImageBitmap(bitmap);*/
+		/*
+		 * if (object == null) { return; }
+		 * 
+		 * Bitmap bitmap = (Bitmap) object; LayoutParams lp = new
+		 * LayoutParams(Literal.width, Literal.width imageH / imageW);
+		 * iv.setLayoutParams(lp); iv.setImageBitmap(bitmap);
+		 */
 	}
 
 	@Override
@@ -266,7 +252,7 @@ public class MeDetailsAcitvity extends BaseActivity {
 			if (degree != 0) {
 				pop.new ImageDegree(degree, head_path, loading).execute();
 			} else {
-				LogApp.i(TAG,"返回的文件路径" + degree + head_path);
+				LogApp.i(TAG, "返回的文件路径" + degree + head_path);
 				File temp = new File(head_path);
 				pop.cropPhoto(Uri.fromFile(temp));// 裁剪图片
 			}
