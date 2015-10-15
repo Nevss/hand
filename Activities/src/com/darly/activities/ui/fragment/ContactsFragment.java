@@ -16,7 +16,7 @@ import com.darly.activities.ui.R;
 import com.lidroid.xutils.ViewUtils;
 
 /**
- * @author Zhangyuhui ContactsFragment 下午3:16:43 TODO
+ * @author Zhangyuhui ContactsFragment 下午3:16:43 TODO测试类
  */
 public class ContactsFragment extends BaseFragment {
 	private View rootView;
