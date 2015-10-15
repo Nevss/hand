@@ -446,6 +446,7 @@ public class IndexShowViewActivity extends BaseActivity {
 				roomOrgpari = new Gson().fromJson(jsonInfo,
 						IARoomNameHttp.class);
 				if (roomOrgpari != null && roomOrgpari.model != null) {
+					getOrgAndPoint(roomOrgpari);
 					firstSetSurface(roomOrgpari);
 					getDataFHttp();
 				}

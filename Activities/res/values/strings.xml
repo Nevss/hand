@@ -5,11 +5,12 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="index">首页</string>
+    <string name="loacl">本地</string>
+    <string name="search">搜索</string>
     <string name="set">设置</string>
     <string name="me">我的</string>
     <string name="travel_free">自游出行</string>
     <string name="out">退出</string>
-    
     <string name="xlistview_header_hint_normal">下拉刷新</string>
     <string name="xlistview_header_hint_ready">松开刷新数据</string>
     <string name="xlistview_header_hint_loading">正在加载....</string>
@@ -22,8 +23,6 @@
     <string name="consel">取消</string>
     <string name="reload">重新加载</string>
     <string name="label">Label</string>
-    
-    
     <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
 
 </resources>

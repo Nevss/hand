@@ -1,13 +1,17 @@
 package com.darly.activities.common;
 
+import java.util.ArrayList;
+
+import com.darly.activities.model.BottomModel;
+import com.darly.activities.ui.R;
 
 /**
-* @ClassName: BaseData
-* @Description: TODO(基础数据类)
-* @author 张宇辉 zhangyuhui@octmami.com
-* @date 2014年11月26日 上午9:00:23
-*
-*/ 
+ * @ClassName: BaseData
+ * @Description: TODO(基础数据类)
+ * @author 张宇辉 zhangyuhui@octmami.com
+ * @date 2014年11月26日 上午9:00:23
+ *
+ */
 public class BaseData {
 	// 一堆图片链接
 	public static final String[] IMAGES = new String[] {
@@ -28,4 +32,18 @@ public class BaseData {
 	public static final String CREATE_SNOTE = "create table snote (id integer primary key autoincrement,title varchar,message varchar,date varchar)";
 	public static final String CREATE_IMAGE = "create table image (id integer primary key autoincrement,date varchar,message varchar,imagepath varchar)";
 
+	/**
+	 * @return the data
+	 */
+	public static ArrayList<BottomModel> getData() {
+		ArrayList<BottomModel> data = new ArrayList<BottomModel>();
+		data.add(new BottomModel(R.drawable.ic_index_press, "扫一扫",
+				"MipcaActivityCapture"));
+		data.add(new BottomModel(R.drawable.ic_set_press, "机构",
+				"IndexShowViewActivity"));
+		data.add(new BottomModel(R.drawable.ic_me_press, "详情",
+				"MeDetailsAcitvity"));
+		data.add(new BottomModel(R.drawable.ic_search, "旋转", "RotateAcitvity"));
+		return data;
+	}
 }

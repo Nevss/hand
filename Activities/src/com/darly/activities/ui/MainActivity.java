@@ -3,7 +3,11 @@ package com.darly.activities.ui;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -12,6 +16,7 @@ import com.darly.activities.base.BaseActivity;
 import com.darly.activities.ui.fragment.IndexFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
+import com.darly.activities.widget.pop.BottomPop;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -24,10 +29,33 @@ public class MainActivity extends BaseActivity implements
 	@ViewInject(R.id.main_bottom_group)
 	private RadioGroup group;
 	/**
+	 * 下午4:33:48 TODO 旋转图标。
+	 */
+	@ViewInject(R.id.main_bottom_me)
+	private LinearLayout layout;
+
+	@ViewInject(R.id.main_bottom_me_iv)
+	private ImageView bottomIV;
+	/**
 	 * TODO第一个标签。
 	 */
 	@ViewInject(R.id.main_bottom_index)
 	private RadioButton buttom;
+	/**
+	 * TODO第一个标签。
+	 */
+	@ViewInject(R.id.main_bottom_local)
+	private RadioButton local;
+	/**
+	 * TODO第一个标签。
+	 */
+	@ViewInject(R.id.main_bottom_search)
+	private RadioButton search;
+	/**
+	 * TODO第一个标签。
+	 */
+	@ViewInject(R.id.main_bottom_set)
+	private RadioButton setEnd;
 	/**
 	 * TODO首页展示效果哦Fragment
 	 */
@@ -41,6 +69,8 @@ public class MainActivity extends BaseActivity implements
 	 */
 	private SetFragment set;
 
+	private BottomPop pop;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -49,7 +79,27 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.main_bottom_me:
+			// 添加一个POP窗口。
+			if (pop == null) {
+				pop = new BottomPop(this, v);
+			}
+			if (pop.isShowing()) {
+				bottomIV.startAnimation(AnimationUtils.loadAnimation(this,
+						R.anim.anim_bottom_iv_pls));
+				pop.dismiss();
+			} else {
+				bottomIV.startAnimation(AnimationUtils.loadAnimation(this,
+						R.anim.anim_bottom_iv_add));
+				pop.showAtLocation(v, Gravity.BOTTOM, 0, v.getHeight());
+			}
 
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	/*
@@ -71,6 +121,7 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
+		layout.setOnClickListener(this);
 		group.setOnCheckedChangeListener(this);
 		buttom.setChecked(true);
 	}
@@ -85,11 +136,17 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		// TODO Auto-generated method stub
+		buttom.setTextColor(getResources().getColor(R.color.set_list_line));
+		local.setTextColor(getResources().getColor(R.color.set_list_line));
+		search.setTextColor(getResources().getColor(R.color.set_list_line));
+		setEnd.setTextColor(getResources().getColor(R.color.set_list_line));
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		hideFragments(ft);
 		switch (checkedId) {
 		case R.id.main_bottom_index:
+			buttom.setTextColor(getResources().getColor(
+					R.color.main_bottom_text));
 			if (index != null) {
 				if (index.isVisible())
 					return;
@@ -99,7 +156,22 @@ public class MainActivity extends BaseActivity implements
 				ft.add(R.id.main_frame, index);
 			}
 			break;
-		case R.id.main_bottom_me:
+		case R.id.main_bottom_local:
+			local.setTextColor(getResources()
+					.getColor(R.color.main_bottom_text));
+			if (me != null) {
+				if (me.isVisible())
+					return;
+				ft.show(me);
+			} else {
+				me = new MeFragment();
+				ft.add(R.id.main_frame, me);
+			}
+			break;
+
+		case R.id.main_bottom_search:
+			search.setTextColor(getResources().getColor(
+					R.color.main_bottom_text));
 			if (me != null) {
 				if (me.isVisible())
 					return;
@@ -110,6 +182,8 @@ public class MainActivity extends BaseActivity implements
 			}
 			break;
 		case R.id.main_bottom_set:
+			setEnd.setTextColor(getResources().getColor(
+					R.color.main_bottom_text));
 			if (set != null) {
 				if (set.isVisible())
 					return;
@@ -165,6 +239,5 @@ public class MainActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 	}
-
 
 }
