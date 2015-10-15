@@ -5,8 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <include layout="@layout/main_header" />
+    <include layout="@layout/main_header"
+        android:visibility="gone" />
 
+    
     <com.darly.activities.widget.xlistview.XListView
         android:id="@+id/index_fragment_xlist"
         android:layout_width="fill_parent"

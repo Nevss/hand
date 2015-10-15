@@ -13,7 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.ui.fragment.IndexFragment;
+import com.darly.activities.ui.fragment.MainFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
 import com.darly.activities.widget.pop.BottomPop;
@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity implements
 	/**
 	 * TODO首页展示效果哦Fragment
 	 */
-	private IndexFragment index;
+	private MainFragment index;
 	/**
 	 * TODO用户自己页面展示Fragment
 	 */
@@ -152,7 +152,7 @@ public class MainActivity extends BaseActivity implements
 					return;
 				ft.show(index);
 			} else {
-				index = new IndexFragment();
+				index = new MainFragment();
 				ft.add(R.id.main_frame, index);
 			}
 			break;
