@@ -70,6 +70,8 @@ public class WebViewActivity extends BaseActivity {
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		webview = new BaseWebView(this);
+		String url = getIntent().getStringExtra("URL");
+		webview.loadUrl(url);
 		webViewListener();
 	}
 
@@ -143,24 +145,13 @@ public class WebViewActivity extends BaseActivity {
 
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				/*
-				 * Toast.makeText(getApplicationContext(),
-				 * "WebViewClient.shouldOverrideUrlLoading",
-				 * Toast.LENGTH_SHORT);
-				 */
 				LogApp.i(TAG, "拦截url---shouldOverrideUrlLoading-->" + url);
 				if (url.startsWith("tel:")) {
 					Intent intent = new Intent(Intent.ACTION_DIAL, Uri
 							.parse(url));
 					startActivity(intent);
 				} else {
-					HashMap<String, String> hashmap = new HashMap<String, String>();
-					if (null != PreferencesJsonCach.getValue(Literal.TOKEN,
-							null)) {
-						hashmap.put("token", PreferencesJsonCach.getValue(
-								Literal.TOKEN, null));
-					}
-					webview.loadUrl(url, hashmap);
+					webview.loadUrl(url);
 				}
 
 				return true;
@@ -176,11 +167,6 @@ public class WebViewActivity extends BaseActivity {
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
 				isPageLoaded = false;
 				LogApp.i(TAG, "拦截url---onPageStarted-->" + url);
-				HashMap<String, String> hashmap = new HashMap<String, String>();
-				if (null != PreferencesJsonCach.getValue(Literal.TOKEN, null)) {
-					hashmap.put("token",
-							PreferencesJsonCach.getValue(Literal.TOKEN, null));
-				}
 				super.onPageStarted(view, url, favicon);
 			}
 

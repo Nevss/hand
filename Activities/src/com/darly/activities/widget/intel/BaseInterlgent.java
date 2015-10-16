@@ -14,6 +14,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.darly.activities.common.IAPoisDataConfig;
+import com.darly.activities.common.Literal;
 import com.darly.activities.model.RoomInfor;
 import com.darly.activities.ui.R;
 
@@ -64,11 +66,10 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	private float rate = 1;
 
-	private float backRate = 1;
+	private int sleepTime = 5;
 
-	private float nextRate = 1;
-
-	private int sleepTime = 50;
+	private float trasX;
+	private float trasY;
 
 	public BaseInterlgent(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
@@ -151,9 +152,11 @@ public class BaseInterlgent extends SurfaceView implements
 	public void run() {
 		// TODO Auto-generated method stub
 		while (flag) {
+			
 			if (pointList != null) {
 				onDraws();
 			}
+			
 		}
 	}
 
@@ -171,6 +174,7 @@ public class BaseInterlgent extends SurfaceView implements
 					holder.unlockCanvasAndPost(canvas);
 					return;
 				}
+				canvas.translate(trasX, trasY);
 				canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
 				// 保存画布状态（图片问题之所以没有解决的根本问题就是没有深入研究Canvas，canvas.save();方法可以保存当前画布状态。通过回滚，回滚到保存的状态。）
 				canvas.save();
@@ -181,12 +185,17 @@ public class BaseInterlgent extends SurfaceView implements
 				}
 				// 画布状态回滚
 				canvas.restore();
+				canvas.save();
 				if (backGroud != null) {
-					canvas.scale(backRate, backRate);
-					canvas.drawBitmap(backGroud, 0, 0, null);
+					Bitmap back = InterlgentUtil.zoomImage(backGroud,
+							Literal.width * rate, Literal.width
+									* IAPoisDataConfig.babaibanh * rate
+									/ IAPoisDataConfig.babaibanw);
+					canvas.drawBitmap(back, 0, 0, null);
 				}
+				canvas.restore();
 				if (nextImage != null) {
-					canvas.scale(nextRate, nextRate);
+					canvas.scale(rate, rate);
 					canvas.drawBitmap(nextImage, left, top, null);
 				}
 				// 画布状态回滚
@@ -289,8 +298,6 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	public void setRate(float rate) {
 		this.rate = rate;
-		this.nextRate = rate;
-		this.invalidate();
 	}
 
 	/**
@@ -299,7 +306,17 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	public void setFlag(boolean flag) {
 		this.flag = flag;
-		this.invalidate();
+	}
+
+	/**
+	 * @param trasX
+	 * @param trasY
+	 *            上午10:17:39
+	 * @author Zhangyuhui BaseInterlgent.java TODO 设置平移距离。
+	 */
+	public void setTranslation(float trasX, float trasY) {
+		this.trasX = trasX;
+		this.trasY = trasY;
 	}
 
 }

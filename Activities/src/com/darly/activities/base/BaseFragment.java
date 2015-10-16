@@ -13,6 +13,7 @@ import com.darly.activities.common.Literal;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.db.SnoteTable;
+import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.ui.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -31,6 +32,10 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions option_big;
 	protected AQuery aq;
+	/**
+	 * TODO线程管理
+	 */
+	protected ThreadPoolManager manager;
 
 	@SuppressLint("HandlerLeak")
 	public Handler handler = new Handler() {
@@ -58,7 +63,7 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		MobclickAgent.openActivityDurationTrack(false);
 		// 初始化LOG
-
+		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO, Thread.MAX_PRIORITY);
 		// 设置ImageLoader初始化参数。设置线程，设置保存文件名等。
 		aq = new AQuery(getActivity());
 		if (table == null) {

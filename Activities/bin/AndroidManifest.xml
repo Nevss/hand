@@ -9,9 +9,9 @@
         android:targetSdkVersion="20" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-        //文件创建、删除权限
+        //文件创建、删除权限
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    //文件读写权限，只针对于手机内存的SDCard，对外接SDCard无效
+    //文件读写权限，只针对于手机内存的SDCard，对外接SDCard无效
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -81,6 +81,10 @@
         <activity
             android:name="com.darly.activities.ui.login.LoginAcitvity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.darly.activities.ui.WebViewActivity"
             android:screenOrientation="portrait" >
         </activity>
         <!-- 友盟统计设置 统计分析 -->

@@ -18,6 +18,7 @@ import com.darly.activities.common.LogApp;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.db.SnoteTable;
+import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.ui.R;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.util.LogUtils;
@@ -47,6 +48,11 @@ public abstract class BaseActivity extends FragmentActivity implements
 
 	protected BaseHandler handler;
 
+	/**
+	 * TODO线程管理
+	 */
+	protected ThreadPoolManager manager;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,8 @@ public abstract class BaseActivity extends FragmentActivity implements
 		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出
 		ViewUtils.inject(this);// 注入view和事件
 
+		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO,
+				Thread.MAX_PRIORITY);
 		// 初始化LOG
 		if (table == null) {
 			table = new SnoteTable(this);

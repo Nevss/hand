@@ -15,7 +15,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -50,7 +52,8 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  *         由于参数是上个页面加载完成后点击进入此页面，故而初始数据已经缓存完成。没有必要重新加载。只用加载Timer即可。
  */
 @ContentView(R.layout.activity_index_zoom_view)
-public class IndexZoomViewActivity extends BaseActivity {
+public class IndexZoomViewActivity extends BaseActivity implements
+		OnTouchListener {
 
 	/**
 	 * TODO线程管理
@@ -97,6 +100,23 @@ public class IndexZoomViewActivity extends BaseActivity {
 	private ImageView consel;
 
 	private int selectOrgID;
+	/**
+	 * 上午9:37:00 TODO 全屏比例。
+	 */
+	private double radtio;
+
+	/**
+	 * 上午9:35:10 TODO 全屏过后放大缩小记录的上次比例。
+	 */
+	private double oldRate = 1;
+	/**
+	 * 上午9:35:42 TODO记录第一次触屏时线段的长度
+	 */
+	private float oldLineDistance;
+	/**
+	 * 上午9:35:56 TODO判定是否头次多指触点屏幕
+	 */
+	private boolean isFirst = true;
 
 	@Override
 	public void onClick(View v) {
@@ -134,6 +154,8 @@ public class IndexZoomViewActivity extends BaseActivity {
 	public void initData() {
 		// TODO Auto-generated method stub
 		consel.setOnClickListener(this);
+		interlgent.setOnTouchListener(this);
+
 	}
 
 	/**
@@ -196,7 +218,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 														 * 由于服务器暂时还未传递，制造假数据
 														 */);
 		// -----------如何建立关系----------
-		double radtio = setViewFullScreen();
+		radtio = setViewFullScreen();
 		interlgent.setRate((float) radtio);
 		interlgent.ReDraw(roomInfo);
 		String url = roomOrgpari.Organizationplan;
@@ -205,10 +227,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 		File file = new File(Literal.SROOT + name);
 		if (file.exists()) {
 			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
-			Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width
-					* radtio, Literal.width * IAPoisDataConfig.babaibanh
-					* radtio / IAPoisDataConfig.babaibanw);
-			interlgent.setBackGroud(back);
+			interlgent.setBackGroud(tempBitmap);
 			interlgent.setNextImage(null, 0, 0);
 		} else {
 			// 获取到背景图片后进行Bitmap缓存。
@@ -253,7 +272,6 @@ public class IndexZoomViewActivity extends BaseActivity {
 		}
 	}
 
-
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
@@ -271,7 +289,7 @@ public class IndexZoomViewActivity extends BaseActivity {
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
-		}else {
+		} else {
 			ToastApp.showToast(this, "网络异常，请检查网络！");
 		}
 	}
@@ -467,6 +485,78 @@ public class IndexZoomViewActivity extends BaseActivity {
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
 		super.onDestroy();
+	}
+
+	private float startMoveX;
+	private float startMoveY;
+	private float endMoveX;
+	private float endMoveY;
+	private boolean isSingleFig = true;
+
+	public boolean onTouchEvent(MotionEvent event) {
+		if (event.getAction() == MotionEvent.ACTION_UP) {
+			isFirst = true;
+			isSingleFig = true;
+			oldRate = radtio;
+		} else {
+			if (event.getPointerCount() > 1) {
+				if (event.getPointerCount() == 2) {
+					isSingleFig = false;
+					if (isFirst) {
+						oldLineDistance = (float) Math.sqrt(Math.pow(
+								event.getX(1) - event.getX(0), 2)
+								+ Math.pow(event.getY(1) - event.getY(0), 2));
+						isFirst = false;
+					} else {
+						float newLineDistance = (float) Math.sqrt(Math.pow(
+								event.getX(1) - event.getX(0), 2)
+								+ Math.pow(event.getY(1) - event.getY(0), 2));
+						float line = newLineDistance / oldLineDistance;
+
+						if (line > 1) {
+							// 放大。则比例变大。
+							if (oldRate * line <= 3) {
+								radtio = oldRate * line;
+							}
+
+						} else {
+							// 缩小。比例变小。
+							if (oldRate * line >= 1) {
+								// 最小比例不能再小。
+								radtio = oldRate * line;
+							}
+						}
+					}
+				}
+			} else {
+				if (isSingleFig) {
+					if (event.getAction() == MotionEvent.ACTION_DOWN) {
+						startMoveX = event.getX();
+						startMoveY = event.getY();
+					}
+					if (event.getAction() == MotionEvent.ACTION_MOVE) {
+						endMoveX = event.getX();
+						endMoveY = event.getY();
+						interlgent.setTranslation(endMoveX - startMoveX,
+								endMoveY - startMoveY);
+					}
+				}
+			}
+		}
+		interlgent.setRate((float) radtio);
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.view.View.OnTouchListener#onTouch(android.view.View,
+	 * android.view.MotionEvent)
+	 */
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		// TODO Auto-generated method stub
+		return onTouchEvent(event);
 	}
 
 }
