@@ -26,6 +26,13 @@ import com.ytdinfo.keephealth.ui.view.CommonButton;
 import com.ytdinfo.keephealth.utils.HandlerUtils;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * SettingPassActivity
+ * $ 用户注册完成进入
+ * 上午10:55:24
+ * TODO 设置用户密码页面
+ */
 public class SettingPassActivity extends BaseActivity implements OnClickListener {
 	private ImageButton back;
 	private ImageButton clearPass;

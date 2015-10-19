@@ -32,6 +32,13 @@ import com.ytdinfo.keephealth.ui.view.CommonButton;
 import com.ytdinfo.keephealth.utils.HandlerUtils;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * RegisterActivity
+ * $ 登录页面，点击注册进入。
+ * 上午10:43:12
+ * TODO 注册页面。用户进行信息注册的页面
+ */
 public class RegisterActivity extends BaseActivity implements OnClickListener {
 	private final String TAG = "RegisterActivity";
 	Handler handler = new Handler() {
@@ -47,12 +54,28 @@ public class RegisterActivity extends BaseActivity implements OnClickListener {
 			}
 		};
 	};
+	/**
+	 * 上午10:44:18
+	 * TODO 计时验证码信息。通过启动计时，每秒给Handler发送信息，修改验证码计算时间。
+	 */
 	private TimerTask timerTask;
 	private Timer timer;
 	private int time_now = 61;// 倒计时按钮上当前的时间
 
+	/**
+	 * 上午10:46:25
+	 * TODO 注册按钮
+	 */
 	private CommonButton bt_register;
+	/**
+	 * 上午10:46:37
+	 * TODO back后退按钮，ibt_clearPass，清空密码ibt_clearPhone清空手机号。
+	 */
 	private ImageButton back, ibt_clearPass,ibt_clearPhone;
+	/**
+	 * 上午10:47:19
+	 * TODO 请求验证码按钮
+	 */
 	private Button ibt_yanzhengma;
 	private TextView tv_tongyixieyi;
 	private EditText et_yanzhengma, et_telephone;

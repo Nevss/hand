@@ -11,6 +11,13 @@ import com.ytdinfo.keephealth.R;
 import com.ytdinfo.keephealth.ui.BaseActivity;
 import com.ytdinfo.keephealth.ui.view.CommonActivityTopView;
 
+/**
+ * @author Zhangyuhui
+ * RegisterProtocolActivity
+ * $ 注册点击协议进入
+ * 上午10:53:01
+ * TODO 用户注册协议界面。展示效果。
+ */
 public class RegisterProtocolActivity extends BaseActivity {
 	private  ImageButton back;
 	private CommonActivityTopView  commonActivityTopView; 

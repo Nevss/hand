@@ -24,14 +24,41 @@ import com.ytdinfo.keephealth.utils.ImageLoaderUtils;
 import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 
+/**
+ * @author Zhangyuhui
+ * UserInfoFragment
+ * $ 通过MainActivity调用底部导航按钮进入
+ * 上午10:26:44
+ * TODO用户信息修改变更的界面入口。是一个Fragment。
+ */
 public class UserInfoFragment extends Fragment {
 	private String TAG = "UserInfoFragment";
 
+	/**
+	 * 上午10:33:11
+	 * TODO健康档案  WebView 页面
+	 */
 	private UserInfoItem_2View userInfoItem_2View_1;
+	/**
+	 * 上午10:33:23
+	 * TODO我的预约 WebView页面
+	 */
 	private UserInfoItem_2View userInfoItem_2View_2;
+	/**
+	 * 上午10:33:35
+	 * TODO意见反馈  OpinionFeedbackActivity页面
+	 */
 	private UserInfoItem_2View userInfoItem_2View_3;
+	/**
+	 * 上午10:33:44
+	 * TODO设置 SettingActivity页面。
+	 */
 	private UserInfoItem_2View userInfoItem_2View_4;
 
+	/**
+	 * 上午10:36:21
+	 * TODO头像，个人资料 PersonalDataActivity页面
+	 */
 	private UserInfoItem_1View userInfoItem_1View;
 
 	private DisplayImageOptions options;

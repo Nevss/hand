@@ -55,13 +55,45 @@ import com.ytdinfo.keephealth.utils.ToastUtil;
 public class LoginActivity extends BaseActivity implements OnClickListener {
 	public static final String TAG = "LoginActivity";
 
+	/**
+	 * 上午10:38:13
+	 * TODO 用户名清空按钮
+	 */
 	private ImageButton ib_close1;
+	/**
+	 * 上午10:38:13
+	 * TODO 用户密码清空按钮
+	 */
 	private ImageButton ib_close2;
+	/**
+	 * 上午10:39:23
+	 * TODO顶部背景图
+	 */
 	private ImageView iv11;
+	/**
+	 * 上午10:39:54
+	 * TODO 关闭本页面按钮
+	 */
 	private ImageView back;
+	/**
+	 * 上午10:40:28
+	 * TODO用户名，密码输入窗口。
+	 */
 	private EditText user, password;
+	/**
+	 * 上午10:40:45
+	 * TODO 登录按钮
+	 */
 	private CommonButton login;
+	/**
+	 * 上午10:41:37
+	 * TODO 注册，RegisterActivity页面
+	 */
 	private RelativeLayout register;
+	/**
+	 * 上午10:42:08
+	 * TODO 忘记密码。FindPassActivity页面、
+	 */
 	private RelativeLayout rl_forget_pass;
 	/** 用户Token标示 */
 	String token;
