@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="main_bottom_text">#ecf9cb</color>
     <color name="set_list_line">#888888</color>
     <color name="roundedimageview_color">#546513</color>
     <color name="roundedimageview_no_color">#789842</color>
     <color name="color_1">#f70000</color>
     <color name="color_2">#dc6b6b</color>
     <color name="color_3">#ffffff</color>
+    <color name="guide_show_back">#9cd7d5</color>
+    <color name="pop_back">#7a000000</color>
+    
+    <color name="white">#ffffff</color>
+    <color name="main_bottom_text">#080808</color>
+    <color name="main_header_back">#99ffcc</color>
+    
+    <!-- 二维码颜色 -->
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
 
 </resources>

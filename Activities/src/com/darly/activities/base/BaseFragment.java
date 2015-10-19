@@ -13,9 +13,11 @@ import com.darly.activities.common.Literal;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.db.SnoteTable;
+import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.ui.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @ClassName: BaseFragment
@@ -30,6 +32,10 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions option_big;
 	protected AQuery aq;
+	/**
+	 * TODO线程管理
+	 */
+	protected ThreadPoolManager manager;
 
 	@SuppressLint("HandlerLeak")
 	public Handler handler = new Handler() {
@@ -55,8 +61,9 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
+		MobclickAgent.openActivityDurationTrack(false);
 		// 初始化LOG
-
+		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO, Thread.MAX_PRIORITY);
 		// 设置ImageLoader初始化参数。设置线程，设置保存文件名等。
 		aq = new AQuery(getActivity());
 		if (table == null) {
@@ -73,6 +80,7 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 				.showImageForEmptyUri(R.drawable.ic_launcher)
 				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 				.bitmapConfig(Config.RGB_565).cacheOnDisc(true).build();
+
 	}
 
 	@Override
@@ -92,6 +100,19 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络！");
 		}
 		super.onResume();
+		MobclickAgent.onPageStart("FragmentScreen"); // 统计页面
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#onPause()
+	 */
+	@Override
+	public void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPageEnd("FragmentScreen");
 	}
 
 	/**

@@ -6,6 +6,7 @@ import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.text.TextUtils;
 
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -16,8 +17,6 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.download.BaseImageDownloader;
 import com.nostra13.universalimageloader.utils.StorageUtils;
-
-
 
 /**
  * @ClassName: AppStack
@@ -30,11 +29,8 @@ public class AppStack extends Application {
 	private static AppStack instance;
 
 	/**
-	 * @return
-	 * 上午10:43:20
-	 * @author Zhangyuhui
-	 * AppStack.java
-	 * TODO获取APP应用信息启动单例，获取唯一的APP资源
+	 * @return 上午10:43:20
+	 * @author Zhangyuhui AppStack.java TODO获取APP应用信息启动单例，获取唯一的APP资源
 	 */
 	public static AppStack getInstance() {
 		if (null == instance) {
@@ -42,7 +38,7 @@ public class AppStack extends Application {
 		}
 		return instance;
 	}
-	
+
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
@@ -50,18 +46,17 @@ public class AppStack extends Application {
 		instance = this;
 		initImageLoader();
 	}
+
 	/**
 	 * 
 	 * 上午10:44:40
-	 * @author Zhangyuhui
-	 * AppStack.java
-	 * TODO初始化单例模式下的ImageLoader
+	 * 
+	 * @author Zhangyuhui AppStack.java TODO初始化单例模式下的ImageLoader
 	 */
 	private void initImageLoader() {
 		// TODO Auto-generated method stub
 
-		File cacheDir = StorageUtils.getOwnCacheDirectory(this,
-				"Act/Cache");
+		File cacheDir = StorageUtils.getOwnCacheDirectory(this, "Act/Cache");
 		@SuppressWarnings("deprecation")
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
 				this)
@@ -88,7 +83,7 @@ public class AppStack extends Application {
 						new BaseImageDownloader(this, 5 * 1000, 30 * 1000))
 				.writeDebugLogs() // Remove for releaseapp
 				.build();// 开始构建
-			ImageLoader.getInstance().init(config);
+		ImageLoader.getInstance().init(config);
 	}
 
 	/**
@@ -101,5 +96,41 @@ public class AppStack extends Application {
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo ni = cm.getActiveNetworkInfo();
 		return ni != null && ni.isConnectedOrConnecting();
+	}
+
+	/**
+	 * @param context
+	 * @return
+	 * 下午1:53:21
+	 * @author Zhangyuhui
+	 * AppStack.java
+	 * TODO 友盟获取设备信息的方法体。
+	 */
+	public static String getDeviceInfo(Context context) {
+		try {
+			org.json.JSONObject json = new org.json.JSONObject();
+			android.telephony.TelephonyManager tm = (android.telephony.TelephonyManager) context
+					.getSystemService(Context.TELEPHONY_SERVICE);
+			String device_id = tm.getDeviceId();
+			android.net.wifi.WifiManager wifi = (android.net.wifi.WifiManager) context
+					.getSystemService(Context.WIFI_SERVICE);
+
+			String mac = wifi.getConnectionInfo().getMacAddress();
+			json.put("mac", mac);
+			if (TextUtils.isEmpty(device_id)) {
+				device_id = mac;
+			}
+			if (TextUtils.isEmpty(device_id)) {
+				device_id = android.provider.Settings.Secure.getString(
+						context.getContentResolver(),
+						android.provider.Settings.Secure.ANDROID_ID);
+			}
+			json.put("device_id", device_id);
+			return json.toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 }

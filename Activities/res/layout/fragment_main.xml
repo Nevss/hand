@@ -1,0 +1,19 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/index_fragment_linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/main_header" />
+
+    <include layout="@layout/fragment_header" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragment_main_virepager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </android.support.v4.view.ViewPager>
+
+</LinearLayout>

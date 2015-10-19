@@ -7,17 +7,24 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.Window;
 
 import com.androidquery.AQuery;
+import com.darly.activities.app.AppStack;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.db.SnoteTable;
+import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.ui.R;
+import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.util.LogUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @ClassName: BaseActivity
@@ -30,6 +37,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  */
 public abstract class BaseActivity extends FragmentActivity implements
 		OnClickListener {
+	protected String TAG = getClass().getName();
 	protected SnoteTable table;
 	protected AQuery aq;
 	protected List<View> pageviews;
@@ -38,11 +46,27 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions options_big;
 
+	protected BaseHandler handler;
+
+	/**
+	 * TODO线程管理
+	 */
+	protected ThreadPoolManager manager;
+
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "onCreate_a");
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		super.onCreate(savedInstanceState);
+		LogUtils.customTagPrefix = "xUtilsSample"; // 方便调试时过滤 adb logcat 输出
+		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出
+		ViewUtils.inject(this);// 注入view和事件
+
+		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO,
+				Thread.MAX_PRIORITY);
 		// 初始化LOG
 		if (table == null) {
 			table = new SnoteTable(this);
@@ -64,19 +88,41 @@ public abstract class BaseActivity extends FragmentActivity implements
 		if (Literal.width == 0 || Literal.height == 0) {
 			Literal.getWidth(this);
 		}
-
-		initView();
+		if (handler == null) {
+			handler = new BaseHandler(this);
+		}
+		MobclickAgent.updateOnlineConfig(this);
+		initView(savedInstanceState);
 		initData();
+		LogApp.i(TAG, AppStack.getDeviceInfo(this));
+
 	}
 
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
-
 		if (!NetUtils.isConnected(this)) {
 			ToastApp.showToast(this, "网络连接异常，请检查网络！");
 		}
+
 		super.onResume();
+		MobclickAgent.onPageStart("ActivityScreen"); // 统计页面
+		MobclickAgent.onResume(this);
+		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "");
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.FragmentActivity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		MobclickAgent.onPageEnd("ActivityScreen");
+		MobclickAgent.onPause(this);
+		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "");
 	}
 
 	@Override
@@ -95,8 +141,10 @@ public abstract class BaseActivity extends FragmentActivity implements
 	/**
 	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午9:48:56 Project_Name:DFram
 	 * Description:初始化界面控件，获取界面XML的方法体，可以在这里对所有XML中的控件进行实例。 Throws
+	 * 
+	 * @param savedInstanceState
 	 */
-	public abstract void initView();
+	public abstract void initView(Bundle savedInstanceState);
 
 	/**
 	 * Auther:张宇辉 User:zhangyuhui 2015年1月5日 上午9:49:13 Project_Name:DFram
@@ -119,6 +167,5 @@ public abstract class BaseActivity extends FragmentActivity implements
 	 * Throws
 	 */
 	public abstract void refreshPost(Object object);
-
 
 }

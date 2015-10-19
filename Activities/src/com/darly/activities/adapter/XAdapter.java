@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,10 +15,12 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
 import com.darly.activities.ui.R;
+import com.darly.activities.ui.RotateAcitvity;
 import com.darly.activities.widget.item.XadapterItem;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -58,13 +61,14 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 	public View HockView(int position, View view, ViewGroup parent, int resID,
 			final Context context, HomtFragmentBase t) {
 		// TODO Auto-generated method stub
-		
+
 		if (t.getData() != null) {
 			view = LayoutInflater.from(context).inflate(
 					R.layout.fragment_index_item, null);
 			LinearLayout layout = (LinearLayout) view
 					.findViewById(R.id.fragment_index_item_linear);
-			LayoutParams lp = new LayoutParams(Literal.width / 4, Literal.width / 4);
+			LayoutParams lp = new LayoutParams(Literal.width / 4,
+					Literal.width / 4);
 			for (final HomtFragmentModel model : t.getData()) {
 				RoundedImageView iv = new RoundedImageView(context);
 				iv.setLayoutParams(lp);
@@ -72,18 +76,23 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 				lp.setMargins(10, 10, 10, 10);
 				iv.setCornerRadius(20f);
 				iv.setBorderWidth(2f);
-				iv.setBorderColor(context.getResources().getColor(R.color.roundedimageview_color));
+				iv.setBorderColor(context.getResources().getColor(
+						R.color.roundedimageview_color));
 				imageLoader.displayImage(model.getUrl(), iv, options);
 				iv.setClickable(true);
-				
-				
-				
+
 				iv.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						ToastApp.showToast(context, model.getName());
+						if (PreferenceUserInfor.isUserLogin("USER", context)) {
+							ToastApp.showToast(context, model.getName());
+							context.startActivity(new Intent(context,
+									RotateAcitvity.class));
+						} else {
+							PreferenceUserInfor.intenTO(context);
+						}
 					}
 				});
 				layout.addView(iv);
@@ -94,9 +103,9 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 			view = item.getView();
 			RoundedImageView iv = item.getIv();
 			TextView tv = item.getTv();
-			imageLoader.displayImage(t.getUrl(), iv,options);
+			imageLoader.displayImage(t.getUrl(), iv, options);
 			tv.setText(t.getName());
-			
+
 		}
 
 		return view;

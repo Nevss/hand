@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.darly.activities.ui"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <com.darly.activities.widget.roundedimage.RoundedImageView
+        android:id="@+id/item_bottom_iv_x"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:src="@drawable/ic_add"
+        app:riv_border_color="@color/roundedimageview_color"
+        app:riv_border_width="1dp"
+        app:riv_corner_radius="100dp" />
+
+    <TextView
+        android:id="@+id/item_bottom_tv_x"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+</LinearLayout>

@@ -15,18 +15,46 @@ public class IAPoisDataConfig {
 	 * @auther Darly Fronch 2015 下午3:19:29 TODO
 	 * @params ks XML中的房间号码关系表，这些数据需要从服务器获取。包括下面的八百伴点阵表格。
 	 */
-	public static ArrayList<IARoomPoint> getModelTest(int[] ks) {
+	public static ArrayList<IARoomPoint> getModelTest(int[] ks, int key) {
 		// TODO Auto-generated method stub
+
 		ArrayList<IARoomPoint> arrayList = new ArrayList<IARoomPoint>();
-		for (int i = 0; i < ks.length; i++) {
-			ArrayList<Point> list = new ArrayList<Point>();
-			for (int j = 0, sr = babaiban[i].length; j < sr; j += 2) {
-				list.add(new Point(babaiban[i][j], babaiban[i][j + 1]));
+
+		switch (key) {
+		case 12:
+			for (int i = 0; i < ks.length; i++) {
+				ArrayList<Point> list = new ArrayList<Point>();
+				for (int j = 0, sr = jingan[i].length; j < sr; j += 2) {
+					list.add(new Point(jingan[i][j], jingan[i][j + 1]));
+				}
+				arrayList.add(new IARoomPoint(ks[i] + "", list));
 			}
-			arrayList.add(new IARoomPoint(ks[i] + "", list));
+			break;
+		case 24:
+			for (int i = 0; i < ks.length; i++) {
+				ArrayList<Point> list = new ArrayList<Point>();
+				for (int j = 0, sr = xuhui[i].length; j < sr; j += 2) {
+					list.add(new Point(xuhui[i][j], xuhui[i][j + 1]));
+				}
+				arrayList.add(new IARoomPoint(ks[i] + "", list));
+			}
+			break;
+		case 31:
+			for (int i = 0; i < ks.length; i++) {
+				ArrayList<Point> list = new ArrayList<Point>();
+				for (int j = 0, sr = babaiban[i].length; j < sr; j += 2) {
+					list.add(new Point(babaiban[i][j], babaiban[i][j + 1]));
+				}
+				arrayList.add(new IARoomPoint(ks[i] + "", list));
+			}
+			break;
+		default:
+			break;
 		}
+
 		return arrayList;
 	}
+
 	// 获取平面图资料八百伴对应的平面图资料
 	public static int babaibanw = 2000;
 	public static int babaibanh = 1124;
@@ -349,10 +377,8 @@ public class IAPoisDataConfig {
 	public static int[][] jingan = {
 			{/* 检验科 */Literal.width * 518 / jinganw,
 					Literal.width * 151 / jinganw,
-					Literal.width * 780 / jinganw,
-					Literal.width * 9 / jinganw,
-					Literal.width * 802 / jinganw,
-					Literal.width * 9 / jinganw,
+					Literal.width * 780 / jinganw, Literal.width * 9 / jinganw,
+					Literal.width * 802 / jinganw, Literal.width * 9 / jinganw,
 					Literal.width * 802 / jinganw,
 					Literal.width * 110 / jinganw,
 					Literal.width * 518 / jinganw,

@@ -9,13 +9,23 @@
  */
 package com.darly.activities.ui.fragment;
 
+import java.util.ArrayList;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.TextView;
 
+import com.darly.activities.adapter.GridViewAdapter;
 import com.darly.activities.base.BaseFragment;
+import com.darly.activities.common.BaseData;
+import com.darly.activities.model.GridViewData;
+import com.darly.activities.ui.MeDetailsAcitvity;
 import com.darly.activities.ui.R;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -25,11 +35,21 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * 
  * @auther Darly Fronch 下午5:00:18 MeFragment TODO个人娱乐页面
  */
-public class MeFragment extends BaseFragment {
+public class MeFragment extends BaseFragment implements OnItemClickListener {
 	/**
 	 * TODO根View
 	 */
 	private View rootView;
+
+	/**
+	 * 下午4:05:17
+	 * 
+	 * @author Zhangyuhui MeFragment.java TODO 第二个展示页面。
+	 */
+	@ViewInject(R.id.me_fragment_grid)
+	private GridView grid;
+
+	private ArrayList<GridViewData> gridData;
 	/**
 	 * TODO顶部标签卡
 	 */
@@ -65,6 +85,24 @@ public class MeFragment extends BaseFragment {
 	public void initView() {
 		// TODO Auto-generated method stub
 		title.setText(getClass().getSimpleName());
+		getData();
+	}
+
+	/**
+	 * 
+	 * 下午4:09:35
+	 * 
+	 * @author Zhangyuhui MeFragment.java TODO 获取GridView数据
+	 */
+	private void getData() {
+		// TODO Auto-generated method stub
+		gridData = new ArrayList<GridViewData>();
+		for (int i = 0; i < BaseData.IMAGES.length; i++) {
+			gridData.add(new GridViewData(i, BaseData.IMAGES[i]));
+		}
+		grid.setAdapter(new GridViewAdapter(gridData,
+				R.layout.item_fragment_gridview, getActivity()));
+		grid.setOnItemClickListener(this);
 	}
 
 	/*
@@ -97,6 +135,16 @@ public class MeFragment extends BaseFragment {
 	@Override
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub点击跳入详情。并附带留言效果。
+		Intent intent = new Intent(getActivity(), MeDetailsAcitvity.class);
+		intent.putParcelableArrayListExtra("GridViewData", gridData);
+		startActivity(intent);
 
 	}
 

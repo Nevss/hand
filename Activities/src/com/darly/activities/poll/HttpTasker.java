@@ -21,6 +21,7 @@ import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 
+import com.darly.activities.common.LogApp;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -30,7 +31,7 @@ import com.google.gson.reflect.TypeToken;
  */
 public class HttpTasker extends ThreadPoolTask {
 
-	private String TAG = HttpTasker.class.getSimpleName();
+	private String TAG = getClass().getName();
 
 	private List<BasicNameValuePair> params;
 	private String url;
@@ -39,6 +40,8 @@ public class HttpTasker extends ThreadPoolTask {
 	private boolean isGet;
 	private int handlerCode;
 	public boolean isString;
+	
+	public boolean isLog = true;
 
 	public HttpTasker(Context context, List<BasicNameValuePair> params,
 			String url, TypeToken<?> token, Handler handler, boolean isGet,
@@ -57,24 +60,26 @@ public class HttpTasker extends ThreadPoolTask {
 	public void run() {
 		// TODO Auto-generated method stub
 		Process.setThreadPriority(Process.THREAD_PRIORITY_LOWEST);
-		Log.i("线程开始:", Thread.currentThread().getName());
 		Message message = new Message();
 		if (isString) {
 			if (isGet) {
+				//通过Get请求返回字符串
 				message.obj = doGetForString(url, params);
 			} else {
+				//通过Post请求返回字符串
 				message.obj = doPostForString(url, params);
 			}
 		} else {
 			if (isGet) {
+				//通过Get请求返回Model
 				message.obj = doGetForJson(url, params, token);
 			} else {
+				//通过Post请求返回Model
 				message.obj = doPostForJson(url, params, token);
 			}
 		}
 		message.what = handlerCode;
 		handler.sendMessage(message);
-		Log.i("线程结束:", Thread.currentThread().getName());
 	}
 
 	private static final int TIMEOUT_IN_MILLIONS = 4000;
@@ -96,7 +101,7 @@ public class HttpTasker extends ThreadPoolTask {
 			HttpResponse response = httpClient.execute(post);// 获取返回实体
 			is = response.getEntity().getContent();
 			in = new InputStreamReader(is);
-			if (isString) {
+			if (isLog) {
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				byte[] buffer = new byte[1024];
 				int lenth = 0;
@@ -106,7 +111,8 @@ public class HttpTasker extends ThreadPoolTask {
 				}
 				bos.close();
 				String json = bos.toString();
-				Log.i(TAG, json);
+				LogApp.i(TAG, post.getURI().toString());
+				LogApp.i(TAG, json);
 				return new Gson().fromJson(json, token.getType());
 			} else {
 				return new Gson().fromJson(in, token.getType());
@@ -140,7 +146,6 @@ public class HttpTasker extends ThreadPoolTask {
 		try {
 			DefaultHttpClient httpClient = new DefaultHttpClient();// 使用DefaultHttpClient创建HttpClient实例
 			HttpPost post = new HttpPost(url);// 构建HttpPost
-			Log.i(TAG, "请求链接" + post.toString());
 			UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params,
 					HTTP.UTF_8);// 使用编码构建Post实体
 			post.setEntity(entity);// 执行Post方法
@@ -155,8 +160,12 @@ public class HttpTasker extends ThreadPoolTask {
 				bos.flush();
 			}
 			bos.close();
-			return bos.toString();
-
+			String json = bos.toString();
+			if (isLog) {
+				LogApp.i(TAG, post.getURI().toString());
+				LogApp.i(TAG, json);
+			}
+			return json;
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
 		} catch (Exception e) {
@@ -216,7 +225,7 @@ public class HttpTasker extends ThreadPoolTask {
 			// 定义BufferedReader输入流来读取URL的响应
 			is = conn.getInputStream();
 			in = new InputStreamReader(is);
-			if (isString) {
+			if (isLog) {
 				Log.i(TAG, realUrl.toString());
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				byte[] buffer = new byte[1024];
@@ -227,7 +236,8 @@ public class HttpTasker extends ThreadPoolTask {
 				}
 				bos.close();
 				String json = bos.toString();
-				Log.i(TAG, json);
+				LogApp.i(TAG, realUrl.toString());
+				LogApp.i(TAG, json);
 				return new Gson().fromJson(json, token.getType());
 			} else {
 				return new Gson().fromJson(in, token.getType());
@@ -293,7 +303,6 @@ public class HttpTasker extends ThreadPoolTask {
 			// 定义BufferedReader输入流来读取URL的响应
 			is = conn.getInputStream();
 			in = new InputStreamReader(is);
-			Log.i(TAG, "请求链接" + realUrl.toString());
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			byte[] buffer = new byte[1024];
 			int lenth = 0;
@@ -302,7 +311,12 @@ public class HttpTasker extends ThreadPoolTask {
 				bos.flush();
 			}
 			bos.close();
-			return bos.toString();
+			String json = bos.toString();
+			if (isLog) {
+				LogApp.i(TAG, realUrl.toString());
+				LogApp.i(TAG, json);
+			}
+			return json;
 		} catch (JsonSyntaxException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

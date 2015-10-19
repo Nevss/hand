@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/pop_back" >
+
+    <GridView
+        android:id="@+id/pop_grid_view"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/main_header_back"
+        android:horizontalSpacing="1dp"
+        android:numColumns="5"
+        android:verticalSpacing="1dp" >
+    </GridView>
+
+</RelativeLayout>

@@ -13,6 +13,7 @@ import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,9 +23,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
+
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.base.BaseFragment;
-import com.darly.activities.common.ToastApp;
+import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
 import com.darly.activities.ui.IndexShowViewActivity;
@@ -194,11 +196,15 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		HomtFragmentBase base = (HomtFragmentBase) parent
-				.getItemAtPosition(position);
-		if (base.getData() == null) {
-			ToastApp.showToast(getActivity(), base.getName());
-			startActivity(new Intent(getActivity(), IndexShowViewActivity.class));
+		if (PreferenceUserInfor.isUserLogin("USER", getActivity())) {
+			HomtFragmentBase base = (HomtFragmentBase) parent
+					.getItemAtPosition(position);
+			if (base.getData() == null) {
+				startActivity(new Intent(getActivity(),
+						IndexShowViewActivity.class));
+			}
+		} else {
+			PreferenceUserInfor.intenTO(getActivity());
 		}
 
 	}

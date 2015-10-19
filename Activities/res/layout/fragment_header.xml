@@ -1,0 +1,65 @@
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_header_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:scrollbars="none" >
+
+    <RadioGroup
+        android:id="@+id/fragment_header_radio"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" >
+
+        <RadioButton
+            android:id="@+id/fragment_header_showone"
+            style="@style/RadioBase"
+            android:layout_width="100dp"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/travel_one"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/fragment_header_showtwo"
+            style="@style/RadioBase"
+            android:layout_width="100dp"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/travel_two"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/fragment_header_showthree"
+            style="@style/RadioBase"
+            android:layout_width="100dp"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/travel_thr"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/fragment_header_showfour"
+            style="@style/RadioBase"
+            android:layout_width="100dp"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/travel_fou"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/fragment_header_showfive"
+            style="@style/RadioBase"
+            android:layout_width="100dp"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="@string/travel_fiv"
+            android:textColor="@color/main_bottom_text"
+            android:textSize="20sp" />
+    </RadioGroup>
+
+</HorizontalScrollView>

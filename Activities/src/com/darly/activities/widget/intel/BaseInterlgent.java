@@ -3,15 +3,19 @@ package com.darly.activities.widget.intel;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
+import android.graphics.PorterDuff.Mode;
 import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.darly.activities.common.IAPoisDataConfig;
+import com.darly.activities.common.Literal;
 import com.darly.activities.model.RoomInfor;
 import com.darly.activities.ui.R;
 
@@ -40,6 +44,33 @@ public class BaseInterlgent extends SurfaceView implements
 
 	private int cout;
 
+	/**
+	 * 上午8:53:52
+	 * 
+	 * @author Zhangyuhui BaseInterlgent.java TODO 背景图片
+	 */
+	private Bitmap backGroud;
+
+	/**
+	 * 上午8:54:22
+	 * 
+	 * @author Zhangyuhui BaseInterlgent.java TODO 下一项图片。
+	 */
+	private Bitmap nextImage;
+
+	private int left;
+	private int top;
+
+	/**
+	 * 下午4:15:37 TODO 缩放比率
+	 */
+	private float rate = 1;
+
+	private int sleepTime = 5;
+
+	private float trasX;
+	private float trasY;
+
 	public BaseInterlgent(Context context, AttributeSet attrs, int defStyleAttr) {
 		super(context, attrs, defStyleAttr);
 		// TODO Auto-generated constructor stub
@@ -52,10 +83,9 @@ public class BaseInterlgent extends SurfaceView implements
 		init();
 	}
 
-	public BaseInterlgent(Context context, ArrayList<RoomInfor> pointList) {
+	public BaseInterlgent(Context context) {
 		super(context);
 		// TODO Auto-generated constructor stub
-		this.pointList = pointList;
 		init();
 	}
 
@@ -86,7 +116,6 @@ public class BaseInterlgent extends SurfaceView implements
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
 		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -99,8 +128,7 @@ public class BaseInterlgent extends SurfaceView implements
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		Thread thread = new Thread(this);
-		thread.start();
+		new Thread(this).start();
 	}
 
 	/*
@@ -112,7 +140,7 @@ public class BaseInterlgent extends SurfaceView implements
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-
+		flag = false;
 	}
 
 	/*
@@ -124,25 +152,57 @@ public class BaseInterlgent extends SurfaceView implements
 	public void run() {
 		// TODO Auto-generated method stub
 		while (flag) {
-			if (pointList == null) {
-				return;
+			
+			if (pointList != null) {
+				onDraws();
 			}
-			Canvas canvas = null;
+			
+		}
+	}
+
+	/**
+	 * 
+	 * 下午2:39:48
+	 * 
+	 * @author Zhangyuhui BaseInterlgent.java TODO 绘制方法主题。
+	 */
+	private void onDraws() {
+		synchronized (holder) {
 			try {
-				synchronized (holder) {
-					canvas = holder.lockCanvas();
-					for (int i = 0, length = pointList.size(); i < length; i++) {
-						paintView(pointList.get(i).getRoomPoint(), canvas,
-								paint, pointList.get(i).getRoomStauts());
-					}
+				Canvas canvas = holder.lockCanvas();
+				if (canvas == null) {
+					holder.unlockCanvasAndPost(canvas);
+					return;
 				}
-				Thread.sleep(100);
+				canvas.translate(trasX, trasY);
+				canvas.drawColor(Color.TRANSPARENT, Mode.CLEAR);
+				// 保存画布状态（图片问题之所以没有解决的根本问题就是没有深入研究Canvas，canvas.save();方法可以保存当前画布状态。通过回滚，回滚到保存的状态。）
+				canvas.save();
+				canvas.scale(rate, rate);
+				for (int i = 0, length = pointList.size(); i < length; i++) {
+					paintView(pointList.get(i).getRoomPoint(), canvas, paint,
+							pointList.get(i).getRoomStauts());
+				}
+				// 画布状态回滚
+				canvas.restore();
+				canvas.save();
+				if (backGroud != null) {
+					Bitmap back = InterlgentUtil.zoomImage(backGroud,
+							Literal.width * rate, Literal.width
+									* IAPoisDataConfig.babaibanh * rate
+									/ IAPoisDataConfig.babaibanw);
+					canvas.drawBitmap(back, 0, 0, null);
+				}
+				canvas.restore();
+				if (nextImage != null) {
+					canvas.scale(rate, rate);
+					canvas.drawBitmap(nextImage, left, top, null);
+				}
+				// 画布状态回滚
+				holder.unlockCanvasAndPost(canvas);
+				Thread.sleep(sleepTime);
 			} catch (Exception e) {
 				// TODO: handle exception
-			} finally {
-				if (canvas != null) {
-					holder.unlockCanvasAndPost(canvas);
-				}
 			}
 		}
 	}
@@ -195,6 +255,7 @@ public class BaseInterlgent extends SurfaceView implements
 			}
 			break;
 		default:
+			_paint.setColor(Color.GREEN);
 			break;
 		}
 		if (points != null && points.size() > 0) {
@@ -219,7 +280,43 @@ public class BaseInterlgent extends SurfaceView implements
 	 */
 	public void ReDraw(ArrayList<RoomInfor> pointList) {
 		this.pointList = pointList;
-		invalidate();
+	}
+
+	public void setBackGroud(Bitmap backGroud) {
+		this.backGroud = backGroud;
+	}
+
+	public void setNextImage(Bitmap nextImage, int left, int top) {
+		this.left = left;
+		this.top = top;
+		this.nextImage = nextImage;
+	}
+
+	/**
+	 * @param rate
+	 *            the rate to set 设置缩放比率。
+	 */
+	public void setRate(float rate) {
+		this.rate = rate;
+	}
+
+	/**
+	 * @param flag
+	 *            the flag to set 关闭SurfaceView
+	 */
+	public void setFlag(boolean flag) {
+		this.flag = flag;
+	}
+
+	/**
+	 * @param trasX
+	 * @param trasY
+	 *            上午10:17:39
+	 * @author Zhangyuhui BaseInterlgent.java TODO 设置平移距离。
+	 */
+	public void setTranslation(float trasX, float trasY) {
+		this.trasX = trasX;
+		this.trasY = trasY;
 	}
 
 }

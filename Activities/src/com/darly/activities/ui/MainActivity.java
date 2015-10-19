@@ -1,22 +1,22 @@
 package com.darly.activities.ui;
 
-import android.annotation.SuppressLint;
-import android.os.Handler;
-import android.os.Message;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.Literal;
-import com.darly.activities.ui.fragment.IndexFragment;
+import com.darly.activities.ui.fragment.MainFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
-import com.lidroid.xutils.ViewUtils;
-import com.lidroid.xutils.util.LogUtils;
+import com.darly.activities.widget.pop.BottomPop;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -29,14 +29,37 @@ public class MainActivity extends BaseActivity implements
 	@ViewInject(R.id.main_bottom_group)
 	private RadioGroup group;
 	/**
+	 * 下午4:33:48 TODO 旋转图标。
+	 */
+	@ViewInject(R.id.main_bottom_me)
+	private LinearLayout layout;
+
+	@ViewInject(R.id.main_bottom_me_iv)
+	private ImageView bottomIV;
+	/**
 	 * TODO第一个标签。
 	 */
 	@ViewInject(R.id.main_bottom_index)
 	private RadioButton buttom;
 	/**
+	 * TODO第一个标签。
+	 */
+	@ViewInject(R.id.main_bottom_local)
+	private RadioButton local;
+	/**
+	 * TODO第一个标签。
+	 */
+	@ViewInject(R.id.main_bottom_search)
+	private RadioButton search;
+	/**
+	 * TODO第一个标签。
+	 */
+	@ViewInject(R.id.main_bottom_set)
+	private RadioButton setEnd;
+	/**
 	 * TODO首页展示效果哦Fragment
 	 */
-	private IndexFragment index;
+	private MainFragment index;
 	/**
 	 * TODO用户自己页面展示Fragment
 	 */
@@ -46,27 +69,7 @@ public class MainActivity extends BaseActivity implements
 	 */
 	private SetFragment set;
 
-	/**
-	 * TODOActivity中使用网络请求，对应的数据返回区。
-	 */
-	@SuppressLint("HandlerLeak")
-	public Handler handler = new Handler() {
-
-		@Override
-		public void handleMessage(Message msg) {
-			switch (msg.what) {
-			case Literal.GET_HANDLER:
-				refreshGet(msg.obj);
-				break;
-			case Literal.POST_HANDLER:
-				refreshPost(msg.obj);
-				break;
-			default:
-				break;
-			}
-		}
-
-	};
+	private BottomPop pop;
 
 	/*
 	 * (non-Javadoc)
@@ -76,7 +79,27 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.main_bottom_me:
+			// 添加一个POP窗口。
+			if (pop == null) {
+				pop = new BottomPop(this, v);
+			}
+			if (pop.isShowing()) {
+				bottomIV.startAnimation(AnimationUtils.loadAnimation(this,
+						R.anim.anim_bottom_iv_pls));
+				pop.dismiss();
+			} else {
+				bottomIV.startAnimation(AnimationUtils.loadAnimation(this,
+						R.anim.anim_bottom_iv_add));
+				pop.showAtLocation(v, Gravity.BOTTOM, 0, v.getHeight());
+			}
 
+			break;
+
+		default:
+			break;
+		}
 	}
 
 	/*
@@ -85,11 +108,9 @@ public class MainActivity extends BaseActivity implements
 	 * @see com.darly.activities.base.BaseActivity#initView()
 	 */
 	@Override
-	public void initView() {
+	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		LogUtils.customTagPrefix = "xUtilsSample"; // 方便调试时过滤 adb logcat 输出
-		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出
-		ViewUtils.inject(this);// 注入view和事件
+
 	}
 
 	/*
@@ -100,6 +121,7 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
+		layout.setOnClickListener(this);
 		group.setOnCheckedChangeListener(this);
 		buttom.setChecked(true);
 	}
@@ -114,21 +136,42 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		// TODO Auto-generated method stub
+		buttom.setTextColor(getResources().getColor(R.color.set_list_line));
+		local.setTextColor(getResources().getColor(R.color.set_list_line));
+		search.setTextColor(getResources().getColor(R.color.set_list_line));
+		setEnd.setTextColor(getResources().getColor(R.color.set_list_line));
 		FragmentManager fm = getSupportFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		hideFragments(ft);
 		switch (checkedId) {
 		case R.id.main_bottom_index:
+			buttom.setTextColor(getResources().getColor(
+					R.color.main_bottom_text));
 			if (index != null) {
 				if (index.isVisible())
 					return;
 				ft.show(index);
 			} else {
-				index = new IndexFragment();
+				index = new MainFragment();
 				ft.add(R.id.main_frame, index);
 			}
 			break;
-		case R.id.main_bottom_me:
+		case R.id.main_bottom_local:
+			local.setTextColor(getResources()
+					.getColor(R.color.main_bottom_text));
+			if (me != null) {
+				if (me.isVisible())
+					return;
+				ft.show(me);
+			} else {
+				me = new MeFragment();
+				ft.add(R.id.main_frame, me);
+			}
+			break;
+
+		case R.id.main_bottom_search:
+			search.setTextColor(getResources().getColor(
+					R.color.main_bottom_text));
 			if (me != null) {
 				if (me.isVisible())
 					return;
@@ -139,6 +182,8 @@ public class MainActivity extends BaseActivity implements
 			}
 			break;
 		case R.id.main_bottom_set:
+			setEnd.setTextColor(getResources().getColor(
+					R.color.main_bottom_text));
 			if (set != null) {
 				if (set.isVisible())
 					return;

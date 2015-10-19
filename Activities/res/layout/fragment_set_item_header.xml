@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/main_backgroud"
+    android:background="@color/white"
     android:gravity="center"
     android:orientation="horizontal" >
 
     <ImageView
         android:id="@+id/item_header_image"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/app_name" />
 
 </LinearLayout>

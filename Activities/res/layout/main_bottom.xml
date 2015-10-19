@@ -1,29 +1,61 @@
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_bottom_group"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal" >
+    android:layout_height="wrap_content" >
 
-    <RadioButton
-        android:id="@+id/main_bottom_index"
-        style="@style/RadioBase"
-        android:background="@drawable/main_backgroud_left"
-        android:drawableTop="@drawable/ic_index_select"
-        android:text="@string/index"
-        android:textColor="@color/main_bottom_text" />
+    <RadioGroup
+        android:id="@+id/main_bottom_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
 
-    <RadioButton
+        <RadioButton
+            android:id="@+id/main_bottom_index"
+            style="@style/RadioBase"
+            android:drawableTop="@drawable/ic_menu"
+            android:text="@string/index"
+            android:textColor="@color/set_list_line" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_local"
+            style="@style/RadioBase"
+            android:drawableTop="@drawable/ic_loacl"
+            android:text="@string/loacl"
+            android:textColor="@color/set_list_line" />
+
+        <RadioButton style="@style/RadioBase" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_search"
+            style="@style/RadioBase"
+            android:drawableTop="@drawable/ic_search"
+            android:text="@string/search"
+            android:textColor="@color/set_list_line" />
+
+        <RadioButton
+            android:id="@+id/main_bottom_set"
+            style="@style/RadioBase"
+            android:drawableTop="@drawable/ic_set"
+            android:text="@string/set"
+            android:textColor="@color/set_list_line" />
+    </RadioGroup>
+
+    <LinearLayout
         android:id="@+id/main_bottom_me"
         style="@style/RadioMe"
-        android:drawableTop="@drawable/ic_me_select" />
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="vertical" >
 
-    <RadioButton
-        android:id="@+id/main_bottom_set"
-        style="@style/RadioBase"
-        android:background="@drawable/main_backgroud_right"
-        android:drawableTop="@drawable/ic_set_select"
-        android:text="@string/set"
-        android:textColor="@color/main_bottom_text" />
+        <ImageView
+            android:id="@+id/main_bottom_me_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ia_backe_close" />
+    </LinearLayout>
 
-</RadioGroup>
+</RelativeLayout>
