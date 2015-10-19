@@ -37,6 +37,13 @@ import com.ytdinfo.keephealth.utils.DBUtilsHelper;
 import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * ChatCommentActivity
+ * $ GroupChatActivity时间15分钟或者用户关闭咨询窗口时进入。
+ * 下午1:58:54
+ * TODO对医生评价的一个窗口。
+ */
 public class ChatCommentActivity extends BaseActivity {
 	Handler handler = new Handler(){
 		public void handleMessage(android.os.Message msg) {

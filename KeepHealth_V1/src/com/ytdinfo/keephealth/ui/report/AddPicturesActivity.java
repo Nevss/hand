@@ -57,6 +57,13 @@ import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * AddPicturesActivity
+ * $ ChooseReportActivity点击添加体检报告照片 按钮进入。
+ * 下午2:32:18
+ * TODO 获取体检报告照片信息。
+ */
 public class AddPicturesActivity extends BaseActivity implements Callback {
 	private String TAG = "AddPicturesActivity";
 	Handler handler = new Handler() {
@@ -157,6 +164,13 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 		});
 	}
 
+	/**
+	 * 
+	 * 下午2:35:12
+	 * @author Zhangyuhui
+	 * AddPicturesActivity.java
+	 * TODO 得到体检报告图片，进行在线咨询。
+	 */
 	private void requestAddReportPic() {
 
 		try {

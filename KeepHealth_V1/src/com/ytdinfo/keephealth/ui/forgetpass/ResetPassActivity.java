@@ -27,6 +27,13 @@ import com.ytdinfo.keephealth.utils.HandlerUtils;
 import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * ResetPassActivity
+ * $
+ * 下午2:12:18
+ * TODO 重置密码页面
+ */
 public class ResetPassActivity extends BaseActivity {
 	private CommonActivityTopView commonActivityTopView;
 	private EditText et_pass;

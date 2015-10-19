@@ -41,6 +41,13 @@ import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * ReportAdapter
+ * $
+ * 下午2:41:11
+ * TODO 报告解读列表
+ */
 public class ReportAdapter extends BaseAdapter {
 	private static final String TAG = ReportAdapter.class.getName();
 	private LayoutInflater inflater;

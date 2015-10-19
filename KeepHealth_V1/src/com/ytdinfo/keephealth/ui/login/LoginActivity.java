@@ -52,6 +52,13 @@ import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * LoginActivity
+ * $
+ * 下午2:13:11
+ * TODO 登录界面
+ */
 public class LoginActivity extends BaseActivity implements OnClickListener {
 	public static final String TAG = "LoginActivity";
 

@@ -40,6 +40,13 @@ import com.ytdinfo.keephealth.utils.NetworkReachabilityUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * ChooseReportActivity
+ * $ HomeFragment页面点击报告解读进入。
+ * 下午2:26:24
+ * TODO 报告解读页面。
+ */
 public class ChooseReportActivity extends BaseActivity {
 	private static final String TAG = ChooseReportActivity.class.getName();
 	private CommonActivityTopView commonActivityTopView;
@@ -136,6 +143,13 @@ private UserModel userModel;
 
 	private MyProgressDialog progressDialog;
 
+	/**
+	 * 
+	 * 下午2:28:10
+	 * @author Zhangyuhui
+	 * ChooseReportActivity.java
+	 * TODO 网络正常情况下，请求网络，获取以绑定的体检报告。
+	 */
 	private void requestRrport() {
 		/*
 		 * RequestParams params = new RequestParams();

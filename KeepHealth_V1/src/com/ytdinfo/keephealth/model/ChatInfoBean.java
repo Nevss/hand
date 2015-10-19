@@ -5,6 +5,13 @@ import java.io.Serializable;
 import com.google.gson.Gson;
 
 
+/**
+ * @author Zhangyuhui
+ * ChatInfoBean
+ * $
+ * 下午2:11:22
+ * TODO 聊天窗口信息Bean
+ */
 public class ChatInfoBean  implements Serializable{
 	/**
 	 * 

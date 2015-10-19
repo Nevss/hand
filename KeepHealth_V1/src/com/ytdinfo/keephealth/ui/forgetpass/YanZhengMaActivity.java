@@ -30,6 +30,13 @@ import com.ytdinfo.keephealth.ui.view.CommonButton;
 import com.ytdinfo.keephealth.utils.HandlerUtils;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * YanZhengMaActivity
+ * $
+ * 下午2:12:30
+ * TODO 获取验证码界面。
+ */
 public class YanZhengMaActivity extends BaseActivity {
 	Handler handler = new Handler() {
 		public void handleMessage(Message msg) {

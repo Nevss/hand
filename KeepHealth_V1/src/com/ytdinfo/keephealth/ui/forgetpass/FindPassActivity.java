@@ -25,6 +25,13 @@ import com.ytdinfo.keephealth.ui.view.CommonButton;
 import com.ytdinfo.keephealth.utils.HandlerUtils;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * FindPassActivity
+ * $
+ * 下午2:12:03
+ * TODO 找回密码页面
+ */
 public class FindPassActivity extends BaseActivity {
 	private ImageButton back;
 	private EditText et_phone;

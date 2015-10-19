@@ -25,6 +25,13 @@ import com.ytdinfo.keephealth.ui.view.CommonButton;
 import com.ytdinfo.keephealth.utils.HandlerUtils;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * ModifyPassActivity
+ * $SettingActivity点击修改密码进入
+ * 下午2:23:10
+ * TODO 修改密码页面
+ */
 public class ModifyPassActivity extends BaseActivity {
 	private CommonActivityTopView commonActivityTopView;
 	private EditText et_original_pass;
