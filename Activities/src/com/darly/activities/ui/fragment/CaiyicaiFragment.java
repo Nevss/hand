@@ -1,14 +1,15 @@
 /**
- * 下午3:16:34
+ * 下午3:16:43
  * @author Zhangyuhui
- * FriendFragment.java
+ * ContactsFragment.java
  * TODO
  */
 package com.darly.activities.ui.fragment;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -16,49 +17,39 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.ToastApp;
-import com.darly.activities.model.Goddesses;
+import com.darly.activities.model.CaiModel;
 import com.darly.activities.poll.HTTPSevTasker;
 import com.darly.activities.ui.R;
-import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 
 /**
- * @author Zhangyuhui FriendFragment 下午3:16:34 TODO 单个美女信息展示。
+ * @author Zhangyuhui ContactsFragment 下午3:16:43 TODO测试类
  */
-public class FriendFragment extends BaseFragment {
+public class CaiyicaiFragment extends BaseFragment {
 	private View rootView;
 
-	private int tuid;
+	private TextView title;
 
-	private ProgressDialogUtil loading;
+	private TextView ques;
 
-	/**
-	 * 上午11:27:30 TODO美女名称
-	 */
-	private TextView name;
-	/**
-	 * 上午11:27:46 TODO 美女图片
-	 */
-	private ImageView image;
-	/**
-	 * 上午11:27:55 TODO 美女详细资料
-	 */
-	private TextView descrip;
+	private TextView ans;
+
+	private Timer timer;
+
+	private int delay = 5000;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		rootView = inflater.inflate(R.layout.main_fragment_friend, container,
+		rootView = inflater.inflate(R.layout.main_fragment_caiyicai, container,
 				false);// 关联布局文件
 		ViewUtils.inject(this, rootView); // 注入view和事件
 		return rootView;
@@ -83,16 +74,9 @@ public class FriendFragment extends BaseFragment {
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
-		loading = new ProgressDialogUtil(getActivity());
-		loading.setMessage("加载中...");
-		loading.show();
-		name = (TextView) rootView.findViewById(R.id.main_fragment_frid_name);
-		image = (ImageView) rootView
-				.findViewById(R.id.main_fragment_frid_image);
-		descrip = (TextView) rootView
-				.findViewById(R.id.main_fragment_frid_descrip);
-		image.setLayoutParams(new LayoutParams(Literal.width, Literal.width));
-		tuid = new Random().nextInt(10);
+		title = (TextView) rootView.findViewById(R.id.main_fragment_cai_name);
+		ques = (TextView) rootView.findViewById(R.id.main_fragment_cai_ques);
+		ans = (TextView) rootView.findViewById(R.id.main_fragment_cai_ans);
 	}
 
 	/*
@@ -103,13 +87,20 @@ public class FriendFragment extends BaseFragment {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-		params.add(new BasicNameValuePair("tuid", tuid + ""));
-		List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
-		propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
-		manager.start();
-		manager.addAsyncTask(new HTTPSevTasker(getActivity(), params,
-				HTTPServ.GODDESSES, handler, true, Literal.GET_HANDLER, propety));
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
+				propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
+				manager.start();
+				manager.addAsyncTask(new HTTPSevTasker(getActivity(), null,
+						HTTPServ.CAIYICAI, handler, true, Literal.GET_HANDLER,
+						propety));
+			}
+		}, 0, delay);
 	}
 
 	/*
@@ -120,12 +111,11 @@ public class FriendFragment extends BaseFragment {
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
-		loading.dismiss();
-		Goddesses model = new Gson().fromJson((String) object, Goddesses.class);
+		CaiModel model = new Gson().fromJson((String) object, CaiModel.class);
 		if (model != null) {
-			name.setText(model.getTu_name());
-			descrip.setText(model.getTu_value());
-			imageLoader.displayImage(model.getTu_dizhi(), image, options);
+			title.setText("猜一猜");
+			ques.setText(model.getTitle());
+			ans.setText(model.getAnswer());
 		} else {
 			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络");
 		}

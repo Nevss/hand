@@ -1,0 +1,27 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/index_fragment_linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/main_fragment_turing_content"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3" />
+
+    <EditText
+        android:id="@+id/main_fragment_turing_msg"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:hint="@string/app_name" />
+
+    <Button
+        android:id="@+id/main_fragment_turing_sub"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/submit" />
+
+</LinearLayout>

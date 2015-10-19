@@ -35,7 +35,7 @@ import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 /**
- * @author Zhangyuhui ChatFragment 下午3:16:20 TODO测试类
+ * @author Zhangyuhui ChatFragment 下午3:16:20 TODO美女图片展示。
  */
 public class ChatFragment extends BaseFragment implements OnItemClickListener {
 	private View rootView;
