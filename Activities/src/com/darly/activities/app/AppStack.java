@@ -130,6 +130,7 @@ public class AppStack extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
 		return null;
 	}
 }
