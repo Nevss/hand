@@ -7,6 +7,11 @@ import android.graphics.Bitmap;
 
 
 public class ImageItem implements Serializable {
+	/**
+	 * 上午10:18:41
+	 * TODO
+	 */
+	private static final long serialVersionUID = 1L;
 	public String imageId;
 	public String thumbnailPath;
 	public String imagePath;

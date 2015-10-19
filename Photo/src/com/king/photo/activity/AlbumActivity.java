@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -59,6 +58,8 @@ public class AlbumActivity extends Activity {
 	private AlbumHelper helper;
 	public static List<ImageBucket> contentList;
 	public static Bitmap bitmap;
+	
+	private int time = 200;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(Res.getLayoutID("plugin_camera_album"));
@@ -144,7 +145,6 @@ public class AlbumActivity extends Activity {
 		preview = (Button) findViewById(Res.getWidgetID("preview"));
 		preview.setOnClickListener(new PreviewListener());
 		intent = getIntent();
-		Bundle bundle = intent.getExtras();
 		gridView = (GridView) findViewById(Res.getWidgetID("myGrid"));
 		gridImageAdapter = new AlbumGridViewAdapter(this,dataList,
 				Bimp.tempSelectBitmap);
@@ -169,7 +169,7 @@ public class AlbumActivity extends Activity {
 							chooseBt.setVisibility(View.GONE);
 							if (!removeOneData(dataList.get(position))) {
 								Toast.makeText(AlbumActivity.this, Res.getString("only_choose_num"),
-										200).show();
+										time).show();
 							}
 							return;
 						}

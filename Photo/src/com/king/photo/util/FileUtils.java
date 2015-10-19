@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+
 import android.graphics.Bitmap;
 import android.os.Environment;
 
@@ -15,7 +16,7 @@ public class FileUtils {
 	public static void saveBitmap(Bitmap bm, String picName) {
 		try {
 			if (!isFileExist("")) {
-				File tempf = createSDDir("");
+				createSDDir("");
 			}
 			File f = new File(SDPATH, picName + ".JPEG"); 
 			if (f.exists()) {

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.king.photo.util.BitmapCache;
@@ -83,7 +82,6 @@ public class AlbumGridViewAdapter extends BaseAdapter{
 		public ImageView imageView;
 		public ToggleButton toggleButton;
 		public Button choosetoggle;
-		public TextView textView;
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {

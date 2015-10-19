@@ -68,6 +68,7 @@ public class MainActivity extends Activity {
 		Init();
 	}
 
+	@SuppressWarnings("deprecation")
 	public void Init() {
 		
 		pop = new PopupWindow(MainActivity.this);

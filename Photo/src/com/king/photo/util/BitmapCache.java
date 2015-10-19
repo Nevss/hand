@@ -15,7 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.king.photo.R;
 import com.king.photo.activity.MainActivity;
 
 public class BitmapCache extends Activity {

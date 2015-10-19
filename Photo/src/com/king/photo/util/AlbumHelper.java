@@ -54,16 +54,13 @@ public class AlbumHelper {
 
 	private void getThumbnailColumnData(Cursor cur) {
 		if (cur.moveToFirst()) {
-			int _id;
 			int image_id;
 			String image_path;
-			int _idColumn = cur.getColumnIndex(Thumbnails._ID);
 			int image_idColumn = cur.getColumnIndex(Thumbnails.IMAGE_ID);
 			int dataColumn = cur.getColumnIndex(Thumbnails.DATA);
 
 			do {
 				// Get the field values
-				_id = cur.getInt(_idColumn);
 				image_id = cur.getInt(image_idColumn);
 				image_path = cur.getString(dataColumn);
 
@@ -153,7 +150,6 @@ public class AlbumHelper {
 					.getColumnIndexOrThrow(Media.BUCKET_DISPLAY_NAME);
 			int bucketIdIndex = cur.getColumnIndexOrThrow(Media.BUCKET_ID);
 			int picasaIdIndex = cur.getColumnIndexOrThrow(Media.PICASA_ID);
-			int totalNum = cur.getCount();
 
 			do {
 				String _id = cur.getString(photoIDIndex);

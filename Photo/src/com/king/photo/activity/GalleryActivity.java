@@ -17,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.king.photo.util.Bimp;
 import com.king.photo.util.PublicWay;
@@ -41,7 +40,6 @@ public class GalleryActivity extends Activity {
 	//删除按钮
 	private Button del_bt;
 	//顶部显示预览图片位置的textview
-	private TextView positionTextView;
 	//获取前一个activity传过来的position
 	private int position;
 	//当前的位置
@@ -71,7 +69,6 @@ public class GalleryActivity extends Activity {
 		send_bt.setOnClickListener(new GallerySendListener());
 		del_bt.setOnClickListener(new DelListener());
 		intent = getIntent();
-		Bundle bundle = intent.getExtras();
 		position = Integer.parseInt(intent.getStringExtra("position"));
 		isShowOkBt();
 		// 为发送按钮设置文字
