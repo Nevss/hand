@@ -222,6 +222,9 @@ public class MainActivity extends BaseActivity implements
 		if (set != null) {
 			transaction.hide(set);
 		}
+		if (chat != null) {
+			transaction.hide(chat);
+		}
 	}
 
 	/*
