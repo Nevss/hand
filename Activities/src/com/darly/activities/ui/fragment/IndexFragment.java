@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.base.BaseFragment;
+import com.darly.activities.common.Literal;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
@@ -196,7 +197,7 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		if (PreferenceUserInfor.isUserLogin("USER", getActivity())) {
+		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, getActivity())) {
 			HomtFragmentBase base = (HomtFragmentBase) parent
 					.getItemAtPosition(position);
 			if (base.getData() == null) {

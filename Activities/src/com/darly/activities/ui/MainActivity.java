@@ -13,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.ui.fragment.ChatFragment;
 import com.darly.activities.ui.fragment.MainFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
@@ -64,6 +65,11 @@ public class MainActivity extends BaseActivity implements
 	 * TODO用户自己页面展示Fragment
 	 */
 	private MeFragment me;
+
+	/**
+	 * 下午6:03:37 TODO美女列表Fragment
+	 */
+	private ChatFragment chat;
 	/**
 	 * TODO用户信息设置Fragment
 	 */
@@ -110,7 +116,7 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/*
@@ -172,13 +178,13 @@ public class MainActivity extends BaseActivity implements
 		case R.id.main_bottom_search:
 			search.setTextColor(getResources().getColor(
 					R.color.main_bottom_text));
-			if (me != null) {
-				if (me.isVisible())
+			if (chat != null) {
+				if (chat.isVisible())
 					return;
-				ft.show(me);
+				ft.show(chat);
 			} else {
-				me = new MeFragment();
-				ft.add(R.id.main_frame, me);
+				chat = new ChatFragment();
+				ft.add(R.id.main_frame, chat);
 			}
 			break;
 		case R.id.main_bottom_set:
@@ -239,5 +245,4 @@ public class MainActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 	}
-
 }

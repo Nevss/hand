@@ -99,7 +99,7 @@ public class LoginAcitvity extends BaseActivity {
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-					PreferenceUserInfor.saveUserInfor("USER",
+					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
 							object.toString(), this);
 
 					ToastApp.showToast(this, "登录成功");
@@ -264,6 +264,7 @@ public class LoginAcitvity extends BaseActivity {
 		if (restore != null) {
 			restore.setFlag(false);
 		}
+		
 		super.finish();
 	}
 

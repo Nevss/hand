@@ -3,6 +3,7 @@
     android:id="@+id/index_fragment_linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_fragment_header"
     android:orientation="vertical" >
 
     <TextView
@@ -25,5 +26,27 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:gravity="center" />
+
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <Button
+            android:id="@+id/main_fragment_cai_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_btn_select"
+            android:text="@string/start_cai" />
+
+        <Button
+            android:id="@+id/main_fragment_cai_stop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:background="@drawable/app_btn_select"
+            android:text="@string/stop_cai" />
+    </TableRow>
 
 </LinearLayout>

@@ -1,7 +1,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="48dp" >
 
     <RadioGroup
         android:id="@+id/main_bottom_group"
@@ -46,14 +46,13 @@
         style="@style/RadioMe"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:gravity="center"
-        android:orientation="vertical" >
+        android:gravity="center" >
 
         <ImageView
             android:id="@+id/main_bottom_me_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="20dp"
+            android:layout_margin="4dp"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ia_backe_close" />
     </LinearLayout>

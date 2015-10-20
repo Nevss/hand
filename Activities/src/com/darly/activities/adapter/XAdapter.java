@@ -86,7 +86,7 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						if (PreferenceUserInfor.isUserLogin("USER", context)) {
+						if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, context)) {
 							ToastApp.showToast(context, model.getName());
 							context.startActivity(new Intent(context,
 									RotateAcitvity.class));

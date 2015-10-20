@@ -72,5 +72,8 @@ public class Literal {
 	public static final int REQUESTCODE_CAP = 0x1002;
 	public static final int REQUESTCODE_CUT = 0x1003;
 	public static final int TOKEN = 0x1004;
+	
+	
+	public static final String USERINFO = "USER";
 
 }

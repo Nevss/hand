@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.darly.activities.base.BaseFragment;
@@ -41,6 +42,9 @@ public class CaiyicaiFragment extends BaseFragment {
 
 	private TextView ans;
 
+	private Button start;
+	private Button stop;
+
 	private Timer timer;
 
 	private int delay = 5000;
@@ -63,7 +67,53 @@ public class CaiyicaiFragment extends BaseFragment {
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.main_fragment_cai_start:
+			startTimer();
+			break;
+		case R.id.main_fragment_cai_stop:
+			stopTimer();
+			break;
+		default:
+			break;
+		}
+	}
 
+	/**
+	 * 
+	 * 下午5:16:58
+	 * 
+	 * @author Zhangyuhui CaiyicaiFragment.java TODO
+	 */
+	private void stopTimer() {
+		// TODO Auto-generated method stub
+		if (timer != null) {
+			timer.cancel();
+			timer = null;
+			System.gc();
+		}
+	}
+
+	/**
+	 * 
+	 * 下午5:16:46
+	 * 
+	 * @author Zhangyuhui CaiyicaiFragment.java TODO 开启计时
+	 */
+	private void startTimer() {
+		timer = new Timer();
+		timer.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
+				propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
+				manager.start();
+				manager.addAsyncTask(new HTTPSevTasker(getActivity(), null,
+						HTTPServ.CAIYICAI, handler, true, Literal.GET_HANDLER,
+						propety));
+			}
+		}, 0, delay);
 	}
 
 	/*
@@ -77,6 +127,8 @@ public class CaiyicaiFragment extends BaseFragment {
 		title = (TextView) rootView.findViewById(R.id.main_fragment_cai_name);
 		ques = (TextView) rootView.findViewById(R.id.main_fragment_cai_ques);
 		ans = (TextView) rootView.findViewById(R.id.main_fragment_cai_ans);
+		start = (Button) rootView.findViewById(R.id.main_fragment_cai_start);
+		stop = (Button) rootView.findViewById(R.id.main_fragment_cai_stop);
 	}
 
 	/*
@@ -87,20 +139,8 @@ public class CaiyicaiFragment extends BaseFragment {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-		timer = new Timer();
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
-				propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
-				manager.start();
-				manager.addAsyncTask(new HTTPSevTasker(getActivity(), null,
-						HTTPServ.CAIYICAI, handler, true, Literal.GET_HANDLER,
-						propety));
-			}
-		}, 0, delay);
+		start.setOnClickListener(this);
+		stop.setOnClickListener(this);
 	}
 
 	/*

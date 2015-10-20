@@ -12,6 +12,10 @@ package com.darly.activities.ui.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,18 +25,23 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.darly.activities.adapter.SetFragmentAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.SetFragmentModel;
+import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.R;
+import com.darly.activities.ui.login.LoginAcitvity;
 import com.darly.activities.ui.qrcode.MipcaActivityCapture;
+import com.darly.activities.widget.roundedimage.RoundedImageView;
+import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -92,8 +101,25 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.item_footer_btn:
-			ToastApp.showToast(getActivity(), "item_footer_btn");
-			PreferenceUserInfor.cleanUserInfor(getActivity());
+			// 退出程序。
+			new AlertDialog.Builder(getActivity()).setMessage("退出程序")
+					.setPositiveButton("确认", new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							PreferenceUserInfor.cleanUserInfor(getActivity());
+							System.exit(0);
+						}
+					}).setNegativeButton("取消", null).show();
+			break;
+		case R.id.set_login:
+			// 登录事件
+			startActivityForResult(new Intent(getActivity(),
+					LoginAcitvity.class), Activity.RESULT_FIRST_USER);
+			break;
+		case R.id.set_regest:
+			// 注册事件
 			break;
 		default:
 			break;
@@ -108,6 +134,7 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
+
 		title.setText(getClass().getSimpleName());
 		consel.setOnClickListener(this);
 		list.setOnItemClickListener(this);
@@ -118,7 +145,37 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 		headerIv.setLayoutParams(new LayoutParams(Literal.width,
 				414 * Literal.width / 1242));
 		headerIv.setImageResource(R.drawable.login_table_bg);
+
+		header.findViewById(R.id.set_login).setOnClickListener(this);
+		header.findViewById(R.id.set_regest).setOnClickListener(this);
+		loginUser();
 		list.addHeaderView(header);
+	}
+
+	/**
+	 * 
+	 * 下午4:21:49
+	 * 
+	 * @author Zhangyuhui SetFragment.java TODO 用户登录信息展示
+	 */
+	private void loginUser() {
+		// 进入页面先判断用户是否登录。
+		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, getActivity())) {
+			// 用户登录状态。界面进行变化。否则界面不变
+			header.findViewById(R.id.set_unlogin).setVisibility(View.GONE);
+			header.findViewById(R.id.set_islogin).setVisibility(View.VISIBLE);
+			UserInformation user = new Gson().fromJson(PreferenceUserInfor
+					.getUserInfor(Literal.USERINFO, getActivity()),
+					UserInformation.class);
+			TextView name = (TextView) header.findViewById(R.id.set_name);
+			name.setText(user.getUsername());
+			RoundedImageView image = (RoundedImageView) header
+					.findViewById(R.id.set_userimage);
+			imageLoader.displayImage(user.getUserPhoto(), image, options);
+		} else {
+			header.findViewById(R.id.set_unlogin).setVisibility(View.VISIBLE);
+			header.findViewById(R.id.set_islogin).setVisibility(View.GONE);
+		}
 	}
 
 	/*
@@ -191,7 +248,20 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 			break;
 		}
 		ToastApp.showToast(getActivity(), "position" + position);
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.Fragment#onActivityResult(int, int,
+	 * android.content.Intent)
+	 */
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		// TODO Auto-generated method stub
+		LogApp.i("SetFragment", "onActivityResult");
+		super.onActivityResult(requestCode, resultCode, data);
+		loginUser();
 	}
 
 }

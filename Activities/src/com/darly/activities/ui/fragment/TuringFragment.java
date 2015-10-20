@@ -43,6 +43,8 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 
 	private TextView content;
 
+	private StringBuffer buffer;
+
 	private EditText msg;
 
 	private Button btn;
@@ -100,9 +102,11 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 				.findViewById(R.id.main_fragment_turing_content);
 		msg = (EditText) rootView.findViewById(R.id.main_fragment_turing_msg);
 		btn = (Button) rootView.findViewById(R.id.main_fragment_turing_sub);
-		btn.setClickable(false);
-		btn.setOnClickListener(this);
+		buffer = new StringBuffer();
 
+		btn.setBackgroundResource(R.drawable.app_btn_unpress);
+		btn.setTextColor(getResources().getColor(R.color.pop_back));
+		btn.setClickable(false);
 	}
 
 	/*
@@ -114,6 +118,7 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 	public void initData() {
 		// TODO Auto-generated method stub
 		msg.addTextChangedListener(this);
+		btn.setOnClickListener(this);
 	}
 
 	/*
@@ -127,7 +132,8 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 		TuringModel model = new Gson().fromJson((String) object,
 				TuringModel.class);
 		if (model != null) {
-			content.setText(model.getText());
+			buffer.append(model.getText()).append("\r\n");
+			content.setText(buffer);
 		} else {
 			ToastApp.showToast(getActivity(), "网络异常，请检查网络");
 		}
@@ -167,9 +173,15 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 	@Override
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		// TODO Auto-generated method stub
+
 		if (s != null && !"".equals(s.toString())) {
+			btn.setBackgroundResource(R.drawable.app_btn_select);
+			btn.setTextColor(getResources().getColor(R.color.white));
 			btn.setClickable(true);
+
 		} else {
+			btn.setBackgroundResource(R.drawable.app_btn_unpress);
+			btn.setTextColor(getResources().getColor(R.color.pop_back));
 			btn.setClickable(false);
 		}
 	}

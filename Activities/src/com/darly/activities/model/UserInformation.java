@@ -29,6 +29,8 @@ public class UserInformation {
 
 	private String userBirthday;
 
+	private String userPhoto;
+
 	/**
 	 * 
 	 * 下午2:19:32
@@ -109,6 +111,14 @@ public class UserInformation {
 
 	public void setUserBirthday(String userBirthday) {
 		this.userBirthday = userBirthday;
+	}
+
+	public String getUserPhoto() {
+		return userPhoto;
+	}
+
+	public void setUserPhoto(String userPhoto) {
+		this.userPhoto = userPhoto;
 	}
 
 }

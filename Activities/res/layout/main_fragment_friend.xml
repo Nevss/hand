@@ -3,6 +3,7 @@
     android:id="@+id/index_fragment_linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_fragment_header"
     android:orientation="vertical" >
 
     <TextView
@@ -20,8 +21,8 @@
 
     <TextView
         android:id="@+id/main_fragment_frid_descrip"
-        android:layout_margin="10dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp" />
 
 </LinearLayout>

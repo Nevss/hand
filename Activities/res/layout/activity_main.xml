@@ -13,7 +13,7 @@
 
     <include
         android:layout_width="fill_parent"
-        android:layout_height="88dp"
+        android:layout_height="48dp"
         layout="@layout/main_bottom" />
 
 </LinearLayout>
