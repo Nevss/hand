@@ -25,9 +25,20 @@ import com.ytdinfo.keephealth.ui.view.CommonModifyView;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * SettingActivity
+ * $ UserInfoFragment点击设置按钮进入
+ * 上午9:17:04
+ * TODO 设置页面，关闭通知，退出登录页面
+ */
 public class SettingActivity extends BaseActivity implements OnClickListener {
 	private CommonActivityTopView commonActivityTopView;
 	private CommonModifyView commonModifyView;
+	/**
+	 * 上午9:25:49
+	 * TODO 在com.voice.demo.ui.CCPHelper类中判断是否开启消息提示。开启则震动通知，否则不震动。
+	 */
 	private ImageButton ibt_switch;
 	// 开关
 	int swh = 1;

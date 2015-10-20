@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.widget.carousel.Carousel;
 import com.darly.activities.widget.carousel.ImageHandler;
@@ -248,14 +247,8 @@ public class MeDetailsAcitvity extends BaseActivity {
 						Literal.REQUESTCODE_CAM);
 
 			}
-			int degree = pop.getBitmapDegree(head_path);
-			if (degree != 0) {
-				pop.new ImageDegree(degree, head_path, loading).execute();
-			} else {
-				LogApp.i(TAG, "返回的文件路径" + degree + head_path);
-				File temp = new File(head_path);
-				pop.cropPhoto(Uri.fromFile(temp));// 裁剪图片
-			}
+			File temp = new File(head_path);
+			pop.cropPhoto(Uri.fromFile(temp));// 裁剪图片
 		}
 	}
 

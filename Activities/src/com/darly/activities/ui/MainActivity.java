@@ -110,7 +110,7 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	/*
