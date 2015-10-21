@@ -17,9 +17,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.base.BaseWebView;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
@@ -29,10 +29,16 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 @ContentView(R.layout.activity_webview)
 public class WebViewActivity extends BaseActivity {
+
+	@ViewInject(R.id.main_header_back)
+	private Button back;
+	@ViewInject(R.id.main_header_text)
+	private TextView title;
 	/**
 	 * 上午11:51:49 TODO WebView 基础类
 	 */
-	private BaseWebView webview;
+	@ViewInject(R.id.main_webview)
+	private WebView webview;
 	@ViewInject(R.id.id_rl)
 	private RelativeLayout rl;
 	@ViewInject(R.id.id_bt_update)
@@ -55,8 +61,11 @@ public class WebViewActivity extends BaseActivity {
 			LogApp.i(TAG, "重新加载");
 			LogApp.i(TAG, current_url);
 			break;
-
+		case R.id.main_header_back:
+			finish();
+			break;
 		default:
+
 			break;
 		}
 	}
@@ -69,8 +78,8 @@ public class WebViewActivity extends BaseActivity {
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		webview = new BaseWebView(this);
 		String url = getIntent().getStringExtra("URL");
+		LogApp.i(TAG, url);
 		webview.loadUrl(url);
 		webViewListener();
 	}
@@ -83,7 +92,8 @@ public class WebViewActivity extends BaseActivity {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-
+//		title.setText("详情");
+//		back.setOnClickListener(this);
 	}
 
 	/*

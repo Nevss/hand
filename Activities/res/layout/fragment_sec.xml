@@ -1,0 +1,15 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_fragment_header"
+    android:orientation="vertical" >
+
+    <include layout="@layout/main_header" />
+
+    <com.darly.activities.widget.xlistview.XListView
+        android:id="@+id/fragment_sec_xlist"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

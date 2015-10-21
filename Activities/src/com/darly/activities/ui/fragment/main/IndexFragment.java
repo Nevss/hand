@@ -7,7 +7,7 @@
  * IndexFragment
  * TODO
  */
-package com.darly.activities.ui.fragment;
+package com.darly.activities.ui.fragment.main;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;

@@ -4,7 +4,7 @@
  * ChatFragment.java
  * TODO
  */
-package com.darly.activities.ui.fragment;
+package com.darly.activities.ui.fragment.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -118,7 +118,6 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 	public void initData() {
 		// TODO Auto-generated method stub
 		msg.addTextChangedListener(this);
-		btn.setOnClickListener(this);
 	}
 
 	/*
@@ -174,11 +173,11 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 	public void onTextChanged(CharSequence s, int start, int before, int count) {
 		// TODO Auto-generated method stub
 
-		if (s != null && !"".equals(s.toString())) {
+		if (s != null && s.length() != 0) {
 			btn.setBackgroundResource(R.drawable.app_btn_select);
 			btn.setTextColor(getResources().getColor(R.color.white));
 			btn.setClickable(true);
-
+			btn.setOnClickListener(this);
 		} else {
 			btn.setBackgroundResource(R.drawable.app_btn_unpress);
 			btn.setTextColor(getResources().getColor(R.color.pop_back));

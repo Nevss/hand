@@ -13,9 +13,9 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.ui.fragment.ChatFragment;
 import com.darly.activities.ui.fragment.MainFragment;
 import com.darly.activities.ui.fragment.MeFragment;
+import com.darly.activities.ui.fragment.SecFragment;
 import com.darly.activities.ui.fragment.SetFragment;
 import com.darly.activities.widget.pop.BottomPop;
 import com.lidroid.xutils.view.annotation.ContentView;
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity implements
 	/**
 	 * 下午6:03:37 TODO美女列表Fragment
 	 */
-	private ChatFragment chat;
+	private SecFragment sec;
 	/**
 	 * TODO用户信息设置Fragment
 	 */
@@ -178,13 +178,13 @@ public class MainActivity extends BaseActivity implements
 		case R.id.main_bottom_search:
 			search.setTextColor(getResources().getColor(
 					R.color.main_bottom_text));
-			if (chat != null) {
-				if (chat.isVisible())
+			if (sec != null) {
+				if (sec.isVisible())
 					return;
-				ft.show(chat);
+				ft.show(sec);
 			} else {
-				chat = new ChatFragment();
-				ft.add(R.id.main_frame, chat);
+				sec = new SecFragment();
+				ft.add(R.id.main_frame, sec);
 			}
 			break;
 		case R.id.main_bottom_set:
@@ -222,8 +222,8 @@ public class MainActivity extends BaseActivity implements
 		if (set != null) {
 			transaction.hide(set);
 		}
-		if (chat != null) {
-			transaction.hide(chat);
+		if (sec != null) {
+			transaction.hide(sec);
 		}
 	}
 

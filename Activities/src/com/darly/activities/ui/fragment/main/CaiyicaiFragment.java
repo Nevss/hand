@@ -4,7 +4,7 @@
  * ContactsFragment.java
  * TODO
  */
-package com.darly.activities.ui.fragment;
+package com.darly.activities.ui.fragment.main;
 
 import java.util.ArrayList;
 import java.util.List;

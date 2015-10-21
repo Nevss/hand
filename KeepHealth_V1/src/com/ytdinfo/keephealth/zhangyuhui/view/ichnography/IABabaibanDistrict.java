@@ -355,15 +355,16 @@ public class IABabaibanDistrict extends IABaseFrame {
 		bake.setLayoutParams(lp);
 		if (url != null) {
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
-//					.showStubImage(R.drawable.babaiban) // 设置图片下载期间显示的图片
-//					.showImageForEmptyUri(R.drawable.babaiban) // 设置图片Uri为空或是错误的时候显示的图片
-//					.showImageOnFail(R.drawable.babaiban) // 设置图片加载或解码过程中发生错误显示的图片
+			// .showStubImage(R.drawable.babaiban) // 设置图片下载期间显示的图片
+			// .showImageForEmptyUri(R.drawable.babaiban) //
+			// 设置图片Uri为空或是错误的时候显示的图片
+			// .showImageOnFail(R.drawable.babaiban) // 设置图片加载或解码过程中发生错误显示的图片
 					.bitmapConfig(Config.ARGB_8888).cacheInMemory(true) // 设置下载的图片是否缓存在内存中
 					.cacheOnDisc(true) // 设置下载的图片是否缓存在SD卡中
 					.build(); // 创建配置过得DisplayImageOption对象 ;
 			imageLoader.displayImage(url, bake, options);
 		} else {
-//			bake.setImageResource(R.drawable.babaiban);
+			// bake.setImageResource(R.drawable.babaiban);
 		}
 		IALiteral.bitmapwidth = IALiteral.width;
 		IALiteral.bitmapheight = IALiteral.width * IAPoisDataConfig.babaibanh
@@ -393,7 +394,6 @@ public class IABabaibanDistrict extends IABaseFrame {
 		nextCheck.setVisibility(View.INVISIBLE);
 		addView(nextCheck);
 	}
-
 
 	private void setColorByid(OrgView tv, IAOrganization_Departments dept) {
 		switch (dept.departments_state) {
@@ -433,9 +433,7 @@ public class IABabaibanDistrict extends IABaseFrame {
 					0, false);
 			// tv.getName().setTextSize(6);
 			// tv.setText("已体检的科室");
-			if (!hasNext) {
-				nextCheck.setVisibility(View.GONE);
-			}
+
 			break;
 		case 3:
 			// 不用体检
@@ -453,10 +451,13 @@ public class IABabaibanDistrict extends IABaseFrame {
 			// tv.setText("其他体检的科室");
 			break;
 		default:
+			if (!hasNext) {
+				nextCheck.setVisibility(View.GONE);
+			}
 			break;
 		}
 	}
-	
+
 	private boolean hasNext;
 
 	@Override
@@ -467,7 +468,7 @@ public class IABabaibanDistrict extends IABaseFrame {
 		for (IAOrganization_Departments entry : organization_departments) {
 			if (entry.getDepartments_state() == 1) {
 				hasNext = true;
-			}else {
+			} else {
 				hasNext = false;
 			}
 		}

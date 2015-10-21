@@ -30,6 +30,11 @@ import com.darly.activities.adapter.FragmentAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
 import com.darly.activities.ui.R;
+import com.darly.activities.ui.fragment.main.CaiyicaiFragment;
+import com.darly.activities.ui.fragment.main.ChatFragment;
+import com.darly.activities.ui.fragment.main.FriendFragment;
+import com.darly.activities.ui.fragment.main.IndexFragment;
+import com.darly.activities.ui.fragment.main.TuringFragment;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
