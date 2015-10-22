@@ -9,6 +9,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
 
+import com.darly.activities.common.BaseData;
+import com.darly.activities.common.Literal;
+import com.gotye.api.GotyeAPI;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -45,10 +48,15 @@ public class AppStack extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		instance = this;
+
+		// 使用您在亲加管理平台申请到的appkey初始化API，appkey如果为空会返回参数错误。
+		// 下文提到的gotyeApi即为GotyeAPI，后续不再赘述。
+		GotyeAPI gotyeApi = GotyeAPI.getInstance();
+		gotyeApi.init(this, Literal.QJAppKey);
 		// 融云即时通讯接入项目后融云无法初始化。找不到融云类。无法继续。更换其他厂家进行集成。
-		// if (Literal.users == null) {
-		// Literal.users = BaseData.getUsers();
-		// }
+		if (Literal.users == null) {
+			Literal.users = BaseData.getUsers();
+		}
 		initImageLoader();
 		// /**
 		// * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIM 的进程和 Push 进程执行了 init。
@@ -73,46 +81,46 @@ public class AppStack extends Application {
 
 	}
 
-//	/**
-//	 * 
-//	 * 下午6:12:34
-//	 * 
-//	 * @author Zhangyuhui AppStack.java TODO
-//	 */
-//	public static void initConnRongIM(Context context) {
-//		// 登录状态下。
-//		// TODO Auto-generated method stub
-//		for (UserInformation use : Literal.users) {
-//			UserInformation information = new Gson()
-//					.fromJson(PreferenceUserInfor.getUserInfor(
-//							Literal.USERINFO, context), UserInformation.class);
-//			if (use.getUserID().endsWith(information.getUserID())) {
-//				if (use.getUserToken() != null
-//						&& use.getUserToken().length() != 0) {
-//					RongIM.connect(use.getUserToken(), new ConnectCallback() {
-//
-//						@Override
-//						public void onSuccess(String userid) {
-//							// TODO Auto-generated method stub
-//							Log.d("LoginActivity", "--onSuccess" + userid);
-//						}
-//
-//						@Override
-//						public void onError(ErrorCode errorCode) {
-//							// TODO Auto-generated method stub
-//							Log.d("LoginActivity", "--onError" + errorCode);
-//						}
-//
-//						@Override
-//						public void onTokenIncorrect() {
-//							// TODO Auto-generated method stub
-//							Log.d("LoginActivity", "--onTokenIncorrect");
-//						}
-//					});
-//				}
-//			}
-//		}
-//	}
+	// /**
+	// *
+	// * 下午6:12:34
+	// *
+	// * @author Zhangyuhui AppStack.java TODO
+	// */
+	// public static void initConnRongIM(Context context) {
+	// // 登录状态下。
+	// // TODO Auto-generated method stub
+	// for (UserInformation use : Literal.users) {
+	// UserInformation information = new Gson()
+	// .fromJson(PreferenceUserInfor.getUserInfor(
+	// Literal.USERINFO, context), UserInformation.class);
+	// if (use.getUserID().endsWith(information.getUserID())) {
+	// if (use.getUserToken() != null
+	// && use.getUserToken().length() != 0) {
+	// RongIM.connect(use.getUserToken(), new ConnectCallback() {
+	//
+	// @Override
+	// public void onSuccess(String userid) {
+	// // TODO Auto-generated method stub
+	// Log.d("LoginActivity", "--onSuccess" + userid);
+	// }
+	//
+	// @Override
+	// public void onError(ErrorCode errorCode) {
+	// // TODO Auto-generated method stub
+	// Log.d("LoginActivity", "--onError" + errorCode);
+	// }
+	//
+	// @Override
+	// public void onTokenIncorrect() {
+	// // TODO Auto-generated method stub
+	// Log.d("LoginActivity", "--onTokenIncorrect");
+	// }
+	// });
+	// }
+	// }
+	// }
+	// }
 
 	/**
 	 * 获得当前进程的名字

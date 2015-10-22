@@ -89,7 +89,7 @@ public class LoginAcitvity extends BaseActivity {
 			finish();
 			break;
 		case R.id.act_login_login:
-			//双用户登录。可以进行双通讯。
+			// 双用户登录。可以进行双通讯。
 			if ("18321127312".equals(name.getText().getText().toString())) {
 				if ("111111".equals(pass.getText().getText().toString())) {
 					JSONObject object = new JSONObject();
@@ -97,6 +97,7 @@ public class LoginAcitvity extends BaseActivity {
 						// 测试数据
 						object.put("username", "18321127312");
 						object.put("password", "111111");
+						object.put("userID", "18321127312");
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
@@ -117,6 +118,7 @@ public class LoginAcitvity extends BaseActivity {
 						// 测试数据
 						object.put("username", "13891431454");
 						object.put("password", "111111");
+						object.put("userID", "13891431454");
 					} catch (Exception e) {
 						// TODO: handle exception
 					}

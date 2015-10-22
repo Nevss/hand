@@ -1,8 +1,10 @@
 package com.darly.activities.widget.carousel;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -16,8 +18,12 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
+import com.darly.activities.model.UserInformation;
+import com.darly.activities.ui.ChatPage;
 import com.darly.activities.ui.R;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -285,23 +291,45 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 				// 点击事件。
 				ToastApp.showToast(context, data.get(a));
 				// 点击进入单聊模式
-				// if (PreferenceUserInfor.isUserLogin(Literal.USERINFO,
-				// context)) {
-				// UserInformation information = new Gson().fromJson(
-				// PreferenceUserInfor.getUserInfor(Literal.USERINFO,
-				// context), UserInformation.class);
-				// for (int i = 0; i < Literal.users.size(); i++) {
-				// if (information.getUserID().equals(
-				// Literal.users.get(i).getUserID())) {	
-				// Literal.users.remove(i);
-				// break;
+				// GotyeAPI.getInstance().markMessagesAsRead(target, true);
+				// if (target.getType() ==
+				// GotyeChatTargetType.GotyeChatTargetTypeUser) {
+
+				if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, context)) {
+					UserInformation information = new Gson().fromJson(
+							PreferenceUserInfor.getUserInfor(Literal.USERINFO,
+									context), UserInformation.class);
+					for (int i = 0; i < Literal.users.size(); i++) {
+						if (Literal.users.get(i).getUserID()
+								.equals(information.getUserID())) {
+							Literal.users.remove(i);
+							break;
+						}
+					}
+				}
+				UserInformation nextTalk = Literal.users.get(new Random()
+						.nextInt(Literal.users.size()));
+				Intent toChat = new Intent(context, ChatPage.class);
+				toChat.putExtra("user", nextTalk.getUser());
+				context.startActivity(toChat);
+				// updateList();
+				// } else if (target.getType() ==
+				// GotyeChatTargetType.GotyeChatTargetTypeRoom) {
+				// Intent toChat = new Intent(context, ChatPage.class);
+				// toChat.putExtra("room", (GotyeRoom) target);
+				// context.startActivity(toChat);
+				//
+				// } else if (target.getType() ==
+				// GotyeChatTargetType.GotyeChatTargetTypeGroup) {
+				// Intent toChat = new Intent(context, ChatPage.class);
+				// toChat.putExtra("group", (GotyeGroup) target);
+				// context.startActivity(toChat);
+				// } else if (target.getType() ==
+				// GotyeChatTargetType.GotyeChatTargetTypeCustomerService) {
+				// Intent toChat = new Intent(context, ChatPage.class);
+				// toChat.putExtra("cserver", (GotyeCustomerService) target);
+				// context.startActivity(toChat);
 				// }
-				// }
-				// }
-				// UserInformation nextTalk = Literal.users.get(new Random()
-				// .nextInt(Literal.users.size()));
-				// RongIM.getInstance().startPrivateChat(context,
-				// nextTalk.getUserID(), nextTalk.getUsername());
 			}
 		});
 	}

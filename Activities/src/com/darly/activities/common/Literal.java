@@ -77,6 +77,8 @@ public class Literal {
 	public static final int TOKEN = 0x1004;
 
 	public static final String USERINFO = "USERDATA";
-	
+
 	public static ArrayList<UserInformation> users;
+
+	public static String QJAppKey = "71f48a13-4a2f-4e7e-b4b0-7b1bd961793b";
 }
