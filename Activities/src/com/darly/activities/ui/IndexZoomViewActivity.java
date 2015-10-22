@@ -493,6 +493,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 	private float endMoveY;
 	private boolean isSingleFig = true;
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			isFirst = true;

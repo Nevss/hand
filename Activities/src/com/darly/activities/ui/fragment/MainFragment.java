@@ -308,9 +308,9 @@ public class MainFragment extends BaseFragment implements
 			@Override
 			public void run() {
 				if (left) {
-					scroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+					scroll.fullScroll(View.FOCUS_RIGHT);
 				} else {
-					scroll.fullScroll(HorizontalScrollView.FOCUS_LEFT);
+					scroll.fullScroll(View.FOCUS_LEFT);
 				}
 			}
 		});

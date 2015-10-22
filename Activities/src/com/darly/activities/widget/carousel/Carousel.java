@@ -1,7 +1,5 @@
 package com.darly.activities.widget.carousel;
 
-import io.rong.imkit.RongIM;
-
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -184,8 +182,22 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 			// 一个轮播的点击事件。
 			ToastApp.showToast(context, data.get(0));
 			// 点击进入单聊模式
-			RongIM.getInstance().startPrivateChat(context, Literal.uiserID,
-					"null");
+			// if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, context)) {
+			// UserInformation information = new Gson().fromJson(
+			// PreferenceUserInfor.getUserInfor(Literal.USERINFO,
+			// context), UserInformation.class);
+			// for (int i = 0; i < Literal.users.size(); i++) {
+			// if (information.getUserID().equals(
+			// Literal.users.get(i).getUserID())) {
+			// Literal.users.remove(i);
+			// break;
+			// }
+			// }
+			// }
+			// UserInformation nextTalk = Literal.users.get(new Random()
+			// .nextInt(Literal.users.size()));
+			// RongIM.getInstance().startPrivateChat(context,
+			// nextTalk.getUserID(), nextTalk.getUsername());
 			break;
 
 		default:
@@ -273,6 +285,23 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 				// 点击事件。
 				ToastApp.showToast(context, data.get(a));
 				// 点击进入单聊模式
+				// if (PreferenceUserInfor.isUserLogin(Literal.USERINFO,
+				// context)) {
+				// UserInformation information = new Gson().fromJson(
+				// PreferenceUserInfor.getUserInfor(Literal.USERINFO,
+				// context), UserInformation.class);
+				// for (int i = 0; i < Literal.users.size(); i++) {
+				// if (information.getUserID().equals(
+				// Literal.users.get(i).getUserID())) {	
+				// Literal.users.remove(i);
+				// break;
+				// }
+				// }
+				// }
+				// UserInformation nextTalk = Literal.users.get(new Random()
+				// .nextInt(Literal.users.size()));
+				// RongIM.getInstance().startPrivateChat(context,
+				// nextTalk.getUserID(), nextTalk.getUsername());
 			}
 		});
 	}

@@ -1,9 +1,5 @@
 package com.darly.activities.app;
 
-import io.rong.imkit.RongIM;
-import io.rong.imlib.RongIMClient.ConnectCallback;
-import io.rong.imlib.RongIMClient.ErrorCode;
-
 import java.io.File;
 
 import android.app.ActivityManager;
@@ -12,9 +8,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.darly.activities.common.Literal;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -51,56 +45,74 @@ public class AppStack extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		instance = this;
+		// 融云即时通讯接入项目后融云无法初始化。找不到融云类。无法继续。更换其他厂家进行集成。
+		// if (Literal.users == null) {
+		// Literal.users = BaseData.getUsers();
+		// }
 		initImageLoader();
+		// /**
+		// * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIM 的进程和 Push 进程执行了 init。
+		// * io.rong.push 为融云 push 进程名称，不可修改。
+		// */
+		// if (getApplicationInfo().packageName
+		// .equals(getCurProcessName(getApplicationContext()))
+		// || "io.rong.push"
+		// .equals(getCurProcessName(getApplicationContext()))) {
+		// /**
+		// * IMKit SDK调用第一步 初始化
+		// */
+		// LogApp.i("AppStack", "开始初始化融云");
+		// RongIM.init(this);
+		// LogApp.i("AppStack", "初始化融云完成");
+		// // 登录状态下进入初始化阶段
+		// if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, this)) {
+		// // 获取用户列表的测试数据
+		// initConnRongIM(this);
+		// }
+		// }
 
-		/**
-		 * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIM 的进程和 Push 进程执行了 init。
-		 * io.rong.push 为融云 push 进程名称，不可修改。
-		 */
-		if (getApplicationInfo().packageName
-				.equals(getCurProcessName(getApplicationContext()))
-				|| "io.rong.push"
-						.equals(getCurProcessName(getApplicationContext()))) {
-
-			/**
-			 * IMKit SDK调用第一步 初始化
-			 */
-			RongIM.init(this);
-		}
-		initConnRongIM();
 	}
 
-	/**
-	 * 
-	 * 下午6:12:34
-	 * 
-	 * @author Zhangyuhui AppStack.java TODO
-	 */
-	private void initConnRongIM() {
-		// TODO Auto-generated method stub
-		if (Literal.token != null && Literal.token.length() != 0) {
-			RongIM.connect(Literal.token, new ConnectCallback() {
-
-				@Override
-				public void onSuccess(String userid) {
-					// TODO Auto-generated method stub
-					Log.d("LoginActivity", "--onSuccess" + userid);
-				}
-
-				@Override
-				public void onError(ErrorCode errorCode) {
-					// TODO Auto-generated method stub
-					Log.d("LoginActivity", "--onError" + errorCode);
-				}
-
-				@Override
-				public void onTokenIncorrect() {
-					// TODO Auto-generated method stub
-					Log.d("LoginActivity", "--onTokenIncorrect");
-				}
-			});
-		}
-	}
+//	/**
+//	 * 
+//	 * 下午6:12:34
+//	 * 
+//	 * @author Zhangyuhui AppStack.java TODO
+//	 */
+//	public static void initConnRongIM(Context context) {
+//		// 登录状态下。
+//		// TODO Auto-generated method stub
+//		for (UserInformation use : Literal.users) {
+//			UserInformation information = new Gson()
+//					.fromJson(PreferenceUserInfor.getUserInfor(
+//							Literal.USERINFO, context), UserInformation.class);
+//			if (use.getUserID().endsWith(information.getUserID())) {
+//				if (use.getUserToken() != null
+//						&& use.getUserToken().length() != 0) {
+//					RongIM.connect(use.getUserToken(), new ConnectCallback() {
+//
+//						@Override
+//						public void onSuccess(String userid) {
+//							// TODO Auto-generated method stub
+//							Log.d("LoginActivity", "--onSuccess" + userid);
+//						}
+//
+//						@Override
+//						public void onError(ErrorCode errorCode) {
+//							// TODO Auto-generated method stub
+//							Log.d("LoginActivity", "--onError" + errorCode);
+//						}
+//
+//						@Override
+//						public void onTokenIncorrect() {
+//							// TODO Auto-generated method stub
+//							Log.d("LoginActivity", "--onTokenIncorrect");
+//						}
+//					});
+//				}
+//			}
+//		}
+//	}
 
 	/**
 	 * 获得当前进程的名字

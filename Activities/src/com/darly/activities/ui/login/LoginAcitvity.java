@@ -89,6 +89,7 @@ public class LoginAcitvity extends BaseActivity {
 			finish();
 			break;
 		case R.id.act_login_login:
+			//双用户登录。可以进行双通讯。
 			if ("18321127312".equals(name.getText().getText().toString())) {
 				if ("111111".equals(pass.getText().getText().toString())) {
 					JSONObject object = new JSONObject();
@@ -101,7 +102,28 @@ public class LoginAcitvity extends BaseActivity {
 					}
 					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
 							object.toString(), this);
-
+					// 登录成功后进行初始化融云通讯。
+					// AppStack.initConnRongIM(this);
+					ToastApp.showToast(this, "登录成功");
+					finish();
+				} else {
+					ToastApp.showToast(this, "用户名密码错误");
+				}
+			} else if ("13891431454"
+					.equals(name.getText().getText().toString())) {
+				if ("111111".equals(pass.getText().getText().toString())) {
+					JSONObject object = new JSONObject();
+					try {
+						// 测试数据
+						object.put("username", "13891431454");
+						object.put("password", "111111");
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
+							object.toString(), this);
+					// 登录成功后进行初始化融云通讯。
+					// AppStack.initConnRongIM(this);
 					ToastApp.showToast(this, "登录成功");
 					finish();
 				} else {
@@ -264,7 +286,7 @@ public class LoginAcitvity extends BaseActivity {
 		if (restore != null) {
 			restore.setFlag(false);
 		}
-		
+
 		super.finish();
 	}
 

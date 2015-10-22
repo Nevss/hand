@@ -1,10 +1,13 @@
 package com.darly.activities.common;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Environment;
 import android.view.WindowManager;
 
 import com.darly.activities.app.Declare;
+import com.darly.activities.model.UserInformation;
 
 /**
  * @ClassName: Literal
@@ -73,11 +76,7 @@ public class Literal {
 	public static final int REQUESTCODE_CUT = 0x1003;
 	public static final int TOKEN = 0x1004;
 
-	public static final String USERINFO = "USER";
-
-	// {"code":200,"userId":"18321127312","token":
-	// "+9SIwce7WWdenAPV68stCbEzg2PO5RfFjDpIMZ3SH5pI+C8Qo/55ds2uaBIsRNDUA/G+ZMIfJO8SRi2C78cM3snEM7o3kRwf"}
-	public static String uiserID = "18321127312";
-	public static String token = "+9SIwce7WWdenAPV68stCbEzg2PO5RfFjDpIMZ3SH5pI+C8Qo/55ds2uaBIsRNDUA/G+ZMIfJO8SRi2C78cM3snEM7o3kRwf";
-
+	public static final String USERINFO = "USERDATA";
+	
+	public static ArrayList<UserInformation> users;
 }
