@@ -95,6 +95,8 @@ public abstract class BaseActivity extends FragmentActivity implements
 		initView(savedInstanceState);
 		initData();
 		LogApp.i(TAG, AppStack.getDeviceInfo(this));
+		
+		
 
 	}
 

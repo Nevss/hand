@@ -1,13 +1,20 @@
 package com.darly.activities.app;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient.ConnectCallback;
+import io.rong.imlib.RongIMClient.ErrorCode;
+
 import java.io.File;
 
+import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.darly.activities.common.Literal;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -45,6 +52,77 @@ public class AppStack extends Application {
 		super.onCreate();
 		instance = this;
 		initImageLoader();
+
+		/**
+		 * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIM 的进程和 Push 进程执行了 init。
+		 * io.rong.push 为融云 push 进程名称，不可修改。
+		 */
+		if (getApplicationInfo().packageName
+				.equals(getCurProcessName(getApplicationContext()))
+				|| "io.rong.push"
+						.equals(getCurProcessName(getApplicationContext()))) {
+
+			/**
+			 * IMKit SDK调用第一步 初始化
+			 */
+			RongIM.init(this);
+		}
+		initConnRongIM();
+	}
+
+	/**
+	 * 
+	 * 下午6:12:34
+	 * 
+	 * @author Zhangyuhui AppStack.java TODO
+	 */
+	private void initConnRongIM() {
+		// TODO Auto-generated method stub
+		if (Literal.token != null && Literal.token.length() != 0) {
+			RongIM.connect(Literal.token, new ConnectCallback() {
+
+				@Override
+				public void onSuccess(String userid) {
+					// TODO Auto-generated method stub
+					Log.d("LoginActivity", "--onSuccess" + userid);
+				}
+
+				@Override
+				public void onError(ErrorCode errorCode) {
+					// TODO Auto-generated method stub
+					Log.d("LoginActivity", "--onError" + errorCode);
+				}
+
+				@Override
+				public void onTokenIncorrect() {
+					// TODO Auto-generated method stub
+					Log.d("LoginActivity", "--onTokenIncorrect");
+				}
+			});
+		}
+	}
+
+	/**
+	 * 获得当前进程的名字
+	 *
+	 * @param context
+	 * @return 进程号
+	 */
+	public static String getCurProcessName(Context context) {
+
+		int pid = android.os.Process.myPid();
+
+		ActivityManager activityManager = (ActivityManager) context
+				.getSystemService(Context.ACTIVITY_SERVICE);
+
+		for (ActivityManager.RunningAppProcessInfo appProcess : activityManager
+				.getRunningAppProcesses()) {
+
+			if (appProcess.pid == pid) {
+				return appProcess.processName;
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -100,11 +178,8 @@ public class AppStack extends Application {
 
 	/**
 	 * @param context
-	 * @return
-	 * 下午1:53:21
-	 * @author Zhangyuhui
-	 * AppStack.java
-	 * TODO 友盟获取设备信息的方法体。
+	 * @return 下午1:53:21
+	 * @author Zhangyuhui AppStack.java TODO 友盟获取设备信息的方法体。
 	 */
 	public static String getDeviceInfo(Context context) {
 		try {
@@ -130,7 +205,7 @@ public class AppStack extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 }

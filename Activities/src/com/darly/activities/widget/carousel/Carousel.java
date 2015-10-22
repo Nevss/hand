@@ -1,5 +1,7 @@
 package com.darly.activities.widget.carousel;
 
+import io.rong.imkit.RongIM;
+
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -181,6 +183,9 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 		case R.id.carousel_onlyone:
 			// 一个轮播的点击事件。
 			ToastApp.showToast(context, data.get(0));
+			// 点击进入单聊模式
+			RongIM.getInstance().startPrivateChat(context, Literal.uiserID,
+					"null");
 			break;
 
 		default:
@@ -267,6 +272,7 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 				// TODO Auto-generated method stub
 				// 点击事件。
 				ToastApp.showToast(context, data.get(a));
+				// 点击进入单聊模式
 			}
 		});
 	}
