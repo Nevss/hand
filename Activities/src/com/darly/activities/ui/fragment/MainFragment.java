@@ -108,11 +108,11 @@ public class MainFragment extends BaseFragment implements
 	public void initView() {
 		// TODO Auto-generated method stub
 		radio.setOnCheckedChangeListener(this);
-		fragmentList.add(new TuringFragment());
+		fragmentList.add(new IndexFragment());
 		fragmentList.add(new CaiyicaiFragment());
 		fragmentList.add(new FriendFragment());
 		fragmentList.add(new ChatFragment());
-		fragmentList.add(new IndexFragment());
+		fragmentList.add(new TuringFragment());
 		mFragmentAdapter = new FragmentAdapter(getActivity()
 				.getSupportFragmentManager(), fragmentList);
 		viewpager.setAdapter(mFragmentAdapter);

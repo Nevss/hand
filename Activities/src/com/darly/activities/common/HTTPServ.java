@@ -24,10 +24,9 @@ public class HTTPServ {
 	 * 上午11:35:04 TODO 图灵测试。
 	 */
 	public static final String TURING = " http://apis.baidu.com/turing/turing/turing";
-	
+
 	/**
-	 * 下午1:33:56
-	 * TODO 猜一猜借口
+	 * 下午1:33:56 TODO 猜一猜借口
 	 */
 	public static final String CAIYICAI = " http://apis.baidu.com/myml/c1c/c1c";
 }

@@ -13,9 +13,9 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.ui.fragment.ContactsFragment;
 import com.darly.activities.ui.fragment.MainFragment;
 import com.darly.activities.ui.fragment.MeFragment;
-import com.darly.activities.ui.fragment.SecFragment;
 import com.darly.activities.ui.fragment.SetFragment;
 import com.darly.activities.widget.pop.BottomPop;
 import com.lidroid.xutils.view.annotation.ContentView;
@@ -69,7 +69,7 @@ public class MainActivity extends BaseActivity implements
 	/**
 	 * 下午6:03:37 TODO美女列表Fragment
 	 */
-	private SecFragment sec;
+	private ContactsFragment sec;
 	/**
 	 * TODO用户信息设置Fragment
 	 */
@@ -183,7 +183,7 @@ public class MainActivity extends BaseActivity implements
 					return;
 				ft.show(sec);
 			} else {
-				sec = new SecFragment();
+				sec = new ContactsFragment();
 				ft.add(R.id.main_frame, sec);
 			}
 			break;
