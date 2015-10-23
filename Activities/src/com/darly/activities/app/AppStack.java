@@ -11,6 +11,10 @@ import android.text.TextUtils;
 
 import com.darly.activities.common.BaseData;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
+import com.darly.activities.common.PreferenceUserInfor;
+import com.darly.activities.model.UserInformation;
+import com.google.gson.Gson;
 import com.gotye.api.GotyeAPI;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -48,16 +52,28 @@ public class AppStack extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		instance = this;
-
 		// 使用您在亲加管理平台申请到的appkey初始化API，appkey如果为空会返回参数错误。
 		// 下文提到的gotyeApi即为GotyeAPI，后续不再赘述。
+		LogApp.i(getClass().getName(), "开始初始化即时通讯");
 		GotyeAPI gotyeApi = GotyeAPI.getInstance();
 		gotyeApi.init(this, Literal.QJAppKey);
-		// 融云即时通讯接入项目后融云无法初始化。找不到融云类。无法继续。更换其他厂家进行集成。
+
+		LogApp.i(getClass().getName(), "即时通讯初始化完成");
+
 		if (Literal.users == null) {
 			Literal.users = BaseData.getUsers();
 		}
+
+		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, this)) {
+			// 用户登录后，获取到用户的详细信息。 然后用户初始化完成后直接登录。即时通讯。
+			UserInformation information = new Gson().fromJson(
+					PreferenceUserInfor.getUserInfor(Literal.USERINFO, this),
+					UserInformation.class);
+			gotyeApi.login(information.getUserTrueName(), null);
+		}
 		initImageLoader();
+
+		// 融云即时通讯接入项目后融云无法初始化。找不到融云类。无法继续。更换其他厂家进行集成。
 		// /**
 		// * OnCreate 会被多个进程重入，这段保护代码，确保只有您需要使用 RongIM 的进程和 Push 进程执行了 init。
 		// * io.rong.push 为融云 push 进程名称，不可修改。
@@ -73,11 +89,6 @@ public class AppStack extends Application {
 		// RongIM.init(this);
 		// LogApp.i("AppStack", "初始化融云完成");
 		// // 登录状态下进入初始化阶段
-		// if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, this)) {
-		// // 获取用户列表的测试数据
-		// initConnRongIM(this);
-		// }
-		// }
 
 	}
 

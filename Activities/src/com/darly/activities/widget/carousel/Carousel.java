@@ -24,6 +24,7 @@ import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.ChatPage;
 import com.darly.activities.ui.R;
 import com.google.gson.Gson;
+import com.gotye.api.GotyeAPI;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -306,12 +307,17 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 							break;
 						}
 					}
+					UserInformation nextTalk = Literal.users.get(new Random()
+							.nextInt(Literal.users.size()));
+					GotyeAPI.getInstance().markMessagesAsRead(
+							nextTalk.getUser(), true);
+					Intent toChat = new Intent(context, ChatPage.class);
+					toChat.putExtra("user", nextTalk.getUser());
+					context.startActivity(toChat);
+				} else {
+					PreferenceUserInfor.intenTO(context);
 				}
-				UserInformation nextTalk = Literal.users.get(new Random()
-						.nextInt(Literal.users.size()));
-				Intent toChat = new Intent(context, ChatPage.class);
-				toChat.putExtra("user", nextTalk.getUser());
-				context.startActivity(toChat);
+
 				// updateList();
 				// } else if (target.getType() ==
 				// GotyeChatTargetType.GotyeChatTargetTypeRoom) {

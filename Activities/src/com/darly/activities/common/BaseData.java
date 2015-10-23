@@ -62,7 +62,7 @@ public class BaseData {
 		user1.setUserTrueName("darly");
 		user1.setUserID("18321127312");
 		user1.setUserToken("+9SIwce7WWdenAPV68stCbEzg2PO5RfFjDpIMZ3SH5pI+C8Qo/55ds2uaBIsRNDUA/G+ZMIfJO8SRi2C78cM3snEM7o3kRwf");
-		user1.setUser(new GotyeUser("18321127312"));
+		user1.setUser(new GotyeUser("darly"));
 		infos.add(user1);
 
 		UserInformation user2 = new UserInformation();
@@ -72,7 +72,7 @@ public class BaseData {
 		user2.setUserTrueName("hellen");
 		user2.setUserID("13891431454");
 		user2.setUserToken("0IJdBjvLpZ3E62ivp+VZxTpfCOjKborXvgZ7VwhenilYR5KmRB6ja9rjep8KOoP2w0DfbHgvoCeWDps/MXaiQgYHpk+t6P1J");
-		user2.setUser(new GotyeUser("13891431454"));
+		user2.setUser(new GotyeUser("hellen"));
 		infos.add(user2);
 
 		return infos;

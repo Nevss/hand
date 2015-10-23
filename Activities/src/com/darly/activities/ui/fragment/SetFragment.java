@@ -168,7 +168,7 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 					.getUserInfor(Literal.USERINFO, getActivity()),
 					UserInformation.class);
 			TextView name = (TextView) header.findViewById(R.id.set_name);
-			name.setText(user.getUsername());
+			name.setText(user.getUserTrueName());
 			RoundedImageView image = (RoundedImageView) header
 					.findViewById(R.id.set_userimage);
 			imageLoader.displayImage(user.getUserPhoto(), image, options);

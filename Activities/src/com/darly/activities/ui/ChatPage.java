@@ -43,8 +43,11 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
+import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
+import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.qinjia.ChatMessageAdapter;
 import com.darly.activities.ui.qinjia.GotyeVoicePlayClickPlayListener;
 import com.darly.activities.ui.qinjia.RTPullListView;
@@ -53,6 +56,7 @@ import com.darly.activities.ui.qinjia.util.CommonUtils;
 import com.darly.activities.ui.qinjia.util.SendImageMessageTask;
 import com.darly.activities.ui.qinjia.util.URIUtil;
 import com.darly.activities.widget.load.ProgressDialogUtil;
+import com.google.gson.Gson;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeChatTarget;
 import com.gotye.api.GotyeChatTargetType;
@@ -67,6 +71,9 @@ import com.gotye.api.GotyeStatusCode;
 import com.gotye.api.GotyeUser;
 import com.gotye.api.WhineMode;
 
+/**
+ * @author Zhangyuhui ChatPage $ 上午9:54:58 TODO 用户聊天窗口。
+ */
 public class ChatPage extends Activity implements OnClickListener {
 	public static final int REALTIMEFROM_OTHER = 2;
 	public static final int REALTIMEFROM_SELF = 1;
@@ -75,11 +82,29 @@ public class ChatPage extends Activity implements OnClickListener {
 	private static final int REQUEST_CAMERA = 2;
 
 	public static final int VOICE_MAX_TIME = 60 * 1000;
+	/**
+	 * 上午9:55:23 TODO 消息列表
+	 */
 	private RTPullListView pullListView;
+	/**
+	 * 上午9:55:32 TODO 消息列表适配器
+	 */
 	public ChatMessageAdapter adapter;
+	/**
+	 * 上午9:55:44 TODO 私聊
+	 */
 	private GotyeUser o_user, user;
+	/**
+	 * 上午9:55:58 TODO 群聊
+	 */
 	private GotyeRoom o_room, room;
+	/**
+	 * 上午9:56:07 TODO 组群
+	 */
 	private GotyeGroup o_group, group;
+	/**
+	 * 上午9:56:15 TODO 服务
+	 */
 	private GotyeCustomerService o_cserver, cserver;
 	private GotyeUser currentLoginUser;
 	private ImageView voice_text_chage;
@@ -123,14 +148,30 @@ public class ChatPage extends Activity implements OnClickListener {
 		// mASREngine = VoiceRecognitionClient.getInstance(this);
 		// mASREngine.setTokenApis(Constants.API_KEY, Constants.SECRET_KEY);
 		currentLoginUser = api.getLoginUser();
+		UserInformation information = new Gson().fromJson(
+				PreferenceUserInfor.getUserInfor(Literal.USERINFO, this),
+				UserInformation.class);
+		if (currentLoginUser != null
+				&& !information.getUserTrueName().equals(
+						currentLoginUser.getName())) {
+			api.login(information.getUserTrueName(), null);
+		}
 		// api.addListener(this);
 		api.addListener(mDelegate);
-		o_user = user = (GotyeUser) getIntent().getSerializableExtra("user");
-		o_room = room = (GotyeRoom) getIntent().getSerializableExtra("room");
-		o_group = group = (GotyeGroup) getIntent()
-				.getSerializableExtra("group");
-		o_cserver = cserver = (GotyeCustomerService) getIntent()
-				.getSerializableExtra("cserver");
+		try {
+			o_user = user = (GotyeUser) getIntent()
+					.getSerializableExtra("user");
+			o_room = room = (GotyeRoom) getIntent()
+					.getSerializableExtra("room");
+			o_group = group = (GotyeGroup) getIntent().getSerializableExtra(
+					"group");
+			o_cserver = cserver = (GotyeCustomerService) getIntent()
+					.getSerializableExtra("cserver");
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+
 		initView();
 		if (chatType == 0) {
 			api.activeSession(user);
@@ -300,6 +341,7 @@ public class ChatPage extends Activity implements OnClickListener {
 		pullListView.setAdapter(adapter);
 		pullListView.setSelection(adapter.getCount());
 		setListViewInfo();
+		refreshToTail();
 	}
 
 	private void sendTextMessage(String text) {
@@ -343,6 +385,7 @@ public class ChatPage extends Activity implements OnClickListener {
 			Log.d("", String.valueOf(code));
 			adapter.addMsgToBottom(toSend);
 			refreshToTail();
+			refresh();
 		}
 	}
 
@@ -406,6 +449,7 @@ public class ChatPage extends Activity implements OnClickListener {
 			api.sendMessage(toSend);
 			adapter.addMsgToBottom(toSend);
 			refreshToTail();
+			refresh();
 		}
 	}
 
@@ -426,23 +470,23 @@ public class ChatPage extends Activity implements OnClickListener {
 			return;
 		}
 
-		LogApp.i(chatType+"");
-//		if (chatType == 0) {
-//			Intent intent = getIntent();
-//			intent.setClass(getApplication(), UserInfoPage.class);
-//			intent.putExtra("user", user);
-//			startActivity(intent);
-//		} else if (chatType == 1) {
-//			Intent info = new Intent(getApplication(), RoomInfoPage.class);
-//			info.putExtra("room", room);
-//			startActivity(info);
-//		} else if (chatType == 2) {
-//			Intent info = new Intent(getApplication(), GroupInfoPage.class);
-//			info.putExtra("group", group);
-//			startActivity(info);
-//		} else if (chatType == 3) {
-//			return;
-//		}
+		LogApp.i(chatType + "");
+		// if (chatType == 0) {
+		// Intent intent = getIntent();
+		// intent.setClass(getApplication(), UserInfoPage.class);
+		// intent.putExtra("user", user);
+		// startActivity(intent);
+		// } else if (chatType == 1) {
+		// Intent info = new Intent(getApplication(), RoomInfoPage.class);
+		// info.putExtra("room", room);
+		// startActivity(info);
+		// } else if (chatType == 2) {
+		// Intent info = new Intent(getApplication(), GroupInfoPage.class);
+		// info.putExtra("group", group);
+		// startActivity(info);
+		// } else if (chatType == 3) {
+		// return;
+		// }
 	}
 
 	private void loadData() {
@@ -1140,4 +1184,37 @@ public class ChatPage extends Activity implements OnClickListener {
 			setErrorTip(-1);
 		}
 	};
+	
+	
+	
+	/**
+	 * 
+	 * 上午11:19:02
+	 * @author Zhangyuhui
+	 * ChatPage.java
+	 * TODO 每次发送完毕后。手动刷新界面。出现对方会话内容。
+	 */
+	private void refresh() {
+		// TODO Auto-generated method stub
+		if (chatType == 1) {
+			api.getMessageList(room, true);
+		} else {
+			List<GotyeMessage> list = null;
+
+			if (chatType == 0) {
+				list = api.getMessageList(user, true);
+			} else if (chatType == 2) {
+				list = api.getMessageList(group, true);
+			} else if (chatType == 3) {
+				list = api.getMessageList(cserver, true);
+			}
+			if (list != null) {
+				adapter.refreshData(list);
+			} else {
+				ToastApp.showToast(ChatPage.this, "没有更多历史消息");
+			}
+		}
+		adapter.notifyDataSetChanged();
+		pullListView.onRefreshComplete();
+	}
 }
