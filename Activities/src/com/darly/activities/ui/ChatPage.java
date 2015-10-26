@@ -1184,37 +1184,34 @@ public class ChatPage extends Activity implements OnClickListener {
 			setErrorTip(-1);
 		}
 	};
-	
-	
-	
+
 	/**
 	 * 
 	 * 上午11:19:02
-	 * @author Zhangyuhui
-	 * ChatPage.java
-	 * TODO 每次发送完毕后。手动刷新界面。出现对方会话内容。
+	 * 
+	 * @author Zhangyuhui ChatPage.java TODO 每次发送完毕后。手动刷新界面。出现对方会话内容。
 	 */
 	private void refresh() {
 		// TODO Auto-generated method stub
-		if (chatType == 1) {
-			api.getMessageList(room, true);
-		} else {
-			List<GotyeMessage> list = null;
-
-			if (chatType == 0) {
-				list = api.getMessageList(user, true);
-			} else if (chatType == 2) {
-				list = api.getMessageList(group, true);
-			} else if (chatType == 3) {
-				list = api.getMessageList(cserver, true);
-			}
-			if (list != null) {
-				adapter.refreshData(list);
-			} else {
-				ToastApp.showToast(ChatPage.this, "没有更多历史消息");
-			}
-		}
-		adapter.notifyDataSetChanged();
-		pullListView.onRefreshComplete();
+		// if (chatType == 1) {
+		// api.getMessageList(room, true);
+		// } else {
+		// List<GotyeMessage> list = null;
+		//
+		// if (chatType == 0) {
+		// list = api.getMessageList(user, true);
+		// } else if (chatType == 2) {
+		// list = api.getMessageList(group, true);
+		// } else if (chatType == 3) {
+		// list = api.getMessageList(cserver, true);
+		// }
+		// if (list != null) {
+		// adapter.refreshData(list);
+		// } else {
+		// ToastApp.showToast(ChatPage.this, "没有更多历史消息");
+		// }
+		// }
+		// adapter.notifyDataSetChanged();
+		// pullListView.onRefreshComplete();
 	}
 }

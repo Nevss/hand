@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
@@ -109,6 +110,7 @@ public class LoginAcitvity extends BaseActivity {
 					// 登录成功后进行初始化融云通讯。
 					// AppStack.initConnRongIM(this);
 					ToastApp.showToast(this, "登录成功");
+					AppStack.connectQJ();
 					finish();
 				} else {
 					ToastApp.showToast(this, "用户名密码错误");
@@ -132,6 +134,7 @@ public class LoginAcitvity extends BaseActivity {
 					// 登录成功后进行初始化融云通讯。
 					// AppStack.initConnRongIM(this);
 					ToastApp.showToast(this, "登录成功");
+					AppStack.connectQJ();
 					finish();
 				} else {
 					ToastApp.showToast(this, "用户名密码错误");

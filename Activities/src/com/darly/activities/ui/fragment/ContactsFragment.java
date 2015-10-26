@@ -33,11 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.darly.activities.adapter.ContactsAdapter;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
-import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
-import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.ChatPage;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.qinjia.SearchPage;
@@ -48,7 +45,6 @@ import com.darly.activities.ui.qinjia.bean.GotyeUserProxy;
 import com.darly.activities.ui.qinjia.util.CharacterParser;
 import com.darly.activities.ui.qinjia.util.PinyinComparator;
 import com.darly.activities.widget.load.ProgressDialogUtil;
-import com.google.gson.Gson;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeCustomerService;
 import com.gotye.api.GotyeDelegate;
@@ -88,13 +84,6 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 		// api.addListener(this);
 		api.addListener(mDelegate);
 		characterParser = CharacterParser.getInstance();
-		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, getActivity())) {
-			// 用户登录后，获取到用户的详细信息。 然后用户初始化完成后直接登录。即时通讯。
-			UserInformation information = new Gson().fromJson(
-					PreferenceUserInfor.getUserInfor(Literal.USERINFO, getActivity()),
-					UserInformation.class);
-			api.login(information.getUserTrueName(), null);
-		}
 		GotyeUser user = api.getLoginUser();
 		currentLoginName = user.getName();
 		loadLocalFriends();

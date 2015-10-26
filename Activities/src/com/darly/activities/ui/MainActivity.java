@@ -1,5 +1,8 @@
 package com.darly.activities.ui;
 
+import java.util.List;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,14 +13,30 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.common.Literal;
+import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.ui.fragment.ContactsFragment;
 import com.darly.activities.ui.fragment.MainFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
+import com.darly.activities.ui.qinjia.GotyeService;
+import com.darly.activities.ui.qinjia.util.BeepManager;
+import com.darly.activities.ui.qinjia.util.ImageCache;
 import com.darly.activities.widget.pop.BottomPop;
+import com.gotye.api.GotyeAPI;
+import com.gotye.api.GotyeChatTargetType;
+import com.gotye.api.GotyeDelegate;
+import com.gotye.api.GotyeGroup;
+import com.gotye.api.GotyeMessage;
+import com.gotye.api.GotyeMessageStatus;
+import com.gotye.api.GotyeNotify;
+import com.gotye.api.GotyeStatusCode;
+import com.gotye.api.GotyeUser;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -77,6 +96,15 @@ public class MainActivity extends BaseActivity implements
 
 	private BottomPop pop;
 
+	// ------------------------------亲加即时通讯进行添加start------------------------------------
+	private GotyeAPI api = GotyeAPI.getInstance();
+
+	private boolean returnNotify = false;
+
+	private BeepManager beep;
+
+	// ------------------------------亲加即时通讯进行添加stop------------------------------------
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -116,6 +144,19 @@ public class MainActivity extends BaseActivity implements
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		// ------------------------------亲加即时通讯进行添加start------------------------------------
+		beep = new BeepManager(this);
+		beep.updatePrefs();
+		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, this)) {
+			if (api.isOnline() == GotyeUser.NETSTATE_ONLINE
+					|| api.isOnline() == GotyeUser.NETSTATE_OFFLINE) {
+				// 启动service保存service长期活动
+				Intent toService = new Intent(this, GotyeService.class);
+				startService(toService);
+			}
+		}
+		api.addListener(mDelegate);
+		// ------------------------------亲加即时通讯进行添加stop------------------------------------
 
 	}
 
@@ -248,4 +289,114 @@ public class MainActivity extends BaseActivity implements
 		// TODO Auto-generated method stub
 
 	}
+
+	// ------------------------------亲加即时通讯进行添加start------------------------------------
+
+	private GotyeDelegate mDelegate = new GotyeDelegate() {
+
+		// 此处处理账号在另外设备登陆造成的被动下线
+		@Override
+		public void onLogout(int code) {
+			// FragmentTransaction t=fragmentManager.beginTransaction();
+			// t.remove(messageFragment);
+			// t.commit();
+			ImageCache.getInstance().clear();
+
+			if (code == GotyeStatusCode.CodeForceLogout) {
+				Toast.makeText(MainActivity.this, "您的账号在另外一台设备上登录了！",
+						Toast.LENGTH_SHORT).show();
+				PreferenceUserInfor.cleanUserInfor(MainActivity.this);
+			} else if (code == GotyeStatusCode.CodeNetworkDisConnected) {
+
+				// Toast.makeText(this, "您的账号掉线了！", Toast.LENGTH_SHORT).show();
+				/*
+				 * Intent intent = new Intent(getBaseContext(),
+				 * LoginPage.class);
+				 * intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				 * startActivity(intent);
+				 */
+			} else {
+				Toast.makeText(MainActivity.this, "退出登陆！", Toast.LENGTH_SHORT)
+						.show();
+				PreferenceUserInfor.cleanUserInfor(MainActivity.this);
+			}
+
+		}
+
+		// 收到消息（此处只是单纯的更新聊天历史界面，不涉及聊天消息处理，当然你也可以处理，若你非要那样做）
+		@Override
+		public void onReceiveMessage(GotyeMessage message) {
+			if (returnNotify) {
+				return;
+			}
+			// messageFragment.refresh();
+			if (message.getStatus() == GotyeMessageStatus.GotyeMessageStatusUnread) {
+
+				if (!AppStack.isNewMsgNotify()) {
+					return;
+				}
+				if (message.getReceiver().getType() == GotyeChatTargetType.GotyeChatTargetTypeGroup) {
+					if (AppStack.isNotReceiveGroupMsg()) {
+						return;
+					}
+					if (AppStack.isGroupDontdisturb(((GotyeGroup) message
+							.getReceiver()).getGroupID())) {
+						return;
+					}
+				}
+				beep.playBeepSoundAndVibrate();
+			}
+		}
+
+		// 自己发送的信息统一在此处理
+		@Override
+		public void onSendMessage(int code, GotyeMessage message) {
+			if (returnNotify) {
+				return;
+			}
+			// messageFragment.refresh();
+		}
+
+		// 收到群邀请信息
+		@Override
+		public void onReceiveNotify(GotyeNotify notify) {
+			if (returnNotify) {
+				return;
+			}
+			// messageFragment.refresh();
+			if (!AppStack.isNotReceiveGroupMsg()) {
+				beep.playBeepSoundAndVibrate();
+			}
+		}
+
+		@Override
+		public void onRemoveFriend(int code, GotyeUser user) {
+			if (returnNotify) {
+				return;
+			}
+			api.deleteSession(user, false);
+			// messageFragment.refresh();
+			// contactsFragment.refresh();
+		}
+
+		@Override
+		public void onAddFriend(int code, GotyeUser user) {
+			// TODO Auto-generated method stub
+			if (returnNotify) {
+				return;
+			}
+			// if (currentPosition == 1) {
+			// contactsFragment.refresh();
+			// }
+		}
+
+		@Override
+		public void onGetMessageList(int code, List<GotyeMessage> list) {
+			// if(list != null && list.size() > 0){
+			// mainRefresh();
+			// }
+		};
+
+	};
+	// ------------------------------亲加即时通讯进行添加stop------------------------------------
 }
