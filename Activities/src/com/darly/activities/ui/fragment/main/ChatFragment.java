@@ -106,11 +106,11 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 		// TODO Auto-generated method stub
 
 		GirlModel model = getJSON((String) object);
-		adapter = new ChatAdapter(model.getData(), R.layout.main_fragment_chat_item,
-				getActivity(), imageLoader, options);
+		adapter = new ChatAdapter(model.getData(),
+				R.layout.main_fragment_chat_item, getActivity(), imageLoader,
+				options);
 		list.setAdapter(adapter);
-		
-		
+
 	}
 
 	/**
@@ -126,13 +126,24 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 			JSONObject jsonObject = new JSONObject(json);
 			int code = jsonObject.getInt("code");
 			String msg = jsonObject.getString("msg");
-			for (int i = 0; i < 10; i++) {
+			int a = 0;
+			for (int i = 0; i < 20; i++) {
+				try {
+					jsonObject.getJSONObject(i + "");
+					a = i;
+				} catch (Exception e) {
+					// TODO: handle exception
+					break;
+				}
+			}
+			for (int i = 0; i < a; i++) {
 				JSONObject array = jsonObject.getJSONObject(i + "");
 				String title = array.getString("title");
 				String description = array.getString("description");
 				String picUrl = array.getString("picUrl");
 				String url = array.getString("url");
 				data.add(new GirlBase(title, description, picUrl, url));
+
 			}
 			return new GirlModel(code, msg, data);
 
@@ -153,14 +164,18 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
 	 */
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
-		GirlBase base= (GirlBase) parent.getItemAtPosition(position);
+		GirlBase base = (GirlBase) parent.getItemAtPosition(position);
 		Intent intent = new Intent(getActivity(), WebViewActivity.class);
 		intent.putExtra("URL", base.getUrl());
 		startActivity(intent);
