@@ -39,7 +39,6 @@
     <permission
         android:name="com.ytdinfo.keephealth.permission.JPUSH_MESSAGE"
         android:protectionLevel="signature" />
-
     <!-- Required  一些系统要求的权限，如访问网络等 -->
     <uses-permission android:name="com.ytdinfo.keephealth.permission.JPUSH_MESSAGE" />
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
@@ -52,17 +51,13 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
-
     <!-- 智能导检权限 -->
-
-
     <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" >
     </uses-permission>
@@ -74,17 +69,12 @@
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <!-- 智能导检权限 -->
-
-
     <!-- 在线问诊 -->
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 在线问诊 -->
-
-
     <!-- 容联IM权限配置 -->
     <application
         android:name="com.ytdinfo.keephealth.app.MyApp"
@@ -196,8 +186,6 @@
             android:screenOrientation="landscape" >
         </activity>
         <!-- 智能导检 -->
-
-
         <!-- For test only 测试状态通知栏，需要打开的Activity -->
         <activity
             android:name="com.ytdinfo.keephealth.jpush.LittleHelperActivity"
@@ -208,7 +196,6 @@
                 <category android:name="jpush.testCategory" />
             </intent-filter>
         </activity>
-
         <!-- Required SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
@@ -227,7 +214,6 @@
             android:enabled="true"
             android:exported="false" >
         </service>
-
         <!-- Required SDK 核心功能 -->
         <service
             android:name="cn.jpush.android.service.PushService"
@@ -240,7 +226,6 @@
                 <action android:name="cn.jpush.android.intent.PUSH_TIME" />
             </intent-filter>
         </service>
-
         <!-- Required SDK 核心功能 -->
         <service
             android:name="cn.jpush.android.service.DaemonService"
@@ -252,7 +237,6 @@
                 <category android:name="com.ytdinfo.keephealth" />
             </intent-filter>
         </service>
-
         <!-- Required SDK核心功能 -->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
@@ -275,10 +259,8 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-
         <!-- Required SDK核心功能 -->
         <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
-
         <!-- User defined.  For test only  用户自定义的广播接收器 -->
         <receiver android:name="com.ytdinfo.keephealth.jpush.MyReceiver" >
             <intent-filter>
@@ -298,7 +280,6 @@
                 <category android:name="com.ytdinfo.keephealth" />
             </intent-filter>
         </receiver>
-
         <!-- 智能导检 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -318,14 +299,11 @@
             android:name="JPUSH_APPKEY"
             android:value="c4dd2ad233e11390e857d3f5" />
         <!-- </>值来自开发者平台取得的AppKey -->
-
-
         <!-- </>值来自开发者平台取得的AppKey -->
         <!-- 容联呼叫 -->
         <service
             android:name="com.hisun.phone.core.voice.CCPService"
             android:exported="false" />
-
         <meta-data
             android:name="JPUSH_CHANNEL"
             android:value="developer-default" />
@@ -353,9 +331,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" >
         </activity>
-
         <!-- 在线问诊 -->
-
         <activity
             android:name="com.king.photo.activity.OnlineQuestionActivity"
             android:label="@string/app_name"
@@ -388,21 +364,12 @@
             android:label="@string/title_activity_setting"
             android:screenOrientation="portrait" >
         </activity>
-
-
-
-
-          　
-        
-        
-        
         <service android:name="com.ytdinfo.keephealth.service.TimerService" >
             <intent-filter>
                 <action android:name="com.ytdinfo.keeph" />
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </service>
-
         <activity
             android:name="com.ytdinfo.keephealth.ui.report.AddPicturesActivity"
             android:label="@string/title_activity_add_pictures"
@@ -419,7 +386,6 @@
             android:theme="@style/MainTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -428,11 +394,9 @@
             android:label="@string/title_activity_modify_pass"
             android:screenOrientation="portrait" >
         </activity>
-        
         <!-- 友盟统计 -->
         <meta-data android:value="55cde86c67e58ebcfe002b38" android:name="UMENG_APPKEY"></meta-data>
 		<meta-data android:value="default" android:name="UMENG_CHANNEL"/>
-		
     </application>
 
 </manifest>

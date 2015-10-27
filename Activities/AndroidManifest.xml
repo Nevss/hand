@@ -7,7 +7,6 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="18" />
-
     <!-- 融云权限 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -16,7 +15,6 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" />
-
     <!-- 查看 Wi-Fi 状态 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 查看网络状态 -->
@@ -34,12 +32,9 @@
     <!-- 获取联系人信息，demo中演示发送通讯录消息 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- 融云权限 -->
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
     <!-- 友盟社会化分享权限 -->
     <uses-permission android:name="android.permission.SET_DEBUG_APP" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
@@ -194,7 +189,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </receiver>
-
         <service android:name="com.darly.activities.ui.qinjia.GotyeService" />
     </application>
 
