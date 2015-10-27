@@ -1,20 +1,22 @@
 package com.darly.activities.widget.pop;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import net.bither.util.NativeUtil;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.MediaColumns;
@@ -30,11 +32,12 @@ import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.ui.R;
-import com.darly.activities.widget.load.ProgressDialogUtil;
 
 public class PhotoPop extends PopupWindow implements OnClickListener {
 
 	private final String TAG = getClass().getSimpleName();
+
+	private String rota = "ROTATE.png";
 
 	public PhotoPop(Context context) {
 		super();
@@ -246,20 +249,15 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	 */
 	public String PopStringActivityResult(Intent data, int tag) {
 		switch (tag) {
-		case Literal.REQUESTCODE_CAP: {
+		case Literal.REQUESTCODE_CAP:
 			// 照相机程序返回的
-			LogApp.i(TAG, "相机调用完成。返回图片的保存地址");
-			LogApp.i(TAG, "相机圖片位置" + capUri);
-			return capUri;
-
-		}
-
-		case Literal.REQUESTCODE_CAM: {
+			LogApp.i(TAG, "相机调用完成。返回图片的保存地址" + capUri);
+			return /* capUri */getImagePathForCAP(capUri);
+		case Literal.REQUESTCODE_CAM:
 			// 照片的原始资源地址
 			LogApp.i(TAG, "相册调用完成。返回图片的地址");
 			photoUri = data.getData();
 			return getImagePath(photoUri);
-		}
 		default:
 			break;
 		}
@@ -269,9 +267,170 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	}
 
 	/**
+	 * @param capUri2
+	 * @return 上午10:23:25
+	 * @author Zhangyuhui PhotoPop.java TODO 获取相机拍照完成后的文件路径
+	 */
+	private String getImagePathForCAP(String capUri) {
+		// TODO Auto-generated method stub
+		if (capUri == null) {
+			return null;
+		}
+		// 由于相机拍照照片过大。故而必须进行压缩。
+		int degree = getBitmapDegree(capUri);
+		if (degree == 0) {
+			return capUri;
+		} else {
+			// 先压缩图片。然后旋转图片。最后保存图片。
+			rotateBitmapByDegree(compressImageCap(capUri), degree);
+			return Literal.SROOT + rota;
+		}
+	}
+
+	/**
+	 * @param capUri2
+	 *            上午10:30:46
+	 * @author Zhangyuhui PhotoPop.java TODO 对原始图片进行压缩。
+	 * @param degree
+	 */
+	private Bitmap compressImageCap(String capUri) {
+		// TODO Auto-generated method stub
+		// 对大图进行压缩。小图直接进行旋转。
+		File file = new File(capUri);
+		if (file.exists()) {
+			// 计算文件大小。进行对比。大于320则进行压缩。
+			int file_size = (int) (file.length() / 1024);
+			Bitmap bit = null;
+			if (file_size > 320) {
+				bit = decodeSampledBitmapFromFile(capUri, 480, 640);
+				// 获取图片大小的比对关系。是100KB的多少。
+				int quality = 1024 * 100 / file_size;
+				return compressBitmap(bit, quality);
+			} else {
+				try {
+					FileInputStream is = new FileInputStream(capUri);
+					bit = BitmapFactory.decodeStream(is);
+
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				// 按质量压缩
+				return compressBitmap(bit, 100);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 官网：获取压缩后的图片
+	 * 
+	 * @param res
+	 * @param resId
+	 * @param reqWidth
+	 *            所需图片压缩尺寸最小宽度
+	 * @param reqHeight
+	 *            所需图片压缩尺寸最小高度
+	 * @return
+	 */
+	public Bitmap decodeSampledBitmapFromFile(String filepath, int reqWidth,
+			int reqHeight) {
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		BitmapFactory.decodeFile(filepath, options);
+		// 计算压缩比例。
+		options.inSampleSize = calculateInSampleSize(options, reqWidth,
+				reqHeight);
+		options.inJustDecodeBounds = false;
+		options.inPreferredConfig = Config.RGB_565;
+		options.inDither = true;
+		return BitmapFactory.decodeFile(filepath, options);
+	}
+
+	/**
+	 * 计算压缩比例值(改进版 by touch_ping) 原版2>4>8...倍压缩 当前2>3>4...倍压缩
+	 * 
+	 * @param options
+	 *            解析图片的配置信息
+	 * @param reqWidth
+	 *            所需图片压缩尺寸最小宽度O
+	 * @param reqHeight
+	 *            所需图片压缩尺寸最小高度
+	 * @return
+	 */
+	public int calculateInSampleSize(BitmapFactory.Options options,
+			int reqWidth, int reqHeight) {
+
+		final int picheight = options.outHeight;
+		final int picwidth = options.outWidth;
+		int targetheight = picheight;
+		int targetwidth = picwidth;
+		int inSampleSize = 1;
+		if (targetheight > reqHeight || targetwidth > reqWidth) {
+			while (targetheight >= reqHeight && targetwidth >= reqWidth) {
+				inSampleSize += 1;
+				targetheight = picheight / inSampleSize;
+				targetwidth = picwidth / inSampleSize;
+			}
+		}
+		return inSampleSize;
+	}
+
+	/**
+	 * @param bit
+	 * @param quality
+	 * @return 上午10:49:02
+	 * @author Zhangyuhui PhotoPop.java TODO 进行图片对照比例压缩，比例为quality
+	 */
+	public Bitmap compressBitmap(final Bitmap bit, int quality) {
+		// int quality = 10;// 同学们可以与原生的压缩方法对比一下，同样设置成50效果如何
+		// 获取文件存储的文件夹。
+		File dirFile = new File(Literal.SROOT);
+		if (!dirFile.exists()) {
+			dirFile.mkdirs();
+		}
+		// 压缩后文件存储名称为固定名称。压缩后的文件路径。
+		File jpegTrueFile = new File(dirFile, rota);
+		NativeUtil.compressBitmap(bit, quality, jpegTrueFile.getAbsolutePath(),
+				true);
+		recycleBitmap(bit);
+		return BitmapFactory.decodeFile(jpegTrueFile.getAbsolutePath());
+
+	}
+
+	/**
+	 * @param bm需要旋转的图片
+	 * @param degree
+	 *            旋转角度
+	 * @return 旋转后的图片 上午10:44:08
+	 * @author Zhangyuhui MeDetailsAcitvity.java TODO将图片按照某个角度进行旋转
+	 */
+	private void rotateBitmapByDegree(Bitmap bitmap, int degree) {
+		Bitmap returnBm = null;
+
+		// 根据旋转角度，生成旋转矩阵
+		Matrix matrix = new Matrix();
+		matrix.postRotate(degree);
+		try {
+			// 将原始图片按照旋转矩阵进行旋转，并得到新的图片
+			returnBm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
+					bitmap.getHeight(), matrix, true);
+			if (returnBm == null) {
+				returnBm = bitmap;
+			}
+			if (bitmap != returnBm) {
+				recycleBitmap(bitmap);
+			}
+			PreferencesJsonCach.saveBitmap(Literal.SROOT + rota, returnBm, TAG);
+		} catch (OutOfMemoryError e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
 	 * @param originalUri
 	 * @return 下午3:15:15
-	 * @author Zhangyuhui PhotoPop.java TODO 获取图片路径
+	 * @author Zhangyuhui PhotoPop.java TODO 获取相冊图片路径
 	 */
 	public String getImagePath(Uri originalUri) {
 		String[] proj = { MediaColumns.DATA };
@@ -347,102 +506,16 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		return capUri;
 	}
 
-	public class ImageDegree extends AsyncTask<Object, Object, Object> {
-		private int degree;
-		private ProgressDialogUtil loading;
-		private String imageUrl;
-
-		public ImageDegree(int degree, String imageUrl,
-				ProgressDialogUtil loading) {
-			super();
-			this.degree = degree;
-			this.imageUrl = imageUrl;
-			this.loading = loading;
+	/**
+	 * 回收bitmap
+	 * 
+	 * @param bit
+	 */
+	public static void recycleBitmap(Bitmap bit) {
+		if (bit != null && !bit.isRecycled()) {
+			bit.recycle();
+			bit = null;
+			System.gc();
 		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.AsyncTask#onPreExecute()
-		 */
-		@Override
-		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			if (loading != null) {
-				loading.setMessage("图片处理中...");
-				loading.show();
-			}
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.AsyncTask#doInBackground(java.lang.Object[])
-		 */
-		@Override
-		protected Object doInBackground(Object... params) {
-			// TODO Auto-generated method stub
-			try {
-				rotateBitmapByDegree(imageUrl, degree);
-				LogApp.i("返回的文件路径旋转图片" + degree + imageUrl);
-			} catch (Exception e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-			return null;
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * 
-		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
-		 */
-		@Override
-		protected void onPostExecute(Object result) {
-			// TODO Auto-generated method stub
-			super.onPostExecute(result);
-			if (loading != null) {
-				loading.dismiss();
-			}
-			LogApp.i("返回的文件路径" + degree + imageUrl);
-			File temp = new File(imageUrl);
-			cropPhoto(Uri.fromFile(temp));// 裁剪图片
-		}
-
-		/**
-		 * @param bm需要旋转的图片
-		 * @param degree
-		 *            旋转角度
-		 * @return 旋转后的图片 上午10:44:08
-		 * @author Zhangyuhui MeDetailsAcitvity.java TODO将图片按照某个角度进行旋转
-		 */
-		private void rotateBitmapByDegree(String url, int degree) {
-			Bitmap bitmap = BitmapFactory.decodeFile(url);
-
-			Bitmap returnBm = null;
-
-			// 根据旋转角度，生成旋转矩阵
-			Matrix matrix = new Matrix();
-			matrix.postRotate(degree);
-			try {
-				// 将原始图片按照旋转矩阵进行旋转，并得到新的图片
-				returnBm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(),
-						bitmap.getHeight(), matrix, true);
-				if (returnBm == null) {
-					returnBm = bitmap;
-				}
-				PreferencesJsonCach.saveBitmap(url, returnBm, TAG);
-
-			} catch (OutOfMemoryError e) {
-				e.printStackTrace();
-			}
-			if (bitmap != returnBm) {
-				bitmap.recycle();
-			}
-
-		}
-
 	}
-
 }

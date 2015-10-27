@@ -9,14 +9,28 @@
     <color name="color_3">#ffffff</color>
     <color name="guide_show_back">#9cd7d5</color>
     <color name="pop_back">#7a000000</color>
-    
     <color name="white">#ffffff</color>
     <color name="main_bottom_text">#080808</color>
-    <color name="main_header_back">#99ffcc</color>
-    
+    <color name="main_header_back">#87CEFF</color>
+
     <!-- 二维码颜色 -->
     <color name="result_view">#b0000000</color>
     <color name="viewfinder_mask">#60000000</color>
     <color name="possible_result_points">#c0ffff00</color>
+    <color name="main_fragment_header">#99ffcc</color>
+
+    <!-- 聊天页面 -->
+    <color name="tab_bg_color">#eeeeeeee</color>
+
+    <drawable name="title_bar_bg">#0fd5c9</drawable>
+
+    <color name="transparent">#00000000</color>
+    <color name="btn_gray_normal">#c0c0c0</color>
+    <color name="app_color">#0fd5c9</color>
+    <color name="black">#000000</color>
+    <color name="gray">#808080</color>
+
+    <drawable name="contact_room_group_normal">#FFFFFF</drawable>
+    <drawable name="contact_room_group_press">#ebebeb</drawable>
 
 </resources>

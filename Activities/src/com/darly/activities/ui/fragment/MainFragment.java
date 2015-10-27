@@ -30,6 +30,11 @@ import com.darly.activities.adapter.FragmentAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
 import com.darly.activities.ui.R;
+import com.darly.activities.ui.fragment.main.CaiyicaiFragment;
+import com.darly.activities.ui.fragment.main.ChatFragment;
+import com.darly.activities.ui.fragment.main.FriendFragment;
+import com.darly.activities.ui.fragment.main.IndexFragment;
+import com.darly.activities.ui.fragment.main.TuringFragment;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -104,10 +109,10 @@ public class MainFragment extends BaseFragment implements
 		// TODO Auto-generated method stub
 		radio.setOnCheckedChangeListener(this);
 		fragmentList.add(new IndexFragment());
+		fragmentList.add(new CaiyicaiFragment());
 		fragmentList.add(new FriendFragment());
-		fragmentList.add(new ContactsFragment());
 		fragmentList.add(new ChatFragment());
-		fragmentList.add(new IndexFragment());
+		fragmentList.add(new TuringFragment());
 		mFragmentAdapter = new FragmentAdapter(getActivity()
 				.getSupportFragmentManager(), fragmentList);
 		viewpager.setAdapter(mFragmentAdapter);
@@ -123,16 +128,13 @@ public class MainFragment extends BaseFragment implements
 	public void initData() {
 		// TODO Auto-generated method stub
 		viewpager.setOnPageChangeListener(this);
-		one.setLayoutParams(new RadioGroup.LayoutParams(Literal.width / 4,
-				LayoutParams.MATCH_PARENT));
-		two.setLayoutParams(new RadioGroup.LayoutParams(Literal.width / 4,
-				LayoutParams.MATCH_PARENT));
-		thr.setLayoutParams(new RadioGroup.LayoutParams(Literal.width / 4,
-				LayoutParams.MATCH_PARENT));
-		fou.setLayoutParams(new RadioGroup.LayoutParams(Literal.width / 4,
-				LayoutParams.MATCH_PARENT));
-		fiv.setLayoutParams(new RadioGroup.LayoutParams(Literal.width / 4,
-				LayoutParams.MATCH_PARENT));
+		RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
+				Literal.width / 4, LayoutParams.MATCH_PARENT);
+		one.setLayoutParams(params);
+		two.setLayoutParams(params);
+		thr.setLayoutParams(params);
+		fou.setLayoutParams(params);
+		fiv.setLayoutParams(params);
 		one.setChecked(true);
 	}
 
@@ -172,22 +174,27 @@ public class MainFragment extends BaseFragment implements
 		switch (checkedId) {
 		case R.id.fragment_header_showone:
 			one.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			one.setBackgroundResource(R.drawable.app_main_header_backer);
 			viewpager.setCurrentItem(0);
 			break;
 		case R.id.fragment_header_showtwo:
 			two.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			two.setBackgroundResource(R.drawable.app_main_header_backer);
 			viewpager.setCurrentItem(1);
 			break;
 		case R.id.fragment_header_showthree:
 			thr.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			thr.setBackgroundResource(R.drawable.app_main_header_backer);
 			viewpager.setCurrentItem(2);
 			break;
 		case R.id.fragment_header_showfour:
 			fou.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			fou.setBackgroundResource(R.drawable.app_main_header_backer);
 			viewpager.setCurrentItem(3);
 			break;
 		case R.id.fragment_header_showfive:
 			fiv.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			fiv.setBackgroundResource(R.drawable.app_main_header_backer);
 			viewpager.setCurrentItem(4);
 			break;
 
@@ -205,10 +212,15 @@ public class MainFragment extends BaseFragment implements
 	private void resetRaidoButton() {
 		// TODO Auto-generated method stub
 		one.setTextColor(getResources().getColor(R.color.set_list_line));
+		one.setBackgroundResource(R.drawable.app_main_header_normal);
 		two.setTextColor(getResources().getColor(R.color.set_list_line));
+		two.setBackgroundResource(R.drawable.app_main_header_normal);
 		thr.setTextColor(getResources().getColor(R.color.set_list_line));
+		thr.setBackgroundResource(R.drawable.app_main_header_normal);
 		fou.setTextColor(getResources().getColor(R.color.set_list_line));
+		fou.setBackgroundResource(R.drawable.app_main_header_normal);
 		fiv.setTextColor(getResources().getColor(R.color.set_list_line));
+		fiv.setBackgroundResource(R.drawable.app_main_header_normal);
 	}
 
 	/*
@@ -266,22 +278,27 @@ public class MainFragment extends BaseFragment implements
 		case 0:
 			radio.getChildAt(R.id.fragment_header_showone);
 			one.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			one.setBackgroundResource(R.drawable.app_main_header_backer);
 			break;
 		case 1:
 			radio.getChildAt(R.id.fragment_header_showtwo);
 			two.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			two.setBackgroundResource(R.drawable.app_main_header_backer);
 			break;
 		case 2:
 			radio.getChildAt(R.id.fragment_header_showthree);
 			thr.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			thr.setBackgroundResource(R.drawable.app_main_header_backer);
 			break;
 		case 3:
 			radio.getChildAt(R.id.fragment_header_showfour);
 			fou.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			fou.setBackgroundResource(R.drawable.app_main_header_backer);
 			break;
 		case 4:
 			radio.getChildAt(R.id.fragment_header_showfive);
 			fiv.setTextColor(getResources().getColor(R.color.main_bottom_text));
+			fiv.setBackgroundResource(R.drawable.app_main_header_backer);
 			break;
 
 		default:
@@ -291,9 +308,9 @@ public class MainFragment extends BaseFragment implements
 			@Override
 			public void run() {
 				if (left) {
-					scroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT);
+					scroll.fullScroll(View.FOCUS_RIGHT);
 				} else {
-					scroll.fullScroll(HorizontalScrollView.FOCUS_LEFT);
+					scroll.fullScroll(View.FOCUS_LEFT);
 				}
 			}
 		});

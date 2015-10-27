@@ -5,6 +5,8 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
+    <include layout="@layout/main_header" />
+
     <RelativeLayout
         android:id="@+id/id_rl"
         android:layout_width="match_parent"
@@ -21,8 +23,8 @@
             android:text="@string/reload" />
     </RelativeLayout>
 
-    <com.darly.activities.base.BaseWebView
-        android:id="@+id/id_webview"
+    <WebView
+        android:id="@+id/main_webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="none"

@@ -19,8 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.R;
@@ -89,6 +91,7 @@ public class LoginAcitvity extends BaseActivity {
 			finish();
 			break;
 		case R.id.act_login_login:
+			// 双用户登录。可以进行双通讯。
 			if ("18321127312".equals(name.getText().getText().toString())) {
 				if ("111111".equals(pass.getText().getText().toString())) {
 					JSONObject object = new JSONObject();
@@ -96,13 +99,42 @@ public class LoginAcitvity extends BaseActivity {
 						// 测试数据
 						object.put("username", "18321127312");
 						object.put("password", "111111");
+						object.put("userID", "18321127312");
+						object.put("userTrueName", "darly");
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-					PreferenceUserInfor.saveUserInfor("USER",
+					LogApp.i(TAG, object.toString());
+					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
 							object.toString(), this);
-
+					// 登录成功后进行初始化融云通讯。
+					// AppStack.initConnRongIM(this);
 					ToastApp.showToast(this, "登录成功");
+					AppStack.connectQJ();
+					finish();
+				} else {
+					ToastApp.showToast(this, "用户名密码错误");
+				}
+			} else if ("13891431454"
+					.equals(name.getText().getText().toString())) {
+				if ("111111".equals(pass.getText().getText().toString())) {
+					JSONObject object = new JSONObject();
+					try {
+						// 测试数据
+						object.put("username", "13891431454");
+						object.put("password", "111111");
+						object.put("userID", "13891431454");
+						object.put("userTrueName", "hellen");
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+					LogApp.i(TAG, object.toString());
+					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
+							object.toString(), this);
+					// 登录成功后进行初始化融云通讯。
+					// AppStack.initConnRongIM(this);
+					ToastApp.showToast(this, "登录成功");
+					AppStack.connectQJ();
 					finish();
 				} else {
 					ToastApp.showToast(this, "用户名密码错误");
@@ -264,6 +296,7 @@ public class LoginAcitvity extends BaseActivity {
 		if (restore != null) {
 			restore.setFlag(false);
 		}
+
 		super.finish();
 	}
 

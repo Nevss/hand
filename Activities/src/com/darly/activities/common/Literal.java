@@ -1,10 +1,13 @@
 package com.darly.activities.common;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.os.Environment;
 import android.view.WindowManager;
 
 import com.darly.activities.app.Declare;
+import com.darly.activities.model.UserInformation;
 
 /**
  * @ClassName: Literal
@@ -73,4 +76,9 @@ public class Literal {
 	public static final int REQUESTCODE_CUT = 0x1003;
 	public static final int TOKEN = 0x1004;
 
+	public static final String USERINFO = "USERDATA";
+
+	public static ArrayList<UserInformation> users;
+
+	public static String QJAppKey = "71f48a13-4a2f-4e7e-b4b0-7b1bd961793b";
 }

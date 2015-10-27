@@ -1,0 +1,35 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/index_fragment_linear"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/main_fragment_header"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/main_fragment_turing_content"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_weight="3"
+        android:background="@drawable/app_login_shape" />
+
+    <EditText
+        android:id="@+id/main_fragment_turing_msg"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        android:layout_weight="1"
+        android:background="@drawable/app_login_shape"
+        android:hint="@null"
+        android:paddingLeft="4dp" />
+
+    <Button
+        android:id="@+id/main_fragment_turing_sub"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/app_btn_select"
+        android:text="@string/submit" />
+
+</LinearLayout>

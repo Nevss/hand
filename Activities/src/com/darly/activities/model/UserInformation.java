@@ -6,6 +6,8 @@
  */
 package com.darly.activities.model;
 
+import com.gotye.api.GotyeUser;
+
 /**
  * @author Zhangyuhui UserInformation 下午2:16:27 TODO
  */
@@ -28,6 +30,10 @@ public class UserInformation {
 	private String userTrueName;
 
 	private String userBirthday;
+
+	private String userPhoto;
+
+	private GotyeUser user;
 
 	/**
 	 * 
@@ -109,6 +115,22 @@ public class UserInformation {
 
 	public void setUserBirthday(String userBirthday) {
 		this.userBirthday = userBirthday;
+	}
+
+	public String getUserPhoto() {
+		return userPhoto;
+	}
+
+	public void setUserPhoto(String userPhoto) {
+		this.userPhoto = userPhoto;
+	}
+
+	public GotyeUser getUser() {
+		return user;
+	}
+
+	public void setUser(GotyeUser user) {
+		this.user = user;
 	}
 
 }

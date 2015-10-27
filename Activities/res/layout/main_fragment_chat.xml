@@ -3,8 +3,9 @@
     android:id="@+id/index_fragment_linear"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/main_fragment_header"
     android:orientation="vertical" >
-    
+
     <com.darly.activities.widget.xlistview.XListView
         android:id="@+id/chat_fragment_xlist"
         android:layout_width="fill_parent"

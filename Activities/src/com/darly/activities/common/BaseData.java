@@ -3,7 +3,9 @@ package com.darly.activities.common;
 import java.util.ArrayList;
 
 import com.darly.activities.model.BottomModel;
+import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.R;
+import com.gotye.api.GotyeUser;
 
 /**
  * @ClassName: BaseData
@@ -46,4 +48,34 @@ public class BaseData {
 		data.add(new BottomModel(R.drawable.ic_search, "旋转", "RotateAcitvity"));
 		return data;
 	}
+
+	/**
+	 * @return 上午9:38:20
+	 * @author Zhangyuhui BaseData.java TODO 测试数据，获取的是当前所有用户信息。当然，使用的是UserID而已。
+	 */
+	public static ArrayList<UserInformation> getUsers() {
+		ArrayList<UserInformation> infos = new ArrayList<UserInformation>();
+		UserInformation user1 = new UserInformation();
+		user1.setUserAge(28);
+		user1.setUserSex(1);
+		user1.setUsername("18321127312");
+		user1.setUserTrueName("darly");
+		user1.setUserID("18321127312");
+		user1.setUserToken("+9SIwce7WWdenAPV68stCbEzg2PO5RfFjDpIMZ3SH5pI+C8Qo/55ds2uaBIsRNDUA/G+ZMIfJO8SRi2C78cM3snEM7o3kRwf");
+		user1.setUser(new GotyeUser("darly"));
+		infos.add(user1);
+
+		UserInformation user2 = new UserInformation();
+		user2.setUserAge(26);
+		user2.setUserSex(0);
+		user2.setUsername("13891431454");
+		user2.setUserTrueName("hellen");
+		user2.setUserID("13891431454");
+		user2.setUserToken("0IJdBjvLpZ3E62ivp+VZxTpfCOjKborXvgZ7VwhenilYR5KmRB6ja9rjep8KOoP2w0DfbHgvoCeWDps/MXaiQgYHpk+t6P1J");
+		user2.setUser(new GotyeUser("hellen"));
+		infos.add(user2);
+
+		return infos;
+	}
+
 }
