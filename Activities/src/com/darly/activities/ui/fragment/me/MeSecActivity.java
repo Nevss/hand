@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.ui.R;
+import com.lidroid.xutils.view.annotation.ContentView;
 
 /**
  * @author Zhangyuhui
@@ -19,6 +21,7 @@ import com.darly.activities.base.BaseActivity;
  * 下午5:45:11
  * TODO
  */
+@ContentView(R.layout.activity_main)
 public class MeSecActivity extends BaseActivity {
 
 	/* (non-Javadoc)
