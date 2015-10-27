@@ -78,6 +78,13 @@ import com.ytdinfo.keephealth.utils.MathUtils;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 
+/**
+ * @author Zhangyuhui
+ * OnlineQuesActivity
+ * $
+ * 下午3:25:55
+ * TODO 在线问诊。
+ */
 public class OnlineQuesActivity extends BaseActivity implements Callback,
 		OnClickListener {
 	private static final String TAG = "OnlineQuesActivity";
