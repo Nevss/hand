@@ -152,11 +152,11 @@ public class BaseInterlgent extends SurfaceView implements
 	public void run() {
 		// TODO Auto-generated method stub
 		while (flag) {
-			
+
 			if (pointList != null) {
 				onDraws();
 			}
-			
+
 		}
 	}
 

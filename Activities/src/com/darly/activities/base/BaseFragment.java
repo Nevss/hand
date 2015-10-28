@@ -12,7 +12,6 @@ import com.androidquery.AQuery;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
-import com.darly.activities.db.SnoteTable;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.ui.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -27,7 +26,6 @@ import com.umeng.analytics.MobclickAgent;
  *
  */
 public abstract class BaseFragment extends Fragment implements OnClickListener {
-	protected SnoteTable table;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions option_big;
@@ -66,9 +64,6 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO, Thread.MAX_PRIORITY);
 		// 设置ImageLoader初始化参数。设置线程，设置保存文件名等。
 		aq = new AQuery(getActivity());
-		if (table == null) {
-			table = new SnoteTable(getActivity());
-		}
 		// 设置参数，加载每个图片的详细参数和是否存储、缓存的问题。
 		options = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.ic_launcher)
