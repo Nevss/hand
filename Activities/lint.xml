@@ -3,4 +3,5 @@
     <issue id="DefaultLocale" severity="ignore">
         <ignore path="src/com/darly/activities/ui/fragment/main/ContactsFragment.java" />
     </issue>
+    <issue id="DrawAllocation" severity="ignore" />
 </lint>

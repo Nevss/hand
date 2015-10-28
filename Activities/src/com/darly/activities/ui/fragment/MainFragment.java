@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.darly.activities.adapter.FragmentAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogApp;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.main.CaiyicaiFragment;
 import com.darly.activities.ui.fragment.main.ChatFragment;
@@ -56,7 +57,6 @@ public class MainFragment extends BaseFragment implements
 	private TextView title;
 	@ViewInject(R.id.fragment_header_horizontal)
 	private HorizontalScrollView scroll;
-
 	@ViewInject(R.id.fragment_main_virepager)
 	private ViewPager viewpager;
 	@ViewInject(R.id.fragment_header_radio)
@@ -78,6 +78,10 @@ public class MainFragment extends BaseFragment implements
 	private boolean isScroll;
 	private boolean left;
 	private int lastValue = -1;
+
+	private int itemWidth = 0;
+
+	private int itemNum = 5;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -128,14 +132,16 @@ public class MainFragment extends BaseFragment implements
 	public void initData() {
 		// TODO Auto-generated method stub
 		viewpager.setOnPageChangeListener(this);
-		RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(
-				Literal.width / 4, LayoutParams.MATCH_PARENT);
+		itemWidth = Literal.width / 4;
+		RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(itemWidth,
+				LayoutParams.MATCH_PARENT);
 		one.setLayoutParams(params);
 		two.setLayoutParams(params);
 		thr.setLayoutParams(params);
 		fou.setLayoutParams(params);
 		fiv.setLayoutParams(params);
 		one.setChecked(true);
+
 	}
 
 	/*
@@ -171,6 +177,7 @@ public class MainFragment extends BaseFragment implements
 	public void onCheckedChanged(RadioGroup group, int checkedId) {
 		// TODO Auto-generated method stub
 		resetRaidoButton();
+
 		switch (checkedId) {
 		case R.id.fragment_header_showone:
 			one.setTextColor(getResources().getColor(R.color.main_bottom_text));
@@ -308,9 +315,17 @@ public class MainFragment extends BaseFragment implements
 			@Override
 			public void run() {
 				if (left) {
-					scroll.fullScroll(View.FOCUS_RIGHT);
+					LogApp.i("右移距离", (itemNum - 4) * itemWidth / (itemNum - 1)
+							+ "");
+					scroll.scrollBy((itemNum - 4) * itemWidth / (itemNum - 1),
+							0);
+					// scroll.fullScroll(View.FOCUS_RIGHT);
 				} else {
-					scroll.fullScroll(View.FOCUS_LEFT);
+					LogApp.i("左移距离", (4 - itemNum) * itemWidth / (itemNum - 1)
+							+ "");
+					scroll.scrollBy((4 - itemNum) * itemWidth / (itemNum - 1),
+							0);
+					// scroll.fullScroll(View.FOCUS_LEFT);
 				}
 			}
 		});

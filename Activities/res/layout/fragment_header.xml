@@ -20,7 +20,7 @@
             android:gravity="center"
             android:text="@string/travel_one"
             android:textColor="@color/main_bottom_text"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/fragment_header_showtwo"
@@ -31,7 +31,7 @@
             android:gravity="center"
             android:text="@string/travel_two"
             android:textColor="@color/main_bottom_text"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/fragment_header_showthree"
@@ -42,7 +42,7 @@
             android:gravity="center"
             android:text="@string/travel_thr"
             android:textColor="@color/main_bottom_text"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/fragment_header_showfour"
@@ -53,7 +53,7 @@
             android:gravity="center"
             android:text="@string/travel_fou"
             android:textColor="@color/main_bottom_text"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <RadioButton
             android:id="@+id/fragment_header_showfive"
@@ -64,7 +64,7 @@
             android:gravity="center"
             android:text="@string/travel_fiv"
             android:textColor="@color/main_bottom_text"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
     </RadioGroup>
 
 </HorizontalScrollView>
