@@ -12,9 +12,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.androidquery.AQuery;
-import com.darly.activities.app.AppStack;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.poll.ThreadPoolManager;
@@ -36,7 +34,6 @@ import com.umeng.analytics.MobclickAgent;
  */
 public abstract class BaseActivity extends FragmentActivity implements
 		OnClickListener {
-	protected String TAG = getClass().getName();
 	protected AQuery aq;
 	protected List<View> pageviews;
 
@@ -54,7 +51,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "onCreate_a");
 		requestWindowFeature(Window.FEATURE_NO_TITLE);// 去掉标题栏
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
@@ -88,8 +84,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 		MobclickAgent.updateOnlineConfig(this);
 		initView(savedInstanceState);
 		initData();
-		LogApp.i(TAG, AppStack.getDeviceInfo(this));
-
 	}
 
 	@Override
@@ -98,11 +92,9 @@ public abstract class BaseActivity extends FragmentActivity implements
 		if (!NetUtils.isConnected(this)) {
 			ToastApp.showToast(this, "网络连接异常，请检查网络！");
 		}
-
 		super.onResume();
 		MobclickAgent.onPageStart("ActivityScreen"); // 统计页面
 		MobclickAgent.onResume(this);
-		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "");
 	}
 
 	/*
@@ -116,7 +108,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 		super.onPause();
 		MobclickAgent.onPageEnd("ActivityScreen");
 		MobclickAgent.onPause(this);
-		LogApp.i(TAG, System.currentTimeMillis() / 1000 + "");
 	}
 
 	@Override

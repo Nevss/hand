@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
 import com.lidroid.xutils.view.annotation.ContentView;
 
@@ -23,6 +24,7 @@ import com.lidroid.xutils.view.annotation.ContentView;
  */
 @ContentView(R.layout.activity_main)
 public class MeSecActivity extends BaseActivity {
+	private static final String TAG = "MeSecActivity";
 
 	/* (non-Javadoc)
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
@@ -39,7 +41,7 @@ public class MeSecActivity extends BaseActivity {
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-
+		LogFileHelper.getInstance().i(TAG, "MeSecActivity is run");
 	}
 
 	/* (non-Javadoc)

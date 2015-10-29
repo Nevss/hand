@@ -23,8 +23,10 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.darly.activities.adapter.ChatAdapter;
 import com.darly.activities.base.BaseFragment;
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.HTTPServ;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GirlBase;
 import com.darly.activities.model.GirlModel;
 import com.darly.activities.poll.HTTPSevTasker;
@@ -38,6 +40,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * @author Zhangyuhui ChatFragment 下午3:16:20 TODO美女图片展示。
  */
 public class ChatFragment extends BaseFragment implements OnItemClickListener {
+	private static final String TAG = "ChatFragment";
 	private View rootView;
 	private int num = 10;
 	@ViewInject(R.id.chat_fragment_xlist)
@@ -94,6 +97,7 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 	public void initData() {
 		// TODO Auto-generated method stub
 		list.setOnItemClickListener(this);
+		LogFileHelper.getInstance().i(TAG, "ChatFragment is run");
 	}
 
 	/*
@@ -126,29 +130,26 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 			JSONObject jsonObject = new JSONObject(json);
 			int code = jsonObject.getInt("code");
 			String msg = jsonObject.getString("msg");
-			int a = 0;
-			for (int i = 0; i < 20; i++) {
+			for (int i = 0; i < 10; i++) {
 				try {
-					jsonObject.getJSONObject(i + "");
-					a = i;
+					JSONObject array = jsonObject.getJSONObject(i + "");
+					String title = array.getString("title");
+					String description = array.getString("description");
+					String picUrl = array.getString("picUrl");
+					String url = array.getString("url");
+					data.add(new GirlBase(title, description, picUrl, url));
 				} catch (Exception e) {
 					// TODO: handle exception
+					LogFileHelper.getInstance().e(TAG, e.getMessage());
 					break;
 				}
-			}
-			for (int i = 0; i < a; i++) {
-				JSONObject array = jsonObject.getJSONObject(i + "");
-				String title = array.getString("title");
-				String description = array.getString("description");
-				String picUrl = array.getString("picUrl");
-				String url = array.getString("url");
-				data.add(new GirlBase(title, description, picUrl, url));
-
 			}
 			return new GirlModel(code, msg, data);
 
 		} catch (JSONException e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(TAG, e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		return null;
 	}

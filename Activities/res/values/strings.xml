@@ -51,5 +51,6 @@
     <string name="to_black">加入黑名单</string>
     <string name="move_black">从黑名单移除</string>
     <string name="liver">请出本群</string>
+    <string name="midel">/</string>
 
 </resources>

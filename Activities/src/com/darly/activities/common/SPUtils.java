@@ -1,6 +1,5 @@
 package com.darly.activities.common;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -181,6 +180,9 @@ public class SPUtils {
 				Class clz = SharedPreferences.Editor.class;
 				return clz.getMethod("apply");
 			} catch (NoSuchMethodException e) {
+				LogFileHelper.getInstance().e("SPUtils", e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 
 			return null;
@@ -202,9 +204,10 @@ public class SPUtils {
 					sApplyMethod.invoke(editor);
 					return;
 				}
-			} catch (IllegalArgumentException e) {
-			} catch (IllegalAccessException e) {
-			} catch (InvocationTargetException e) {
+			} catch (Exception e) {
+				LogFileHelper.getInstance().e("SPUtils", e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 			editor.commit();
 		}

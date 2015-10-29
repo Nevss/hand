@@ -18,7 +18,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import com.darly.activities.adapter.SearchAdapter;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.MainActivity;
 import com.darly.activities.ui.R;
@@ -238,7 +238,7 @@ public class SearchPage extends Activity {
 					ToastApp.showToast(SearchPage.this, "没有更多数据了");
 					hasMore = false;
 					int count = listview.getFooterViewsCount();
-					LogApp.i(count + "");
+					LogFileHelper.getInstance().i(count + "");
 					listview.removeFooterView(loadingView);
 				} else {
 					hasMore = true;

@@ -23,11 +23,11 @@ import android.widget.TextView;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.Goddesses;
 import com.darly.activities.poll.HTTPSevTasker;
 import com.darly.activities.ui.R;
-import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 
@@ -35,13 +35,12 @@ import com.lidroid.xutils.ViewUtils;
  * @author Zhangyuhui FriendFragment 下午3:16:34 TODO 单个美女信息展示。
  */
 public class FriendFragment extends BaseFragment {
+	private static final String TAG = "FriendFragment";
 	private View rootView;
 
 	private int tuid;
 
-	private ProgressDialogUtil loading;
-
-	/**
+		/**
 	 * 上午11:27:30 TODO美女名称
 	 */
 	private TextView name;
@@ -83,9 +82,6 @@ public class FriendFragment extends BaseFragment {
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
-		loading = new ProgressDialogUtil(getActivity());
-		loading.setMessage("加载中...");
-		loading.show();
 		name = (TextView) rootView.findViewById(R.id.main_fragment_frid_name);
 		image = (ImageView) rootView
 				.findViewById(R.id.main_fragment_frid_image);
@@ -93,6 +89,7 @@ public class FriendFragment extends BaseFragment {
 				.findViewById(R.id.main_fragment_frid_descrip);
 		image.setLayoutParams(new LayoutParams(Literal.width, Literal.width));
 		tuid = new Random().nextInt(10);
+		LogFileHelper.getInstance().i(TAG, "FriendFragment is run");
 	}
 
 	/*
@@ -120,7 +117,6 @@ public class FriendFragment extends BaseFragment {
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
-		loading.dismiss();
 		Goddesses model = new Gson().fromJson((String) object, Goddesses.class);
 		if (model != null) {
 			name.setText(model.getTu_name());

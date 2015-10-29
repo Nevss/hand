@@ -3,6 +3,9 @@ package com.darly.activities.ui.qinjia.photoview;
 
 import java.lang.ref.WeakReference;
 
+import com.darly.activities.common.CrashHandler;
+import com.darly.activities.common.LogFileHelper;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
@@ -281,6 +284,10 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 			}
 		} catch (ArrayIndexOutOfBoundsException e) {
 			// Can sometimes happen when getX() and getY() is called
+			LogFileHelper.getInstance().e(getClass().getSimpleName(),
+					e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 
 		return true;

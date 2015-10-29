@@ -33,7 +33,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.darly.activities.adapter.ContactsAdapter;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.ChatPage;
 import com.darly.activities.ui.R;
@@ -55,6 +55,7 @@ import com.gotye.api.GotyeUser;
  * @author Zhangyuhui ContactsFragment $ 下午4:25:13 TODO 用户好友展示页面。
  */
 public class ContactsFragment extends Fragment implements OnClickListener {
+	private static final String TAG = "ContactsFragment";
 	private ListView userListView;
 	private SideBar sideBar;
 	private CharacterParser characterParser;
@@ -527,7 +528,7 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 		@Override
 		public void onReconnecting(int code, GotyeUser currentLoginUser) {
 			int onlineStatus = api.isOnline();
-			LogApp.i(onlineStatus + "");
+			LogFileHelper.getInstance().i(TAG, onlineStatus + "");
 			setErrorTip(-1);
 		}
 	};

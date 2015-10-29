@@ -3,7 +3,6 @@ package com.darly.activities.ui.qinjia.util;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
@@ -11,27 +10,31 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 
+import com.darly.activities.common.CrashHandler;
+import com.darly.activities.common.LogFileHelper;
+
 public class BitmapUtil {
 	public static final int IMAGE_MAX_SIZE_LIMIT = 100;
-	
+
 	private static final int IMAGE_COMPRESSION_QUALITY = 90;
 	private static final int NUMBER_OF_RESIZE_ATTEMPTS = 100;
 	private static final int MINIMUM_IMAGE_COMPRESSION_QUALITY = 50;
-	//private int mWidth;
-	//private int mHeight;
-	
+
+	// private int mWidth;
+	// private int mHeight;
+
 	public static String compressImage(String path) {
 
 		BitmapFactory.Options op = new BitmapFactory.Options();
 		op.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(path, op);
-		
+
 		int outWidth = op.outWidth;
 		int outHeight = op.outHeight;
-		
+
 		int widthLimit = op.outWidth;
 		int heightLimit = op.outHeight;
-		
+
 		int byteLimit = IMAGE_MAX_SIZE_LIMIT * 1024;
 
 		float scaleFactor = 1.F;
@@ -54,6 +57,9 @@ public class BitmapUtil {
 						return null; // Couldn't decode and it wasn't because of
 					}
 				} catch (OutOfMemoryError e) {
+					LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
+					CrashHandler.getInstance().uncaughtException(
+							Thread.currentThread(), e);
 					sampleSize *= 2; // works best as a power of two
 					attempts++;
 					continue;
@@ -91,14 +97,16 @@ public class BitmapUtil {
 						b.compress(CompressFormat.JPEG, quality, os);
 					}
 				} catch (java.lang.OutOfMemoryError e) {
-					// Log.w(TAG,
+					LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
+					CrashHandler.getInstance().uncaughtException(
+							Thread.currentThread(), e);
 				}
 				scaleFactor *= .75F;
 				attempts++;
 				resultTooBig = os == null || os.size() > byteLimit;
 			} while (resultTooBig && attempts < NUMBER_OF_RESIZE_ATTEMPTS);
 			b.recycle(); // done with the bitmap, release the memory
-			if(resultTooBig){
+			if (resultTooBig) {
 				return path;
 			}
 			FileOutputStream out = null;
@@ -109,54 +117,57 @@ public class BitmapUtil {
 				out.write(os.toByteArray());
 				out.close();
 				return path;
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}finally{
-				if(out != null){
+			} catch (Exception e) {
+				LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
+			} finally {
+				if (out != null) {
 					try {
 						out.close();
 					} catch (IOException e) {
-						e.printStackTrace();
-					}
+						LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
+						CrashHandler.getInstance().uncaughtException(
+								Thread.currentThread(), e);					}
 				}
 			}
 			return path;
-			
+
 		} catch (java.lang.OutOfMemoryError e) {
-			
+
 			return path;
 		}
 	}
 
-//	public static String compressImage(String imagePath) {
-//
-//		Bitmap image = BitmapFactory.decodeFile(imagePath);
-//		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//		image.compress(Bitmap.CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
-//		int options = 90;
-//		while (baos.toByteArray().length / 1024 > IMAGE_MAX_SIZE_LIMIT) {
-//			baos.reset();// 重置baos即清空baos
-//			image.compress(Bitmap.CompressFormat.JPEG, options, baos);// 这里压缩options%，把压缩后的数据存放到baos中
-//			options -= 10;// 每次都减少10
-//		}
-//		try {
-//			String path = PathUtil.getAppFIlePath()
-//					+ System.currentTimeMillis() + ".jpg";
-//			FileOutputStream out = new FileOutputStream(path);
-//			out.write(baos.toByteArray());
-//			out.close();
-//			return path;
-//		} catch (FileNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return imagePath;
-//	}
+	// public static String compressImage(String imagePath) {
+	//
+	// Bitmap image = BitmapFactory.decodeFile(imagePath);
+	// ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	// image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//
+	// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+	// int options = 90;
+	// while (baos.toByteArray().length / 1024 > IMAGE_MAX_SIZE_LIMIT) {
+	// baos.reset();// 重置baos即清空baos
+	// image.compress(Bitmap.CompressFormat.JPEG, options, baos);//
+	// 这里压缩options%，把压缩后的数据存放到baos中
+	// options -= 10;// 每次都减少10
+	// }
+	// try {
+	// String path = PathUtil.getAppFIlePath()
+	// + System.currentTimeMillis() + ".jpg";
+	// FileOutputStream out = new FileOutputStream(path);
+	// out.write(baos.toByteArray());
+	// out.close();
+	// return path;
+	// } catch (FileNotFoundException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// return imagePath;
+	// }
 
 	public static int calculateInSampleSize(BitmapFactory.Options options,
 			int reqWidth, int reqHeight) {
@@ -201,7 +212,7 @@ public class BitmapUtil {
 	}
 
 	public static String saveBitmapFile(Bitmap bitmap) {
-		if(bitmap==null){
+		if (bitmap == null) {
 			return null;
 		}
 		File f = new File(URIUtil.getAppFIlePath());
@@ -218,8 +229,10 @@ public class BitmapUtil {
 			bos.flush();
 			bos.close();
 			return file.getAbsolutePath();
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (Exception e) {
+			LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		return null;
 	}
@@ -228,10 +241,11 @@ public class BitmapUtil {
 		if (path.endsWith(".jpg") || path.endsWith(".jpeg")
 				|| path.endsWith(".JPG") || path.endsWith(".JPEG")) {
 			return path;
-		} 
-		Bitmap bmp=getSmallBitmap(path, 50, 50);
+		}
+		Bitmap bmp = getSmallBitmap(path, 50, 50);
 		return saveBitmapFile(bmp);
 	}
+
 	public static boolean checkCanSend(String path) {
 		if (path.endsWith(".jpg") || path.endsWith(".jpeg")
 				|| path.endsWith(".JPG") || path.endsWith(".JPEG")) {
@@ -240,6 +254,7 @@ public class BitmapUtil {
 			return false;
 		}
 	}
+
 	public static boolean isImage(String fileName) {
 		// TODO Auto-generated method stub
 		if (fileName.endsWith(".png") || fileName.endsWith(".PNG")
@@ -251,7 +266,7 @@ public class BitmapUtil {
 	}
 
 	public static String toJPG(File absoluteFile) {
-		 
+
 		return null;
 	}
 

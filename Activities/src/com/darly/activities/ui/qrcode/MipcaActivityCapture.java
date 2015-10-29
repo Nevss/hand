@@ -25,7 +25,6 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.provider.MediaStore.MediaColumns;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
@@ -37,7 +36,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.qrcode.camera.CameraManager;
 import com.darly.activities.ui.qrcode.decoding.CaptureActivityHandler;
@@ -61,6 +62,7 @@ import com.google.zxing.qrcode.QRCodeReader;
  */
 @SuppressLint("HandlerLeak")
 public class MipcaActivityCapture extends Activity implements Callback {
+	private static final String TAG = "MipcaActivityCapture";
 
 	private CaptureActivityHandler handler;
 	private ViewfinderView viewfinderView;
@@ -215,9 +217,18 @@ public class MipcaActivityCapture extends Activity implements Callback {
 						null, null, null, null);
 
 				if (cursor != null && cursor.moveToFirst()) {
-					photo_path = cursor.getString(cursor
-							.getColumnIndex(MediaColumns.DATA));
-					cursor.close();
+					try {
+						photo_path = cursor.getString(cursor
+								.getColumnIndex(MediaColumns.DATA));
+						cursor.close();
+					} catch (Exception e) {
+						// TODO: handle exception
+						LogFileHelper.getInstance().e("AppStack",
+								e.getMessage());
+						CrashHandler.getInstance().uncaughtException(
+								Thread.currentThread(), e);
+					}
+
 				}
 
 				mProgress = new ProgressDialog(MipcaActivityCapture.this);
@@ -241,7 +252,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 							m.obj = "图片无法识别，请重新选择！";
 							mHandler.sendMessageDelayed(m, 2000);
 						}
-						Log.i("saomiao", "Thread");
+						LogFileHelper.getInstance().i(TAG, "Thread");
 					}
 				}).start();
 				break;
@@ -342,8 +353,6 @@ public class MipcaActivityCapture extends Activity implements Callback {
 		}
 
 	}
-
-
 
 	// 使用正则表达式进行截取Key
 	protected static String getKey(String str, String reg) {

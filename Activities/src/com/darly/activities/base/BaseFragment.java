@@ -61,7 +61,8 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		MobclickAgent.openActivityDurationTrack(false);
 		// 初始化LOG
-		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO, Thread.MAX_PRIORITY);
+		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO,
+				Thread.MAX_PRIORITY);
 		// 设置ImageLoader初始化参数。设置线程，设置保存文件名等。
 		aq = new AQuery(getActivity());
 		// 设置参数，加载每个图片的详细参数和是否存储、缓存的问题。

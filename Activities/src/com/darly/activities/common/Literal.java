@@ -69,6 +69,8 @@ public class Literal {
 	/** 头像的路径(所有照片的临时存储位置和名字) */
 	public static final String HEAD = SROOT + "head.png";
 
+	public static final String LOG = ROOT + "log/";
+
 	public static String capUri;
 
 	public static final int REQUESTCODE_CAM = 0x1001;

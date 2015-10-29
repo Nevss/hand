@@ -29,7 +29,7 @@ import android.widget.TextView;
 import com.darly.activities.adapter.FragmentAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.main.CaiyicaiFragment;
 import com.darly.activities.ui.fragment.main.ChatFragment;
@@ -46,6 +46,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  */
 public class MainFragment extends BaseFragment implements
 		OnCheckedChangeListener, OnPageChangeListener {
+	private static final String TAG = "MainFragment";
 	/**
 	 * TODO根View
 	 */
@@ -315,17 +316,15 @@ public class MainFragment extends BaseFragment implements
 			@Override
 			public void run() {
 				if (left) {
-					LogApp.i("右移距离", (itemNum - 4) * itemWidth / (itemNum - 1)
-							+ "");
+					LogFileHelper.getInstance().i(TAG,
+							(itemNum - 4) * itemWidth / (itemNum - 1) + "右移距离");
 					scroll.scrollBy((itemNum - 4) * itemWidth / (itemNum - 1),
 							0);
-					// scroll.fullScroll(View.FOCUS_RIGHT);
 				} else {
-					LogApp.i("左移距离", (4 - itemNum) * itemWidth / (itemNum - 1)
-							+ "");
+					LogFileHelper.getInstance().i(TAG,
+							(4 - itemNum) * itemWidth / (itemNum - 1) + "左移距离");
 					scroll.scrollBy((4 - itemNum) * itemWidth / (itemNum - 1),
 							0);
-					// scroll.fullScroll(View.FOCUS_LEFT);
 				}
 			}
 		});

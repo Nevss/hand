@@ -14,7 +14,6 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -24,9 +23,10 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.IARoomName;
@@ -54,6 +54,8 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 @ContentView(R.layout.activity_index_zoom_view)
 public class IndexZoomViewActivity extends BaseActivity implements
 		OnTouchListener {
+	private static final String TAG = "IndexZoomViewActivity";
+
 
 	/**
 	 * TODO线程管理
@@ -283,7 +285,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 		loading.dismiss();
 		if (object != null) {
 			String jsonData = (String) object;
-			LogApp.i(TAG, jsonData);
+			LogFileHelper.getInstance().i(TAG, jsonData);
 			PreferencesJsonCach.putValue("GETDATA" + selectOrgID, jsonData,
 					this);
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
@@ -397,7 +399,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 							}
 							int heighe = nextImage.getHeight();
 							int width = nextImage.getWidth();
-							LogApp.i(nextImage.toString() + heighe + width);
+							LogFileHelper.getInstance().i(nextImage.toString() + heighe + width);
 							if (interlgent != null) {
 								interlgent.setNextImage(nextImage, X / lenth
 										- width / 2, Y / lenth - heighe);
@@ -422,7 +424,9 @@ public class IndexZoomViewActivity extends BaseActivity implements
 			object.put("UserMobile", "18321127312");
 			object.put("OrganizationID", "" + selectOrgID);
 		} catch (Exception e) {
-			Log.i("getDataFHttp", e.getMessage().toString());
+			LogFileHelper.getInstance().e(TAG, e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));

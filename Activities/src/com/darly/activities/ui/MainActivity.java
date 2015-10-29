@@ -13,17 +13,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
+import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.fragment.ContactsFragment;
 import com.darly.activities.ui.fragment.MainFragment;
 import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
+import com.darly.activities.ui.login.LoginAcitvity;
 import com.darly.activities.ui.qinjia.GotyeService;
 import com.darly.activities.ui.qinjia.util.BeepManager;
 import com.darly.activities.ui.qinjia.util.ImageCache;
@@ -43,6 +45,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 @ContentView(R.layout.activity_main)
 public class MainActivity extends BaseActivity implements
 		OnCheckedChangeListener {
+	private static final String TAG = "MainActivity";
 	/**
 	 * TODO底部标签栏，主要功能负责切换三个Fragment，切换页面的功能。当然默认的是第一项选中状态。
 	 */
@@ -157,7 +160,8 @@ public class MainActivity extends BaseActivity implements
 		}
 		api.addListener(mDelegate);
 		// ------------------------------亲加即时通讯进行添加stop------------------------------------
-
+		LogFileHelper.getInstance().i(TAG,
+				"MainActivity and Service init complete");
 	}
 
 	/*
@@ -297,27 +301,17 @@ public class MainActivity extends BaseActivity implements
 		// 此处处理账号在另外设备登陆造成的被动下线
 		@Override
 		public void onLogout(int code) {
-			// FragmentTransaction t=fragmentManager.beginTransaction();
-			// t.remove(messageFragment);
-			// t.commit();
 			ImageCache.getInstance().clear();
-
 			if (code == GotyeStatusCode.CodeForceLogout) {
-				Toast.makeText(MainActivity.this, "您的账号在另外一台设备上登录了！",
-						Toast.LENGTH_SHORT).show();
+				ToastApp.showToast(MainActivity.this, "您的账号在另外一台设备上登录了！");
 				PreferenceUserInfor.cleanUserInfor(MainActivity.this);
 			} else if (code == GotyeStatusCode.CodeNetworkDisConnected) {
-
-				// Toast.makeText(this, "您的账号掉线了！", Toast.LENGTH_SHORT).show();
-				/*
-				 * Intent intent = new Intent(getBaseContext(),
-				 * LoginPage.class);
-				 * intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-				 * startActivity(intent);
-				 */
+				ToastApp.showToast(MainActivity.this, "您的账号掉线了！");
+				Intent intent = new Intent(getBaseContext(),
+						LoginAcitvity.class);
+				startActivity(intent);
 			} else {
-				Toast.makeText(MainActivity.this, "退出登陆！", Toast.LENGTH_SHORT)
-						.show();
+				ToastApp.showToast(MainActivity.this, "退出登陆！");
 				PreferenceUserInfor.cleanUserInfor(MainActivity.this);
 			}
 

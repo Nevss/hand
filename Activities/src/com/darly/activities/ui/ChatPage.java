@@ -43,8 +43,9 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.UserInformation;
@@ -75,6 +76,7 @@ import com.gotye.api.WhineMode;
  * @author Zhangyuhui ChatPage $ 上午9:54:58 TODO 用户聊天窗口。
  */
 public class ChatPage extends Activity implements OnClickListener {
+	private static final String TAG = "ChatPage";
 	public static final int REALTIMEFROM_OTHER = 2;
 	public static final int REALTIMEFROM_SELF = 1;
 	public static final int REALTIMEFROM_NO = 0;
@@ -169,7 +171,9 @@ public class ChatPage extends Activity implements OnClickListener {
 					.getSerializableExtra("cserver");
 		} catch (Exception e) {
 			// TODO: handle exception
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(TAG, e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 
 		initView();
@@ -300,7 +304,7 @@ public class ChatPage extends Activity implements OnClickListener {
 								60 * 1000);
 					}
 					int c = code;
-					LogApp.i(c + "");
+					LogFileHelper.getInstance().i(c + "");
 					pressToVoice.setText("松开 发送");
 					break;
 				case MotionEvent.ACTION_UP:
@@ -408,7 +412,9 @@ public class ChatPage extends Activity implements OnClickListener {
 			in.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(TAG, e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 	}
 
@@ -470,7 +476,7 @@ public class ChatPage extends Activity implements OnClickListener {
 			return;
 		}
 
-		LogApp.i(chatType + "");
+		LogFileHelper.getInstance().i(TAG,chatType + "");
 		// if (chatType == 0) {
 		// Intent intent = getIntent();
 		// intent.setClass(getApplication(), UserInfoPage.class);

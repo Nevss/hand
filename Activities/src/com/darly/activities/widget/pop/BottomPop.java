@@ -18,7 +18,7 @@ import android.widget.PopupWindow;
 import com.darly.activities.adapter.BottomGridViewAdapter;
 import com.darly.activities.common.BaseData;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.BottomModel;
 import com.darly.activities.model.GridViewData;
@@ -163,7 +163,7 @@ public class BottomPop extends PopupWindow implements OnItemClickListener,
 			long id) {
 		// TODO Auto-generated method stub
 		BottomModel model = (BottomModel) parent.getItemAtPosition(position);
-		LogApp.i(TAG, model.toString());
+		LogFileHelper.getInstance().i(TAG, model.toString());
 		if (model.getT() == null) {
 			ToastApp.showToast(context, "需要添加项目了。");
 			BottomPopSec popSec = new BottomPopSec(context, grid.getHeight(),

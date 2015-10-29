@@ -21,9 +21,9 @@ import android.os.Message;
 import android.os.Process;
 import android.util.Log;
 
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.CrashHandler;
+import com.darly.activities.common.LogFileHelper;
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 /**
@@ -40,7 +40,7 @@ public class HttpTasker extends ThreadPoolTask {
 	private boolean isGet;
 	private int handlerCode;
 	public boolean isString;
-	
+
 	public boolean isLog = true;
 
 	public HttpTasker(Context context, List<BasicNameValuePair> params,
@@ -63,18 +63,18 @@ public class HttpTasker extends ThreadPoolTask {
 		Message message = new Message();
 		if (isString) {
 			if (isGet) {
-				//通过Get请求返回字符串
+				// 通过Get请求返回字符串
 				message.obj = doGetForString(url, params);
 			} else {
-				//通过Post请求返回字符串
+				// 通过Post请求返回字符串
 				message.obj = doPostForString(url, params);
 			}
 		} else {
 			if (isGet) {
-				//通过Get请求返回Model
+				// 通过Get请求返回Model
 				message.obj = doGetForJson(url, params, token);
 			} else {
-				//通过Post请求返回Model
+				// 通过Post请求返回Model
 				message.obj = doPostForJson(url, params, token);
 			}
 		}
@@ -111,18 +111,19 @@ public class HttpTasker extends ThreadPoolTask {
 				}
 				bos.close();
 				String json = bos.toString();
-				LogApp.i(TAG, post.getURI().toString());
-				LogApp.i(TAG, json);
+				LogFileHelper.getInstance().i(TAG, post.getURI().toString());
+				LogFileHelper.getInstance().i(TAG, json);
 				return new Gson().fromJson(json, token.getType());
 			} else {
 				return new Gson().fromJson(in, token.getType());
 			}
 
-		} catch (JsonSyntaxException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(getClass().getSimpleName(),
+					e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		// 使用finally块来关闭输出流、输入流
 		finally {
@@ -133,8 +134,11 @@ public class HttpTasker extends ThreadPoolTask {
 				if (in != null) {
 					in.close();
 				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			} catch (IOException e) {
+				LogFileHelper.getInstance().e(getClass().getSimpleName(),
+						e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 		}
 		return null;
@@ -162,15 +166,16 @@ public class HttpTasker extends ThreadPoolTask {
 			bos.close();
 			String json = bos.toString();
 			if (isLog) {
-				LogApp.i(TAG, post.getURI().toString());
-				LogApp.i(TAG, json);
+				LogFileHelper.getInstance().i(TAG, post.getURI().toString());
+				LogFileHelper.getInstance().i(TAG, json);
 			}
 			return json;
-		} catch (JsonSyntaxException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(getClass().getSimpleName(),
+					e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		// 使用finally块来关闭输出流、输入流
 		finally {
@@ -181,8 +186,11 @@ public class HttpTasker extends ThreadPoolTask {
 				if (in != null) {
 					in.close();
 				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			} catch (IOException e) {
+				LogFileHelper.getInstance().e(getClass().getSimpleName(),
+						e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 		}
 		return null;
@@ -236,19 +244,17 @@ public class HttpTasker extends ThreadPoolTask {
 				}
 				bos.close();
 				String json = bos.toString();
-				LogApp.i(TAG, realUrl.toString());
-				LogApp.i(TAG, json);
+				LogFileHelper.getInstance().i(TAG, realUrl.toString());
+				LogFileHelper.getInstance().i(TAG, json);
 				return new Gson().fromJson(json, token.getType());
 			} else {
 				return new Gson().fromJson(in, token.getType());
 			}
-		} catch (JsonSyntaxException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(getClass().getSimpleName(),
+					e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 
 		// 使用finally块来关闭输出流、输入流
@@ -260,8 +266,11 @@ public class HttpTasker extends ThreadPoolTask {
 				if (is != null) {
 					is.close();
 				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			} catch (IOException e) {
+				LogFileHelper.getInstance().e(getClass().getSimpleName(),
+						e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 		}
 		return null;
@@ -313,17 +322,15 @@ public class HttpTasker extends ThreadPoolTask {
 			bos.close();
 			String json = bos.toString();
 			if (isLog) {
-				LogApp.i(TAG, realUrl.toString());
-				LogApp.i(TAG, json);
+				LogFileHelper.getInstance().i(TAG, realUrl.toString());
+				LogFileHelper.getInstance().i(TAG, json);
 			}
 			return json;
-		} catch (JsonSyntaxException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(getClass().getSimpleName(),
+					e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 
 		// 使用finally块来关闭输出流、输入流
@@ -335,8 +342,11 @@ public class HttpTasker extends ThreadPoolTask {
 				if (is != null) {
 					is.close();
 				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			} catch (IOException e) {
+				LogFileHelper.getInstance().e(getClass().getSimpleName(),
+						e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 		}
 		return null;

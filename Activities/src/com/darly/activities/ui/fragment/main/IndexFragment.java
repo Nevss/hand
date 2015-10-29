@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
@@ -46,6 +47,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  */
 public class IndexFragment extends BaseFragment implements OnItemClickListener,
 		IXListViewListener {
+	private static final String TAG = "IndexFragment";
 	/**
 	 * TODO根View
 	 */
@@ -150,6 +152,7 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 		setLoader();
 		adapter = new XAdapter(data, 0, getActivity(), imageLoader, options);
 		xlist.setAdapter(adapter);
+		LogFileHelper.getInstance().i(TAG, "IndexFragment is run");
 	}
 
 	/*

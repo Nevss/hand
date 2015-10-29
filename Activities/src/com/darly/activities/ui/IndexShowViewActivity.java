@@ -15,7 +15,6 @@ import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -30,9 +29,10 @@ import com.darly.activities.adapter.CityAdapter;
 import com.darly.activities.adapter.LocalAdapter;
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.BaseCityInfo;
@@ -62,7 +62,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  */
 @ContentView(R.layout.activity_index_show_view)
 public class IndexShowViewActivity extends BaseActivity {
-
+	private static final String TAG = "IndexShowViewActivity";
 	/**
 	 * TODO顶部标签卡
 	 */
@@ -189,7 +189,7 @@ public class IndexShowViewActivity extends BaseActivity {
 		loading = new ProgressDialogUtil(this);
 		loading.setMessage("加载中...");
 		loading.show();
-		LogApp.i(TAG, "OnCreate还没加载interlgent。");
+		LogFileHelper.getInstance().i(TAG, "OnCreate还没加载interlgent。");
 		main_container.setLayoutParams(new LinearLayout.LayoutParams(
 				Literal.width, Literal.width * IAPoisDataConfig.babaibanh
 						/ IAPoisDataConfig.babaibanw));
@@ -214,7 +214,7 @@ public class IndexShowViewActivity extends BaseActivity {
 		 * main_container_test.addView(new RectRestoreSurfaceView(this));
 		 * main_container_test.addView(new RotateClockView(this));
 		 */
-		LogApp.i(TAG, "OnCreate已经跑完了。该展示页面了。");
+		LogFileHelper.getInstance().i(TAG, "OnCreate已经跑完了。该展示页面了。");
 	}
 
 	/**
@@ -328,6 +328,9 @@ public class IndexShowViewActivity extends BaseActivity {
 					object.put("OrganizationID", "" + selectOrg.org_id);
 				} catch (Exception e) {
 					// TODO: handle exception
+					LogFileHelper.getInstance().e(TAG, e.getMessage());
+					CrashHandler.getInstance().uncaughtException(
+							Thread.currentThread(), e);
 				}
 				ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 				par.add(new BasicNameValuePair("param", object.toString()));
@@ -612,7 +615,9 @@ public class IndexShowViewActivity extends BaseActivity {
 			object.put("UserMobile", "18321127312");
 			object.put("OrganizationID", "" + selectOrg.org_id);
 		} catch (Exception e) {
-			Log.i("getDataFHttp", e.getMessage().toString());
+			LogFileHelper.getInstance().e(TAG, e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));

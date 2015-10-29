@@ -1,9 +1,7 @@
 package com.darly.activities.common;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 
 import android.content.Context;
 import android.content.SharedPreferences.Editor;
@@ -35,8 +33,8 @@ public class PreferencesJsonCach {
 	 *            上午10:53:39
 	 * @author Zhangyuhui MeDetailsAcitvity.java TODO 将Bitmap保存到文件。
 	 */
-	public static void saveBitmap(String url, Bitmap bitmap,String TAG) {
-		LogApp.i(TAG,"保存图片");
+	public static void saveBitmap(String url, Bitmap bitmap, String TAG) {
+		LogFileHelper.getInstance().i(TAG, "保存图片");
 		File f = new File(url);
 		if (f.exists()) {
 			f.delete();
@@ -46,13 +44,13 @@ public class PreferencesJsonCach {
 			bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
 			out.flush();
 			out.close();
-			LogApp.i(TAG,"已经保存");
-		} catch (FileNotFoundException e) {
+			LogFileHelper.getInstance().i(TAG, "已经保存");
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogFileHelper.getInstance()
+					.e("PreferencesJsonCach", e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 	}
 }

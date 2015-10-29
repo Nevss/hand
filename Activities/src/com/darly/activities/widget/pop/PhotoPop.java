@@ -29,7 +29,7 @@ import android.widget.Button;
 import android.widget.PopupWindow;
 
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.ui.R;
 
@@ -122,7 +122,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	 */
 	private void albumPhoto() {
 		// TODO Auto-generated method stub
-		LogApp.i(TAG, "开始调用相册");
+		LogFileHelper.getInstance().i(TAG, "开始调用相册");
 		Intent intent = new Intent();
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_PICK);
@@ -137,7 +137,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	 * @author Zhangyuhui PhotoPop.java TODO 相机内容
 	 */
 	private void capPhoto() {
-		LogApp.i(TAG, "开始调用照相");
+		LogFileHelper.getInstance().i(TAG, "开始调用照相");
 		// 照相
 		capUri = Literal.SROOT + System.currentTimeMillis() + ".png";
 		Literal.capUri = capUri;
@@ -161,7 +161,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 				Uri.fromFile(new File(capUri)));
 		((Activity) context).startActivityForResult(openCameraIntent,
 				Literal.REQUESTCODE_CAP);
-		LogApp.i(TAG, "文件路径" + capUri + "文件" /* + imageUri */);
+		LogFileHelper.getInstance().i(TAG, "文件路径" + capUri + "文件" /* + imageUri */);
 
 	}
 
@@ -171,7 +171,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	 * @author Zhangyuhui PhotoPop.java TODO 調用手機裁剪功能。
 	 */
 	public void cropPhoto(Uri uri) {
-		LogApp.i(TAG, "开始调用裁剪");
+		LogFileHelper.getInstance().i(TAG, "开始调用裁剪");
 		Intent intent = new Intent("com.android.camera.action.CROP");
 		intent.setDataAndType(uri, "image/*");
 		intent.putExtra("crop", "true");
@@ -194,20 +194,20 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	 */
 	public Bitmap PopActivityResult(int requestCode, Intent data) {
 		if (data == null) {
-			LogApp.i(TAG, "data返回数据错误，图片获取空字段。");
+			LogFileHelper.getInstance().i(TAG, "data返回数据错误，图片获取空字段。");
 			return null;
 		}
 
 		switch (requestCode) {
 		case Literal.REQUESTCODE_CAP:
 			//
-			LogApp.i(TAG, "相机调用完成。返回数据");
+			LogFileHelper.getInstance().i(TAG, "相机调用完成。返回数据");
 			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.HEAD);
 			photoUri = Uri.fromFile(new File(Literal.SROOT));
 			return tempBitmap;
 		case Literal.REQUESTCODE_CAM:
 			//
-			LogApp.i(TAG, "相册调用完成。返回数据");
+			LogFileHelper.getInstance().i(TAG, "相册调用完成。返回数据");
 			// 调用Gallery返回的
 			try {
 				// 照片的原始资源地址
@@ -229,7 +229,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 			break;
 		case Literal.REQUESTCODE_CUT:
 			//
-			LogApp.i(TAG, "裁剪调用完成。返回数据");
+			LogFileHelper.getInstance().i(TAG, "裁剪调用完成。返回数据");
 			Bundle extras = data.getExtras();
 			Bitmap cropedBitmap = extras.getParcelable("data");
 			return cropedBitmap;
@@ -251,11 +251,11 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		switch (tag) {
 		case Literal.REQUESTCODE_CAP:
 			// 照相机程序返回的
-			LogApp.i(TAG, "相机调用完成。返回图片的保存地址" + capUri);
+			LogFileHelper.getInstance().i(TAG, "相机调用完成。返回图片的保存地址" + capUri);
 			return /* capUri */getImagePathForCAP(capUri);
 		case Literal.REQUESTCODE_CAM:
 			// 照片的原始资源地址
-			LogApp.i(TAG, "相册调用完成。返回图片的地址");
+			LogFileHelper.getInstance().i(TAG, "相册调用完成。返回图片的地址");
 			photoUri = data.getData();
 			return getImagePath(photoUri);
 		default:
@@ -446,7 +446,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 			cursor.moveToFirst();
 			// 最后根据索引值获取图片路径
 			String path = cursor.getString(column_index);
-			LogApp.i(TAG, "相册图片位置" + path);
+			LogFileHelper.getInstance().i(TAG, "相册图片位置" + path);
 			return path;
 		} catch (Exception e) {
 			// TODO: handle exception

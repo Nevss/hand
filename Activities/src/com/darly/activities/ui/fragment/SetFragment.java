@@ -32,7 +32,7 @@ import android.widget.TextView;
 import com.darly.activities.adapter.SetFragmentAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.SetFragmentModel;
@@ -51,6 +51,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * @auther Darly Fronch 下午5:00:02 SetFragment TODO用户设置页面
  */
 public class SetFragment extends BaseFragment implements OnItemClickListener {
+	private static final String TAG = "SetFragment";
 	/**
 	 * TODO根View
 	 */
@@ -259,8 +260,20 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		// TODO Auto-generated method stub
-		LogApp.i("SetFragment", "onActivityResult");
+		LogFileHelper.getInstance().i(TAG, "onActivityResult");
 		super.onActivityResult(requestCode, resultCode, data);
+		loginUser();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.darly.activities.base.BaseFragment#onResume()
+	 */
+	@Override
+	public void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
 		loginUser();
 	}
 

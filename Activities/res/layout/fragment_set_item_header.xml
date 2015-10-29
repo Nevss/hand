@@ -20,18 +20,25 @@
         android:layout_centerInParent="true"
         android:gravity="center" >
 
-        <Button
+        <TextView
             android:id="@+id/set_login"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:background="@drawable/app_btn_select"
+            android:gravity="center"
             android:text="@string/login" />
 
-        <Button
-            android:id="@+id/set_regest"
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/midel" />
+
+        <TextView
+            android:id="@+id/set_regest"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
             android:background="@drawable/app_btn_select"
+            android:gravity="center"
             android:text="@string/regest" />
     </TableRow>
 

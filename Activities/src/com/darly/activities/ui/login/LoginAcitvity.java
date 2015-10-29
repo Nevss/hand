@@ -21,8 +21,9 @@ import android.widget.TextView;
 
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.R;
@@ -36,6 +37,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  */
 @ContentView(R.layout.activity_login)
 public class LoginAcitvity extends BaseActivity {
+	private static final String TAG = "LoginAcitvity";
 	/**
 	 * 下午3:01:22 TODO 顶部标签
 	 */
@@ -103,8 +105,12 @@ public class LoginAcitvity extends BaseActivity {
 						object.put("userTrueName", "darly");
 					} catch (Exception e) {
 						// TODO: handle exception
+						LogFileHelper.getInstance().e(TAG,
+								e.getMessage());
+						CrashHandler.getInstance().uncaughtException(
+								Thread.currentThread(), e);
 					}
-					LogApp.i(TAG, object.toString());
+					LogFileHelper.getInstance().i(TAG, object.toString());
 					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
 							object.toString(), this);
 					// 登录成功后进行初始化融云通讯。
@@ -127,8 +133,12 @@ public class LoginAcitvity extends BaseActivity {
 						object.put("userTrueName", "hellen");
 					} catch (Exception e) {
 						// TODO: handle exception
+						LogFileHelper.getInstance().e(TAG,
+								e.getMessage());
+						CrashHandler.getInstance().uncaughtException(
+								Thread.currentThread(), e);
 					}
-					LogApp.i(TAG, object.toString());
+					LogFileHelper.getInstance().i(TAG, object.toString());
 					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
 							object.toString(), this);
 					// 登录成功后进行初始化融云通讯。

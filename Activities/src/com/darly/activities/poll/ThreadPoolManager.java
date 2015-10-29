@@ -4,7 +4,8 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import android.util.Log;
+import com.darly.activities.common.CrashHandler;
+import com.darly.activities.common.LogFileHelper;
 
 /**
  * 线程池管理类
@@ -120,7 +121,7 @@ public class ThreadPoolManager {
 
 		@Override
 		public void run() {
-			Log.i(TAG, "开始轮询");
+			LogFileHelper.getInstance().i(TAG, "开始轮询");
 			try {
 				while (!Thread.currentThread().isInterrupted()) {
 					ThreadPoolTask task = getAsyncTask();
@@ -137,7 +138,10 @@ public class ThreadPoolManager {
 
 			} catch (Exception e) {
 				// TODO: handle exception
-				Log.i("Exception", e.toString());
+				LogFileHelper.getInstance().e(getClass().getSimpleName(),
+						e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			} finally {
 
 				// 程序在后台运行时，线程池关闭。重新打开程序后，程序崩溃。
@@ -145,7 +149,7 @@ public class ThreadPoolManager {
 					threadPool.shutdown();
 				}
 			}
-			Log.i(TAG, "结束轮询");
+			LogFileHelper.getInstance().i(TAG, "结束轮询");
 		}
 	}
 }

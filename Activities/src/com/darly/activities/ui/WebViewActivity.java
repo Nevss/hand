@@ -20,8 +20,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.darly.activities.base.BaseActivity;
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
 import com.lidroid.xutils.view.annotation.ContentView;
@@ -29,7 +30,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 
 @ContentView(R.layout.activity_webview)
 public class WebViewActivity extends BaseActivity {
-
+	private static final String TAG = "WebViewActivity";
 	@ViewInject(R.id.main_header_back)
 	private Button back;
 	@ViewInject(R.id.main_header_text)
@@ -58,8 +59,8 @@ public class WebViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		switch (v.getId()) {
 		case R.id.id_bt_update:
-			LogApp.i(TAG, "重新加载");
-			LogApp.i(TAG, current_url);
+			LogFileHelper.getInstance().i(TAG, "重新加载");
+			LogFileHelper.getInstance().i(TAG, current_url);
 			break;
 		case R.id.main_header_back:
 			finish();
@@ -79,7 +80,7 @@ public class WebViewActivity extends BaseActivity {
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		String url = getIntent().getStringExtra("URL");
-		LogApp.i(TAG, url);
+		LogFileHelper.getInstance().i(TAG, url);
 		webview.loadUrl(url);
 		webViewListener();
 	}
@@ -92,8 +93,8 @@ public class WebViewActivity extends BaseActivity {
 	@Override
 	public void initData() {
 		// TODO Auto-generated method stub
-//		title.setText("详情");
-//		back.setOnClickListener(this);
+		// title.setText("详情");
+		// back.setOnClickListener(this);
 	}
 
 	/*
@@ -126,8 +127,10 @@ public class WebViewActivity extends BaseActivity {
 			public void onReceivedError(WebView view, int errorCode,
 					String description, String failingUrl) {
 
-				LogApp.i(TAG, "加载失败===" + errorCode + "---" + description
-						+ "---" + failingUrl + "---");
+				LogFileHelper.getInstance().i(
+						TAG,
+						"加载失败===" + errorCode + "---" + description + "---"
+								+ failingUrl + "---");
 
 				current_url = failingUrl;
 				webview.clearView();
@@ -138,7 +141,9 @@ public class WebViewActivity extends BaseActivity {
 					try {
 						Thread.sleep(400);
 					} catch (InterruptedException e) {
-						e.printStackTrace();
+						LogFileHelper.getInstance().e(TAG, e.getMessage());
+						CrashHandler.getInstance().uncaughtException(
+								Thread.currentThread(), e);
 					}
 					webview.loadUrl(failingUrl);
 				} else {
@@ -155,7 +160,8 @@ public class WebViewActivity extends BaseActivity {
 
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
-				LogApp.i(TAG, "拦截url---shouldOverrideUrlLoading-->" + url);
+				LogFileHelper.getInstance().i(TAG,
+						"拦截url---shouldOverrideUrlLoading-->" + url);
 				if (url.startsWith("tel:")) {
 					Intent intent = new Intent(Intent.ACTION_DIAL, Uri
 							.parse(url));
@@ -176,7 +182,8 @@ public class WebViewActivity extends BaseActivity {
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
 				isPageLoaded = false;
-				LogApp.i(TAG, "拦截url---onPageStarted-->" + url);
+				LogFileHelper.getInstance().i(TAG,
+						"拦截url---onPageStarted-->" + url);
 				super.onPageStarted(view, url, favicon);
 			}
 
@@ -184,7 +191,8 @@ public class WebViewActivity extends BaseActivity {
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
 				isPageLoaded = true;
-				LogApp.i(TAG, "页面加载完后==onPageFinished==" + url);
+				LogFileHelper.getInstance().i(TAG,
+						"页面加载完后==onPageFinished==" + url);
 
 			}
 		});
@@ -207,15 +215,11 @@ public class WebViewActivity extends BaseActivity {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			LogApp.i(TAG, "==onKeyDown==");
-			if (isPageLoaded) {
-				webview.loadUrl("javascript:CommonRedirect.goBack()");
+			LogFileHelper.getInstance().i(TAG, "==onKeyDown==");
+			if (webview.canGoBack()) {
+				webview.goBack();
 			} else {
-				if (webview.canGoBack()) {
-					webview.goBack();
-				} else {
-					finish();
-				}
+				finish();
 			}
 		}
 		return false;

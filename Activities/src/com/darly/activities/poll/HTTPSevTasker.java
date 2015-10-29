@@ -26,8 +26,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
 
-import com.darly.activities.common.LogApp;
-import com.google.gson.JsonSyntaxException;
+import com.darly.activities.common.CrashHandler;
+import com.darly.activities.common.LogFileHelper;
 
 /**
  * @author Zhangyuhui HTTPSevTasker 下午2:37:12 TODO 为了测试外置接口，专注一个请求类。
@@ -131,17 +131,15 @@ public class HTTPSevTasker extends ThreadPoolTask {
 			bos.close();
 			String json = bos.toString();
 			if (isLog) {
-				LogApp.i(TAG, realUrl.toString());
-				LogApp.i(TAG, json);
+				LogFileHelper.getInstance().i(TAG, realUrl.toString());
+				LogFileHelper.getInstance().i(TAG, json);
 			}
 			return json;
-		} catch (JsonSyntaxException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(getClass().getSimpleName(),
+					e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 
 		// 使用finally块来关闭输出流、输入流
@@ -153,8 +151,11 @@ public class HTTPSevTasker extends ThreadPoolTask {
 				if (is != null) {
 					is.close();
 				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			} catch (IOException e) {
+				LogFileHelper.getInstance().e(getClass().getSimpleName(),
+						e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 		}
 		return null;
@@ -187,15 +188,16 @@ public class HTTPSevTasker extends ThreadPoolTask {
 			bos.close();
 			String json = bos.toString();
 			if (isLog) {
-				LogApp.i(TAG, post.getURI().toString());
-				LogApp.i(TAG, json);
+				LogFileHelper.getInstance().i(TAG, post.getURI().toString());
+				LogFileHelper.getInstance().i(TAG, json);
 			}
 			return json;
-		} catch (JsonSyntaxException e) {
-			e.printStackTrace();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(getClass().getSimpleName(),
+					e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		// 使用finally块来关闭输出流、输入流
 		finally {
@@ -206,8 +208,11 @@ public class HTTPSevTasker extends ThreadPoolTask {
 				if (in != null) {
 					in.close();
 				}
-			} catch (IOException ex) {
-				ex.printStackTrace();
+			} catch (IOException e) {
+				LogFileHelper.getInstance().e(getClass().getSimpleName(),
+						e.getMessage());
+				CrashHandler.getInstance().uncaughtException(
+						Thread.currentThread(), e);
 			}
 		}
 		return null;

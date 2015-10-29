@@ -1,5 +1,8 @@
 package com.darly.activities.app;
 
+import com.darly.activities.common.CrashHandler;
+import com.darly.activities.common.LogFileHelper;
+
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -31,7 +34,9 @@ public class AppUtils {
 			int labelRes = packageInfo.applicationInfo.labelRes;
 			return context.getResources().getString(labelRes);
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e("AppUtils", e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		return null;
 	}
@@ -39,8 +44,7 @@ public class AppUtils {
 	/**
 	 * [获取应用程序版本名称信息]
 	 * 
-	 * param context
-	 * return 当前应用的版本名称
+	 * param context return 当前应用的版本名称
 	 */
 	public static String getVersionName(Context context) {
 		try {
@@ -50,7 +54,9 @@ public class AppUtils {
 			return packageInfo.versionName;
 
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e("AppUtils", e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 		return null;
 	}

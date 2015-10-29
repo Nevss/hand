@@ -6,6 +6,9 @@
  */
 package com.darly.activities.ui;
 
+import com.darly.activities.common.CrashHandler;
+import com.darly.activities.common.LogFileHelper;
+
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -24,6 +27,7 @@ import android.view.SurfaceView;
  * @author Zhangyuhui a 上午9:29:33 TODO
  */
 public class DisplayActivity extends Activity {
+	private static final String TAG = "DisplayActivity";
 	private SurfaceView videoView;
 	private SurfaceHolder sfh;
 	private Canvas canvas;
@@ -53,7 +57,7 @@ public class DisplayActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		screenW = dm.widthPixels;
 		screenH = (dm.heightPixels) / 2;
-
+		LogFileHelper.getInstance().i(TAG, "onCreate is run");
 	}
 
 	class DisplaySurfaceView implements SurfaceHolder.Callback {
@@ -124,7 +128,9 @@ public class DisplayActivity extends Activity {
 						Thread.sleep(50 - (end - start));
 					}
 				} catch (InterruptedException e) {
-					e.printStackTrace();
+					LogFileHelper.getInstance().e(TAG, e.getMessage());
+					CrashHandler.getInstance().uncaughtException(
+							Thread.currentThread(), e);
 				}
 			}
 		}
@@ -150,7 +156,9 @@ public class DisplayActivity extends Activity {
 				sfh.unlockCanvasAndPost(canvas);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e(TAG, e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		} finally {
 		}
 	}

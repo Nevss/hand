@@ -19,7 +19,7 @@ import android.view.View;
 
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 
 /**
  * @author Zhangyuhui RotateAcitvity 上午9:40:51 TODO 测试canvas.save();
@@ -27,6 +27,7 @@ import com.darly.activities.common.LogApp;
  *         Literal.width/2);功能是否强悍
  */
 public class RotateAcitvity extends BaseActivity {
+	private static final String TAG = "RotateAcitvity";
 
 	/*
 	 * (non-Javadoc)
@@ -143,8 +144,7 @@ public class RotateAcitvity extends BaseActivity {
 			// 矩形框的中心位置。
 			xline = rect.width() / 2 + rect.left;
 			yline = rect.height() / 2 + rect.top;
-			LogApp.i(xline + "-" + yline);
-
+			LogFileHelper.getInstance().i(TAG, xline + "-" + yline);
 			textPaints = new TextPaint();
 			/* 设置paint的外框宽度 */
 			textPaints.setStrokeWidth(1);
@@ -156,7 +156,7 @@ public class RotateAcitvity extends BaseActivity {
 			// 计算Layout的中心位置
 			layoutw = layout.getWidth() / 2;
 			layouth = layout.getHeight() / 2;
-			LogApp.i(layoutw + "+" + layouth);
+			LogFileHelper.getInstance().i(TAG, layoutw + "+" + layouth);
 
 		}
 

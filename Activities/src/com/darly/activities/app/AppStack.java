@@ -12,8 +12,9 @@ import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.darly.activities.common.BaseData;
+import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogApp;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.UserInformation;
 import com.google.gson.Gson;
@@ -65,11 +66,12 @@ public class AppStack extends Application {
 		instance = this;
 		// 使用您在亲加管理平台申请到的appkey初始化API，appkey如果为空会返回参数错误。
 		// 下文提到的gotyeApi即为GotyeAPI，后续不再赘述。
-		LogApp.i(getClass().getName(), "开始初始化即时通讯");
+		CrashHandler.getInstance().init(instance);
+		LogFileHelper.getInstance().i(getClass().getName(), "开始初始化即时通讯");
 		GotyeAPI gotyeApi = GotyeAPI.getInstance();
 		gotyeApi.init(this, Literal.QJAppKey);
 
-		LogApp.i(getClass().getName(), "即时通讯初始化完成");
+		LogFileHelper.getInstance().i(getClass().getName(), "即时通讯初始化完成");
 
 		if (Literal.users == null) {
 			Literal.users = BaseData.getUsers();
@@ -245,7 +247,9 @@ public class AppStack extends Application {
 			json.put("device_id", device_id);
 			return json.toString();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LogFileHelper.getInstance().e("AppStack", e.getMessage());
+			CrashHandler.getInstance().uncaughtException(
+					Thread.currentThread(), e);
 		}
 
 		return null;

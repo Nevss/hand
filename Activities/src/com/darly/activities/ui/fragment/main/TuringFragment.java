@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.TuringModel;
 import com.darly.activities.poll.HTTPSevTasker;
@@ -35,6 +36,7 @@ import com.lidroid.xutils.ViewUtils;
  * @author Zhangyuhui ChatFragment 下午3:16:20 TODO美女图片展示。
  */
 public class TuringFragment extends BaseFragment implements TextWatcher {
+	private static final String TAG = "TuringFragment";
 	private View rootView;
 
 	private String key = "879a6cb3afb84dbf4fc84a1df2ab7319";
@@ -118,6 +120,7 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 	public void initData() {
 		// TODO Auto-generated method stub
 		msg.addTextChangedListener(this);
+		LogFileHelper.getInstance().i(TAG, "TuringFragment is run");
 	}
 
 	/*

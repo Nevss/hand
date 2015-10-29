@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.widget.carousel.Carousel;
 import com.darly.activities.widget.carousel.ImageHandler;
@@ -31,6 +32,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 @ContentView(R.layout.activity_me_details)
 public class MeDetailsAcitvity extends BaseActivity {
 
+	private static final String TAG = "MeDetailsAcitvity";
 	private ArrayList<GridViewData> data;
 	/**
 	 * 下午5:38:14
@@ -143,27 +145,6 @@ public class MeDetailsAcitvity extends BaseActivity {
 		LayoutParams lp = new LayoutParams(Literal.width, Literal.width / 3);
 		relative.setLayoutParams(lp);
 		relative.addView(carousel.view);
-		/*
-		 * // 获取到背景图片后进行Bitmap缓存。 imageLoader.loadImage(data.url, new
-		 * ImageLoadingListener() {
-		 * 
-		 * @Override public void onLoadingStarted(String arg0, View arg1) { //
-		 * TODO Auto-generated method stub loading.show(); }
-		 * 
-		 * @Override public void onLoadingFailed(String arg0, View arg1,
-		 * FailReason arg2) { // TODO Auto-generated method stub
-		 * loading.dismiss(); ToastApp.showToast(MeDetailsAcitvity.this,
-		 * "网络异常，请检查网络"); }
-		 * 
-		 * @Override public void onLoadingComplete(String arg0, View arg1,
-		 * Bitmap arg2) { // TODO Auto-generated method stub loading.dismiss();
-		 * imageW = arg2.getWidth(); imageH = arg2.getHeight(); Message message
-		 * = new Message(); message.what = Literal.GET_HANDLER; message.obj =
-		 * arg2; handler.sendMessage(message); }
-		 * 
-		 * @Override public void onLoadingCancelled(String arg0, View arg1) { //
-		 * TODO Auto-generated method stub loading.dismiss(); } });
-		 */
 	}
 
 	/*
@@ -227,10 +208,8 @@ public class MeDetailsAcitvity extends BaseActivity {
 						Literal.width / 5);
 				lp.setMargins(2, 2, 2, 2);
 				imageView.setLayoutParams(lp);
-
 				imageView.setImageBitmap(head);
 				container.addView(imageView, container.getChildCount() - 1);
-
 			}
 		} else {
 			// 拍照或相册
@@ -247,6 +226,7 @@ public class MeDetailsAcitvity extends BaseActivity {
 						Literal.REQUESTCODE_CAM);
 
 			}
+			LogFileHelper.getInstance().i(TAG, head_path);
 			File temp = new File(head_path);
 			pop.cropPhoto(Uri.fromFile(temp));// 裁剪图片
 		}

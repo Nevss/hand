@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
 import com.darly.activities.common.Literal;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.CaiModel;
 import com.darly.activities.poll.HTTPSevTasker;
@@ -34,6 +35,7 @@ import com.lidroid.xutils.ViewUtils;
  * @author Zhangyuhui ContactsFragment 下午3:16:43 TODO测试类
  */
 public class CaiyicaiFragment extends BaseFragment {
+	private static final String TAG = "CaiyicaiFragment";
 	private View rootView;
 
 	private TextView title;
@@ -141,6 +143,7 @@ public class CaiyicaiFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		start.setOnClickListener(this);
 		stop.setOnClickListener(this);
+		LogFileHelper.getInstance().i(TAG, "CaiyicaiFragment is run");
 	}
 
 	/*

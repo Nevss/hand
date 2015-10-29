@@ -24,6 +24,7 @@ import android.widget.TextView;
 import com.darly.activities.adapter.GridViewAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.BaseData;
+import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.ui.MeDetailsAcitvity;
 import com.darly.activities.ui.R;
@@ -36,6 +37,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * @auther Darly Fronch 下午5:00:18 MeFragment TODO个人娱乐页面
  */
 public class MeFragment extends BaseFragment implements OnItemClickListener {
+	private static final String TAG = "MeFragment";
 	/**
 	 * TODO根View
 	 */
@@ -103,6 +105,7 @@ public class MeFragment extends BaseFragment implements OnItemClickListener {
 		grid.setAdapter(new GridViewAdapter(gridData,
 				R.layout.item_fragment_gridview, getActivity()));
 		grid.setOnItemClickListener(this);
+		LogFileHelper.getInstance().i(TAG, "MeFragment is running");
 	}
 
 	/*
