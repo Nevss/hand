@@ -19,11 +19,26 @@ import android.content.SharedPreferences.Editor;
 public class PreferenceUserInfor {
 	public final static String SETTING = "userinfo_preference";
 
+	private static final String TOKEN = "token";
+
 	public static void saveUserInfor(String key, String value, Context context) {
 		Editor sp = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE)
 				.edit();
 		sp.putString(key, value);
 		sp.commit();
+	}
+
+	public static void saveToken(String value, Context context) {
+		Editor sp = context.getSharedPreferences(TOKEN, Context.MODE_PRIVATE)
+				.edit();
+		sp.putString(TOKEN, value);
+		sp.commit();
+	}
+
+	public static String getToken(Context context) {
+		SharedPreferences preferences = context.getSharedPreferences(TOKEN,
+				Context.MODE_PRIVATE);
+		return preferences.getString(TOKEN, null);
 	}
 
 	public static String getUserInfor(String key, Context context) {

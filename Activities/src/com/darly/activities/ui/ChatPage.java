@@ -43,7 +43,6 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
@@ -172,8 +171,6 @@ public class ChatPage extends Activity implements OnClickListener {
 		} catch (Exception e) {
 			// TODO: handle exception
 			LogFileHelper.getInstance().e(TAG, e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 
 		initView();
@@ -413,8 +410,6 @@ public class ChatPage extends Activity implements OnClickListener {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			LogFileHelper.getInstance().e(TAG, e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 	}
 

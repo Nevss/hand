@@ -10,7 +10,6 @@ import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.BitmapFactory;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 
 public class BitmapUtil {
@@ -58,8 +57,6 @@ public class BitmapUtil {
 					}
 				} catch (OutOfMemoryError e) {
 					LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
-					CrashHandler.getInstance().uncaughtException(
-							Thread.currentThread(), e);
 					sampleSize *= 2; // works best as a power of two
 					attempts++;
 					continue;
@@ -98,8 +95,6 @@ public class BitmapUtil {
 					}
 				} catch (java.lang.OutOfMemoryError e) {
 					LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
-					CrashHandler.getInstance().uncaughtException(
-							Thread.currentThread(), e);
 				}
 				scaleFactor *= .75F;
 				attempts++;
@@ -119,16 +114,14 @@ public class BitmapUtil {
 				return path;
 			} catch (Exception e) {
 				LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 			} finally {
 				if (out != null) {
 					try {
 						out.close();
 					} catch (IOException e) {
-						LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
-						CrashHandler.getInstance().uncaughtException(
-								Thread.currentThread(), e);					}
+						LogFileHelper.getInstance().e("BitmapUtil",
+								e.getMessage());
+					}
 				}
 			}
 			return path;
@@ -231,8 +224,6 @@ public class BitmapUtil {
 			return file.getAbsolutePath();
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e("BitmapUtil", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		return null;
 	}

@@ -10,7 +10,6 @@ import android.view.ScaleGestureDetector.OnScaleGestureListener;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 
 public abstract class VersionedGestureDetector {
@@ -174,8 +173,6 @@ public abstract class VersionedGestureDetector {
 			} catch (Exception e) {
 				LogFileHelper.getInstance().e(getClass().getSimpleName(),
 						e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 				return ev.getX();
 			}
 		}
@@ -187,8 +184,6 @@ public abstract class VersionedGestureDetector {
 			} catch (Exception e) {
 				LogFileHelper.getInstance().e(getClass().getSimpleName(),
 						e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 				return ev.getY();
 			}
 		}

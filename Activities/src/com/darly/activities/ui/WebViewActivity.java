@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
@@ -47,7 +46,6 @@ public class WebViewActivity extends BaseActivity {
 
 	private String current_url;
 
-	private boolean isPageLoaded = false;
 
 	/*
 	 * (non-Javadoc)
@@ -142,8 +140,6 @@ public class WebViewActivity extends BaseActivity {
 						Thread.sleep(400);
 					} catch (InterruptedException e) {
 						LogFileHelper.getInstance().e(TAG, e.getMessage());
-						CrashHandler.getInstance().uncaughtException(
-								Thread.currentThread(), e);
 					}
 					webview.loadUrl(failingUrl);
 				} else {
@@ -181,7 +177,6 @@ public class WebViewActivity extends BaseActivity {
 
 			@Override
 			public void onPageStarted(WebView view, String url, Bitmap favicon) {
-				isPageLoaded = false;
 				LogFileHelper.getInstance().i(TAG,
 						"拦截url---onPageStarted-->" + url);
 				super.onPageStarted(view, url, favicon);
@@ -190,7 +185,6 @@ public class WebViewActivity extends BaseActivity {
 			@Override
 			public void onPageFinished(WebView view, String url) {
 				super.onPageFinished(view, url);
-				isPageLoaded = true;
 				LogFileHelper.getInstance().i(TAG,
 						"页面加载完后==onPageFinished==" + url);
 

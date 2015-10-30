@@ -29,7 +29,6 @@ import com.darly.activities.adapter.CityAdapter;
 import com.darly.activities.adapter.LocalAdapter;
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
@@ -43,7 +42,7 @@ import com.darly.activities.model.IARoomPoint;
 import com.darly.activities.model.OrgBase;
 import com.darly.activities.model.OrgBaseData;
 import com.darly.activities.model.RoomInfor;
-import com.darly.activities.poll.HttpTasker;
+import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
 import com.darly.activities.widget.intel.InterlgentUtil;
@@ -120,11 +119,11 @@ public class IndexShowViewActivity extends BaseActivity {
 	/**
 	 * 咨询链接
 	 */
-	private String infoUrl = "http://test.rayelink.com/APIAccount/GetOrganizationInfo";
+	private String infoUrl = "http://test.rayelink.com/APIAccount/GetOrganizationInfos";
 	/**
 	 * 数据链接
 	 */
-	private String dataUrl = "http://test.rayelink.com/APIQueuingSystem/GetData";
+	private String dataUrl = "http://test.rayelink.com/APIQueuingSystem/GetDatas";
 
 	private final int KEEP = 1000;
 	private int NEXTKEEP = 10000;
@@ -329,16 +328,14 @@ public class IndexShowViewActivity extends BaseActivity {
 				} catch (Exception e) {
 					// TODO: handle exception
 					LogFileHelper.getInstance().e(TAG, e.getMessage());
-					CrashHandler.getInstance().uncaughtException(
-							Thread.currentThread(), e);
 				}
 				ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 				par.add(new BasicNameValuePair("param", object.toString()));
 				manager.start();
 				// 获取屏幕的宽高。这几
-				manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this,
-						par, infoUrl, null, handler, true, Literal.GET_HANDLER,
-						true));
+				manager.addAsyncTask(new HttpTaskerForString(
+						IndexShowViewActivity.this, par, infoUrl, handler,
+						true, Literal.GET_HANDLER, null));
 				// 请求服务器平面图数据。
 			}
 		}
@@ -616,14 +613,13 @@ public class IndexShowViewActivity extends BaseActivity {
 			object.put("OrganizationID", "" + selectOrg.org_id);
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e(TAG, e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
 		manager.start();
-		manager.addAsyncTask(new HttpTasker(IndexShowViewActivity.this, par,
-				dataUrl, null, handler, true, Literal.POST_HANDLER, true));
+		manager.addAsyncTask(new HttpTaskerForString(
+				IndexShowViewActivity.this, par, dataUrl, handler, true,
+				Literal.POST_HANDLER, null));
 	}
 
 	/*
@@ -666,6 +662,5 @@ public class IndexShowViewActivity extends BaseActivity {
 		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
-
 
 }

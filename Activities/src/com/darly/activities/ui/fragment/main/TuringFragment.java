@@ -27,7 +27,7 @@ import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.TuringModel;
-import com.darly.activities.poll.HTTPSevTasker;
+import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.ui.R;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -81,7 +81,7 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 			List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
 			propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 			manager.start();
-			manager.addAsyncTask(new HTTPSevTasker(getActivity(), params,
+			manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
 					HTTPServ.TURING, handler, true, Literal.GET_HANDLER,
 					propety));
 			break;

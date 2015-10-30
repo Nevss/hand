@@ -123,6 +123,10 @@ public class LogFileHelper {
 		t.setToNow(); // 取得系统时间
 		int date = t.year * 10000 + t.month * 100 + t.monthDay;
 		String fileName = "LOG" + date + CRASH_REPORTER_EXTENSION;
+		File act = new File(Literal.ROOT);
+		if (!act.exists()) {
+			act.mkdir();
+		}
 		File log = new File(Literal.LOG);
 		if (!log.exists()) {
 			log.mkdir();
@@ -143,8 +147,6 @@ public class LogFileHelper {
 			fw.flush();
 			fw.close();
 		} catch (Exception e) {
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 	}
 }

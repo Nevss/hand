@@ -248,8 +248,6 @@ public class AppStack extends Application {
 			return json.toString();
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e("AppStack", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 
 		return null;

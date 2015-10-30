@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
@@ -107,8 +106,6 @@ public class LoginAcitvity extends BaseActivity {
 						// TODO: handle exception
 						LogFileHelper.getInstance().e(TAG,
 								e.getMessage());
-						CrashHandler.getInstance().uncaughtException(
-								Thread.currentThread(), e);
 					}
 					LogFileHelper.getInstance().i(TAG, object.toString());
 					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
@@ -135,8 +132,6 @@ public class LoginAcitvity extends BaseActivity {
 						// TODO: handle exception
 						LogFileHelper.getInstance().e(TAG,
 								e.getMessage());
-						CrashHandler.getInstance().uncaughtException(
-								Thread.currentThread(), e);
 					}
 					LogFileHelper.getInstance().i(TAG, object.toString());
 					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,

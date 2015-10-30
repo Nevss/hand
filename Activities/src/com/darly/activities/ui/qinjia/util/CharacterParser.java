@@ -1,6 +1,5 @@
 package com.darly.activities.ui.qinjia.util;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 
 /**
@@ -137,8 +136,6 @@ public class CharacterParser {
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e(getClass().getSimpleName(),
 					e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 			System.out
 					.println("ERROR:ChineseSpelling.class-getChsAscii(String chs)"
 							+ e);

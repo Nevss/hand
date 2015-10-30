@@ -23,13 +23,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.darly.activities.adapter.ChatAdapter;
 import com.darly.activities.base.BaseFragment;
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.HTTPServ;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GirlBase;
 import com.darly.activities.model.GirlModel;
-import com.darly.activities.poll.HTTPSevTasker;
+import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.WebViewActivity;
 import com.darly.activities.widget.xlistview.XListView;
@@ -83,7 +82,7 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 		List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
 		propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 		manager.start();
-		manager.addAsyncTask(new HTTPSevTasker(getActivity(), params,
+		manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
 				HTTPServ.PHOTO_GIRL, handler, true, Literal.GET_HANDLER,
 				propety));
 	}
@@ -148,8 +147,6 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 
 		} catch (JSONException e) {
 			LogFileHelper.getInstance().e(TAG, e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		return null;
 	}

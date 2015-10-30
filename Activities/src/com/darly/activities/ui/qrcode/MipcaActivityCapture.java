@@ -36,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
@@ -225,8 +224,6 @@ public class MipcaActivityCapture extends Activity implements Callback {
 						// TODO: handle exception
 						LogFileHelper.getInstance().e("AppStack",
 								e.getMessage());
-						CrashHandler.getInstance().uncaughtException(
-								Thread.currentThread(), e);
 					}
 
 				}

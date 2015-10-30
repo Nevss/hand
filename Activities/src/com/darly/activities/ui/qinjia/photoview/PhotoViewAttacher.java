@@ -3,9 +3,6 @@ package com.darly.activities.ui.qinjia.photoview;
 
 import java.lang.ref.WeakReference;
 
-import com.darly.activities.common.CrashHandler;
-import com.darly.activities.common.LogFileHelper;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Matrix;
@@ -22,6 +19,8 @@ import android.view.View.OnLongClickListener;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.ImageView.ScaleType;
+
+import com.darly.activities.common.LogFileHelper;
 
 public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGestureDetector.OnGestureListener,
 		GestureDetector.OnDoubleTapListener, ViewTreeObserver.OnGlobalLayoutListener {
@@ -286,8 +285,6 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 			// Can sometimes happen when getX() and getY() is called
 			LogFileHelper.getInstance().e(getClass().getSimpleName(),
 					e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 
 		return true;

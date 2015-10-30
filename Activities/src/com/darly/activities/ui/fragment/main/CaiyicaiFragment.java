@@ -26,7 +26,7 @@ import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.CaiModel;
-import com.darly.activities.poll.HTTPSevTasker;
+import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.ui.R;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
@@ -111,7 +111,7 @@ public class CaiyicaiFragment extends BaseFragment {
 				List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
 				propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 				manager.start();
-				manager.addAsyncTask(new HTTPSevTasker(getActivity(), null,
+				manager.addAsyncTask(new HttpTaskerForString(getActivity(), null,
 						HTTPServ.CAIYICAI, handler, true, Literal.GET_HANDLER,
 						propety));
 			}

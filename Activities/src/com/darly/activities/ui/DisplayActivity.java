@@ -6,9 +6,6 @@
  */
 package com.darly.activities.ui;
 
-import com.darly.activities.common.CrashHandler;
-import com.darly.activities.common.LogFileHelper;
-
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -22,6 +19,8 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.darly.activities.common.LogFileHelper;
 
 /**
  * @author Zhangyuhui a 上午9:29:33 TODO
@@ -129,8 +128,6 @@ public class DisplayActivity extends Activity {
 					}
 				} catch (InterruptedException e) {
 					LogFileHelper.getInstance().e(TAG, e.getMessage());
-					CrashHandler.getInstance().uncaughtException(
-							Thread.currentThread(), e);
 				}
 			}
 		}
@@ -157,8 +154,6 @@ public class DisplayActivity extends Activity {
 			}
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e(TAG, e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		} finally {
 		}
 	}

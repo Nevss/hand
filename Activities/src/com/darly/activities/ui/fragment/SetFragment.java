@@ -9,6 +9,7 @@
  */
 package com.darly.activities.ui.fragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,10 +68,11 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 	@ViewInject(R.id.set_list)
 	private ListView list;
 
-	private String lebal[] = { "扫一扫", "个人信息", "修改密码", "我的收藏", "我的评论" };
+	private String lebal[] = { "扫一扫", "个人信息", "修改密码", "清理缓存", "我的收藏", "我的评论" };
 
 	private int drawableId[] = { R.drawable.set_scan, R.drawable.set_info,
-			R.drawable.set_pass, R.drawable.set_see, R.drawable.set_word };
+			R.drawable.set_info, R.drawable.set_pass, R.drawable.set_see,
+			R.drawable.set_word };
 
 	/**
 	 * TODO用户信息，ListView的头部
@@ -240,15 +242,61 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 
 			break;
 		case 4:
-
+			cleanCach();
 			break;
 		case 5:
+
+			break;
+		case 6:
 
 			break;
 		default:
 			break;
 		}
-		ToastApp.showToast(getActivity(), "position" + position);
+	}
+
+	/**
+	 * 
+	 * 下午5:44:12
+	 * 
+	 * @author Zhangyuhui SetFragment.java TODO 清理缓存。
+	 */
+	private void cleanCach() {
+		// TODO Auto-generated method stub
+		File file = new File(Literal.SROOT);
+		File log = new File(Literal.LOG);
+		boolean isSuccess = false;
+		if (file.exists()) {
+			isSuccess = deleteDir(file);
+		}
+		if (log.exists()) {
+			isSuccess = deleteDir(log);
+		}
+		if (isSuccess) {
+			ToastApp.showToast(getActivity(), "缓存清理完成！");
+		} else {
+			ToastApp.showToast(getActivity(), "清理缓存失败，需要手动删除文件");
+		}
+	}
+
+	/**
+	 * @param dir
+	 * @return 下午5:48:03
+	 * @author Zhangyuhui SetFragment.java TODO 递归删除文件
+	 */
+	private boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			// 递归删除目录中的子目录下
+			for (int i = 0; i < children.length; i++) {
+				boolean success = deleteDir(new File(dir, children[i]));
+				if (!success) {
+					return false;
+				}
+			}
+		}
+		// 目录此时为空，可以删除
+		return true;
 	}
 
 	/*

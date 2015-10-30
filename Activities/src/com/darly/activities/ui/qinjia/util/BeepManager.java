@@ -10,7 +10,6 @@ import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
 
@@ -105,8 +104,6 @@ public final class BeepManager {
 			mediaPlayer.prepare();
 		} catch (IOException ioe) {
 			LogFileHelper.getInstance().e(TAG, ioe.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), ioe);
 			mediaPlayer = null;
 		}
 		return mediaPlayer;

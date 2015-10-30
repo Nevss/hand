@@ -4,7 +4,6 @@ import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 
 /**
@@ -140,8 +139,6 @@ public class ThreadPoolManager {
 				// TODO: handle exception
 				LogFileHelper.getInstance().e(getClass().getSimpleName(),
 						e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 			} finally {
 
 				// 程序在后台运行时，线程池关闭。重新打开程序后，程序崩溃。

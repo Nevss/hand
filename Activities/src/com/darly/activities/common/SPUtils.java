@@ -181,8 +181,6 @@ public class SPUtils {
 				return clz.getMethod("apply");
 			} catch (NoSuchMethodException e) {
 				LogFileHelper.getInstance().e("SPUtils", e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 			}
 
 			return null;
@@ -206,8 +204,6 @@ public class SPUtils {
 				}
 			} catch (Exception e) {
 				LogFileHelper.getInstance().e("SPUtils", e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 			}
 			editor.commit();
 		}

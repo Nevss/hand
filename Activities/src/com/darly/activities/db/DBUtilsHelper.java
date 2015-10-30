@@ -1,7 +1,6 @@
 package com.darly.activities.db;
 
 import com.darly.activities.app.AppStack;
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
@@ -50,8 +49,6 @@ public class DBUtilsHelper {
 		} catch (DbException e) {
 			// TODO Auto-generated catch block
 			LogFileHelper.getInstance().e("DBUtilsHelper", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 	}
 
@@ -69,8 +66,6 @@ public class DBUtilsHelper {
 		} catch (DbException e) {
 			// TODO Auto-generated catch block
 			LogFileHelper.getInstance().e("DBUtilsHelper", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 	}
 
@@ -88,8 +83,6 @@ public class DBUtilsHelper {
 		} catch (DbException e) {
 			// TODO Auto-generated catch block
 			LogFileHelper.getInstance().e("DBUtilsHelper", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 	}
 
@@ -111,8 +104,6 @@ public class DBUtilsHelper {
 		} catch (DbException e) {
 			// TODO Auto-generated catch block
 			LogFileHelper.getInstance().e("DBUtilsHelper", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		return false;
 	}

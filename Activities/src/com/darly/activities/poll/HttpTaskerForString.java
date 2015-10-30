@@ -26,13 +26,12 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Process;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 
 /**
  * @author Zhangyuhui HTTPSevTasker 下午2:37:12 TODO 为了测试外置接口，专注一个请求类。
  */
-public class HTTPSevTasker extends ThreadPoolTask {
+public class HttpTaskerForString extends ThreadPoolTask {
 
 	private String TAG = getClass().getName();
 	private static final int TIMEOUT_IN_MILLIONS = 4000;
@@ -46,7 +45,20 @@ public class HTTPSevTasker extends ThreadPoolTask {
 
 	public boolean isLog = true;
 
-	public HTTPSevTasker(Context context, List<BasicNameValuePair> params,
+	/**
+	 * @param context 上下文关系。
+	 * @param params 用户需要传递的GetPost请求辅助参数
+	 * @param url 请求链接
+	 * @param handler 传入Handler
+	 * @param isGet 是否为Get请求
+	 * @param handlerCode 请求返回码，返回Handler对应方法。
+	 * @param paramsProperty 请求时附加在请求头部的参数
+	 * 上午9:54:52
+	 * @author Zhangyuhui
+	 * HttpTaskerForString.java
+	 * TODO
+	 */
+	public HttpTaskerForString(Context context, List<BasicNameValuePair> params,
 			String url, Handler handler, boolean isGet, int handlerCode,
 			List<BasicNameValuePair> paramsProperty) {
 		super(context);
@@ -68,13 +80,18 @@ public class HTTPSevTasker extends ThreadPoolTask {
 		// TODO Auto-generated method stub
 		Process.setThreadPriority(Process.THREAD_PRIORITY_LOWEST);
 		Message message = new Message();
+		String result;
 		if (isGet) {
 			// 通过Get请求返回字符串
-			message.obj = doGetForString(url, params);
+			result = doGetForString(url, params);
 		} else {
 			// 通过Post请求返回字符串
-			message.obj = doPostForString(url, params);
+			result = doPostForString(url, params);
 		}
+		if (result == null || "".equals(result)) {
+			result = null;
+		}
+		message.obj = result;
 		message.what = handlerCode;
 		handler.sendMessage(message);
 
@@ -136,10 +153,9 @@ public class HTTPSevTasker extends ThreadPoolTask {
 			}
 			return json;
 		} catch (Exception e) {
+
 			LogFileHelper.getInstance().e(getClass().getSimpleName(),
 					e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 
 		// 使用finally块来关闭输出流、输入流
@@ -154,8 +170,6 @@ public class HTTPSevTasker extends ThreadPoolTask {
 			} catch (IOException e) {
 				LogFileHelper.getInstance().e(getClass().getSimpleName(),
 						e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 			}
 		}
 		return null;
@@ -196,8 +210,6 @@ public class HTTPSevTasker extends ThreadPoolTask {
 			// TODO Auto-generated catch block
 			LogFileHelper.getInstance().e(getClass().getSimpleName(),
 					e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		// 使用finally块来关闭输出流、输入流
 		finally {
@@ -211,8 +223,6 @@ public class HTTPSevTasker extends ThreadPoolTask {
 			} catch (IOException e) {
 				LogFileHelper.getInstance().e(getClass().getSimpleName(),
 						e.getMessage());
-				CrashHandler.getInstance().uncaughtException(
-						Thread.currentThread(), e);
 			}
 		}
 		return null;

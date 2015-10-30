@@ -9,7 +9,6 @@ import java.io.IOException;
 
 import android.text.TextUtils;
 
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.LogFileHelper;
 
 public class FileUtil {
@@ -26,8 +25,6 @@ public class FileUtil {
 			return fileName;
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e("FileUtil", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		} finally {
 			if (bos != null) {
 				try {
@@ -35,8 +32,6 @@ public class FileUtil {
 					bos = null;
 				} catch (IOException e) {
 					LogFileHelper.getInstance().e("FileUtil", e.getMessage());
-					CrashHandler.getInstance().uncaughtException(
-							Thread.currentThread(), e);
 				}
 			}
 			if (fos != null) {
@@ -45,8 +40,6 @@ public class FileUtil {
 					fos = null;
 				} catch (IOException e) {
 					LogFileHelper.getInstance().e("FileUtil", e.getMessage());
-					CrashHandler.getInstance().uncaughtException(
-							Thread.currentThread(), e);
 				}
 			}
 		}
@@ -72,8 +65,6 @@ public class FileUtil {
 			buffer = bos.toByteArray();
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e("FileUtil", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		return buffer;
 	}

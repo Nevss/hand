@@ -23,7 +23,6 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.darly.activities.app.AppStack;
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.CrashHandler;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
@@ -35,7 +34,7 @@ import com.darly.activities.model.IARoomPoint;
 import com.darly.activities.model.OrgBase;
 import com.darly.activities.model.OrgBaseData;
 import com.darly.activities.model.RoomInfor;
-import com.darly.activities.poll.HttpTasker;
+import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.poll.ThreadPoolManager;
 import com.darly.activities.widget.intel.BaseInterlgent;
 import com.darly.activities.widget.intel.InterlgentUtil;
@@ -55,7 +54,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 public class IndexZoomViewActivity extends BaseActivity implements
 		OnTouchListener {
 	private static final String TAG = "IndexZoomViewActivity";
-
 
 	/**
 	 * TODO线程管理
@@ -399,7 +397,8 @@ public class IndexZoomViewActivity extends BaseActivity implements
 							}
 							int heighe = nextImage.getHeight();
 							int width = nextImage.getWidth();
-							LogFileHelper.getInstance().i(nextImage.toString() + heighe + width);
+							LogFileHelper.getInstance().i(
+									nextImage.toString() + heighe + width);
 							if (interlgent != null) {
 								interlgent.setNextImage(nextImage, X / lenth
 										- width / 2, Y / lenth - heighe);
@@ -425,14 +424,12 @@ public class IndexZoomViewActivity extends BaseActivity implements
 			object.put("OrganizationID", "" + selectOrgID);
 		} catch (Exception e) {
 			LogFileHelper.getInstance().e(TAG, e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
 		manager.start();
-		manager.addAsyncTask(new HttpTasker(IndexZoomViewActivity.this, par,
-				dataUrl, null, handler, true, Literal.POST_HANDLER, true));
+		manager.addAsyncTask(new HttpTaskerForString(IndexZoomViewActivity.this, par,
+				dataUrl, handler, true, Literal.POST_HANDLER, null));
 	}
 
 	/**

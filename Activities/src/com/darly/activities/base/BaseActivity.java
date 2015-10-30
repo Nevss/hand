@@ -1,5 +1,6 @@
 package com.darly.activities.base;
 
+import java.io.File;
 import java.util.List;
 
 import android.graphics.Bitmap.Config;
@@ -55,6 +56,8 @@ public abstract class BaseActivity extends FragmentActivity implements
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);// 去掉信息栏
 		super.onCreate(savedInstanceState);
+		// 建立几个文件夹
+		creatFile();
 		LogUtils.customTagPrefix = "xUtilsSample"; // 方便调试时过滤 adb logcat 输出
 		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出
 		ViewUtils.inject(this);// 注入view和事件
@@ -84,6 +87,28 @@ public abstract class BaseActivity extends FragmentActivity implements
 		MobclickAgent.updateOnlineConfig(this);
 		initView(savedInstanceState);
 		initData();
+	}
+
+	/**
+	 * 
+	 * 下午6:02:54
+	 * 
+	 * @author Zhangyuhui BaseActivity.java TODO 建立文件夹
+	 */
+	private void creatFile() {
+		// TODO Auto-generated method stub
+		File boot = new File(Literal.ROOT);
+		if (!boot.exists()) {
+			boot.mkdir();
+		}
+		File root = new File(Literal.SROOT);
+		if (!root.exists()) {
+			root.mkdir();
+		}
+		File log = new File(Literal.SROOT);
+		if (!log.exists()) {
+			log.mkdir();
+		}
 	}
 
 	@Override

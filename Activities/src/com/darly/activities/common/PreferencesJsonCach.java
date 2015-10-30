@@ -49,8 +49,6 @@ public class PreferencesJsonCach {
 			// TODO Auto-generated catch block
 			LogFileHelper.getInstance()
 					.e("PreferencesJsonCach", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 	}
 }

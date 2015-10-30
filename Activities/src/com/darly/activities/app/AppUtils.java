@@ -1,12 +1,11 @@
 package com.darly.activities.app;
 
-import com.darly.activities.common.CrashHandler;
-import com.darly.activities.common.LogFileHelper;
-
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+
+import com.darly.activities.common.LogFileHelper;
 
 /**
  * @ClassName: AppUtils
@@ -35,8 +34,6 @@ public class AppUtils {
 			return context.getResources().getString(labelRes);
 		} catch (NameNotFoundException e) {
 			LogFileHelper.getInstance().e("AppUtils", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		return null;
 	}
@@ -55,8 +52,6 @@ public class AppUtils {
 
 		} catch (NameNotFoundException e) {
 			LogFileHelper.getInstance().e("AppUtils", e.getMessage());
-			CrashHandler.getInstance().uncaughtException(
-					Thread.currentThread(), e);
 		}
 		return null;
 	}

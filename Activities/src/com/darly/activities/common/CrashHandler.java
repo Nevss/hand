@@ -11,6 +11,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */package com.darly.activities.common;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -129,6 +130,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 	 * @return
 	 */
 	private String saveCrashInfoToFile(Throwable ex) {
+
 		Writer info = new StringWriter();
 		PrintWriter printWriter = new PrintWriter(info);
 		ex.printStackTrace(printWriter);
@@ -146,11 +148,14 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			Time t = new Time("GMT+8");
 			t.setToNow(); // 取得系统时间
 			int date = t.year * 10000 + t.month * 100 + t.monthDay;
-			int time = t.hour * 10000 + t.minute * 100 + t.second;
-			String fileName = "crash-" + date + "-" + time
+			int time = t.hour * 10000 + t.minute * 100;
+			String fileName = Literal.LOG + "crash" + date + "" + time
 					+ CRASH_REPORTER_EXTENSION;
-			FileOutputStream trace = mContext.openFileOutput(fileName,
-					Context.MODE_PRIVATE);
+			File file = new File(fileName);
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			FileOutputStream trace = new FileOutputStream(file);
 			mDeviceCrashInfo.store(trace, "");
 			trace.flush();
 			trace.close();
