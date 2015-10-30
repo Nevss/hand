@@ -23,9 +23,9 @@ import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.BottomModel;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.ui.IndexShowViewActivity;
-import com.darly.activities.ui.MeDetailsAcitvity;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.RotateAcitvity;
+import com.darly.activities.ui.fragment.me.MeDetailsAcitvity;
 import com.darly.activities.ui.qrcode.MipcaActivityCapture;
 import com.darly.activities.widget.pop.BottomPopSec.Backer;
 

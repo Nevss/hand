@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.main.CaiyicaiFragment;
 import com.darly.activities.ui.fragment.main.ChatFragment;
+import com.darly.activities.ui.fragment.main.FragListener;
 import com.darly.activities.ui.fragment.main.FriendFragment;
 import com.darly.activities.ui.fragment.main.IndexFragment;
 import com.darly.activities.ui.fragment.main.TuringFragment;
@@ -45,7 +47,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * @auther Darly Fronch 下午4:59:37 IndexFragment TODO娱乐首页下层框架
  */
 public class MainFragment extends BaseFragment implements
-		OnCheckedChangeListener, OnPageChangeListener {
+		OnCheckedChangeListener, OnPageChangeListener, FragListener {
 	private static final String TAG = "MainFragment";
 	/**
 	 * TODO根View
@@ -113,11 +115,21 @@ public class MainFragment extends BaseFragment implements
 	public void initView() {
 		// TODO Auto-generated method stub
 		radio.setOnCheckedChangeListener(this);
-		fragmentList.add(new IndexFragment());
-		fragmentList.add(new CaiyicaiFragment());
-		fragmentList.add(new FriendFragment());
-		fragmentList.add(new ChatFragment());
-		fragmentList.add(new TuringFragment());
+		IndexFragment index = new IndexFragment();
+		index.setTok(this);
+		fragmentList.add(index);
+		CaiyicaiFragment cai = new CaiyicaiFragment();
+		cai.setTok(this);
+		fragmentList.add(cai);
+		FriendFragment fri = new FriendFragment();
+		fri.setTok(this);
+		fragmentList.add(fri);
+		ChatFragment chat = new ChatFragment();
+		chat.setTok(this);
+		fragmentList.add(chat);
+		TuringFragment tur = new TuringFragment();
+		tur.setTok(this);
+		fragmentList.add(tur);
 		mFragmentAdapter = new FragmentAdapter(getActivity()
 				.getSupportFragmentManager(), fragmentList);
 		viewpager.setAdapter(mFragmentAdapter);
@@ -328,6 +340,71 @@ public class MainFragment extends BaseFragment implements
 				}
 			}
 		});
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.darly.activities.ui.fragment.main.FragListener#caiListener(java.lang
+	 * .String)
+	 */
+	@Override
+	public void caiListener(String msg) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, msg);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.darly.activities.ui.fragment.main.FragListener#chatListener(java.
+	 * lang.String)
+	 */
+	@Override
+	public void chatListener(String msg) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, msg);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.darly.activities.ui.fragment.main.FragListener#friListener(java.lang
+	 * .String)
+	 */
+	@Override
+	public void friListener(String msg) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, msg);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.darly.activities.ui.fragment.main.FragListener#indexListener(java
+	 * .lang.String)
+	 */
+	@Override
+	public void indexListener(String msg) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, msg);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.darly.activities.ui.fragment.main.FragListener#turListener(java.lang
+	 * .String)
+	 */
+	@Override
+	public void turListener(String msg) {
+		// TODO Auto-generated method stub
+		Log.i(TAG, msg);
 	}
 
 }

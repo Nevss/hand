@@ -1,4 +1,4 @@
-package com.darly.activities.ui;
+package com.darly.activities.ui.fragment.me;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
@@ -19,6 +19,7 @@ import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GridViewData;
+import com.darly.activities.ui.R;
 import com.darly.activities.widget.carousel.Carousel;
 import com.darly.activities.widget.carousel.ImageHandler;
 import com.darly.activities.widget.load.ProgressDialogUtil;

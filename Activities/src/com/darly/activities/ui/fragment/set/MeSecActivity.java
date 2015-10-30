@@ -5,7 +5,7 @@
  * MeSecActivity.java
  * TODO
  */
-package com.darly.activities.ui.fragment.me;
+package com.darly.activities.ui.fragment.set;
 
 import android.os.Bundle;
 import android.view.View;

@@ -40,7 +40,7 @@ public class FriendFragment extends BaseFragment {
 
 	private int tuid;
 
-		/**
+	/**
 	 * 上午11:27:30 TODO美女名称
 	 */
 	private TextView name;
@@ -52,6 +52,8 @@ public class FriendFragment extends BaseFragment {
 	 * 上午11:27:55 TODO 美女详细资料
 	 */
 	private TextView descrip;
+
+	private FragListener tok;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,6 +109,7 @@ public class FriendFragment extends BaseFragment {
 		manager.start();
 		manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
 				HTTPServ.GODDESSES, handler, true, Literal.GET_HANDLER, propety));
+		tok.friListener(TAG);
 	}
 
 	/*
@@ -138,4 +141,11 @@ public class FriendFragment extends BaseFragment {
 
 	}
 
+	/**
+	 * @param tok
+	 *            the tok to set
+	 */
+	public void setTok(FragListener tok) {
+		this.tok = tok;
+	}
 }

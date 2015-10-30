@@ -85,7 +85,7 @@
             android:screenOrientation="landscape" >
         </activity>
         <activity
-            android:name="com.darly.activities.ui.MeDetailsAcitvity"
+            android:name="com.darly.activities.ui.fragment.me.MeDetailsAcitvity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" >
         </activity>
@@ -182,7 +182,14 @@
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:name="com.darly.activities.ui.fragment.me.MeSecActivity"
+            android:name="com.darly.activities.ui.fragment.set.MeSecActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+        </activity>
+        <activity
+            android:name="com.darly.activities.ui.fragment.set.FieldsBackActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"

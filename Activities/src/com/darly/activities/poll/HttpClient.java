@@ -1,4 +1,4 @@
-package com.darly.activities.common;
+package com.darly.activities.poll;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -8,6 +8,10 @@ import org.apache.http.entity.StringEntity;
 import android.content.Context;
 
 import com.darly.activities.app.AppStack;
+import com.darly.activities.common.LogFileHelper;
+import com.darly.activities.common.NetUtils;
+import com.darly.activities.common.PreferenceUserInfor;
+import com.darly.activities.common.ToastApp;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.RequestParams;
@@ -128,6 +132,11 @@ public class HttpClient {
 			httpUtils.configCurrentHttpCacheExpiry(500);
 			httpUtils.send(HttpMethod.GET, url, params, callBack);
 		}
+	}
+
+	public static void getString(Context context, String url,
+			RequestParams params, RequestCallBack<String> callBack) {
+		httpUtils.send(HttpMethod.GET, url, params, callBack);
 	}
 
 	public static void delete(Context context, String url,

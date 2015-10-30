@@ -50,6 +50,7 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 	private EditText msg;
 
 	private Button btn;
+	private FragListener tok;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -121,6 +122,7 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 		// TODO Auto-generated method stub
 		msg.addTextChangedListener(this);
 		LogFileHelper.getInstance().i(TAG, "TuringFragment is run");
+		tok.turListener(TAG);
 	}
 
 	/*
@@ -197,6 +199,13 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 	public void afterTextChanged(Editable s) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	/**
+	 * @param tok the tok to set
+	 */
+	public void setTok(FragListener tok) {
+		this.tok = tok;
 	}
 
 }

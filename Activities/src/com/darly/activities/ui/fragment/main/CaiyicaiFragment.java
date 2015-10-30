@@ -51,6 +51,8 @@ public class CaiyicaiFragment extends BaseFragment {
 
 	private int delay = 5000;
 
+	private FragListener tok;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -111,9 +113,9 @@ public class CaiyicaiFragment extends BaseFragment {
 				List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
 				propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 				manager.start();
-				manager.addAsyncTask(new HttpTaskerForString(getActivity(), null,
-						HTTPServ.CAIYICAI, handler, true, Literal.GET_HANDLER,
-						propety));
+				manager.addAsyncTask(new HttpTaskerForString(getActivity(),
+						null, HTTPServ.CAIYICAI, handler, true,
+						Literal.GET_HANDLER, propety));
 			}
 		}, 0, delay);
 	}
@@ -144,6 +146,7 @@ public class CaiyicaiFragment extends BaseFragment {
 		start.setOnClickListener(this);
 		stop.setOnClickListener(this);
 		LogFileHelper.getInstance().i(TAG, "CaiyicaiFragment is run");
+		tok.caiListener(TAG);
 	}
 
 	/*
@@ -173,6 +176,14 @@ public class CaiyicaiFragment extends BaseFragment {
 	public void refreshPost(Object object) {
 		// TODO Auto-generated method stub
 
+	}
+
+	/**
+	 * @param tok
+	 *            the tok to set
+	 */
+	public void setTok(FragListener tok) {
+		this.tok = tok;
 	}
 
 }

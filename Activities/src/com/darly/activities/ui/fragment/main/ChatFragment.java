@@ -46,6 +46,7 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 	private XListView list;
 
 	private ChatAdapter adapter;
+	private FragListener tok;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,6 +98,7 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 		// TODO Auto-generated method stub
 		list.setOnItemClickListener(this);
 		LogFileHelper.getInstance().i(TAG, "ChatFragment is run");
+		tok.chatListener(TAG);
 	}
 
 	/*
@@ -177,6 +179,13 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 		Intent intent = new Intent(getActivity(), WebViewActivity.class);
 		intent.putExtra("URL", base.getUrl());
 		startActivity(intent);
+	}
+	
+	/**
+	 * @param tok the tok to set
+	 */
+	public void setTok(FragListener tok) {
+		this.tok = tok;
 	}
 
 }

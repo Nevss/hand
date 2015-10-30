@@ -90,6 +90,8 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 	private XListView xlist;
 	private XAdapter adapter;
 
+	private FragListener tok;
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -165,6 +167,7 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 		// TODO Auto-generated method stub
 		xlist.setOnItemClickListener(this);
 		xlist.setXListViewListener(this);
+		tok.indexListener(TAG);
 	}
 
 	/*
@@ -269,5 +272,13 @@ public class IndexFragment extends BaseFragment implements OnItemClickListener,
 				xlist.setPullLoadEnable(false);
 			}
 		}, 2000);
+	}
+
+	/**
+	 * @param tok
+	 *            the tok to set
+	 */
+	public void setTok(FragListener tok) {
+		this.tok = tok;
 	}
 }

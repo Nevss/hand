@@ -13,6 +13,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.message.BasicNameValuePair;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -32,18 +34,27 @@ import android.widget.TextView;
 
 import com.darly.activities.adapter.SetFragmentAdapter;
 import com.darly.activities.base.BaseFragment;
+import com.darly.activities.common.HTTPServ;
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.SetFragmentModel;
 import com.darly.activities.model.UserInformation;
+import com.darly.activities.poll.HttpClient;
+import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.ui.R;
+import com.darly.activities.ui.fragment.set.FieldsBackActivity;
+import com.darly.activities.ui.fragment.set.FieldsBackListener;
 import com.darly.activities.ui.login.LoginAcitvity;
 import com.darly.activities.ui.qrcode.MipcaActivityCapture;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
 /**
@@ -51,7 +62,8 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * 
  * @auther Darly Fronch 下午5:00:02 SetFragment TODO用户设置页面
  */
-public class SetFragment extends BaseFragment implements OnItemClickListener {
+public class SetFragment extends BaseFragment implements OnItemClickListener,
+		FieldsBackListener {
 	private static final String TAG = "SetFragment";
 	/**
 	 * TODO根View
@@ -153,6 +165,7 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 		header.findViewById(R.id.set_regest).setOnClickListener(this);
 		loginUser();
 		list.addHeaderView(header);
+		FieldsBackActivity.setBackListener(this);
 	}
 
 	/**
@@ -196,6 +209,22 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 
 		list.setAdapter(new SetFragmentAdapter(data,
 				R.layout.fragment_set_item, getActivity()));
+		getResult();
+	}
+
+	/**
+	 * @return 下午2:57:41
+	 * @author Zhangyuhui SetFragment.java TODO 反向HTTP请求完成后对后续页面进行修改。
+	 */
+	private void getResult() {
+		// TODO Auto-generated method stub
+		List<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
+		params.add(new BasicNameValuePair("tuid", 1 + ""));
+		List<BasicNameValuePair> propety = new ArrayList<BasicNameValuePair>();
+		propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
+		manager.start();
+		manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
+				HTTPServ.GODDESSES, handler, true, Literal.GET_HANDLER, propety));
 	}
 
 	/*
@@ -206,7 +235,6 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 	@Override
 	public void refreshGet(Object object) {
 		// TODO Auto-generated method stub
-
 	}
 
 	/*
@@ -236,7 +264,7 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 			startActivity(new Intent(getActivity(), MipcaActivityCapture.class));
 			break;
 		case 2:
-
+			startActivity(new Intent(getActivity(), FieldsBackActivity.class));
 			break;
 		case 3:
 
@@ -323,6 +351,37 @@ public class SetFragment extends BaseFragment implements OnItemClickListener {
 		// TODO Auto-generated method stub
 		super.onResume();
 		loginUser();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.darly.activities.ui.fragment.set.FieldsBackListener#backListener(
+	 * java.lang.String)
+	 */
+	@Override
+	public void backListener(View view, final TextView titl, String name) {
+		// TODO Auto-generated method stub
+
+		final TextView tv = (TextView) view
+				.findViewById(R.id.item_fields_back_text);
+		RequestParams requestParams = new RequestParams();
+		HttpClient.get(getActivity(), "http://test.rayelink.com/api/banner",
+				requestParams, new RequestCallBack<String>() {
+
+					@Override
+					public void onSuccess(ResponseInfo<String> arg0) {
+						// updateViewList();
+						titl.setText(arg0.result);
+						tv.setText(arg0.result);
+					}
+
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+
+					}
+				});
 	}
 
 }
