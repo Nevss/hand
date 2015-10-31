@@ -32,10 +32,10 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
 
 /**
  * @ClassName: AppStack
- * @Description: TODO(App堆栈操作)
+ * @Description: TODO(AppApplications)
  * @author 张宇辉 zhangyuhui@octmami.com
  * @date 2015年1月5日 上午10:04:28
- *
+ *	
  */
 public class AppStack extends Application {
 	private static AppStack instance;
