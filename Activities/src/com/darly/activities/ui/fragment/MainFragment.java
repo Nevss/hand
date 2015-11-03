@@ -20,17 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
-import android.widget.HorizontalScrollView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.darly.activities.adapter.FragmentAdapter;
 import com.darly.activities.base.BaseFragment;
-import com.darly.activities.common.Literal;
-import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.main.CaiyicaiFragment;
 import com.darly.activities.ui.fragment.main.ChatFragment;
@@ -38,6 +33,8 @@ import com.darly.activities.ui.fragment.main.FragListener;
 import com.darly.activities.ui.fragment.main.FriendFragment;
 import com.darly.activities.ui.fragment.main.IndexFragment;
 import com.darly.activities.ui.fragment.main.TuringFragment;
+import com.darly.activities.widget.horilistview.HorizontalListView;
+import com.darly.activities.widget.horilistview.HorizontalListViewAdapter;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -45,9 +42,10 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  * 2015年9月16日 IndexFragment.java com.darly.activities.ui.fragment
  * 
  * @auther Darly Fronch 下午4:59:37 IndexFragment TODO娱乐首页下层框架
+ *         当其进行滑动，或者点击的情况下，滑动问题解决，但点击后并没有出现和滑动对应的效果。进行调整；
  */
-public class MainFragment extends BaseFragment implements
-		OnCheckedChangeListener, OnPageChangeListener, FragListener {
+public class MainFragment extends BaseFragment implements OnPageChangeListener,
+		FragListener, OnItemClickListener {
 	private static final String TAG = "MainFragment";
 	/**
 	 * TODO根View
@@ -58,33 +56,20 @@ public class MainFragment extends BaseFragment implements
 	 */
 	@ViewInject(R.id.main_header_text)
 	private TextView title;
-	@ViewInject(R.id.fragment_header_horizontal)
-	private HorizontalScrollView scroll;
 	@ViewInject(R.id.fragment_main_virepager)
 	private ViewPager viewpager;
-	@ViewInject(R.id.fragment_header_radio)
-	private RadioGroup radio;
-	@ViewInject(R.id.fragment_header_showone)
-	private RadioButton one;
-	@ViewInject(R.id.fragment_header_showtwo)
-	private RadioButton two;
-	@ViewInject(R.id.fragment_header_showthree)
-	private RadioButton thr;
-	@ViewInject(R.id.fragment_header_showfour)
-	private RadioButton fou;
-	@ViewInject(R.id.fragment_header_showfive)
-	private RadioButton fiv;
 
 	private List<Fragment> fragmentList = new ArrayList<Fragment>();
 	private FragmentAdapter mFragmentAdapter;
 
-	private boolean isScroll;
-	private boolean left;
-	private int lastValue = -1;
+	@ViewInject(R.id.fragment_main_list)
+	private HorizontalListView hlist;
 
-	private int itemWidth = 0;
+	private HorizontalListViewAdapter adapter;
 
-	private int itemNum = 5;
+	private int[] titles = new int[] { R.string.travel_one,
+			R.string.travel_two, R.string.travel_free, R.string.travel_fou,
+			R.string.travel_fiv };
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,7 +99,7 @@ public class MainFragment extends BaseFragment implements
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
-		radio.setOnCheckedChangeListener(this);
+		// radio.setOnCheckedChangeListener(this);
 		IndexFragment index = new IndexFragment();
 		index.setTok(this);
 		fragmentList.add(index);
@@ -145,16 +130,10 @@ public class MainFragment extends BaseFragment implements
 	public void initData() {
 		// TODO Auto-generated method stub
 		viewpager.setOnPageChangeListener(this);
-		itemWidth = Literal.width / 4;
-		RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(itemWidth,
-				LayoutParams.MATCH_PARENT);
-		one.setLayoutParams(params);
-		two.setLayoutParams(params);
-		thr.setLayoutParams(params);
-		fou.setLayoutParams(params);
-		fiv.setLayoutParams(params);
-		one.setChecked(true);
-
+		adapter = new HorizontalListViewAdapter(getActivity(), titles);
+		hlist.setAdapter(adapter);
+		hlist.setOnItemClickListener(this);
+		adapter.setSelectIndex(0);
 	}
 
 	/*
@@ -183,64 +162,15 @@ public class MainFragment extends BaseFragment implements
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * android.widget.RadioGroup.OnCheckedChangeListener#onCheckedChanged(android
-	 * .widget.RadioGroup, int)
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
 	 */
 	@Override
-	public void onCheckedChanged(RadioGroup group, int checkedId) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
 		// TODO Auto-generated method stub
-		resetRaidoButton();
-
-		switch (checkedId) {
-		case R.id.fragment_header_showone:
-			one.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			one.setBackgroundResource(R.drawable.app_main_header_backer);
-			viewpager.setCurrentItem(0);
-			break;
-		case R.id.fragment_header_showtwo:
-			two.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			two.setBackgroundResource(R.drawable.app_main_header_backer);
-			viewpager.setCurrentItem(1);
-			break;
-		case R.id.fragment_header_showthree:
-			thr.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			thr.setBackgroundResource(R.drawable.app_main_header_backer);
-			viewpager.setCurrentItem(2);
-			break;
-		case R.id.fragment_header_showfour:
-			fou.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			fou.setBackgroundResource(R.drawable.app_main_header_backer);
-			viewpager.setCurrentItem(3);
-			break;
-		case R.id.fragment_header_showfive:
-			fiv.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			fiv.setBackgroundResource(R.drawable.app_main_header_backer);
-			viewpager.setCurrentItem(4);
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	/**
-	 * 
-	 * 下午3:36:10
-	 * 
-	 * @author Zhangyuhui MainFragment.java TODO
-	 */
-	private void resetRaidoButton() {
-		// TODO Auto-generated method stub
-		one.setTextColor(getResources().getColor(R.color.set_list_line));
-		one.setBackgroundResource(R.drawable.app_main_header_normal);
-		two.setTextColor(getResources().getColor(R.color.set_list_line));
-		two.setBackgroundResource(R.drawable.app_main_header_normal);
-		thr.setTextColor(getResources().getColor(R.color.set_list_line));
-		thr.setBackgroundResource(R.drawable.app_main_header_normal);
-		fou.setTextColor(getResources().getColor(R.color.set_list_line));
-		fou.setBackgroundResource(R.drawable.app_main_header_normal);
-		fiv.setTextColor(getResources().getColor(R.color.set_list_line));
-		fiv.setBackgroundResource(R.drawable.app_main_header_normal);
+		viewpager.setCurrentItem(position);
+		adapter.setSelectIndex(position);
 	}
 
 	/*
@@ -252,11 +182,6 @@ public class MainFragment extends BaseFragment implements
 	@Override
 	public void onPageScrollStateChanged(int state) {
 		// TODO Auto-generated method stub
-		if (state == 1) {
-			isScroll = true;
-		} else {
-			isScroll = false;
-		}
 	}
 
 	/*
@@ -269,18 +194,6 @@ public class MainFragment extends BaseFragment implements
 	@Override
 	public void onPageScrolled(int position, float offset, int offsetPixels) {
 		// TODO Auto-generated method stub
-		if (isScroll) {
-			if (lastValue > offsetPixels) {
-				// 递减，向右侧滑动
-				left = false;
-			} else if (lastValue < offsetPixels) {
-				// 递减，向右侧滑动
-				left = true;
-			} else if (lastValue == offsetPixels) {
-				left = false;
-			}
-		}
-		lastValue = offsetPixels;
 	}
 
 	/*
@@ -291,55 +204,10 @@ public class MainFragment extends BaseFragment implements
 	 * (int)
 	 */
 	@Override
-	public void onPageSelected(int position) {
+	public void onPageSelected(final int position) {
 		// TODO Auto-generated method stub
-		resetRaidoButton();
-		switch (position) {
-		case 0:
-			radio.getChildAt(R.id.fragment_header_showone);
-			one.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			one.setBackgroundResource(R.drawable.app_main_header_backer);
-			break;
-		case 1:
-			radio.getChildAt(R.id.fragment_header_showtwo);
-			two.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			two.setBackgroundResource(R.drawable.app_main_header_backer);
-			break;
-		case 2:
-			radio.getChildAt(R.id.fragment_header_showthree);
-			thr.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			thr.setBackgroundResource(R.drawable.app_main_header_backer);
-			break;
-		case 3:
-			radio.getChildAt(R.id.fragment_header_showfour);
-			fou.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			fou.setBackgroundResource(R.drawable.app_main_header_backer);
-			break;
-		case 4:
-			radio.getChildAt(R.id.fragment_header_showfive);
-			fiv.setTextColor(getResources().getColor(R.color.main_bottom_text));
-			fiv.setBackgroundResource(R.drawable.app_main_header_backer);
-			break;
-
-		default:
-			break;
-		}
-		handler.post(new Runnable() {
-			@Override
-			public void run() {
-				if (left) {
-					LogFileHelper.getInstance().i(TAG,
-							(itemNum - 4) * itemWidth / (itemNum - 1) + "右移距离");
-					scroll.scrollBy((itemNum - 4) * itemWidth / (itemNum - 1),
-							0);
-				} else {
-					LogFileHelper.getInstance().i(TAG,
-							(4 - itemNum) * itemWidth / (itemNum - 1) + "左移距离");
-					scroll.scrollBy((4 - itemNum) * itemWidth / (itemNum - 1),
-							0);
-				}
-			}
-		});
+		adapter.setSelectIndex(position);
+		hlist.setSelection(position);
 	}
 
 	/*

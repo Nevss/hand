@@ -48,6 +48,8 @@ public class Literal {
 	public static int width = 0;
 
 	public static int height = 0;
+	
+	public static int desty = 0;
 
 	@SuppressWarnings("deprecation")
 	public static void getWidth(Context context) {
@@ -55,6 +57,7 @@ public class Literal {
 				.getSystemService(Context.WINDOW_SERVICE);
 		width = wm.getDefaultDisplay().getWidth();
 		height = wm.getDefaultDisplay().getHeight();
+		desty = wm.getDefaultDisplay().getDisplayId();
 	}
 
 	public static boolean isShowMktprice = false;
