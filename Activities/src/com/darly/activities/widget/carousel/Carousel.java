@@ -19,7 +19,6 @@ import android.widget.RelativeLayout.LayoutParams;
 
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.PreferenceUserInfor;
-import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.ChatPage;
 import com.darly.activities.ui.R;
@@ -187,7 +186,6 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 		switch (v.getId()) {
 		case R.id.carousel_onlyone:
 			// 一个轮播的点击事件。
-			ToastApp.showToast(context, data.get(0));
 			// 点击进入单聊模式
 			// if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, context)) {
 			// UserInformation information = new Gson().fromJson(
@@ -290,7 +288,6 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				// 点击事件。
-				ToastApp.showToast(context, data.get(a));
 				// 点击进入单聊模式
 				// GotyeAPI.getInstance().markMessagesAsRead(target, true);
 				// if (target.getType() ==

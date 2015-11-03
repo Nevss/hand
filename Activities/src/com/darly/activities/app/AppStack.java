@@ -35,7 +35,7 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
  * @Description: TODO(AppApplications)
  * @author 张宇辉 zhangyuhui@octmami.com
  * @date 2015年1月5日 上午10:04:28
- *	
+ *
  */
 public class AppStack extends Application {
 	private static AppStack instance;
@@ -85,6 +85,11 @@ public class AppStack extends Application {
 			gotyeApi.login(information.getUserTrueName(), null);
 		}
 		initImageLoader();
+
+		// 保存当前语言种类。 默认汉语
+		if (PreferenceUserInfor.getLagu(instance) == null) {
+			PreferenceUserInfor.saveLagu("zh", instance);
+		}
 
 		// 融云即时通讯接入项目后融云无法初始化。找不到融云类。无法继续。更换其他厂家进行集成。
 		// /**

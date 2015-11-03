@@ -15,20 +15,20 @@ package com.darly.activities.model;
  * @auther Darly Fronch 下午1:36:37 SetFragmentModel TODO
  */
 public class SetFragmentModel {
-	private String name;
+	private int name;
 	private int resid;
 
-	public SetFragmentModel(String name, int resid) {
+	public SetFragmentModel(int name, int resid) {
 		super();
 		this.name = name;
 		this.resid = resid;
 	}
 
-	public String getName() {
+	public int getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	public void setName(int name) {
 		this.name = name;
 	}
 

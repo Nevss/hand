@@ -93,7 +93,7 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 		// TODO Auto-generated method stub
 
 		if (!NetUtils.isConnected(getActivity())) {
-			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络！");
+			ToastApp.showToast(getActivity(), R.string.neterror);
 		}
 		super.onResume();
 		MobclickAgent.onPageStart("FragmentScreen"); // 统计页面

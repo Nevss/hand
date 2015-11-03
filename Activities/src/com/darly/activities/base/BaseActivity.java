@@ -115,7 +115,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		if (!NetUtils.isConnected(this)) {
-			ToastApp.showToast(this, "网络连接异常，请检查网络！");
+			ToastApp.showToast(this, R.string.neterror);
 		}
 		super.onResume();
 		MobclickAgent.onPageStart("ActivityScreen"); // 统计页面

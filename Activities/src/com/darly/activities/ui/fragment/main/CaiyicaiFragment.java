@@ -159,11 +159,11 @@ public class CaiyicaiFragment extends BaseFragment {
 		// TODO Auto-generated method stub
 		CaiModel model = new Gson().fromJson((String) object, CaiModel.class);
 		if (model != null) {
-			title.setText("猜一猜");
+			title.setText(R.string.travel_two);
 			ques.setText("题目" + model.getTitle());
 			ans.setText("答案" + model.getAnswer());
 		} else {
-			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络");
+			ToastApp.showToast(getActivity(), R.string.neterror);
 		}
 	}
 

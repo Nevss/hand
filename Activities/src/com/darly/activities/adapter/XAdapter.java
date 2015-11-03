@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.darly.activities.common.Literal;
 import com.darly.activities.common.PreferenceUserInfor;
-import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
 import com.darly.activities.ui.R;
@@ -86,8 +85,8 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, context)) {
-							ToastApp.showToast(context, model.getName());
+						if (PreferenceUserInfor.isUserLogin(Literal.USERINFO,
+								context)) {
 							context.startActivity(new Intent(context,
 									RotateAcitvity.class));
 						} else {

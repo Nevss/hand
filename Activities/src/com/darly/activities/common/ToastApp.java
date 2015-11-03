@@ -33,4 +33,17 @@ public class ToastApp {
 		toast.show();
 	}
 
+	public static void showToast(Context context, int msg) {
+		if (!isShow)
+			return;
+
+		if (toast == null) {
+			toast = Toast.makeText(context, msg, Literal.TOASTTIME);
+		} else {
+			toast.setText(msg);
+		}
+		toast.setGravity(Gravity.CENTER, 0, 0);
+		toast.show();
+	}
+
 }

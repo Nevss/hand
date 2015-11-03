@@ -147,7 +147,7 @@ public class WebViewActivity extends BaseActivity {
 							+ failingUrl);
 				}
 
-				ToastApp.showToast(getApplicationContext(), "页面加载失败，请点击重新加载");
+				ToastApp.showToast(getApplicationContext(), R.string.web_reload);
 
 				// super.onReceivedError(view, errorCode, description,
 				// failingUrl);

@@ -1,5 +1,7 @@
 package com.darly.activities.common;
 
+import com.darly.activities.ui.R;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -69,9 +71,8 @@ public class NetUtils {
 		// activity.startActivityForResult(intent, 0);
 
 		new AlertDialog.Builder(activity)
-				.setTitle("开启网络服务")
-				.setMessage("本软件需要使用网络资源，是否开启网络？")
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				.setMessage(R.string.neterror)
+				.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
@@ -95,7 +96,7 @@ public class NetUtils {
 						dialog.cancel();
 					}
 				})
-				.setNegativeButton("否", new DialogInterface.OnClickListener() {
+				.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {

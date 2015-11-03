@@ -104,19 +104,18 @@ public class LoginAcitvity extends BaseActivity {
 						object.put("userTrueName", "darly");
 					} catch (Exception e) {
 						// TODO: handle exception
-						LogFileHelper.getInstance().e(TAG,
-								e.getMessage());
+						LogFileHelper.getInstance().e(TAG, e.getMessage());
 					}
 					LogFileHelper.getInstance().i(TAG, object.toString());
 					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
 							object.toString(), this);
 					// 登录成功后进行初始化融云通讯。
 					// AppStack.initConnRongIM(this);
-					ToastApp.showToast(this, "登录成功");
+					ToastApp.showToast(this, R.string.login_succ);
 					AppStack.connectQJ();
 					finish();
 				} else {
-					ToastApp.showToast(this, "用户名密码错误");
+					ToastApp.showToast(this, R.string.login_nameorpassfail);
 				}
 			} else if ("13891431454"
 					.equals(name.getText().getText().toString())) {
@@ -130,22 +129,21 @@ public class LoginAcitvity extends BaseActivity {
 						object.put("userTrueName", "hellen");
 					} catch (Exception e) {
 						// TODO: handle exception
-						LogFileHelper.getInstance().e(TAG,
-								e.getMessage());
+						LogFileHelper.getInstance().e(TAG, e.getMessage());
 					}
 					LogFileHelper.getInstance().i(TAG, object.toString());
 					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
 							object.toString(), this);
 					// 登录成功后进行初始化融云通讯。
 					// AppStack.initConnRongIM(this);
-					ToastApp.showToast(this, "登录成功");
+					ToastApp.showToast(this, R.string.login_succ);
 					AppStack.connectQJ();
 					finish();
 				} else {
-					ToastApp.showToast(this, "用户名密码错误");
+					ToastApp.showToast(this, R.string.login_nameorpassfail);
 				}
 			} else {
-				ToastApp.showToast(this, "用户名密码错误");
+				ToastApp.showToast(this, R.string.login_nameorpassfail);
 			}
 
 			break;
@@ -162,10 +160,10 @@ public class LoginAcitvity extends BaseActivity {
 	@Override
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		title.setText("登录");
+		title.setText(R.string.login);
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
-		login.setText("登录");
+		login.setText(R.string.login);
 		login.setBackgroundResource(R.drawable.app_btn_unpress);
 		login.setTextColor(getResources().getColor(R.color.pop_back));
 		login.setClickable(false);

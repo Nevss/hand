@@ -126,7 +126,7 @@ public class FriendFragment extends BaseFragment {
 			descrip.setText(model.getTu_value());
 			imageLoader.displayImage(model.getTu_dizhi(), image, options);
 		} else {
-			ToastApp.showToast(getActivity(), "网络连接异常，请检查网络");
+			ToastApp.showToast(getActivity(), R.string.neterror);
 		}
 	}
 

@@ -140,7 +140,7 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 		});
 
 		loading = new ProgressDialogUtil(getActivity());
-		loading.setMessage("正在添加好友...");
+		loading.setMessage(null);
 	}
 
 	private void search(String keyWord) {
@@ -319,27 +319,30 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 
 	private void showServerDialog() {
 		final EditText input = new EditText(getActivity());
-		new AlertDialog.Builder(getActivity()).setTitle("请输入客服ID")
+		new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.contacts_serv)
 				.setView(input)
-				.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				.setPositiveButton(R.string.yes,
+						new DialogInterface.OnClickListener() {
 
-					@Override
-					public void onClick(DialogInterface arg0, int arg1) {
-						if (input.getText() == null
-								|| input.getText().length() == 0) {
-							Toast.makeText(getActivity(), "请输入客服Id",
-									Toast.LENGTH_SHORT).show();
-							return;
-						}
-						String gId = input.getText().toString();
-						long groupId = Long.parseLong(gId);
-						mCServer = new GotyeCustomerService(groupId);
-						Intent cserver = new Intent(getActivity(),
-								ChatPage.class);
-						cserver.putExtra("cserver", mCServer);
-						startActivity(cserver);
-					}
-				}).setNegativeButton("取消", null).show();
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								if (input.getText() == null
+										|| input.getText().length() == 0) {
+									Toast.makeText(getActivity(),
+											R.string.contacts_serv,
+											Toast.LENGTH_SHORT).show();
+									return;
+								}
+								String gId = input.getText().toString();
+								long groupId = Long.parseLong(gId);
+								mCServer = new GotyeCustomerService(groupId);
+								Intent cserver = new Intent(getActivity(),
+										ChatPage.class);
+								cserver.putExtra("cserver", mCServer);
+								startActivity(cserver);
+							}
+						}).setNegativeButton(R.string.no, null).show();
 	}
 
 	@Override
@@ -397,10 +400,10 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 			final EditText input = new EditText(getActivity());
 
 			new AlertDialog.Builder(getActivity())
-					.setTitle("添加好友")
+					.setTitle(R.string.be_friend)
 					.setIcon(android.R.drawable.ic_dialog_info)
 					.setView(input)
-					.setPositiveButton("确定",
+					.setPositiveButton(R.string.yes,
 							new DialogInterface.OnClickListener() {
 
 								@Override
@@ -410,7 +413,7 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 									if (!TextUtils.isEmpty(name)) {
 										if (name.equals(currentLoginName)) {
 											ToastApp.showToast(getActivity(),
-													"不能添加自己");
+													R.string.contacts_noself);
 											return;
 										}
 										loading.show();
@@ -418,7 +421,7 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 										showAddFriendTip = true;
 									}
 								}
-							}).setNegativeButton("取消", null).show();
+							}).setNegativeButton(R.string.no, null).show();
 
 		}
 	}
@@ -466,13 +469,13 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 				getView().findViewById(R.id.loading)
 						.setVisibility(View.VISIBLE);
 				((TextView) getView().findViewById(R.id.showText))
-						.setText("连接中...");
+						.setText(R.string.contacts_neting);
 				getView().findViewById(R.id.error_tip_icon).setVisibility(
 						View.GONE);
 			} else {
 				getView().findViewById(R.id.loading).setVisibility(View.GONE);
 				((TextView) getView().findViewById(R.id.showText))
-						.setText("未连接");
+						.setText(R.string.contacts_notneting);
 				getView().findViewById(R.id.error_tip_icon).setVisibility(
 						View.VISIBLE);
 			}
@@ -496,13 +499,13 @@ public class ContactsFragment extends Fragment implements OnClickListener {
 			loading.dismiss();
 			if (code == 0) {
 				if (showAddFriendTip) {
-					ToastApp.showToast(getActivity(), "添加好友成功");
+					ToastApp.showToast(getActivity(), R.string.contacts_addfriend_succ);
 				}
 
 				loadLocalFriends();
 			} else {
 				if (showAddFriendTip) {
-					ToastApp.showToast(getActivity(), "添加好友失败");
+					ToastApp.showToast(getActivity(), R.string.contacts_addfriend_fail);
 				}
 			}
 			showAddFriendTip = false;

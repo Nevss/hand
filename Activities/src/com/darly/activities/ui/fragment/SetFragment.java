@@ -12,6 +12,7 @@ package com.darly.activities.ui.fragment;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.http.message.BasicNameValuePair;
 
@@ -20,7 +21,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,6 +47,8 @@ import com.darly.activities.model.SetFragmentModel;
 import com.darly.activities.model.UserInformation;
 import com.darly.activities.poll.HttpClient;
 import com.darly.activities.poll.HttpTaskerForString;
+import com.darly.activities.ui.InterlActivityVtoo;
+import com.darly.activities.ui.MainActivity;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.set.FieldsBackActivity;
 import com.darly.activities.ui.fragment.set.FieldsBackListener;
@@ -80,7 +86,8 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 	@ViewInject(R.id.set_list)
 	private ListView list;
 
-	private String lebal[] = { "扫一扫", "个人信息", "修改密码", "清理缓存", "我的收藏", "我的评论" };
+	private int lebal[] = { R.string.set_0, R.string.set_1, R.string.set_2,
+			R.string.set_3, R.string.set_4, R.string.set_5 };
 
 	private int drawableId[] = { R.drawable.set_scan, R.drawable.set_info,
 			R.drawable.set_info, R.drawable.set_pass, R.drawable.set_see,
@@ -117,8 +124,9 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 		switch (v.getId()) {
 		case R.id.item_footer_btn:
 			// 退出程序。
-			new AlertDialog.Builder(getActivity()).setMessage("退出程序")
-					.setPositiveButton("确认", new OnClickListener() {
+			new AlertDialog.Builder(getActivity())
+					.setMessage(R.string.set_out_app)
+					.setPositiveButton(R.string.yes, new OnClickListener() {
 
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -126,7 +134,7 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 							PreferenceUserInfor.cleanUserInfor(getActivity());
 							System.exit(0);
 						}
-					}).setNegativeButton("取消", null).show();
+					}).setNegativeButton(R.string.no, null).show();
 			break;
 		case R.id.set_login:
 			// 登录事件
@@ -206,7 +214,6 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 		for (int i = 0, len = lebal.length; i < len; i++) {
 			data.add(new SetFragmentModel(lebal[i], drawableId[i]));
 		}
-
 		list.setAdapter(new SetFragmentAdapter(data,
 				R.layout.fragment_set_item, getActivity()));
 		getResult();
@@ -267,12 +274,30 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 			startActivity(new Intent(getActivity(), FieldsBackActivity.class));
 			break;
 		case 3:
-
+			startActivity(new Intent(getActivity(), InterlActivityVtoo.class));
 			break;
 		case 4:
-			cleanCach();
+			new AlertDialog.Builder(getActivity())
+					.setMessage(R.string.set_iscache)
+					.setPositiveButton(R.string.yes, new OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							cleanCach();
+						}
+					}).setNegativeButton(R.string.no, null).show();
 			break;
 		case 5:
+			// 切换语言
+			String lagu = PreferenceUserInfor.getLagu(getActivity());
+			if ("zh".equals(lagu)) {
+				changeLague("en");
+				PreferenceUserInfor.saveLagu("en", getActivity());
+			} else if ("en".equals(lagu)) {
+				changeLague("zh");
+				PreferenceUserInfor.saveLagu("zh", getActivity());
+			}
 
 			break;
 		case 6:
@@ -281,6 +306,27 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 		default:
 			break;
 		}
+	}
+
+	/**
+	 * 
+	 * 上午11:49:08
+	 * 
+	 * @author Zhangyuhui SetFragment.java TODO 变更语言
+	 */
+	private void changeLague(String sta) {
+		// TODO Auto-generated method stub
+		// 本地语言设置
+		Locale myLocale = new Locale(sta);
+		Resources res = getResources();
+		DisplayMetrics dm = res.getDisplayMetrics();
+		Configuration conf = res.getConfiguration();
+		conf.locale = myLocale;
+		res.updateConfiguration(conf, dm);
+		Intent intent = new Intent(getActivity(), MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		startActivity(intent);
+		getActivity().finish();
 	}
 
 	/**
@@ -301,9 +347,9 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 			isSuccess = deleteDir(log);
 		}
 		if (isSuccess) {
-			ToastApp.showToast(getActivity(), "缓存清理完成！");
+			ToastApp.showToast(getActivity(), R.string.set_cache_succ);
 		} else {
-			ToastApp.showToast(getActivity(), "清理缓存失败，需要手动删除文件");
+			ToastApp.showToast(getActivity(), R.string.set_cache_fail);
 		}
 	}
 

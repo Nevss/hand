@@ -303,15 +303,15 @@ public class MainActivity extends BaseActivity implements
 		public void onLogout(int code) {
 			ImageCache.getInstance().clear();
 			if (code == GotyeStatusCode.CodeForceLogout) {
-				ToastApp.showToast(MainActivity.this, "您的账号在另外一台设备上登录了！");
+				ToastApp.showToast(MainActivity.this, R.string.main_error);
 				PreferenceUserInfor.cleanUserInfor(MainActivity.this);
 			} else if (code == GotyeStatusCode.CodeNetworkDisConnected) {
-				ToastApp.showToast(MainActivity.this, "您的账号掉线了！");
+				ToastApp.showToast(MainActivity.this, R.string.main_drop);
 				Intent intent = new Intent(getBaseContext(),
 						LoginAcitvity.class);
 				startActivity(intent);
 			} else {
-				ToastApp.showToast(MainActivity.this, "退出登陆！");
+				ToastApp.showToast(MainActivity.this, R.string.main_loginout);
 				PreferenceUserInfor.cleanUserInfor(MainActivity.this);
 			}
 

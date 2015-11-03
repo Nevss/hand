@@ -186,12 +186,13 @@ public class SearchPage extends Activity {
 			//
 			//
 			if (mList == null || mList.size() == 0) {
-				ToastApp.showToast(SearchPage.this, "没有收到任何数据");
+				ToastApp.showToast(SearchPage.this, R.string.search_nodata);
 				hasMore = false;
 			} else {
 				if (curPageList == null || curPageList.size() == 0
 						|| curPageList.size() < 16) {
-					ToastApp.showToast(SearchPage.this, "没有更多数据了");
+					ToastApp.showToast(SearchPage.this,
+							R.string.search_nomoredata);
 					hasMore = false;
 					listview.removeFooterView(loadingView);
 				} else {
@@ -230,12 +231,13 @@ public class SearchPage extends Activity {
 				List<GotyeGroup> curList, List<GotyeGroup> mList) {
 
 			if (mList == null || mList.size() == 0) {
-				ToastApp.showToast(SearchPage.this, "没有收到任何数据");
+				ToastApp.showToast(SearchPage.this, R.string.search_nodata);
 				hasMore = false;
 			} else {
 				if (curList == null || curList.size() == 0
 						|| curList.size() < 16) {
-					ToastApp.showToast(SearchPage.this, "没有更多数据了");
+					ToastApp.showToast(SearchPage.this,
+							R.string.search_nomoredata);
 					hasMore = false;
 					int count = listview.getFooterViewsCount();
 					LogFileHelper.getInstance().i(count + "");

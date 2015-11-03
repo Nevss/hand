@@ -128,13 +128,13 @@ public class MeDetailsAcitvity extends BaseActivity {
 
 		pop = new PhotoPop(this);
 
-		title.setText("详细页面");
+		title.setText(R.string.detail_msg);
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
 
 		more.setOnClickListener(this);
 		loading = new ProgressDialogUtil(this);
-		loading.setMessage("加载中...");
+		loading.setMessage(R.string.xlistview_header_hint_loading);
 
 		ArrayList<String> images = new ArrayList<String>();
 		for (GridViewData gridViewData : data) {

@@ -12,6 +12,7 @@ import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
+import com.darly.activities.ui.R;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.RequestParams;
@@ -30,7 +31,7 @@ public class HttpClient {
 	public static void post(String url, String s,
 			RequestCallBack<String> callBack) {
 		if (!NetUtils.isConnected(context)) {
-			ToastApp.showToast(context, "网络未连接...");
+			ToastApp.showToast(context, R.string.neterror);
 		} else {
 			LogFileHelper.getInstance().i(TAG, "接口地址---->" + url);
 			LogFileHelper.getInstance().i(TAG, "param---->" + s.toString());
@@ -62,7 +63,7 @@ public class HttpClient {
 	public static void put(String url, String s,
 			RequestCallBack<String> callBack) {
 		if (!NetUtils.isConnected(context)) {
-			ToastApp.showToast(context, "网络未连接...");
+			ToastApp.showToast(context, R.string.neterror);
 		} else {
 			LogFileHelper.getInstance().i(TAG, "接口地址--------->>>" + url);
 			LogFileHelper.getInstance().i(TAG, "param---->" + s.toString());
@@ -96,7 +97,7 @@ public class HttpClient {
 	public static void options(String url, String param,
 			RequestCallBack<String> callBack) {
 		if (!NetUtils.isConnected(context)) {
-			ToastApp.showToast(context, "网络未连接...");
+			ToastApp.showToast(context, R.string.neterror);
 		} else {
 			LogFileHelper.getInstance().i(TAG, "接口地址--------->>>" + url);
 			LogFileHelper.getInstance().i(TAG, "param---->" + param);
@@ -116,7 +117,7 @@ public class HttpClient {
 	public static void get(Context context, String url, RequestParams params,
 			RequestCallBack<String> callBack) {
 		if (!NetUtils.isConnected(context)) {
-			ToastApp.showToast(context, "网络未连接...");
+			ToastApp.showToast(context, R.string.neterror);
 		} else {
 			LogFileHelper.getInstance().i(TAG, "接口地址---->" + url);
 			if (null != params.getQueryStringParams()) {
@@ -142,7 +143,7 @@ public class HttpClient {
 	public static void delete(Context context, String url,
 			RequestParams params, RequestCallBack<String> callBack) {
 		if (!NetUtils.isConnected(context)) {
-			ToastApp.showToast(context, "网络未连接...");
+			ToastApp.showToast(context, R.string.neterror);
 		} else {
 			LogFileHelper.getInstance().i(TAG, "接口地址---->" + url);
 			if (null != params.getQueryStringParams()) {

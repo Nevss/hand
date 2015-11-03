@@ -549,7 +549,7 @@ public class ChatMessageAdapter extends BaseAdapter {
 					intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 					chatPage.startActivity(intent);
 				} else {
-					ToastApp.showToast(chatPage, "正在下载...");
+					ToastApp.showToast(chatPage, R.string.chatmessage);
 					api.downloadMediaInMessage(msg);
 					return;
 				}

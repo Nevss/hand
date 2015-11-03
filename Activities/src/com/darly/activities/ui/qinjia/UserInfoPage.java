@@ -189,10 +189,10 @@ public class UserInfoPage extends Activity implements OnClickListener {
 			loading.dismiss();
 			if (code == 0) {
 				UserInfoPage.this.user = user;
-				ToastApp.showToast(UserInfoPage.this, "添加好友成功!");
+				ToastApp.showToast(UserInfoPage.this, R.string.contacts_addfriend_succ);
 				initView();
 			} else {
-				ToastApp.showToast(UserInfoPage.this, "添加好友失败!");
+				ToastApp.showToast(UserInfoPage.this, R.string.contacts_addfriend_fail);
 			}
 		}
 

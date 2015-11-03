@@ -100,6 +100,7 @@ public class MainFragment extends BaseFragment implements OnPageChangeListener,
 	public void initView() {
 		// TODO Auto-generated method stub
 		// radio.setOnCheckedChangeListener(this);
+		title.setText(R.string.index);
 		IndexFragment index = new IndexFragment();
 		index.setTok(this);
 		fragmentList.add(index);

@@ -54,6 +54,15 @@ public class ProgressDialogUtil extends Dialog {
 		}
 	}
 
+	public void setMessage(int message) {
+		if (message != 0) {
+			TextView txt = (TextView) findViewById(R.id.message);
+			txt.setVisibility(View.VISIBLE);
+			txt.setText(message);
+			txt.invalidate();
+		}
+	}
+
 	private void init() {
 		setContentView(R.layout.progress_custom);
 		// 按返回键是否取消

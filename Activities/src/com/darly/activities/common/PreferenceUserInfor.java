@@ -68,4 +68,30 @@ public class PreferenceUserInfor {
 		sp.commit();
 	}
 
+	private static String Lagu = "lagu";
+
+	/**
+	 * @param value
+	 * @param context
+	 *            上午11:56:19
+	 * @author Zhangyuhui PreferenceUserInfor.java TODO 保存当前使用语言
+	 */
+	public static void saveLagu(String value, Context context) {
+		Editor sp = context.getSharedPreferences(Lagu, Context.MODE_PRIVATE)
+				.edit();
+		sp.putString(Lagu, value);
+		sp.commit();
+	}
+
+	/**
+	 * @param context
+	 * @return 上午11:56:22
+	 * @author Zhangyuhui PreferenceUserInfor.java TODO 获取当前使用语言。
+	 */
+	public static String getLagu(Context context) {
+		SharedPreferences preferences = context.getSharedPreferences(Lagu,
+				Context.MODE_PRIVATE);
+		return preferences.getString(Lagu, null);
+	}
+
 }

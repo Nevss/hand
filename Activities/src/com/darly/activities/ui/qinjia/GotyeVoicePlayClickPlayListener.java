@@ -104,7 +104,7 @@ public class GotyeVoicePlayClickPlayListener implements View.OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if (((ChatPage) activity).onRealTimeTalkFrom >= 0) {
-			ToastApp.showToast(activity, "正在实时通话中");
+			ToastApp.showToast(activity, R.string.gotevoice);
 			return;
 		}
 		if (isPlaying) {

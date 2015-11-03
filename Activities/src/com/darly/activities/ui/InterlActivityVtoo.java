@@ -44,7 +44,10 @@ import com.darly.activities.model.OrgBaseData;
 import com.darly.activities.model.RoomInfor;
 import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.poll.ThreadPoolManager;
-import com.darly.activities.widget.intel.BaseInterlgent;
+import com.darly.activities.widget.intel.DepFloorRoom;
+import com.darly.activities.widget.intel.DepInfo;
+import com.darly.activities.widget.intel.DepInfoFloor;
+import com.darly.activities.widget.intel.DepInterlgent;
 import com.darly.activities.widget.intel.InterlgentUtil;
 import com.darly.activities.widget.load.ProgressDialogUtil;
 import com.darly.activities.widget.spinner.BaseSpinner;
@@ -59,8 +62,8 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
  *         展示机构平面图页面，取自帮忙医项目的智能导检。耗时操作放到了主进程里面，所以现在要将耗时操作放到线程里面进行测试。是否可以进行对应调节。
  *         OnCreate里面操作完成后才进行页面展示。页面并没有进行展示的原因就是因为OnCreate没有执行完毕。(失败)
  */
-@ContentView(R.layout.activity_index_show_view)
-public class IndexShowViewActivity extends BaseActivity {
+@ContentView(R.layout.activity_inter_vtoo)
+public class InterlActivityVtoo extends BaseActivity {
 	private static final String TAG = "IndexShowViewActivity";
 	/**
 	 * TODO顶部标签卡
@@ -76,12 +79,12 @@ public class IndexShowViewActivity extends BaseActivity {
 	/**
 	 * TODO下拉菜单选择列表
 	 */
-	@ViewInject(R.id.main_city_spinner)
+	@ViewInject(R.id.main_city_spinner_too)
 	private BaseSpinner city_spinner;
 	/**
 	 * TODO下拉菜单选择列表
 	 */
-	@ViewInject(R.id.main_org_spinner)
+	@ViewInject(R.id.main_org_spinner_too)
 	private BaseSpinner org_spinner;
 	/**
 	 * TODO线程管理
@@ -90,21 +93,13 @@ public class IndexShowViewActivity extends BaseActivity {
 	/**
 	 * TODO生成图层
 	 */
-	@ViewInject(R.id.main_container_intel)
-	public BaseInterlgent interlgent;
+	@ViewInject(R.id.main_container_intel_too)
+	public DepInterlgent interlgent;
 	/**
 	 * TODO图层容器
 	 */
-	@ViewInject(R.id.main_container)
+	@ViewInject(R.id.main_container_too)
 	private RelativeLayout main_container;
-
-	/**
-	 * TODO图层容器
-	 */
-	/*
-	 * @ViewInject(R.id.main_container_test) private RelativeLayout
-	 * main_container_test;
-	 */
 
 	/**
 	 * TODO计时器
@@ -119,7 +114,7 @@ public class IndexShowViewActivity extends BaseActivity {
 	/**
 	 * 咨询链接
 	 */
-	private String infoUrl = "http://test.rayelink.com/APIAccount/GetOrganizationInfos";
+	private String infoUrl = "http://172.3.207.15/APIAccount/GetOrganizationInfos";
 	/**
 	 * 数据链接
 	 */
@@ -155,6 +150,11 @@ public class IndexShowViewActivity extends BaseActivity {
 	 * 上午11:38:31 TODO 机构信息。
 	 */
 	private IARoomNameHttp roomOrgpari;
+
+	/**
+	 * 上午10:28:04 TODO 整个机构信息的汇总Model，所有信息都包含在这个Model中。
+	 */
+	private DepInfo info;
 
 	@Override
 	public void onClick(View v) {
@@ -250,7 +250,7 @@ public class IndexShowViewActivity extends BaseActivity {
 						org_spinner.getSpinner().setAdapter(
 								new LocalAdapter(info.city_org,
 										R.layout.ia_guide_item_city,
-										IndexShowViewActivity.this));
+										InterlActivityVtoo.this));
 						org_spinner.getSpinner().setOnItemSelectedListener(
 								new OnItemSelectedListener() {
 
@@ -262,10 +262,6 @@ public class IndexShowViewActivity extends BaseActivity {
 										// 选择正确的机构。
 										selectOrg = (BaseOrgInfo) parent
 												.getItemAtPosition(position);
-										// if (interlgent != null) {
-										// interlgent.setFlag(false);
-										// interlgent = null;
-										// }
 										firstStep();
 									}
 
@@ -310,7 +306,7 @@ public class IndexShowViewActivity extends BaseActivity {
 		if (info != null) {
 			roomOrgpari = new Gson().fromJson(info, IARoomNameHttp.class);
 			getOrgAndPoint(roomOrgpari);
-			firstSetSurface(roomOrgpari);
+			firstSetSurface();
 			getDataFHttp();
 			isUpDataCache = true;
 		} else {
@@ -334,8 +330,8 @@ public class IndexShowViewActivity extends BaseActivity {
 				manager.start();
 				// 获取屏幕的宽高。这几
 				manager.addAsyncTask(new HttpTaskerForString(
-						IndexShowViewActivity.this, par, infoUrl, handler,
-						true, Literal.GET_HANDLER, null));
+						InterlActivityVtoo.this, par, infoUrl, handler, true,
+						Literal.GET_HANDLER, null));
 				// 请求服务器平面图数据。
 			}
 		}
@@ -367,6 +363,25 @@ public class IndexShowViewActivity extends BaseActivity {
 														 * roomOrgpari.point
 														 * 由于服务器暂时还未传递，制造假数据
 														 */);
+		// ---------------------------修改整个Model信息------------------------
+		/**
+		 * 现在已经获取到了。机构房间编号，机构房间和科室关系，房间点阵，以及机构楼层的背景图片。通过这些信息，合成需要使用的后续版本JSON。
+		 */
+		ArrayList<DepFloorRoom> rooms = new ArrayList<DepFloorRoom>();
+		for (RoomInfor iaRoomPoint : roomInfo) {
+			int[] depId = { iaRoomPoint.getDepartId() };
+			rooms.add(new DepFloorRoom(iaRoomPoint.getRoomPoint(), depId,
+					iaRoomPoint.getRoomNum() + "", iaRoomPoint.getDepartId()
+							+ "", "", 0));
+		}
+		ArrayList<DepInfoFloor> floors = new ArrayList<DepInfoFloor>();
+		floors.add(new DepInfoFloor(1, rooms, roomOrgpari.Organizationplan));
+		info = new DepInfo(200, "", floors);
+		/**
+		 * 这里的info就是以后需要使用的数据Model.也就是要保存到本地的Model原型。
+		 */
+
+		// ---------------------------修改整个Model信息------------------------
 	}
 
 	/**
@@ -374,10 +389,10 @@ public class IndexShowViewActivity extends BaseActivity {
 	 *            上午11:24:08
 	 * @author Zhangyuhui IndexShowViewActivity.java TODO
 	 */
-	private void firstSetSurface(IARoomNameHttp roomOrgpari) {
-		interlgent.ReDraw(roomInfo);
+	private void firstSetSurface() {
+		interlgent.ReDraw(info.getFloor().get(0).getRooms());
 		main_container.setOnClickListener(this);
-		String url = roomOrgpari.Organizationplan;
+		String url = info.getFloor().get(0).getFloorBackground();
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
 		File file = new File(Literal.SROOT + name);
@@ -391,43 +406,41 @@ public class IndexShowViewActivity extends BaseActivity {
 		} else {
 
 			// 获取到背景图片后进行Bitmap缓存。
-			imageLoader.loadImage(roomOrgpari.Organizationplan,
-					new ImageLoadingListener() {
+			imageLoader.loadImage(url, new ImageLoadingListener() {
 
-						@Override
-						public void onLoadingStarted(String arg0, View arg1) {
-							// TODO Auto-generated method stub
+				@Override
+				public void onLoadingStarted(String arg0, View arg1) {
+					// TODO Auto-generated method stub
 
-						}
+				}
 
-						@Override
-						public void onLoadingFailed(String arg0, View arg1,
-								FailReason arg2) {
-							// TODO Auto-generated method stub
+				@Override
+				public void onLoadingFailed(String arg0, View arg1,
+						FailReason arg2) {
+					// TODO Auto-generated method stub
 
-						}
+				}
 
-						@Override
-						public void onLoadingComplete(String arg0, View arg1,
-								Bitmap arg2) {
-							// TODO Auto-generated method stub
+				@Override
+				public void onLoadingComplete(String arg0, View arg1,
+						Bitmap arg2) {
+					// TODO Auto-generated method stub
 
-							Bitmap back = InterlgentUtil.zoomImage(arg2,
-									Literal.width, Literal.width
-											* IAPoisDataConfig.babaibanh
-											/ IAPoisDataConfig.babaibanw);
-							interlgent.setBackGroud(back);
-							// 将Bitmap进行数据保存到文件。
-							PreferencesJsonCach.saveBitmap(
-									Literal.SROOT + name, arg2, TAG);
-						}
+					Bitmap back = InterlgentUtil.zoomImage(arg2, Literal.width,
+							Literal.width * IAPoisDataConfig.babaibanh
+									/ IAPoisDataConfig.babaibanw);
+					interlgent.setBackGroud(back);
+					// 将Bitmap进行数据保存到文件。
+					PreferencesJsonCach.saveBitmap(Literal.SROOT + name, arg2,
+							TAG);
+				}
 
-						@Override
-						public void onLoadingCancelled(String arg0, View arg1) {
-							// TODO Auto-generated method stub
+				@Override
+				public void onLoadingCancelled(String arg0, View arg1) {
+					// TODO Auto-generated method stub
 
-						}
-					});
+				}
+			});
 
 		}
 	}
@@ -447,7 +460,7 @@ public class IndexShowViewActivity extends BaseActivity {
 						IARoomNameHttp.class);
 				if (roomOrgpari != null && roomOrgpari.model != null) {
 					getOrgAndPoint(roomOrgpari);
-					firstSetSurface(roomOrgpari);
+					firstSetSurface();
 					getDataFHttp();
 				}
 			}
@@ -471,7 +484,8 @@ public class IndexShowViewActivity extends BaseActivity {
 			 */
 			OrgBase base = new Gson().fromJson(jsonData, OrgBase.class);
 			startTimer();
-			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
+			setInfoRoom(base.getModel());
+			interlgent.ReDraw(info.getFloor().get(0).getRooms());// ---------------------------------------------
 		} else {
 			ToastApp.showToast(this, R.string.neterror);
 		}
@@ -517,29 +531,37 @@ public class IndexShowViewActivity extends BaseActivity {
 	/**
 	 * @auther Darly Fronch 2015 下午3:01:05 TODO 对原始数据进行变更。替换状态
 	 */
-	public ArrayList<RoomInfor> setInfoRoom(OrgBaseData models,
-			ArrayList<RoomInfor> roomIn) {
-		for (int i = 0, len = roomIn.size(); i < len; i++) {
+	public void setInfoRoom(OrgBaseData models) {
+		for (int i = 0, len = info.getFloor().get(0).getRooms().size(); i < len; i++) {
 			// 判断获取到的数据假如没有此字段，则展示原始页面。
 			// 剔除不用体检的项目
+			DepFloorRoom room = info.getFloor().get(0).getRooms().get(i);
 			if (loading != null) {
 				loading.dismiss();
 			}
 			if (models.getAll() != null) {
 				for (int s = 0, lent = models.getAll().length; s < lent; s++) {
-					if (roomIn.get(i).getDepartId() == Integer.parseInt(models
-							.getAll()[s] + "")) {
-						roomIn.get(i).setRoomStauts(0);
-						break;
+					for (int j = 0; j < room.getDeNo().length; j++) {
+						if (room.getDeNo()[j] == Integer.parseInt(models
+								.getAll()[s] + "")) {
+							room.setStatus(0);
+							break;
+						}
 					}
 				}
 			}
 			// 剔除已经体检完成的项目
 			if (models.getDone() != null) {
 				for (int a = 0, lent = models.getDone().size(); a < lent; a++) {
-					if (roomIn.get(i).getDepartId() == models.getDone().get(a)
-							.getDepartmentID()) {
-						roomIn.get(i).setRoomStauts(1);
+
+					for (int j = 0; j < room.getDeNo().length; j++) {
+						if (room.getDeNo()[j] != models.getDone().get(a)
+								.getDepartmentID()) {
+							room.setStatus(0);
+							break;
+						} else {
+							room.setStatus(1);
+						}
 					}
 				}
 			}
@@ -550,18 +572,19 @@ public class IndexShowViewActivity extends BaseActivity {
 					if (num.contains("-")) {
 						num = num.substring(0, num.indexOf("-"));
 					}
-					String room = roomIn.get(i).getRoomNum();
-					if (room.contains("-")) {
-						room = num.substring(0, num.indexOf("-"));
+					String roomid = room.getRoomId();
+					if (roomid.contains("-")) {
+						roomid = num.substring(0, num.indexOf("-"));
 					}
-					if (room.equals(num)) {
-						roomIn.get(i).setRoomStauts(2);
+					if (roomid.equals(num)) {
+						room.setStatus(2);
 						int X = 0;
 						int Y = 0;
 						ArrayList<Point> pos = null;
-						for (RoomInfor roomInfor : roomIn) {
-							if (roomInfor.getRoomNum().equals(room)) {
-								pos = roomInfor.getRoomPoint();
+						for (DepFloorRoom roomInfor : info.getFloor().get(0)
+								.getRooms()) {
+							if (roomInfor.getRoomId().equals(roomid)) {
+								pos = roomInfor.getPoints();
 								break;
 							}
 						}
@@ -598,8 +621,6 @@ public class IndexShowViewActivity extends BaseActivity {
 				}
 			}
 		}
-
-		return roomIn;
 	}
 
 	/**
@@ -617,9 +638,8 @@ public class IndexShowViewActivity extends BaseActivity {
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
 		manager.start();
-		manager.addAsyncTask(new HttpTaskerForString(
-				IndexShowViewActivity.this, par, dataUrl, handler, true,
-				Literal.POST_HANDLER, null));
+		manager.addAsyncTask(new HttpTaskerForString(InterlActivityVtoo.this,
+				par, dataUrl, handler, true, Literal.POST_HANDLER, null));
 	}
 
 	/*

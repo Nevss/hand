@@ -184,7 +184,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 		// 初次没有缓存则直接跳过
 		if (!AppStack.isNetworkConnected(this)) {
 			loading.dismiss();
-			ToastApp.showToast(this, "网络异常，请检查网络！");
+			ToastApp.showToast(this, R.string.neterror);
 		} else {
 			getDataFHttp();
 		}
@@ -290,7 +290,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 			startTimer();
 			interlgent.ReDraw(setInfoRoom(base.getModel(), roomInfo));
 		} else {
-			ToastApp.showToast(this, "网络异常，请检查网络！");
+			ToastApp.showToast(this, R.string.neterror);
 		}
 	}
 
@@ -428,8 +428,9 @@ public class IndexZoomViewActivity extends BaseActivity implements
 		ArrayList<BasicNameValuePair> par = new ArrayList<BasicNameValuePair>();
 		par.add(new BasicNameValuePair("param", object.toString()));
 		manager.start();
-		manager.addAsyncTask(new HttpTaskerForString(IndexZoomViewActivity.this, par,
-				dataUrl, handler, true, Literal.POST_HANDLER, null));
+		manager.addAsyncTask(new HttpTaskerForString(
+				IndexZoomViewActivity.this, par, dataUrl, handler, true,
+				Literal.POST_HANDLER, null));
 	}
 
 	/**

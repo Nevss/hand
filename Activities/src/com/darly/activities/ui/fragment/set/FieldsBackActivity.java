@@ -70,7 +70,7 @@ public class FieldsBackActivity extends BaseActivity implements
 	public void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		LogFileHelper.getInstance().i(TAG, "FieldsBackActivity is run");
-		title.setText("接口传参");
+		title.setText(R.string.fields_back);
 		back.setVisibility(View.VISIBLE);
 		back.setOnClickListener(this);
 		data = new ArrayList<String>();

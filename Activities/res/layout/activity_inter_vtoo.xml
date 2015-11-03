@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools/com/darly/activities/ui"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include layout="@layout/main_header" />
+
+    <com.darly.activities.widget.spinner.BaseSpinner
+        android:id="@+id/main_city_spinner_too"
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:background="@android:color/white" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/set_list_line" />
+
+    <com.darly.activities.widget.spinner.BaseSpinner
+        android:id="@+id/main_org_spinner_too"
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:background="@android:color/white" />
+
+    <RelativeLayout
+        android:id="@+id/main_container_too"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/main_header_back" >
+
+        <com.darly.activities.widget.intel.DepInterlgent
+            android:id="@+id/main_container_intel_too"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+</LinearLayout>

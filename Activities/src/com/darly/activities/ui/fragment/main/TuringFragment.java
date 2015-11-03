@@ -139,7 +139,7 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 			buffer.append(model.getText()).append("\r\n");
 			content.setText(buffer);
 		} else {
-			ToastApp.showToast(getActivity(), "网络异常，请检查网络");
+			ToastApp.showToast(getActivity(), R.string.neterror);
 		}
 
 	}

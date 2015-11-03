@@ -278,7 +278,7 @@ public class ChatPage extends Activity implements OnClickListener {
 					// showPopupWindow2(pressToVoice);-------------------------------------------
 					if (onRealTimeTalkFrom == 0) {
 
-						ToastApp.showToast(ChatPage.this, "正在实时通话中...");
+						ToastApp.showToast(ChatPage.this, R.string.gotevoice);
 						return false;
 					}
 
@@ -462,16 +462,16 @@ public class ChatPage extends Activity implements OnClickListener {
 	public void info(View v) {
 		// 实时语音判断
 		if (onRealTimeTalkFrom >= 0) {
-			ToastApp.showToast(this, "正在实时语音..");
+			ToastApp.showToast(this, R.string.chat_vo_time);
 			return;
 		}
 		// 语音消息判断
 		if (makingVoiceMessage) {
-			ToastApp.showToast(this, "正在录音语音..");
+			ToastApp.showToast(this, R.string.chat_vo_luyin);
 			return;
 		}
 
-		LogFileHelper.getInstance().i(TAG,chatType + "");
+		LogFileHelper.getInstance().i(TAG, chatType + "");
 		// if (chatType == 0) {
 		// Intent intent = getIntent();
 		// intent.setClass(getApplication(), UserInfoPage.class);
@@ -528,7 +528,8 @@ public class ChatPage extends Activity implements OnClickListener {
 					if (list != null) {
 						adapter.refreshData(list);
 					} else {
-						ToastApp.showToast(ChatPage.this, "没有更多历史消息");
+						ToastApp.showToast(ChatPage.this,
+								R.string.chat_no_hismes_more);
 					}
 				}
 				adapter.notifyDataSetChanged();
@@ -629,11 +630,11 @@ public class ChatPage extends Activity implements OnClickListener {
 		switch (arg0.getId()) {
 		case R.id.back:
 			if (onRealTimeTalkFrom == 0) {
-				ToastApp.showToast(this, "正在实时语音,无法操作");
+				ToastApp.showToast(this, R.string.chat_vo_time_notdo);
 				return;
 			}
 			// if(makingVoiceMessage){
-			// ToastApp.showToast(this, "正在语音短消息,无法操作");
+			// ToastApp.showToast(this, R.string.chat_vo_time_notdo);
 			// return;
 			// }
 			onBackPressed();
@@ -952,7 +953,7 @@ public class ChatPage extends Activity implements OnClickListener {
 					title.setText("聊天室：" + room.getRoomName());
 				}
 			} else {
-				ToastApp.showToast(ChatPage.this, "房间不存在...");
+				ToastApp.showToast(ChatPage.this, R.string.chat_roomnotexsist);
 				finish();
 			}
 		}
@@ -965,7 +966,7 @@ public class ChatPage extends Activity implements OnClickListener {
 				if (listmessages != null) {
 					adapter.refreshData(listmessages);
 				} else {
-					ToastApp.showToast(ChatPage.this, "没有历史记录");
+					ToastApp.showToast(ChatPage.this, R.string.chat_no_hismes);
 				}
 			} else if (chatType == 1) {
 				List<GotyeMessage> listmessages = api.getMessageList(o_room,
@@ -973,7 +974,7 @@ public class ChatPage extends Activity implements OnClickListener {
 				if (listmessages != null) {
 					adapter.refreshData(listmessages);
 				} else {
-					ToastApp.showToast(ChatPage.this, "没有历史记录");
+					ToastApp.showToast(ChatPage.this, R.string.chat_no_hismes);
 				}
 			} else if (chatType == 2) {
 				List<GotyeMessage> listmessages = api.getMessageList(o_group,
@@ -981,7 +982,7 @@ public class ChatPage extends Activity implements OnClickListener {
 				if (listmessages != null) {
 					adapter.refreshData(listmessages);
 				} else {
-					ToastApp.showToast(ChatPage.this, "没有历史记录");
+					ToastApp.showToast(ChatPage.this, R.string.chat_no_hismes);
 				}
 			}
 			adapter.notifyDataSetInvalidated();
@@ -997,7 +998,7 @@ public class ChatPage extends Activity implements OnClickListener {
 			if (isRealTime) {
 				ChatPage.this.realTalk = true;
 				if (code != 0) {
-					ToastApp.showToast(ChatPage.this, "抢麦失败，先听听别人说什么。");
+					ToastApp.showToast(ChatPage.this, R.string.chat_qiangmai);
 					return;
 				}
 				if (GotyeVoicePlayClickPlayListener.isPlaying) {
@@ -1007,7 +1008,7 @@ public class ChatPage extends Activity implements OnClickListener {
 				onRealTimeTalkFrom = 0;
 				realTimeAnim.start();
 				realTalkView.setVisibility(View.VISIBLE);
-				realTalkName.setText("您正在说话..");
+				realTalkName.setText(R.string.chat_you_talking);
 				stopRealTalk.setVisibility(View.VISIBLE);
 			} else {
 				makingVoiceMessage = true;
@@ -1025,10 +1026,10 @@ public class ChatPage extends Activity implements OnClickListener {
 				realTalkView.setVisibility(View.GONE);
 			} else {
 				if (code != 0) {
-					ToastApp.showToast(ChatPage.this, "时间太短...");
+					ToastApp.showToast(ChatPage.this, R.string.chat_timeless);
 					return;
 				} else if (message == null) {
-					ToastApp.showToast(ChatPage.this, "时间太短...");
+					ToastApp.showToast(ChatPage.this, R.string.chat_timeless);
 					return;
 				}
 				// api.decodeAudioMessage(message);
@@ -1076,7 +1077,7 @@ public class ChatPage extends Activity implements OnClickListener {
 				ChatPage.this.realPlay = true;
 				onRealTimeTalkFrom = 1;
 				realTalkView.setVisibility(View.VISIBLE);
-				realTalkName.setText(who.getName() + "正在说话..");
+				realTalkName.setText(who.getName() + R.string.chat_talking);
 				realTimeAnim.start();
 				stopRealTalk.setVisibility(View.GONE);
 				if (GotyeVoicePlayClickPlayListener.isPlaying) {
@@ -1108,7 +1109,7 @@ public class ChatPage extends Activity implements OnClickListener {
 				Intent i = new Intent(ChatPage.this, MainActivity.class);
 				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				if (!(user.getName()).equals(currentLoginUser.getName())) {
-					Toast.makeText(getBaseContext(), "群主解散了该群",
+					Toast.makeText(getBaseContext(), R.string.chat_display,
 							Toast.LENGTH_SHORT).show();
 				}
 				finish();
@@ -1125,7 +1126,7 @@ public class ChatPage extends Activity implements OnClickListener {
 				if (kicked.getName().equals(currentLoginUser.getName())) {
 					Intent i = new Intent(ChatPage.this, MainActivity.class);
 					i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-					Toast.makeText(getBaseContext(), "您被踢出了群,会话结束",
+					Toast.makeText(getBaseContext(), R.string.chat_you_reless,
 							Toast.LENGTH_SHORT).show();
 					finish();
 					startActivity(i);
@@ -1138,9 +1139,9 @@ public class ChatPage extends Activity implements OnClickListener {
 		public void onReport(int code, GotyeMessage message) {
 			// TODO Auto-generated method stub
 			if (code == GotyeStatusCode.CodeOK) {
-				ToastApp.showToast(ChatPage.this, "举报成功");
+				ToastApp.showToast(ChatPage.this, R.string.chat_succ_jubao);
 			} else {
-				ToastApp.showToast(ChatPage.this, "举报失败");
+				ToastApp.showToast(ChatPage.this, R.string.chat_fail_jubao);
 			}
 			super.onReport(code, message);
 		}

@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.ChatPage;
+import com.darly.activities.ui.R;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeChatTarget;
 import com.gotye.api.GotyeCustomerService;
@@ -54,8 +55,8 @@ public class SendImageMessageTask extends AsyncTask<String, String, String> {
 		createMessage = GotyeMessage.createImageMessage(GotyeAPI.getInstance()
 				.getLoginUser(), target, imagePath);
 		createMessage.getMedia().setPathEx(imagePath);
-		//int code = 
-		if(target instanceof GotyeCustomerService){
+		// int code =
+		if (target instanceof GotyeCustomerService) {
 			String extraStr = "http://kefu-c.gotye.com.cn/product";
 			createMessage.putExtraData(extraStr.getBytes());
 		}
@@ -66,12 +67,12 @@ public class SendImageMessageTask extends AsyncTask<String, String, String> {
 	protected void onPostExecute(String result) {
 		// TODO Auto-generated method stub
 		if (result == null) {
-			ToastApp.showToast(chatPage, "请发送jpg图片");
+			ToastApp.showToast(chatPage, R.string.sendimage);
 			return;
 		}
 		sendImageMessage(result);
 		if (createMessage == null) {
-			ToastApp.showToast(chatPage, "图片消息发送失败");
+			ToastApp.showToast(chatPage, R.string.sendimagefail);
 		} else {
 			createMessage.getMedia().setPathEx(bigImagePath);
 			chatPage.callBackSendImageMessage(createMessage);
