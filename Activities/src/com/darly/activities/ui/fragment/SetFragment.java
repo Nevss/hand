@@ -25,6 +25,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -290,15 +291,27 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 			break;
 		case 5:
 			// 切换语言
-			String lagu = PreferenceUserInfor.getLagu(getActivity());
-			if ("zh".equals(lagu)) {
-				changeLague("en");
-				PreferenceUserInfor.saveLagu("en", getActivity());
-			} else if ("en".equals(lagu)) {
-				changeLague("zh");
-				PreferenceUserInfor.saveLagu("zh", getActivity());
-			}
+			new AlertDialog.Builder(getActivity())
+					.setMessage(R.string.set_islagu)
+					.setPositiveButton(R.string.yes, new OnClickListener() {
 
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							// TODO Auto-generated method stub
+							String lagu = PreferenceUserInfor
+									.getLagu(getActivity());
+							Log.i(TAG, lagu);
+							if ("zh".equals(lagu)) {
+								changeLague("en");
+								PreferenceUserInfor.saveLagu("en",
+										getActivity());
+							} else if ("en".equals(lagu)) {
+								changeLague("zh");
+								PreferenceUserInfor.saveLagu("zh",
+										getActivity());
+							}
+						}
+					}).setNegativeButton(R.string.no, null).show();
 			break;
 		case 6:
 
@@ -324,9 +337,8 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 		conf.locale = myLocale;
 		res.updateConfiguration(conf, dm);
 		Intent intent = new Intent(getActivity(), MainActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(intent);
-		getActivity().finish();
 	}
 
 	/**

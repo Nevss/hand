@@ -59,6 +59,7 @@
     <string name="main_drop">Your account number dropped!</string>
     <string name="main_loginout">Exit landing!</string>
     <string name="set_iscache">Do you want to clear the cache?</string>
+    <string name="set_islagu">Do you want to change the Language？</string>
     <string name="set_cache_succ">Cache cleanup!</string>
     <string name="set_cache_fail">Clean the cache failed, the need to manually delete the file</string>
     <string name="set_0">Sweep</string>

@@ -59,6 +59,7 @@
     <string name="main_drop">您的账号掉线了！</string>
     <string name="main_loginout">退出登陆！</string>
     <string name="set_iscache">是否清除缓存？</string>
+    <string name="set_islagu">是否切换语言？</string>
     <string name="set_cache_succ">缓存清理完成！</string>
     <string name="set_cache_fail">清理缓存失败，需要手动删除文件</string>
     <string name="set_0">扫一扫 </string>
