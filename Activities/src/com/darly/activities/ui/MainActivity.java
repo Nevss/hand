@@ -22,8 +22,8 @@ import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.fragment.ContactsFragment;
+import com.darly.activities.ui.fragment.HomeFragment;
 import com.darly.activities.ui.fragment.MainFragment;
-import com.darly.activities.ui.fragment.MeFragment;
 import com.darly.activities.ui.fragment.SetFragment;
 import com.darly.activities.ui.login.LoginAcitvity;
 import com.darly.activities.ui.qinjia.GotyeService;
@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity implements
 	/**
 	 * TODO用户自己页面展示Fragment
 	 */
-	private MeFragment me;
+	private HomeFragment me;
 
 	/**
 	 * 下午6:03:37 TODO美女列表Fragment
@@ -215,7 +215,7 @@ public class MainActivity extends BaseActivity implements
 					return;
 				ft.show(me);
 			} else {
-				me = new MeFragment();
+				me = new HomeFragment();
 				ft.add(R.id.main_frame, me);
 			}
 			break;

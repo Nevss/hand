@@ -26,5 +26,12 @@
     
     <dimen name="margin_chat_activity">5dp</dimen>
     <dimen name="size_avatar">50dp</dimen>
+    
+    
+    <dimen name="textview_general">16sp</dimen>
+    <dimen name="textview_large">18sp</dimen>
+    <dimen name="textview_shouye_tijianyuyue">13sp</dimen>
+    <dimen name="textview_shouye_small">12sp</dimen>
+    <dimen name="textview_radioButton">10sp</dimen>
 
 </resources>

@@ -45,7 +45,7 @@ public class Constants {
 	public static final String ONLINE_QUES_USERMODEL_ME = "OnlineQuestionUserModel_me";
 	/** 服务器地址 */
 	public static final String ROOT_URl = "http://test.rayelink.com";
-	//public static final String ROOT_URl = "http://192.168.0.148:818";
+	//public static final String ROOT_URl = "http://172.3.207.15";
 	// public static final String ROOT_URl = "http://192.168.0.155";
 
 	public static final String SERVICE_URl = ROOT_URl + "/APIAccount/";

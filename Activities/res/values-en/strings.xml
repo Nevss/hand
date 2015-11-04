@@ -99,5 +99,14 @@
     <string name="chat_succ_jubao">Report success</string>
     <string name="chat_fail_jubao">Report failure</string>
     <string name="web_reload">Page loading failed, please click reload</string>
+    <string name="home_top_askd">Ask Doctor</string>
+    <string name="home_top_askfoans">Click to find a doctor quick answer</string>
+    <string name="home_fragment_tijian">Physical examination area</string>
+    
+    <string name="home_fragment_tjyy">Medical examination</string>
+    <string name="home_fragment_zndj">Intelligent guidance</string>
+    <string name="home_fragment_bgcx">Report query</string>
+    <string name="home_fragment_bgjd">Report interpretation</string>
+    <string name="home_fragment_free">For free</string>
 
 </resources>

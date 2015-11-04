@@ -99,5 +99,13 @@
     <string name="chat_succ_jubao">举报成功</string>
     <string name="chat_fail_jubao">举报失败</string>
     <string name="web_reload">页面加载失败，请点击重新加载</string>
+    <string name="home_top_askd">问医生</string>
+    <string name="home_top_askfoans">点击找医生快速解答</string>
+    <string name="home_fragment_tijian">体检专区</string>
+    <string name="home_fragment_tjyy">体检预约</string>
+    <string name="home_fragment_zndj">智能导检</string>
+    <string name="home_fragment_bgcx">报告查询</string>
+    <string name="home_fragment_bgjd">报告解读</string>
+    <string name="home_fragment_free">免费</string>
 
 </resources>

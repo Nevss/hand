@@ -1,0 +1,172 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bggray"
+    android:orientation="vertical" >
+
+    <include layout="@layout/main_header" />
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        layout="@layout/home_top_view" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider" />
+
+    <include
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        layout="@layout/home_top_below" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:background="@color/w_white"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:text="@string/home_fragment_tijian"
+            android:textColor="@color/black"
+            android:textSize="@dimen/textview_general" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/divider" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/w_white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <TableRow
+            android:id="@+id/home_fragment_tjyy"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/tijianyuyue" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_fragment_tjyy" />
+        </TableRow>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/vertical_line"
+            android:contentDescription="@string/app_name" />
+
+        <TableRow
+            android:id="@+id/home_fragment_zndj"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/zhinengdaojian" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_fragment_zndj" />
+        </TableRow>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:background="@color/w_white"
+        android:orientation="horizontal" >
+
+        <TableRow
+            android:id="@+id/home_fragment_bgcx"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/baogaochaxun" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_fragment_bgcx" />
+        </TableRow>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/vertical_line"
+            android:contentDescription="@string/app_name" />
+
+        <TableRow
+            android:id="@+id/home_fragment_bgjd"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/baogaojiedu" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/home_fragment_bgjd" />
+        </TableRow>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/divider" />
+
+    <LinearLayout
+        android:id="@+id/home_fragment_carousel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:orientation="vertical" >
+    </LinearLayout>
+
+</LinearLayout>
