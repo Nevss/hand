@@ -16,24 +16,26 @@
     FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
     COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
     IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -->
 
 <resources>
-    <string name="com_facebook_like_button_not_liked">Like</string>
-    <string name="com_facebook_like_button_liked">Liked</string>
-    <string name="com_facebook_loginview_log_out_button">Log out</string>
-    <string name="com_facebook_loginview_log_in_button">Log in</string>
-    <string name="com_facebook_loginview_log_in_button_long">Log in with Facebook</string>
-    <string name="com_facebook_loginview_logged_in_as">Logged in as: %1$s</string>
-    <string name="com_facebook_loginview_logged_in_using_facebook">Logged in using Facebook</string>
-    <string name="com_facebook_loginview_log_out_action">Log out</string>
-    <string name="com_facebook_loginview_cancel_action">Cancel</string>
-    <string name="com_facebook_loading">Loading...</string>
-    <string name="com_facebook_internet_permission_error_title">AndroidManifest Error</string>
-    <string name="com_facebook_internet_permission_error_message">WebView login requires INTERNET permission</string>
-    <string name="com_facebook_tooltip_default">New! You\'re in control - choose what info you want to share with apps.</string>
-    <string name="com_facebook_image_download_unknown_error">Unexpected error while downloading an image.</string>
-    <string name="com_facebook_share_button_text">Share</string>
-    <string name="com_facebook_send_button_text">Send</string>
+
+    <string name="com_facebook_like_button_not_liked" translatable="false">Like</string>
+    <string name="com_facebook_like_button_liked" translatable="false">Liked</string>
+    <string name="com_facebook_loginview_log_out_button" translatable="false">Log out</string>
+    <string name="com_facebook_loginview_log_in_button" translatable="false">Log in</string>
+    <string name="com_facebook_loginview_log_in_button_long" translatable="false">Log in with Facebook</string>
+    <string name="com_facebook_loginview_logged_in_as" translatable="false">Logged in as: %1$s</string>
+    <string name="com_facebook_loginview_logged_in_using_facebook" translatable="false">Logged in using Facebook</string>
+    <string name="com_facebook_loginview_log_out_action" translatable="false">Log out</string>
+    <string name="com_facebook_loginview_cancel_action" translatable="false">Cancel</string>
+    <string name="com_facebook_loading" translatable="false">Loading..</string>
+    <string name="com_facebook_internet_permission_error_title" translatable="false">AndroidManifest Error</string>
+    <string name="com_facebook_internet_permission_error_message" translatable="false">WebView login requires INTERNET permission</string>
+    <string name="com_facebook_tooltip_default" translatable="false">New! You\'re in control - choose what info you want to share with apps.</string>
+    <string name="com_facebook_image_download_unknown_error" translatable="false">Unexpected error while downloading an image.</string>
+    <string name="com_facebook_share_button_text" translatable="false">Share</string>
+    <string name="com_facebook_send_button_text" translatable="false">Send</string>
+
 </resources>
