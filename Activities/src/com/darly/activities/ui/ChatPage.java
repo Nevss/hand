@@ -43,7 +43,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
@@ -150,7 +150,7 @@ public class ChatPage extends Activity implements OnClickListener {
 		// mASREngine.setTokenApis(Constants.API_KEY, Constants.SECRET_KEY);
 		currentLoginUser = api.getLoginUser();
 		UserInformation information = new Gson().fromJson(
-				PreferenceUserInfor.getUserInfor(Literal.USERINFO, this),
+				PreferenceUserInfor.getUserInfor(Constract.USERINFO, this),
 				UserInformation.class);
 		if (currentLoginUser != null
 				&& !information.getUserTrueName().equals(

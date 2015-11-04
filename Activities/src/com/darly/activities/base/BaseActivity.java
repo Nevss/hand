@@ -13,7 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 
 import com.androidquery.AQuery;
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.poll.ThreadPoolManager;
@@ -78,9 +78,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 				.showImageOnFail(R.drawable.ic_launcher).cacheInMemory(true)
 				.bitmapConfig(Config.RGB_565).cacheOnDisc(true).build();
 
-		if (Literal.width == 0 || Literal.height == 0) {
-			Literal.getWidth(this);
-		}
 		if (handler == null) {
 			handler = new BaseHandler(this);
 		}
@@ -97,15 +94,15 @@ public abstract class BaseActivity extends FragmentActivity implements
 	 */
 	private void creatFile() {
 		// TODO Auto-generated method stub
-		File boot = new File(Literal.ROOT);
+		File boot = new File(Constract.ROOT);
 		if (!boot.exists()) {
 			boot.mkdir();
 		}
-		File root = new File(Literal.SROOT);
+		File root = new File(Constract.SROOT);
 		if (!root.exists()) {
 			root.mkdir();
 		}
-		File log = new File(Literal.SROOT);
+		File log = new File(Constract.SROOT);
 		if (!log.exists()) {
 			log.mkdir();
 		}

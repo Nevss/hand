@@ -9,7 +9,7 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
 import com.darly.activities.ui.MainActivity;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.qinjia.util.AppUtil;
@@ -94,7 +94,7 @@ public class GotyeService extends Service {
 				msg = message.getSender().getName() + "发来了一条群邀请信息";
 			}
 			if (message.getReceiver() instanceof GotyeGroup) {
-				if (!(AppStack
+				if (!(App
 						.isGroupDontdisturb(message.getReceiver().getId()))) {
 					GotyeService.this.notify(msg);
 				}

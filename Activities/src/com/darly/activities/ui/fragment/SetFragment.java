@@ -38,9 +38,9 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.darly.activities.adapter.SetFragmentAdapter;
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
@@ -166,8 +166,8 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 				R.layout.fragment_set_item_header, null);
 		ImageView headerIv = (ImageView) header
 				.findViewById(R.id.item_header_image);
-		headerIv.setLayoutParams(new LayoutParams(Literal.width,
-				414 * Literal.width / 1242));
+		headerIv.setLayoutParams(new LayoutParams(Constract.width,
+				414 * Constract.width / 1242));
 		headerIv.setImageResource(R.drawable.login_table_bg);
 
 		header.findViewById(R.id.set_login).setOnClickListener(this);
@@ -185,12 +185,12 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 	 */
 	private void loginUser() {
 		// 进入页面先判断用户是否登录。
-		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, getActivity())) {
+		if (PreferenceUserInfor.isUserLogin(Constract.USERINFO, getActivity())) {
 			// 用户登录状态。界面进行变化。否则界面不变
 			header.findViewById(R.id.set_unlogin).setVisibility(View.GONE);
 			header.findViewById(R.id.set_islogin).setVisibility(View.VISIBLE);
 			UserInformation user = new Gson().fromJson(PreferenceUserInfor
-					.getUserInfor(Literal.USERINFO, getActivity()),
+					.getUserInfor(Constract.USERINFO, getActivity()),
 					UserInformation.class);
 			TextView name = (TextView) header.findViewById(R.id.set_name);
 			name.setText(user.getUserTrueName());
@@ -232,7 +232,7 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 		propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 		manager.start();
 		manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
-				HTTPServ.GODDESSES, handler, true, Literal.GET_HANDLER, propety));
+				HTTPServ.GODDESSES, handler, true, Constract.GET_HANDLER, propety));
 	}
 
 	/*
@@ -349,8 +349,8 @@ public class SetFragment extends BaseFragment implements OnItemClickListener,
 	 */
 	private void cleanCach() {
 		// TODO Auto-generated method stub
-		File file = new File(Literal.SROOT);
-		File log = new File(Literal.LOG);
+		File file = new File(Constract.SROOT);
+		File log = new File(Constract.LOG);
 		boolean isSuccess = false;
 		if (file.exists()) {
 			isSuccess = deleteDir(file);

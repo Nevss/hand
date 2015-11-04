@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.ui.R;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
@@ -32,8 +32,8 @@ public class GridViewAdapter extends ParentAdapter<GridViewData> {
 		if (view == null) {
 			view = LayoutInflater.from(context).inflate(resID, null);
 			hocker = new ViewHocker();
-			LayoutParams params = new LayoutParams(Literal.width / 2,
-					Literal.width / 2);
+			LayoutParams params = new LayoutParams(Constract.width / 2,
+					Constract.width / 2);
 			params.setMargins(2, 2, 2, 2);
 			hocker.iv = (RoundedImageView) view.findViewById(R.id.item_grid_iv);
 			hocker.iv.setLayoutParams(params);

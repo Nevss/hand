@@ -15,9 +15,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
@@ -150,7 +150,7 @@ public class MainActivity extends BaseActivity implements
 		// ------------------------------亲加即时通讯进行添加start------------------------------------
 		beep = new BeepManager(this);
 		beep.updatePrefs();
-		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, this)) {
+		if (PreferenceUserInfor.isUserLogin(Constract.USERINFO, this)) {
 			if (api.isOnline() == GotyeUser.NETSTATE_ONLINE
 					|| api.isOnline() == GotyeUser.NETSTATE_OFFLINE) {
 				// 启动service保存service长期活动
@@ -326,14 +326,14 @@ public class MainActivity extends BaseActivity implements
 			// messageFragment.refresh();
 			if (message.getStatus() == GotyeMessageStatus.GotyeMessageStatusUnread) {
 
-				if (!AppStack.isNewMsgNotify()) {
+				if (!App.isNewMsgNotify()) {
 					return;
 				}
 				if (message.getReceiver().getType() == GotyeChatTargetType.GotyeChatTargetTypeGroup) {
-					if (AppStack.isNotReceiveGroupMsg()) {
+					if (App.isNotReceiveGroupMsg()) {
 						return;
 					}
-					if (AppStack.isGroupDontdisturb(((GotyeGroup) message
+					if (App.isGroupDontdisturb(((GotyeGroup) message
 							.getReceiver()).getGroupID())) {
 						return;
 					}
@@ -358,7 +358,7 @@ public class MainActivity extends BaseActivity implements
 				return;
 			}
 			// messageFragment.refresh();
-			if (!AppStack.isNotReceiveGroupMsg()) {
+			if (!App.isNotReceiveGroupMsg()) {
 				beep.playBeepSoundAndVibrate();
 			}
 		}

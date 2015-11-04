@@ -1,6 +1,6 @@
 package com.darly.activities.db;
 
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
 import com.darly.activities.common.LogFileHelper;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
@@ -13,7 +13,7 @@ public class DBUtilsHelper {
 
 	public DbUtils getDb() {
 		if (db == null) {
-			db = DbUtils.create(AppStack.getInstance(), dbName);
+			db = DbUtils.create(App.getInstance(), dbName);
 		}
 		return db;
 	}

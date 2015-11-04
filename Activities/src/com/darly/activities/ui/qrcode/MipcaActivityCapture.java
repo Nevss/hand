@@ -36,7 +36,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.ui.R;
 import com.darly.activities.ui.qrcode.camera.CameraManager;
@@ -107,7 +107,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 				// 打开手机中的相册
 				Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT);
 				innerIntent.setType("image/*");
-				startActivityForResult(innerIntent, Literal.CA_HANDLER);
+				startActivityForResult(innerIntent, Constract.GET_HANDLER);
 			}
 		});
 		CameraManager.init(getApplication());
@@ -210,7 +210,7 @@ public class MipcaActivityCapture extends Activity implements Callback {
 		// TODO Auto-generated method stub
 		if (resultCode == RESULT_OK) {
 			switch (requestCode) {
-			case Literal.CA_HANDLER:
+			case Constract.GET_HANDLER:
 				// 获取选中图片的路径
 				Cursor cursor = getContentResolver().query(data.getData(),
 						null, null, null, null);

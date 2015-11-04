@@ -13,7 +13,8 @@ import java.io.FileWriter;
 import android.text.format.Time;
 import android.util.Log;
 
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
+import com.darly.activities.app.Constract;
 
 /**
  * @author Zhangyuhui LogFileHelper $ 上午11:20:37 TODO 工具类。理想工作效果为，将日志信息输出到文件中。
@@ -22,7 +23,7 @@ public class LogFileHelper {
 
 	private static LogFileHelper instance;
 	private static boolean isDebug = false;// 是否需要打印bug，可以在application的onCreate函数里面初始化
-	private static final String TAG = AppStack.getInstance().getPackageName();
+	private static final String TAG = App.getInstance().getPackageName();
 	private static final String CRASH_REPORTER_EXTENSION = ".log";
 
 	/**
@@ -123,15 +124,15 @@ public class LogFileHelper {
 		t.setToNow(); // 取得系统时间
 		int date = t.year * 10000 + t.month * 100 + t.monthDay;
 		String fileName = "LOG" + date + CRASH_REPORTER_EXTENSION;
-		File act = new File(Literal.ROOT);
+		File act = new File(Constract.ROOT);
 		if (!act.exists()) {
 			act.mkdir();
 		}
-		File log = new File(Literal.LOG);
+		File log = new File(Constract.LOG);
 		if (!log.exists()) {
 			log.mkdir();
 		}
-		File file = new File(Literal.LOG + fileName);
+		File file = new File(Constract.LOG + fileName);
 		try {
 			// long timestamp = System.currentTimeMillis();
 			if (!file.exists()) {

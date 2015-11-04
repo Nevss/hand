@@ -21,9 +21,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.TuringModel;
@@ -83,7 +83,7 @@ public class TuringFragment extends BaseFragment implements TextWatcher {
 			propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 			manager.start();
 			manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
-					HTTPServ.TURING, handler, true, Literal.GET_HANDLER,
+					HTTPServ.TURING, handler, true, Constract.GET_HANDLER,
 					propety));
 			break;
 

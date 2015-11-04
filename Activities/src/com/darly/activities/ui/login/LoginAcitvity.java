@@ -19,9 +19,9 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
@@ -107,12 +107,12 @@ public class LoginAcitvity extends BaseActivity {
 						LogFileHelper.getInstance().e(TAG, e.getMessage());
 					}
 					LogFileHelper.getInstance().i(TAG, object.toString());
-					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
+					PreferenceUserInfor.saveUserInfor(Constract.USERINFO,
 							object.toString(), this);
 					// 登录成功后进行初始化融云通讯。
 					// AppStack.initConnRongIM(this);
 					ToastApp.showToast(this, R.string.login_succ);
-					AppStack.connectQJ();
+					App.connectQJ();
 					finish();
 				} else {
 					ToastApp.showToast(this, R.string.login_nameorpassfail);
@@ -132,12 +132,12 @@ public class LoginAcitvity extends BaseActivity {
 						LogFileHelper.getInstance().e(TAG, e.getMessage());
 					}
 					LogFileHelper.getInstance().i(TAG, object.toString());
-					PreferenceUserInfor.saveUserInfor(Literal.USERINFO,
+					PreferenceUserInfor.saveUserInfor(Constract.USERINFO,
 							object.toString(), this);
 					// 登录成功后进行初始化融云通讯。
 					// AppStack.initConnRongIM(this);
 					ToastApp.showToast(this, R.string.login_succ);
-					AppStack.connectQJ();
+					App.connectQJ();
 					finish();
 				} else {
 					ToastApp.showToast(this, R.string.login_nameorpassfail);
@@ -168,8 +168,8 @@ public class LoginAcitvity extends BaseActivity {
 		login.setTextColor(getResources().getColor(R.color.pop_back));
 		login.setClickable(false);
 
-		restore.setLayoutParams(new LayoutParams(Literal.width,
-				Literal.width / 2));
+		restore.setLayoutParams(new LayoutParams(Constract.width,
+				Constract.width / 2));
 		// 设置用户名
 		name.setTarget("用户名称", "手机号/邮箱/QQ");
 		// 设置密码

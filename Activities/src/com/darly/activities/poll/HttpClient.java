@@ -7,7 +7,7 @@ import org.apache.http.entity.StringEntity;
 
 import android.content.Context;
 
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.PreferenceUserInfor;
@@ -21,7 +21,7 @@ import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 
 public class HttpClient {
 	private static final String TAG = HttpClient.class.getName();
-	private static final Context context = AppStack.getInstance();
+	private static final Context context = App.getInstance();
 
 	private HttpClient() {
 	}

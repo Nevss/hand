@@ -20,6 +20,8 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
+import com.darly.activities.app.Constract;
+
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -149,7 +151,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
 			t.setToNow(); // 取得系统时间
 			int date = t.year * 10000 + t.month * 100 + t.monthDay;
 			int time = t.hour * 10000 + t.minute * 100;
-			String fileName = Literal.LOG + "crash" + date + "" + time
+			String fileName = Constract.LOG + "crash" + date + "" + time
 					+ CRASH_REPORTER_EXTENSION;
 			File file = new File(fileName);
 			if (!file.exists()) {

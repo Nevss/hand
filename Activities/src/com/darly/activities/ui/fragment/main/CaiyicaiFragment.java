@@ -20,9 +20,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.CaiModel;
@@ -115,7 +115,7 @@ public class CaiyicaiFragment extends BaseFragment {
 				manager.start();
 				manager.addAsyncTask(new HttpTaskerForString(getActivity(),
 						null, HTTPServ.CAIYICAI, handler, true,
-						Literal.GET_HANDLER, propety));
+						Constract.GET_HANDLER, propety));
 			}
 		}, 0, delay);
 	}

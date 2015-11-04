@@ -20,9 +20,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.Goddesses;
@@ -89,7 +89,7 @@ public class FriendFragment extends BaseFragment {
 				.findViewById(R.id.main_fragment_frid_image);
 		descrip = (TextView) rootView
 				.findViewById(R.id.main_fragment_frid_descrip);
-		image.setLayoutParams(new LayoutParams(Literal.width, Literal.width));
+		image.setLayoutParams(new LayoutParams(Constract.width, Constract.width));
 		tuid = new Random().nextInt(10);
 		LogFileHelper.getInstance().i(TAG, "FriendFragment is run");
 	}
@@ -108,7 +108,7 @@ public class FriendFragment extends BaseFragment {
 		propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 		manager.start();
 		manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
-				HTTPServ.GODDESSES, handler, true, Literal.GET_HANDLER, propety));
+				HTTPServ.GODDESSES, handler, true, Constract.GET_HANDLER, propety));
 		tok.friListener(TAG);
 	}
 

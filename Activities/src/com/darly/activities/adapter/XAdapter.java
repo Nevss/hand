@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
@@ -66,8 +66,8 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 					R.layout.fragment_index_item, null);
 			LinearLayout layout = (LinearLayout) view
 					.findViewById(R.id.fragment_index_item_linear);
-			LayoutParams lp = new LayoutParams(Literal.width / 4,
-					Literal.width / 4);
+			LayoutParams lp = new LayoutParams(Constract.width / 4,
+					Constract.width / 4);
 			for (final HomtFragmentModel model : t.getData()) {
 				RoundedImageView iv = new RoundedImageView(context);
 				iv.setLayoutParams(lp);
@@ -85,7 +85,7 @@ public class XAdapter extends ParentAdapter<HomtFragmentBase> {
 					@Override
 					public void onClick(View v) {
 						// TODO Auto-generated method stub
-						if (PreferenceUserInfor.isUserLogin(Literal.USERINFO,
+						if (PreferenceUserInfor.isUserLogin(Constract.USERINFO,
 								context)) {
 							context.startActivity(new Intent(context,
 									RotateAcitvity.class));

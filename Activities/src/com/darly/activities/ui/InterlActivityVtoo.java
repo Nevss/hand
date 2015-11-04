@@ -27,10 +27,10 @@ import android.widget.Toast;
 
 import com.darly.activities.adapter.CityAdapter;
 import com.darly.activities.adapter.LocalAdapter;
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.IAPoisDataConfig;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
@@ -190,10 +190,10 @@ public class InterlActivityVtoo extends BaseActivity {
 		loading.show();
 		LogFileHelper.getInstance().i(TAG, "OnCreate还没加载interlgent。");
 		main_container.setLayoutParams(new LinearLayout.LayoutParams(
-				Literal.width, Literal.width * IAPoisDataConfig.babaibanh
+				Constract.width, Constract.width * IAPoisDataConfig.babaibanh
 						/ IAPoisDataConfig.babaibanw));
-		interlgent.setLayoutParams(new LayoutParams(Literal.width,
-				Literal.width * IAPoisDataConfig.babaibanh
+		interlgent.setLayoutParams(new LayoutParams(Constract.width,
+				Constract.width * IAPoisDataConfig.babaibanh
 						/ IAPoisDataConfig.babaibanw));
 
 		initImageAndThread();
@@ -310,7 +310,7 @@ public class InterlActivityVtoo extends BaseActivity {
 			getDataFHttp();
 			isUpDataCache = true;
 		} else {
-			if (!AppStack.isNetworkConnected(this)) {
+			if (!App.isNetworkConnected(this)) {
 				if (loading != null) {
 					loading.dismiss();
 				}
@@ -331,7 +331,7 @@ public class InterlActivityVtoo extends BaseActivity {
 				// 获取屏幕的宽高。这几
 				manager.addAsyncTask(new HttpTaskerForString(
 						InterlActivityVtoo.this, par, infoUrl, handler, true,
-						Literal.GET_HANDLER, null));
+						Constract.GET_HANDLER, null));
 				// 请求服务器平面图数据。
 			}
 		}
@@ -395,11 +395,11 @@ public class InterlActivityVtoo extends BaseActivity {
 		String url = info.getFloor().get(0).getFloorBackground();
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
-		File file = new File(Literal.SROOT + name);
+		File file = new File(Constract.SROOT + name);
 		if (file.exists()) {
-			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
-			Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Literal.width,
-					Literal.width * IAPoisDataConfig.babaibanh
+			Bitmap tempBitmap = BitmapFactory.decodeFile(Constract.SROOT + name);
+			Bitmap back = InterlgentUtil.zoomImage(tempBitmap, Constract.width,
+					Constract.width * IAPoisDataConfig.babaibanh
 							/ IAPoisDataConfig.babaibanw);
 			interlgent.setBackGroud(back);
 			interlgent.setNextImage(null, 0, 0);
@@ -426,12 +426,12 @@ public class InterlActivityVtoo extends BaseActivity {
 						Bitmap arg2) {
 					// TODO Auto-generated method stub
 
-					Bitmap back = InterlgentUtil.zoomImage(arg2, Literal.width,
-							Literal.width * IAPoisDataConfig.babaibanh
+					Bitmap back = InterlgentUtil.zoomImage(arg2, Constract.width,
+							Constract.width * IAPoisDataConfig.babaibanh
 									/ IAPoisDataConfig.babaibanw);
 					interlgent.setBackGroud(back);
 					// 将Bitmap进行数据保存到文件。
-					PreferencesJsonCach.saveBitmap(Literal.SROOT + name, arg2,
+					PreferencesJsonCach.saveBitmap(Constract.SROOT + name, arg2,
 							TAG);
 				}
 
@@ -639,7 +639,7 @@ public class InterlActivityVtoo extends BaseActivity {
 		par.add(new BasicNameValuePair("param", object.toString()));
 		manager.start();
 		manager.addAsyncTask(new HttpTaskerForString(InterlActivityVtoo.this,
-				par, dataUrl, handler, true, Literal.POST_HANDLER, null));
+				par, dataUrl, handler, true, Constract.POST_HANDLER, null));
 	}
 
 	/*

@@ -16,7 +16,7 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 
 /**
  * @author Zhangyuhui TestRestore 上午11:52:26 TODO 正方形回形图
@@ -103,7 +103,7 @@ public class RectRestoreSurfaceView extends SurfaceView implements
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		// TODO Auto-generated method stub
-		rect = new Rect(0, 0, Literal.width, Literal.width);
+		rect = new Rect(0, 0, Constract.width, Constract.width);
 		new Thread(this).start();
 	}
 
@@ -199,8 +199,8 @@ public class RectRestoreSurfaceView extends SurfaceView implements
 					canvas.save();
 					float fraction = (float) i * 10 / time;
 					// 将画布以正方形中心进行缩放
-					canvas.scale(fraction, fraction, Literal.width / 2,
-							Literal.width / 2);
+					canvas.scale(fraction, fraction, Constract.width / 2,
+							Constract.width / 2);
 					canvas.drawRect(rect, paint);
 					// 画布回滚
 					canvas.restore();

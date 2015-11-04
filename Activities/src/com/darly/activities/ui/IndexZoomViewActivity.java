@@ -21,10 +21,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.darly.activities.app.AppStack;
+import com.darly.activities.app.App;
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.IAPoisDataConfig;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
@@ -140,12 +140,12 @@ public class IndexZoomViewActivity extends BaseActivity implements
 		loading.show();
 		selectOrgID = getIntent().getIntExtra("selectOrg", 0);
 
-		main_container.setLayoutParams(new LayoutParams(Literal.height,
-				Literal.width));
+		main_container.setLayoutParams(new LayoutParams(Constract.height,
+				Constract.width));
 
-		Literal.bitmapheight = Literal.width * IAPoisDataConfig.babaibanh
+		Constract.bitmapheight = Constract.width * IAPoisDataConfig.babaibanh
 				/ IAPoisDataConfig.babaibanw;
-		Literal.bitmapwidth = Literal.width;
+		Constract.bitmapwidth = Constract.width;
 		initImageAndThread();
 		firstStep();
 	}
@@ -182,7 +182,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 			getOrgAndPoint(new Gson().fromJson(info, IARoomNameHttp.class));
 		}
 		// 初次没有缓存则直接跳过
-		if (!AppStack.isNetworkConnected(this)) {
+		if (!App.isNetworkConnected(this)) {
 			loading.dismiss();
 			ToastApp.showToast(this, R.string.neterror);
 		} else {
@@ -224,9 +224,9 @@ public class IndexZoomViewActivity extends BaseActivity implements
 		String url = roomOrgpari.Organizationplan;
 		final String name = url.substring(url.lastIndexOf("/") + 1,
 				url.length());
-		File file = new File(Literal.SROOT + name);
+		File file = new File(Constract.SROOT + name);
 		if (file.exists()) {
-			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.SROOT + name);
+			Bitmap tempBitmap = BitmapFactory.decodeFile(Constract.SROOT + name);
 			interlgent.setBackGroud(tempBitmap);
 			interlgent.setNextImage(null, 0, 0);
 		} else {
@@ -253,13 +253,13 @@ public class IndexZoomViewActivity extends BaseActivity implements
 							// TODO Auto-generated method stub
 
 							Bitmap back = InterlgentUtil.zoomImage(arg2,
-									Literal.width, Literal.width
+									Constract.width, Constract.width
 											* IAPoisDataConfig.babaibanh
 											/ IAPoisDataConfig.babaibanw);
 							interlgent.setBackGroud(back);
 							// 将Bitmap进行数据保存到文件。
 							PreferencesJsonCach.saveBitmap(
-									Literal.SROOT + name, arg2, TAG);
+									Constract.SROOT + name, arg2, TAG);
 						}
 
 						@Override
@@ -430,7 +430,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 		manager.start();
 		manager.addAsyncTask(new HttpTaskerForString(
 				IndexZoomViewActivity.this, par, dataUrl, handler, true,
-				Literal.POST_HANDLER, null));
+				Constract.POST_HANDLER, null));
 	}
 
 	/**
@@ -440,7 +440,7 @@ public class IndexZoomViewActivity extends BaseActivity implements
 
 		// 横屏：width<height
 
-		double screen = (double) Literal.height / (double) Literal.width;
+		double screen = (double) Constract.height / (double) Constract.width;
 		// 图片 if(width>height)
 		double image = (double) IAPoisDataConfig.babaibanw
 				/ (double) IAPoisDataConfig.babaibanh;
@@ -448,20 +448,20 @@ public class IndexZoomViewActivity extends BaseActivity implements
 		double a = 0;
 		if (screen > image) {
 			// 按照手机高度放大
-			a = Literal.bitmapheight / Literal.width;
+			a = Constract.bitmapheight / Constract.width;
 			if (a < 1) {
 				a = 1 / a;
 			}
 
 		} else if (screen < image) {
 			// 按照手机宽度放大
-			a = Literal.bitmapwidth / Literal.height;
+			a = Constract.bitmapwidth / Constract.height;
 			if (a < 1) {
 				a = 1 / a;
 			}
 		} else {
 			// 等比放大
-			a = Literal.bitmapwidth / Literal.width;
+			a = Constract.bitmapwidth / Constract.width;
 			if (a < 1) {
 				a = 1 / a;
 			}

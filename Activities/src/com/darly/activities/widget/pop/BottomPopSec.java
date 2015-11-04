@@ -13,7 +13,7 @@ import android.widget.GridView;
 import android.widget.PopupWindow;
 
 import com.darly.activities.adapter.BottomGridViewAdapter;
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.model.BottomModel;
 import com.darly.activities.ui.R;
 
@@ -87,8 +87,8 @@ public class BottomPopSec extends PopupWindow implements OnItemClickListener {
 				return false;
 			}
 		});
-		setHeight(Literal.height - height);
-		setWidth(Literal.width);
+		setHeight(Constract.height - height);
+		setWidth(Constract.width);
 		setContentView(view);
 	}
 

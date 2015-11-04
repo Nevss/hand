@@ -6,7 +6,7 @@
  */
 package com.darly.activities.widget.intel;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -140,8 +140,8 @@ public class RotateClockView extends View {
 	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		super.onSizeChanged(w, h, oldw, oldh);
-		mHalfWidth = Literal.width / 3;
-		mHalfHeight = Literal.width  / 3;
+		mHalfWidth = Constract.width / 3;
+		mHalfHeight = Constract.width  / 3;
 
 		mLineLeft = mHalfWidth - mHalfLineWidth;
 		mLineTop = mHalfHeight - mHalfWidth + mFixLineHeight;

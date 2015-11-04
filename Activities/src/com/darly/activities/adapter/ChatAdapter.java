@@ -8,7 +8,7 @@ package com.darly.activities.adapter;
 
 import java.util.List;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.model.GirlBase;
 import com.darly.activities.ui.R;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
@@ -64,8 +64,8 @@ public class ChatAdapter extends ParentAdapter<GirlBase> {
 			hocker = new ViewHocker();
 			hocker.iv = (RoundedImageView) view
 					.findViewById(R.id.chat_fragment_iv);
-			hocker.iv.setLayoutParams(new LayoutParams(Literal.width / 4,
-					Literal.width / 4));
+			hocker.iv.setLayoutParams(new LayoutParams(Constract.width / 4,
+					Constract.width / 4));
 			hocker.name = (TextView) view.findViewById(R.id.chat_fragment_name);
 			hocker.descrp = (TextView) view
 					.findViewById(R.id.chat_fragment_descrp);

@@ -16,8 +16,8 @@ import android.widget.GridView;
 import android.widget.PopupWindow;
 
 import com.darly.activities.adapter.BottomGridViewAdapter;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.BaseData;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.BottomModel;
 import com.darly.activities.model.GridViewData;
@@ -114,8 +114,8 @@ public class BottomPop extends PopupWindow implements OnItemClickListener,
 				reDataList(checked);
 			}
 		};
-		setHeight(Literal.height - v.getHeight());
-		setWidth(Literal.width);
+		setHeight(Constract.height - v.getHeight());
+		setWidth(Constract.width);
 		setContentView(view);
 	}
 

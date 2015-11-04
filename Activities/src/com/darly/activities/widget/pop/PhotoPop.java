@@ -28,7 +28,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.ui.R;
@@ -127,7 +127,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		intent.setType("image/*");
 		intent.setAction(Intent.ACTION_PICK);
 		((Activity) context).startActivityForResult(intent,
-				Literal.REQUESTCODE_CAM);
+				Constract.REQUESTCODE_CAM);
 	}
 
 	/**
@@ -139,9 +139,9 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	private void capPhoto() {
 		LogFileHelper.getInstance().i(TAG, "开始调用照相");
 		// 照相
-		capUri = Literal.SROOT + System.currentTimeMillis() + ".png";
-		Literal.capUri = capUri;
-		File destDir = new File(Literal.SROOT);
+		capUri = Constract.SROOT + System.currentTimeMillis() + ".png";
+		Constract.capUri = capUri;
+		File destDir = new File(Constract.SROOT);
 		if (!destDir.exists()) {
 			destDir.mkdirs();
 		}
@@ -160,7 +160,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		openCameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,
 				Uri.fromFile(new File(capUri)));
 		((Activity) context).startActivityForResult(openCameraIntent,
-				Literal.REQUESTCODE_CAP);
+				Constract.REQUESTCODE_CAP);
 		LogFileHelper.getInstance().i(TAG, "文件路径" + capUri + "文件" /* + imageUri */);
 
 	}
@@ -183,7 +183,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		intent.putExtra("outputY", 150);
 		intent.putExtra("return-data", true);
 		((Activity) context).startActivityForResult(intent,
-				Literal.REQUESTCODE_CUT);
+				Constract.REQUESTCODE_CUT);
 	}
 
 	/**
@@ -199,13 +199,13 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		}
 
 		switch (requestCode) {
-		case Literal.REQUESTCODE_CAP:
+		case Constract.REQUESTCODE_CAP:
 			//
 			LogFileHelper.getInstance().i(TAG, "相机调用完成。返回数据");
-			Bitmap tempBitmap = BitmapFactory.decodeFile(Literal.HEAD);
-			photoUri = Uri.fromFile(new File(Literal.SROOT));
+			Bitmap tempBitmap = BitmapFactory.decodeFile(Constract.HEAD);
+			photoUri = Uri.fromFile(new File(Constract.SROOT));
 			return tempBitmap;
-		case Literal.REQUESTCODE_CAM:
+		case Constract.REQUESTCODE_CAM:
 			//
 			LogFileHelper.getInstance().i(TAG, "相册调用完成。返回数据");
 			// 调用Gallery返回的
@@ -227,7 +227,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 			}
 
 			break;
-		case Literal.REQUESTCODE_CUT:
+		case Constract.REQUESTCODE_CUT:
 			//
 			LogFileHelper.getInstance().i(TAG, "裁剪调用完成。返回数据");
 			Bundle extras = data.getExtras();
@@ -249,11 +249,11 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	 */
 	public String PopStringActivityResult(Intent data, int tag) {
 		switch (tag) {
-		case Literal.REQUESTCODE_CAP:
+		case Constract.REQUESTCODE_CAP:
 			// 照相机程序返回的
 			LogFileHelper.getInstance().i(TAG, "相机调用完成。返回图片的保存地址" + capUri);
 			return /* capUri */getImagePathForCAP(capUri);
-		case Literal.REQUESTCODE_CAM:
+		case Constract.REQUESTCODE_CAM:
 			// 照片的原始资源地址
 			LogFileHelper.getInstance().i(TAG, "相册调用完成。返回图片的地址");
 			photoUri = data.getData();
@@ -283,7 +283,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 		} else {
 			// 先压缩图片。然后旋转图片。最后保存图片。
 			rotateBitmapByDegree(compressImageCap(capUri), degree);
-			return Literal.SROOT + rota;
+			return Constract.SROOT + rota;
 		}
 	}
 
@@ -384,7 +384,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	public Bitmap compressBitmap(final Bitmap bit, int quality) {
 		// int quality = 10;// 同学们可以与原生的压缩方法对比一下，同样设置成50效果如何
 		// 获取文件存储的文件夹。
-		File dirFile = new File(Literal.SROOT);
+		File dirFile = new File(Constract.SROOT);
 		if (!dirFile.exists()) {
 			dirFile.mkdirs();
 		}
@@ -420,7 +420,7 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 			if (bitmap != returnBm) {
 				recycleBitmap(bitmap);
 			}
-			PreferencesJsonCach.saveBitmap(Literal.SROOT + rota, returnBm, TAG);
+			PreferencesJsonCach.saveBitmap(Constract.SROOT + rota, returnBm, TAG);
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
 		}

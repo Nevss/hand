@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.ChatPage;
@@ -78,8 +78,8 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 		// 获取到的XML轮播页面布局。
 		view = LayoutInflater.from(context).inflate(
 				R.layout.carousel_viewpager, null);
-		lp = new RelativeLayout.LayoutParams(Literal.width,
-				(int) (Literal.width / ASPECTRATIO));
+		lp = new RelativeLayout.LayoutParams(Constract.width,
+				(int) (Constract.width / ASPECTRATIO));
 		pager = (ViewPager) view.findViewById(R.id.carousel_viewpager);
 		pager.setLayoutParams(lp);
 		one = (ImageView) view.findViewById(R.id.carousel_onlyone);
@@ -293,19 +293,19 @@ public class Carousel<T> implements OnPageChangeListener, OnClickListener {
 				// if (target.getType() ==
 				// GotyeChatTargetType.GotyeChatTargetTypeUser) {
 
-				if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, context)) {
+				if (PreferenceUserInfor.isUserLogin(Constract.USERINFO, context)) {
 					UserInformation information = new Gson().fromJson(
-							PreferenceUserInfor.getUserInfor(Literal.USERINFO,
+							PreferenceUserInfor.getUserInfor(Constract.USERINFO,
 									context), UserInformation.class);
-					for (int i = 0; i < Literal.users.size(); i++) {
-						if (Literal.users.get(i).getUserID()
+					for (int i = 0; i < Constract.users.size(); i++) {
+						if (Constract.users.get(i).getUserID()
 								.equals(information.getUserID())) {
-							Literal.users.remove(i);
+							Constract.users.remove(i);
 							break;
 						}
 					}
-					UserInformation nextTalk = Literal.users.get(new Random()
-							.nextInt(Literal.users.size()));
+					UserInformation nextTalk = Constract.users.get(new Random()
+							.nextInt(Constract.users.size()));
 					GotyeAPI.getInstance().markMessagesAsRead(
 							nextTalk.getUser(), true);
 					Intent toChat = new Intent(context, ChatPage.class);

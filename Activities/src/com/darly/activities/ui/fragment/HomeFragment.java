@@ -21,8 +21,8 @@ import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.R;
 import com.darly.activities.widget.carousel.Carousel;
@@ -125,14 +125,14 @@ public class HomeFragment extends BaseFragment {
 	@Override
 	public void initView() {
 		// TODO Auto-generated method stub
-		LayoutParams lp = new LayoutParams(Literal.width / 2,
+		LayoutParams lp = new LayoutParams(Constract.width / 2,
 				LayoutParams.MATCH_PARENT);
 		tjyy.setLayoutParams(lp);
 		zndj.setLayoutParams(lp);
 		bgcx.setLayoutParams(lp);
 		bgjd.setLayoutParams(lp);
 
-		LayoutParams cou = new LayoutParams(Literal.width, Literal.height / 5);
+		LayoutParams cou = new LayoutParams(Constract.width, Constract.height / 5);
 		cousel.setLayoutParams(cou);
 
 		title.setText(R.string.home_top_askd);

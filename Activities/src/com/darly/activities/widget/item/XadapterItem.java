@@ -8,7 +8,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.ui.R;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
 
@@ -37,7 +37,7 @@ public class XadapterItem extends LinearLayout {
 		view = new LinearLayout(context);
 		view.setOrientation(LinearLayout.HORIZONTAL);
 		view.setGravity(Gravity.CENTER_VERTICAL);
-		LayoutParams lp = new LayoutParams(Literal.width / 4, Literal.width / 4);
+		LayoutParams lp = new LayoutParams(Constract.width / 4, Constract.width / 4);
 		lp.setMargins(10, 10, 10, 10);
 		iv = new RoundedImageView(context);
 		iv.setCornerRadius(20f);

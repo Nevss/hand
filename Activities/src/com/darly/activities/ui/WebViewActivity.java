@@ -19,8 +19,8 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
 import com.darly.activities.common.ToastApp;
@@ -200,7 +200,7 @@ public class WebViewActivity extends BaseActivity {
 		CookieManager cookieManager = CookieManager.getInstance();
 		cookieManager.setAcceptCookie(true);
 		cookieManager.removeSessionCookie();// 移除
-		String token = PreferencesJsonCach.getValue(Literal.TOKEN, null);
+		String token = PreferencesJsonCach.getValue(Constract.TOKEN, null);
 		cookieManager.setCookie(url, "token=" + token + ";path=/");// cookies是在HttpClient中获得的cookie
 		CookieSyncManager.getInstance().sync();
 	}
@@ -236,9 +236,9 @@ public class WebViewActivity extends BaseActivity {
 	public void reloadUrl(String url) {
 		Log.i(TAG, "reloadUrl()");
 		HashMap<String, String> hashmap = new HashMap<String, String>();
-		if (null != PreferencesJsonCach.getValue(Literal.TOKEN, null)) {
+		if (null != PreferencesJsonCach.getValue(Constract.TOKEN, null)) {
 			hashmap.put("token",
-					PreferencesJsonCach.getValue(Literal.TOKEN, null));
+					PreferencesJsonCach.getValue(Constract.TOKEN, null));
 		}
 		webview.clearView();
 		webview.loadUrl(url, hashmap);

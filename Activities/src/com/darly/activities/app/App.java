@@ -9,11 +9,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Environment;
 import android.text.TextUtils;
+import android.view.WindowManager;
 
 import com.darly.activities.common.BaseData;
 import com.darly.activities.common.CrashHandler;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.UserInformation;
@@ -37,8 +38,8 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
  * @date 2015年1月5日 上午10:04:28
  *
  */
-public class AppStack extends Application {
-	private static AppStack instance;
+public class App extends Application {
+	private static App instance;
 
 	private static SharedPreferences spf;
 	// 是否有新消息提醒
@@ -52,13 +53,14 @@ public class AppStack extends Application {
 	 * @return 上午10:43:20
 	 * @author Zhangyuhui AppStack.java TODO获取APP应用信息启动单例，获取唯一的APP资源
 	 */
-	public static AppStack getInstance() {
+	public static App getInstance() {
 		if (null == instance) {
 			return null;
 		}
 		return instance;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate() {
 		// TODO Auto-generated method stub
@@ -66,21 +68,25 @@ public class AppStack extends Application {
 		instance = this;
 		// 使用您在亲加管理平台申请到的appkey初始化API，appkey如果为空会返回参数错误。
 		// 下文提到的gotyeApi即为GotyeAPI，后续不再赘述。
+		if (Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED)) {
+
+		}
 		CrashHandler.getInstance().init(instance);
 		LogFileHelper.getInstance().i(getClass().getName(), "开始初始化即时通讯");
 		GotyeAPI gotyeApi = GotyeAPI.getInstance();
-		gotyeApi.init(this, Literal.QJAppKey);
+		gotyeApi.init(this, Constract.QJAppKey);
 
 		LogFileHelper.getInstance().i(getClass().getName(), "即时通讯初始化完成");
 
-		if (Literal.users == null) {
-			Literal.users = BaseData.getUsers();
+		if (Constract.users == null) {
+			Constract.users = BaseData.getUsers();
 		}
 
-		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, this)) {
+		if (PreferenceUserInfor.isUserLogin(Constract.USERINFO, this)) {
 			// 用户登录后，获取到用户的详细信息。 然后用户初始化完成后直接登录。即时通讯。
 			UserInformation information = new Gson().fromJson(
-					PreferenceUserInfor.getUserInfor(Literal.USERINFO, this),
+					PreferenceUserInfor.getUserInfor(Constract.USERINFO, this),
 					UserInformation.class);
 			gotyeApi.login(information.getUserTrueName(), null);
 		}
@@ -89,6 +95,14 @@ public class AppStack extends Application {
 		// 保存当前语言种类。 默认汉语
 		if (PreferenceUserInfor.getLagu(instance) == null) {
 			PreferenceUserInfor.saveLagu("zh", instance);
+		}
+
+		if (Constract.width == -1 && Constract.height == -1) {
+			WindowManager wm = (WindowManager) instance
+					.getSystemService(Context.WINDOW_SERVICE);
+			Constract.width = wm.getDefaultDisplay().getWidth();
+			Constract.height = wm.getDefaultDisplay().getHeight();
+			Constract.desty = wm.getDefaultDisplay().getDisplayId();
 		}
 
 		// 融云即时通讯接入项目后融云无法初始化。找不到融云类。无法继续。更换其他厂家进行集成。
@@ -259,12 +273,11 @@ public class AppStack extends Application {
 	}
 
 	public static void connectQJ() {
-		if (PreferenceUserInfor.isUserLogin(Literal.USERINFO, instance)) {
+		if (PreferenceUserInfor.isUserLogin(Constract.USERINFO, instance)) {
 			// 用户登录后，获取到用户的详细信息。 然后用户初始化完成后直接登录。即时通讯。
 			UserInformation information = new Gson().fromJson(
-					PreferenceUserInfor
-							.getUserInfor(Literal.USERINFO, instance),
-					UserInformation.class);
+					PreferenceUserInfor.getUserInfor(Constract.USERINFO,
+							instance), UserInformation.class);
 			GotyeAPI.getInstance().login(information.getUserTrueName(), null);
 		}
 	}

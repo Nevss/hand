@@ -1,5 +1,7 @@
 package com.darly.activities.common;
 
+import com.darly.activities.app.Constract;
+
 import android.content.Context;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -25,7 +27,7 @@ public class ToastApp {
 			return;
 
 		if (toast == null) {
-			toast = Toast.makeText(context, msg, Literal.TOASTTIME);
+			toast = Toast.makeText(context, msg, Constract.TOASTTIME);
 		} else {
 			toast.setText(msg);
 		}
@@ -38,7 +40,7 @@ public class ToastApp {
 			return;
 
 		if (toast == null) {
-			toast = Toast.makeText(context, msg, Literal.TOASTTIME);
+			toast = Toast.makeText(context, msg, Constract.TOASTTIME);
 		} else {
 			toast.setText(msg);
 		}

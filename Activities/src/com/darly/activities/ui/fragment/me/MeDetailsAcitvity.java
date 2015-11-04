@@ -15,8 +15,8 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.ui.R;
@@ -143,7 +143,7 @@ public class MeDetailsAcitvity extends BaseActivity {
 		// 添加轮播效果。以及轮播点击效果。
 		Carousel<MeDetailsAcitvity> carousel = new Carousel<MeDetailsAcitvity>(
 				this, images, imageLoader, options, imagehandler);
-		LayoutParams lp = new LayoutParams(Literal.width, Literal.width / 3);
+		LayoutParams lp = new LayoutParams(Constract.width, Constract.width / 3);
 		relative.setLayoutParams(lp);
 		relative.addView(carousel.view);
 	}
@@ -199,14 +199,14 @@ public class MeDetailsAcitvity extends BaseActivity {
 		if (resultCode != RESULT_OK) {
 			return;
 		}
-		if (requestCode == Literal.REQUESTCODE_CUT) {
+		if (requestCode == Constract.REQUESTCODE_CUT) {
 			// 裁剪
 			if (data != null) {
 				Bundle extras = data.getExtras();
 				Bitmap head = extras.getParcelable("data");
 				ImageView imageView = new ImageView(MeDetailsAcitvity.this);
-				LayoutParams lp = new LayoutParams(Literal.width / 5,
-						Literal.width / 5);
+				LayoutParams lp = new LayoutParams(Constract.width / 5,
+						Constract.width / 5);
 				lp.setMargins(2, 2, 2, 2);
 				imageView.setLayoutParams(lp);
 				imageView.setImageBitmap(head);
@@ -217,14 +217,14 @@ public class MeDetailsAcitvity extends BaseActivity {
 			String head_path = null;
 			if (data == null) {
 				if (pop == null) {
-					head_path = Literal.capUri;
+					head_path = Constract.capUri;
 				} else {
 					head_path = pop.PopStringActivityResult(null,
-							Literal.REQUESTCODE_CAP);
+							Constract.REQUESTCODE_CAP);
 				}
 			} else {
 				head_path = pop.PopStringActivityResult(data,
-						Literal.REQUESTCODE_CAM);
+						Constract.REQUESTCODE_CAM);
 
 			}
 			LogFileHelper.getInstance().i(TAG, head_path);

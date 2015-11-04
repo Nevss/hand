@@ -37,7 +37,7 @@ package com.darly.activities.widget.horilistview;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -157,8 +157,8 @@ public class HorizontalListView extends AdapterView<ListAdapter> {
 	@Override
 	public void setSelection(int position) {
 		// TODO: implement
-		positionX = position * Literal.width / 4;
-		int maxWidth = this.getChildCount() * Literal.width / 4;
+		positionX = position * Constract.width / 4;
+		int maxWidth = this.getChildCount() * Constract.width / 4;
 		if (positionX <= 0) {
 			positionX = 0;
 		}

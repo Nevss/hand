@@ -6,7 +6,7 @@
  */
 package com.darly.activities.base;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 
 import android.os.Handler;
 import android.os.Message;
@@ -28,10 +28,10 @@ public class BaseHandler extends Handler {
 		// TODO Auto-generated method stub
 		super.handleMessage(msg);
 		switch (msg.what) {
-		case Literal.GET_HANDLER:
+		case Constract.GET_HANDLER:
 			act.refreshGet(msg.obj);
 			break;
-		case Literal.POST_HANDLER:
+		case Constract.POST_HANDLER:
 			act.refreshPost(msg.obj);
 			break;
 		default:

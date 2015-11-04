@@ -18,7 +18,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.LogFileHelper;
 
 /**
@@ -138,15 +138,15 @@ public class RotateView extends View {
 		canvas.save();
 		drawView(canvas);
 		canvas.restore();
-		canvas.rotate(90, Literal.width / 2, Literal.width / 2);
+		canvas.rotate(90, Constract.width / 2, Constract.width / 2);
 		canvas.save();
 		drawView(canvas);
 		canvas.restore();
-		canvas.rotate(90, Literal.height / 2, Literal.height / 2);
+		canvas.rotate(90, Constract.height / 2, Constract.height / 2);
 		canvas.save();
 		drawView(canvas);
 		canvas.restore();
-		canvas.rotate(190, Literal.width / 2, Literal.width / 2);
+		canvas.rotate(190, Constract.width / 2, Constract.width / 2);
 		drawView(canvas);
 	}
 

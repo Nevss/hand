@@ -22,9 +22,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.darly.activities.adapter.ChatAdapter;
+import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
-import com.darly.activities.common.Literal;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GirlBase;
 import com.darly.activities.model.GirlModel;
@@ -84,7 +84,7 @@ public class ChatFragment extends BaseFragment implements OnItemClickListener {
 		propety.add(new BasicNameValuePair("apikey", HTTPServ.APPIDKEY));
 		manager.start();
 		manager.addAsyncTask(new HttpTaskerForString(getActivity(), params,
-				HTTPServ.PHOTO_GIRL, handler, true, Literal.GET_HANDLER,
+				HTTPServ.PHOTO_GIRL, handler, true, Constract.GET_HANDLER,
 				propety));
 	}
 

@@ -9,7 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.View.OnClickListener;
 
 import com.androidquery.AQuery;
-import com.darly.activities.common.Literal;
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.poll.ThreadPoolManager;
@@ -41,10 +41,10 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 		@Override
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
-			case Literal.GET_HANDLER:
+			case Constract.GET_HANDLER:
 				refreshGet(msg.obj);
 				break;
-			case Literal.POST_HANDLER:
+			case Constract.POST_HANDLER:
 				refreshPost(msg.obj);
 				break;
 			default:

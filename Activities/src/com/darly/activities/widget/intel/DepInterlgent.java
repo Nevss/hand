@@ -14,8 +14,8 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.darly.activities.app.Constract;
 import com.darly.activities.common.IAPoisDataConfig;
-import com.darly.activities.common.Literal;
 import com.darly.activities.ui.R;
 
 /**
@@ -187,7 +187,7 @@ public class DepInterlgent extends SurfaceView implements
 				canvas.save();
 				if (backGroud != null) {
 					Bitmap back = InterlgentUtil.zoomImage(backGroud,
-							Literal.width * rate, Literal.width
+							Constract.width * rate, Constract.width
 									* IAPoisDataConfig.babaibanh * rate
 									/ IAPoisDataConfig.babaibanw);
 					canvas.drawBitmap(back, 0, 0, null);
