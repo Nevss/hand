@@ -16,21 +16,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.location.LocationClientOption.LocationMode;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.umeng.analytics.MobclickAgent;
@@ -52,7 +44,6 @@ import com.ytdinfo.keephealth.zhangyuhui.common.IAFindOrganization;
 import com.ytdinfo.keephealth.zhangyuhui.common.IALiteral;
 import com.ytdinfo.keephealth.zhangyuhui.common.PreferencesJsonCach;
 import com.ytdinfo.keephealth.zhangyuhui.model.IABundleOrganiza;
-import com.ytdinfo.keephealth.zhangyuhui.model.IAOrganization;
 import com.ytdinfo.keephealth.zhangyuhui.model.IAOrganizationHttp;
 import com.ytdinfo.keephealth.zhangyuhui.model.IARoomNameHttp;
 import com.ytdinfo.keephealth.zhangyuhui.model.OrgBase;
@@ -68,10 +59,6 @@ import com.ytdinfo.keephealth.zhangyuhui.view.ichnography.IAXuhuiDistrict;
  */
 public class IAintelligentguidance extends BaseActivity {
 
-	private String useID;
-
-	public LocationClient mLocationClient = null;
-	public BDLocationListener myListener = new MyLocationListener();
 	// 线程池
 	protected ThreadPoolManager manager;
 	protected static final int THREADCOUNT = 5;
@@ -210,12 +197,6 @@ public class IAintelligentguidance extends BaseActivity {
 			IALiteral.height = dm.heightPixels;
 			IALiteral.density = dm.density;
 		}
-		// -------------------------------------------定位获取本地平面图机构-----------------------------------------
-		mLocationClient = new LocationClient(getApplicationContext()); // 声明LocationClient类
-		mLocationClient.registerLocationListener(myListener); // 注册监听函数
-		// 初始化定位系统。
-		initLocation();
-		// -------------------------------------------定位获取本地平面图机构-----------------------------------------
 		setContentView(R.layout.activity_intelligentguidance);
 		loading = new MyProgressDialog(this);
 		loading.setMessage("加载中");
@@ -423,38 +404,41 @@ public class IAintelligentguidance extends BaseActivity {
 						loading.dismiss();
 					}
 					name.setText(orginfo.name);
-					String json = PreferencesJsonCach.getInfo(orginfo.id+"", IAintelligentguidance.this);
-					if (json!=null) {
-						roomOrgpari = new Gson().fromJson(json, IARoomNameHttp.class);
+					String json = PreferencesJsonCach.getInfo(orginfo.id + "",
+							IAintelligentguidance.this);
+					if (json != null) {
+						roomOrgpari = new Gson().fromJson(json,
+								IARoomNameHttp.class);
 					}
 					getOrgAndPoint();
-//					// 以ImageView为背景。进行全部适配，顶部的背景图片。覆盖到色彩之上。
-//					LayoutParams lp = new LayoutParams(IALiteral.width,
-//							IALiteral.width * IAPoisDataConfig.babaibanh
-//									/ IAPoisDataConfig.babaibanw);
-//					ImageView bake = new ImageView(IAintelligentguidance.this);
-//					bake.setLayoutParams(lp);
-//					bake.setBackgroundColor(getResources().getColor(
-//							R.color.do_not_check));
-//					IALiteral.bitmapwidth = IALiteral.width;
-//					IALiteral.bitmapheight = IALiteral.width
-//							* IAPoisDataConfig.babaibanh
-//							/ IAPoisDataConfig.babaibanw;
-//					switch (orginfo.id) {
-//					case 31:
-//						bake.setImageResource(R.drawable.babaiban);
-//						break;
-//					case 12:
-//						bake.setImageResource(R.drawable.jingan);
-//						break;
-//					case 24:
-//						bake.setImageResource(R.drawable.xuhui);
-//						break;
-//					default:
-//						break;
-//					}
-//					relative_fir.removeAllViews();
-//					relative_fir.addView(bake);
+					// // 以ImageView为背景。进行全部适配，顶部的背景图片。覆盖到色彩之上。
+					// LayoutParams lp = new LayoutParams(IALiteral.width,
+					// IALiteral.width * IAPoisDataConfig.babaibanh
+					// / IAPoisDataConfig.babaibanw);
+					// ImageView bake = new
+					// ImageView(IAintelligentguidance.this);
+					// bake.setLayoutParams(lp);
+					// bake.setBackgroundColor(getResources().getColor(
+					// R.color.do_not_check));
+					// IALiteral.bitmapwidth = IALiteral.width;
+					// IALiteral.bitmapheight = IALiteral.width
+					// * IAPoisDataConfig.babaibanh
+					// / IAPoisDataConfig.babaibanw;
+					// switch (orginfo.id) {
+					// case 31:
+					// bake.setImageResource(R.drawable.babaiban);
+					// break;
+					// case 12:
+					// bake.setImageResource(R.drawable.jingan);
+					// break;
+					// case 24:
+					// bake.setImageResource(R.drawable.xuhui);
+					// break;
+					// default:
+					// break;
+					// }
+					// relative_fir.removeAllViews();
+					// relative_fir.addView(bake);
 				} else {
 
 					if (loading != null) {
@@ -491,78 +475,6 @@ public class IAintelligentguidance extends BaseActivity {
 		//
 		// }
 		// });
-	}
-
-	// 初始化定位功能模块。
-	private void initLocation() {
-		LocationClientOption option = new LocationClientOption();
-		option.setLocationMode(LocationMode.Hight_Accuracy);// 可选，默认高精度，设置定位模式，高精度，低功耗，仅设备
-		option.setCoorType("bd09ll");// 可选，默认gcj02，设置返回的定位结果坐标系
-		int span = 1000;// 1秒钟定位一次。当然可以进行变更。但要大于1秒钟。
-		option.setScanSpan(span);// 可选，默认0，即仅定位一次，设置发起定位请求的间隔需要大于等于1000ms才是有效的
-		option.setIsNeedAddress(true);// 可选，设置是否需要地址信息，默认不需要
-		option.setOpenGps(true);// 可选，默认false,设置是否使用gps
-		option.setLocationNotify(true);// 可选，默认false，设置是否当gps有效时按照1S1次频率输出GPS结果
-		option.setIsNeedLocationDescribe(true);// 可选，默认false，设置是否需要位置语义化结果，可以在BDLocation.getLocationDescribe里得到，结果类似于“在北京天安门附近”
-		option.setIsNeedLocationPoiList(true);// 可选，默认false，设置是否需要POI结果，可以在BDLocation.getPoiList里得到
-		option.setIgnoreKillProcess(false);// 可选，默认false，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认杀死
-		option.SetIgnoreCacheException(false);// 可选，默认false，设置是否收集CRASH信息，默认收集
-		option.setEnableSimulateGps(false);// 可选，默认false，设置是否需要过滤gps仿真结果，默认需要
-		mLocationClient.setLocOption(option);
-	}
-
-	// 定位完成后的功能选项。
-	class MyLocationListener implements BDLocationListener {
-
-		// 输出定位到的位置信息。
-		@Override
-		public void onReceiveLocation(BDLocation location) {
-			// Receive Location
-			if (location.getLocType() == BDLocation.TypeGpsLocation) {// GPS定位结果
-				changeText(location);
-			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {// 网络定位结果
-				changeText(location);
-			} else if (location.getLocType() == BDLocation.TypeOffLineLocation) {// 离线定位结果
-				// 离线定位结果没有地址信息。
-				changeText(location);
-			} else if (location.getLocType() == BDLocation.TypeServerError) {
-				Toast.makeText(IAintelligentguidance.this, "定位失败，请检查网络是否通畅",
-						KEPPER).show();
-				// sb.append("服务端网络定位失败，可以反馈IMEI号和大体定位时间到loc-bugs@baidu.com，会有人追查原因");
-			} else if (location.getLocType() == BDLocation.TypeNetWorkException) {
-				Toast.makeText(IAintelligentguidance.this, "定位失败，请检查网络是否通畅",
-						KEPPER).show();
-				// sb.append("网络不同导致定位失败，请检查网络是否通畅");
-			} else if (location.getLocType() == BDLocation.TypeCriteriaException) {
-				Toast.makeText(IAintelligentguidance.this, "定位失败，请检查网络是否通畅",
-						KEPPER).show();
-				// sb.append("无法获取有效定位依据导致定位失败，一般是由于手机的原因，处于飞行模式下一般会造成这种结果，可以试着重启手机");
-			}
-			mLocationClient.stop();// 无论是否定位成功。都需要取消定位功能模块。定位失败给用户提示。用户可以手动选取机构。
-		}
-
-		/**
-		 * 定位成功线路------------------------1
-		 * 
-		 * @param location
-		 */
-		private void changeText(BDLocation location) {
-
-			// Log.i("定位成功", location.getAddrStr());
-			// 第一：：：：：：：：：：：：：定位成功后獲取最近的机构信息。包括返回的机构ID（发送给服务器当前坐标。服务器返回机构。//还有用户信息。）
-			ArrayList<BasicNameValuePair> params = new ArrayList<BasicNameValuePair>();
-			params.add(new BasicNameValuePair("est", location.getLatitude()
-					+ ""));
-			params.add(new BasicNameValuePair("wst", location.getLongitude()
-					+ ""));
-			params.add(new BasicNameValuePair("use", useID));
-			manager.addAsyncTask(new HttpTasker(IAintelligentguidance.this,
-					params, Constants.IAINTELGETDATA,
-					new TypeToken<IAOrganization>() {
-					}, handler, true, 101, false));
-
-		}
-
 	}
 
 	private void getOrgAndPoint() {
@@ -640,7 +552,7 @@ public class IAintelligentguidance extends BaseActivity {
 				break;
 			case 24:
 				// 获取对应机构的点阵
-				switch (orginfo.floor[i])  {
+				switch (orginfo.floor[i]) {
 				case 1:
 					IALiteral.roomName = roomOrgpari.model;
 					IALiteral.maps = IAPoisDataConfig.getData(

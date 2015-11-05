@@ -104,8 +104,7 @@
         </activity>
         <activity
             android:name="com.ytdinfo.keephealth.ui.login.LoginActivity"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.ytdinfo.keephealth.ui.register.RegisterActivity"
             android:label="@string/title_activity_register"
@@ -190,7 +189,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
         </activity>
-         <activity
+        <activity
             android:name="com.ytdinfo.keephealth.zhangyuhui.IARecoverAcitvity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
@@ -300,15 +299,15 @@
         </receiver>
 
         <!-- 智能导检 -->
-        <meta-data
-            android:name="com.baidu.lbsapi.API_KEY"
-            android:value="Csv7AEMS5VrxjobebT7FSD7t" />
+        <!-- <meta-data -->
+        <!-- android:name="com.baidu.lbsapi.API_KEY" -->
+        <!-- android:value="Csv7AEMS5VrxjobebT7FSD7t" /> -->
         <!-- //key:开发者申请的key -->
-        <service
-            android:name="com.baidu.location.f"
-            android:enabled="true"
-            android:process=":remote" >
-        </service>
+        <!-- <service -->
+        <!-- android:name="com.baidu.location.f" -->
+        <!-- android:enabled="true" -->
+        <!-- android:process=":remote" > -->
+        <!-- </service> -->
         <!-- 智能导检 -->
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data
@@ -392,13 +391,16 @@
 
 
 
+
           　
+        
         
         
         
         <service android:name="com.ytdinfo.keephealth.service.TimerService" >
             <intent-filter>
                 <action android:name="com.ytdinfo.keeph" />
+
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </service>
@@ -408,9 +410,7 @@
             android:label="@string/title_activity_add_pictures"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.ytdinfo.keephealth.ui.ChatPhotoViewerActivity"
-            >
+        <activity android:name="com.ytdinfo.keephealth.ui.ChatPhotoViewerActivity" >
         </activity>
         <activity
             android:name="com.ytdinfo.keephealth.ui.GuideActivity"
@@ -428,11 +428,15 @@
             android:label="@string/title_activity_modify_pass"
             android:screenOrientation="portrait" >
         </activity>
-        
+
         <!-- 友盟统计 -->
-        <meta-data android:value="55cde86c67e58ebcfe002b38" android:name="UMENG_APPKEY"></meta-data>
-		<meta-data android:value="Default" android:name="UMENG_CHANNEL"/>
-		
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="55cde86c67e58ebcfe002b38" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Default" />
     </application>
 
 </manifest>

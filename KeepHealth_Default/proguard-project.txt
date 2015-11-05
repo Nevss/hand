@@ -18,3 +18,167 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-optimizationpasses 5
+-dontusemixedcaseclassnames
+-dontskipnonpubliclibraryclasses
+-dontpreverify
+-verbose
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*
+
+#声明所有jar包
+-libraryjars libs/armeabi/libbitherjni.so
+-libraryjars libs/armeabi/libjpegbither.so
+-libraryjars libs/armeabi/libjpush180.so
+-libraryjars libs/armeabi/libserphone.so
+
+-libraryjars libs/armeabi-v7a/libbitherjni.so
+-libraryjars libs/armeabi-v7a/libjpegbither.so
+-libraryjars libs/armeabi-v7a/libjpush180.so
+-libraryjars libs/armeabi-v7a/libserphone.so
+
+-libraryjars libs/android-support-v4.jar
+-libraryjars libs/CCP_SDK_Android_3.6.4r.jar
+-libraryjars libs/commons-codec-1.6.jar
+-libraryjars libs/gson-1.7.1.jar
+-libraryjars libs/jpush-sdk-release1.8.0.jar
+-libraryjars libs/library.jar
+-libraryjars libs/nineoldandroids-2.4.0.jar
+-libraryjars libs/umeng-analytics-v5.5.3.jar
+-libraryjars libs/universal-image-loader-1.9.3.jar
+-libraryjars libs/xUtils-2.6.14.jar
+
+
+#将不需要混淆的部分申明进来，因为有些类经过混淆会导致程序编译不通过，
+-keep public class * extends android.app.Fragment 
+-keep public class * extends android.app.Activity
+-keep public class * extends android.app.Application
+-keep public class * extends android.app.Service
+-keep public class * extends android.content.BroadcastReceiver
+-keep public class * extends android.content.ContentProvider
+-keep public class * extends android.app.backup.BackupAgentHelper
+-keep public class * extends android.preference.Preference
+-keep public class * extends android.support.v4.**
+-keep public class com.android.vending.licensing.ILicensingService
+
+#不混淆gson的jar包
+-keep class sun.misc.Unsafe { *; }
+-keep class com.google.gson.stream.** { *; }
+-keep class com.google.gson.examples.android.model.** { *; }
+-keep class com.google.gson.** { *;}
+
+#不混淆Actionbarsherlock
+-dontwarn com.actionbarsherlock.**
+-keep class com.actionbarsherlock.** { *; }
+
+#不混淆SlidingMenu
+-dontwarn com.slidingmenu.lib.**
+-keep class com.slidingmenu.lib.** { *; }
+
+#如要用到反射，反射一般就会利用到泛型，
+#所以必须要把泛型的全部过滤掉
+-keepattributes *Annotation*
+-keepattributes Signature
+ 
+
+#不混淆dalvik.system.VMRuntime
+-dontwarn dalvik.system.VMRuntime
+-keep class dalvik.system.VMRuntime
+ 
+
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers class * extends android.app.Activity {
+   public void *(android.view.View);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+#友盟不需要混淆的文件
+-dontwarn android.support.v4.** 
+-dontwarn org.apache.commons.net.**
+-dontwarn com.tencent.** 
+
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet);
+}
+
+-keepclasseswithmembernames class * {
+    public <init>(android.content.Context, android.util.AttributeSet, int);
+}
+
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+-keep class * implements android.os.Parcelable {
+  public static final android.os.Parcelable$Creator *;
+}
+
+-keepclasseswithmembers class * {
+    public <init>(android.content.Context);
+}
+
+-dontshrink
+-dontoptimize
+-dontwarn com.google.android.maps.**
+-dontwarn android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
+
+-keep enum com.facebook.**
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+
+-keep public class com.umeng.socialize.* {*;}
+-keep public class javax.**
+-keep public class android.webkit.**
+
+-keep class com.facebook.**
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+
+-keep class com.tencent.mm.sdk.openapi.WXMediaMessage {*;}
+
+-keep class com.tencent.mm.sdk.openapi.** implements com.tencent.mm.sdk.openapi.WXMediaMessage$IMediaObject {*;}
+
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+
+-keep public class [your_pkg].R$*{
+    public static final int *;
+}
+
+
+
