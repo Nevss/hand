@@ -79,21 +79,12 @@
 -keepattributes *Annotation*
 -keepattributes Signature
  
-
-#不混淆dalvik.system.VMRuntime
--dontwarn dalvik.system.VMRuntime
--keep class dalvik.system.VMRuntime
- 
-
-
 -keepclasseswithmembernames class * {
     native <methods>;
 }
-
 -keepclasseswithmembers class * {
     public <init>(android.content.Context, android.util.AttributeSet);
 }
-
 -keepclasseswithmembers class * {
     public <init>(android.content.Context, android.util.AttributeSet, int);
 }
@@ -176,9 +167,6 @@
 -keep class im.yixin.sdk.api.YXMessage {*;}
 -keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
 
--keep public class [your_pkg].R$*{
-    public static final int *;
-}
 
 
 

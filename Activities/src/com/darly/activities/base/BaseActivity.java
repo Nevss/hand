@@ -12,7 +12,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.androidquery.AQuery;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
@@ -35,7 +34,6 @@ import com.umeng.analytics.MobclickAgent;
  */
 public abstract class BaseActivity extends FragmentActivity implements
 		OnClickListener {
-	protected AQuery aq;
 	protected List<View> pageviews;
 
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
@@ -64,7 +62,6 @@ public abstract class BaseActivity extends FragmentActivity implements
 
 		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO,
 				Thread.MAX_PRIORITY);
-		aq = new AQuery(this);
 		// 设置参数，加载每个图片的详细参数和是否存储、缓存的问题。
 		options = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.ic_launcher)

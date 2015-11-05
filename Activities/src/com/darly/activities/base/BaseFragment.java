@@ -8,7 +8,6 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.View.OnClickListener;
 
-import com.androidquery.AQuery;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
@@ -29,7 +28,6 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	protected DisplayImageOptions options;
 	protected DisplayImageOptions option_big;
-	protected AQuery aq;
 	/**
 	 * TODO线程管理
 	 */
@@ -64,7 +62,6 @@ public abstract class BaseFragment extends Fragment implements OnClickListener {
 		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO,
 				Thread.MAX_PRIORITY);
 		// 设置ImageLoader初始化参数。设置线程，设置保存文件名等。
-		aq = new AQuery(getActivity());
 		// 设置参数，加载每个图片的详细参数和是否存储、缓存的问题。
 		options = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.ic_launcher)
