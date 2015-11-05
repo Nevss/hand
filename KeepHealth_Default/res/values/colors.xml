@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 标题背景色_浅绿 -->
+    <color name="main_green">#ff66cd99</color> 
+    <!-- 标题背景色_深绿 -->
+    <color name="main_h_green">#ff32a06A</color>       
+    <!-- 标题背景色 -->
+    <color name="title_bg">#ff71c0bc</color>
+    <!-- 浅绿色 -->
+    <color name="light_green">#ffcde2bb</color>
+    <!-- 蓝色 -->
+    <color name="light_blue">#ff3ab7f1</color>
+    <!-- 红色背景色 -->
+    <color name="light_red">#fff75950</color>
+    <!-- 页面 白色背景 -->
+    <color name="bgwhite">#FFf8f8f8</color>
+    <!-- 页面 灰色背景 -->
+    <color name="bggray">#FFEBEBEB</color>
+    <!-- 下划线 颜色 -->
+    <color name="divider">#FFd4d4d4</color>
+    <!-- 下方RadioButton字体的颜色 -->
+    <color name="w_RadioButton">#FF66cc9a</color>
+    <!-- 字体浅白色 -->
+    <color name="w_l_white">#77FFFFFF</color>
+    <!-- 字体纯白色 -->
+    <color name="w_white">#FFffffff</color>
+    <!-- 字体绿色 -->
+    <color name="w_green">#FF009a42</color>
+    <!-- 字体浅绿色 -->
+    <color name="w_l_green">#FF00abb0</color>
+    <!-- 字体灰色 -->
+    <color name="w_gray">#FF666666</color>
+    <!-- 字体浅灰色 -->
+    <color name="w_l_gray">#FFa4a4a4</color>
+    <color name="transparent_background">#50000000</color>
+    <!-- 二维码 -->
+    <color name="possible_result_points">#c0ffbd21</color>
+    <!-- Android standard ICS color -->
+    <color name="result_text">#ff000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <!-- Android standard ICS color -->
+    <color name="viewfinder_mask">#666666</color>
+    <color name="viewfinder_frame">#ff4EEE94</color>
+    <!-- #ff0000ff -->
+    <color name="backgroud">#ffffffff</color>
+    <color name="title_tv_color">#ffffffff</color>
+    <color name="edit_save_btn_color_disable">#ffa8c6ed</color>
+    <color name="edit_save_btn_color_click">#ffffffff</color>
+    <color name="gray">#ff9a9b9c</color>
+    <color name="red_btn_color_normal">#ffff5454</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="darkRed">#AA2222</color>
+    <color name="darkGrey">#848284</color>
+    <color name="blue">#0000FF</color>
+    <color name="black">#FF000000</color>
+    <color name="flash">#D3EBF7</color>
+    <color name="half_transparent">#66000000</color>
+    <color name="white_half_transparent">#66ffffff</color>
+    <!-- 淡色 -->
+    <color name="lightBlue">#00A8FF</color>
+    <color name="lightRed">#FB6D6D</color>
+    <color name="lightYellow">#F9FB6B</color>
+    <color name="lightGreen">#00CD66</color>
+    <color name="lightPurple">#9370DB</color>
+    <color name="lightOrange">#FBB844</color>
+    <color name="lightGrey">#CBCED0</color>
+    <color name="query_free">#708FF6</color>
+    <color name="darkGray">#969395</color>
+    <color name="query_free_sms_title">#277fbd</color>
+    <color name="transparent">#00ffffff</color>
+    <color name="transparent2">#00000000</color>
+    <color name="voip_interface_text_color">#bababa</color>
+
+    <drawable name="group_chat_bg_normal">#f4f4f4</drawable>
+    <drawable name="group_chat_bg_pressed">#9ed031</drawable>
+
+    <color name="pop_window_pressed_back">#ff277fbd</color>
+    <color name="header_btn_backgroud_press_color">#ff053e58</color>
+    <color name="lightgrey">#ff888888</color>
+
+    <drawable name="video_notify_original_state">#55BC75</drawable>
+    <drawable name="video_notify_new_state">#222222</drawable>
+
+    <color name="ccp_alert_bg">#3F474A</color>
+    <color name="ccp_translucent_half">#b0000000</color>
+    <color name="ccp_video_transparent">#f0000000</color>
+
+    <!-- version 3.6 -->
+    <!-- developer mode launcher normal color -->
+    <color name="ccp_developer_normal">#B6D556</color>
+    <!-- developer mode launcher pressed color -->
+    <color name="ccp_developer_pressed">#88A040</color>
+    <!-- experience mode launcher normal color -->
+    <color name="ccp_experience_normal">#55BC75</color>
+    <!-- experience mode launcher normal color -->
+    <color name="ccp_experience_pressed">#408D58</color>
+    <color name="ccp_attentoin_color">#CCCCCC</color>
+
+    <!-- Intelligent Guidance colors start -->
+    <color name="has_been_checked">#909090</color>
+    <color name="has_not_checked">#c9ce2c</color>
+    <color name="next_check">#ed8e7c</color>
+    <color name="do_not_check">#909090</color>
+    <color name="checked_other_room">#909090</color>
+    <color name="back_line">#ebebeb</color>
+    <color name="dialog_back">#88000000</color>
+    <color name="guide_declare">#008aff</color>
+    <color name="guide_bottom">#f5f5f7</color>
+    <color name="guide_show_back">#9cd7d5</color>
+    <!-- Intelligent Guidance colors end -->
+
+    <color name="none_color">#00000000</color>
+    <color name="albumback">#E1E0DE</color>
+    <color name="plugin_camera_black">#000000</color>
+</resources>
