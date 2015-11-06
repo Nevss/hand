@@ -116,14 +116,6 @@
 -keep class com.umeng.common.** { *; }  
 -keep class com.umeng.newxp.** { *; }  
 
--keep class com.gotye.api.**  {*;}
--keep class com.squareup.picasso.**{*;}
--keep class android.support.v4.**  {*;}
--keep class org.apache.commons.net.** {*;}
--keep class com.tencent.** {*;}
--keep class com.iflytek.cloud.**{*;}
--keep class com.unity3d.player.**{*;}
--keep class com.squareup.okhttp.**{*;}
 
 -keepclasseswithmembernames class * {
     native <methods>;
