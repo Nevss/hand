@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.LogFileHelper;

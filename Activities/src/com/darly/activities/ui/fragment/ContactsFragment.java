@@ -32,11 +32,11 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.ContactsAdapter;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.ChatPage;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.qinjia.SearchPage;
 import com.darly.activities.ui.qinjia.SideBar;
 import com.darly.activities.ui.qinjia.SideBar.OnTouchingLetterChangedListener;

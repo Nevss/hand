@@ -43,6 +43,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;

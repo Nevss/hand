@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 
 public class BaseSpinner extends RelativeLayout {
 

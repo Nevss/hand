@@ -36,9 +36,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.LogFileHelper;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.qrcode.camera.CameraManager;
 import com.darly.activities.ui.qrcode.decoding.CaptureActivityHandler;
 import com.darly.activities.ui.qrcode.decoding.InactivityTimer;

@@ -2,80 +2,74 @@
 # view res/layout/fragment_main.xml #generated:15
 -keep class android.support.v4.view.ViewPager { <init>(...); }
 
-# view AndroidManifest.xml #generated:58
+# view AndroidManifest.xml #generated:60
 -keep class com.darly.activities.app.App { <init>(...); }
 
-# view AndroidManifest.xml #generated:170
+# view AndroidManifest.xml #generated:98
 -keep class com.darly.activities.ui.ChatPage { <init>(...); }
 
-# view AndroidManifest.xml #generated:85
+# view AndroidManifest.xml #generated:72
 -keep class com.darly.activities.ui.DisplayActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:75
+# view AndroidManifest.xml #generated:68
 -keep class com.darly.activities.ui.IndexShowViewActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:90
+# view AndroidManifest.xml #generated:74
 -keep class com.darly.activities.ui.IndexZoomViewActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:80
+# view AndroidManifest.xml #generated:70
 -keep class com.darly.activities.ui.InterlActivityVtoo { <init>(...); }
 
-# view AndroidManifest.xml #generated:64
--keep class com.darly.activities.ui.MainActivity { <init>(...); }
-
-# view AndroidManifest.xml #generated:108
+# view AndroidManifest.xml #generated:80
 -keep class com.darly.activities.ui.RotateAcitvity { <init>(...); }
 
-# view AndroidManifest.xml #generated:119
+# view AndroidManifest.xml #generated:84
 -keep class com.darly.activities.ui.WebViewActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:96
+# view AndroidManifest.xml #generated:76
 -keep class com.darly.activities.ui.fragment.me.MeDetailsAcitvity { <init>(...); }
 
-# view AndroidManifest.xml #generated:205
+# view AndroidManifest.xml #generated:108
 -keep class com.darly.activities.ui.fragment.set.FieldsBackActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:198
+# view AndroidManifest.xml #generated:106
 -keep class com.darly.activities.ui.fragment.set.MeSecActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:114
+# view AndroidManifest.xml #generated:82
 -keep class com.darly.activities.ui.login.LoginAcitvity { <init>(...); }
 
-# view AndroidManifest.xml #generated:222
+# view AndroidManifest.xml #generated:61
+-keep class com.darly.activities.ui.oo.OrientedAcitvity { <init>(...); }
+
+# view AndroidManifest.xml #generated:120
 -keep class com.darly.activities.ui.qinjia.GotyeService { <init>(...); }
 
 # view res/layout/gotye_activity_chat.xml #generated:89
 -keep class com.darly.activities.ui.qinjia.RTPullListView { <init>(...); }
 
-# view AndroidManifest.xml #generated:184
+# view AndroidManifest.xml #generated:102
 -keep class com.darly.activities.ui.qinjia.SearchPage { <init>(...); }
 
-# view AndroidManifest.xml #generated:177
+# view AndroidManifest.xml #generated:100
 -keep class com.darly.activities.ui.qinjia.ShowBigImage { <init>(...); }
 
 # view res/layout/layout_contacts.xml #generated:105
 -keep class com.darly.activities.ui.qinjia.SideBar { <init>(...); }
 
-# view AndroidManifest.xml #generated:213
+# view AndroidManifest.xml #generated:111
 -keep class com.darly.activities.ui.qinjia.StartServiceReceiver { <init>(...); }
 
-# view AndroidManifest.xml #generated:191
+# view AndroidManifest.xml #generated:104
 -keep class com.darly.activities.ui.qinjia.UserInfoPage { <init>(...); }
 
 # view res/layout/activity_show_big_image.xml #generated:8
 -keep class com.darly.activities.ui.qinjia.photoview.PhotoView { <init>(...); }
 
-# view AndroidManifest.xml #generated:102
+# view AndroidManifest.xml #generated:78
 -keep class com.darly.activities.ui.qrcode.MipcaActivityCapture { <init>(...); }
 
 # view res/layout/activity_capture.xml #generated:16
 -keep class com.darly.activities.ui.qrcode.view.ViewfinderView { <init>(...); }
-
-# view AndroidManifest.xml #generated:150
--keep class com.darly.activities.ui.wxapi.WXEntryActivity { <init>(...); }
-
-# view AndroidManifest.xml #generated:140
--keep class com.darly.activities.ui.yxapi.YXEntryActivity { <init>(...); }
 
 # view res/layout/login_clear_edit.xml #generated:15
 -keep class com.darly.activities.widget.clearedit.ClearEditText { <init>(...); }
@@ -117,22 +111,34 @@
 # view res/layout/main_fragment_chat.xml #generated:9
 -keep class com.darly.activities.widget.xlistview.XListView { <init>(...); }
 
-# view AndroidManifest.xml #generated:146
+# view AndroidManifest.xml #generated:94
+-keep class com.darly.activities.wxapi.WXEntryActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:92
+-keep class com.darly.activities.yxapi.YXEntryActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:93
 -keep class com.facebook.LoginActivity { <init>(...); }
 
 # view res/layout/umeng_socialize_comment_detail.xml #generated:23
 -keep class com.google.android.maps.MapView { <init>(...); }
 
-# view AndroidManifest.xml #generated:156
+# view AndroidManifest.xml #generated:133
+-keep class com.tencent.connect.common.AssistActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:123
+-keep class com.tencent.tauth.AuthActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:95
 -keep class com.umeng.socialize.view.CommentActivity { <init>(...); }
 
-# view AndroidManifest.xml #generated:160
+# view AndroidManifest.xml #generated:96
 -keep class com.umeng.socialize.view.CommentDetail { <init>(...); }
 
-# view AndroidManifest.xml #generated:165
+# view AndroidManifest.xml #generated:97
 -keep class com.umeng.socialize.view.CommentDetailNoMap { <init>(...); }
 
-# view AndroidManifest.xml #generated:133
+# view AndroidManifest.xml #generated:91
 -keep class com.umeng.socialize.view.ShareActivity { <init>(...); }
 
 # view res/layout/umeng_socialize_ucenter_platform_item.xml #generated:31

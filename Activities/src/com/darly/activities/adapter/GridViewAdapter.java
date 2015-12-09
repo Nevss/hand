@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.model.GridViewData;
-import com.darly.activities.ui.R;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

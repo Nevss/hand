@@ -52,4 +52,7 @@ public class Constract {
 	public static ArrayList<UserInformation> users;
 
 	public static String QJAppKey = "71f48a13-4a2f-4e7e-b4b0-7b1bd961793b";
+
+	public static final String DESCRIPTOR = "com.umeng.share";
+
 }

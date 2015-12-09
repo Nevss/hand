@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
+import com.darly.activities.R;
 import com.darly.activities.app.App;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;

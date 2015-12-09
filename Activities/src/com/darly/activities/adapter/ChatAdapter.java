@@ -8,19 +8,19 @@ package com.darly.activities.adapter;
 
 import java.util.List;
 
-import com.darly.activities.app.Constract;
-import com.darly.activities.model.GirlBase;
-import com.darly.activities.ui.R;
-import com.darly.activities.widget.roundedimage.RoundedImageView;
-import com.nostra13.universalimageloader.core.DisplayImageOptions;
-import com.nostra13.universalimageloader.core.ImageLoader;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+
+import com.darly.activities.R;
+import com.darly.activities.app.Constract;
+import com.darly.activities.model.GirlBase;
+import com.darly.activities.widget.roundedimage.RoundedImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author Zhangyuhui ChatAdapter 下午3:57:43 TODO

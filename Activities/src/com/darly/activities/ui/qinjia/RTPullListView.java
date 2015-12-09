@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.AbsListView;
@@ -19,7 +20,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 
 @SuppressLint("InflateParams")
 public class RTPullListView extends ListView implements OnScrollListener {
@@ -99,15 +100,15 @@ public class RTPullListView extends ListView implements OnScrollListener {
 		setOnScrollListener(this);
 
 		animation = new RotateAnimation(0, -180,
-				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+				Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
 		animation.setInterpolator(new LinearInterpolator());
 		animation.setDuration(250);
 		animation.setFillAfter(true);
 
 		reverseAnimation = new RotateAnimation(-180, 0,
-				RotateAnimation.RELATIVE_TO_SELF, 0.5f,
-				RotateAnimation.RELATIVE_TO_SELF, 0.5f);
+				Animation.RELATIVE_TO_SELF, 0.5f,
+				Animation.RELATIVE_TO_SELF, 0.5f);
 		reverseAnimation.setInterpolator(new LinearInterpolator());
 		reverseAnimation.setDuration(200);
 		reverseAnimation.setFillAfter(true);
@@ -117,6 +118,7 @@ public class RTPullListView extends ListView implements OnScrollListener {
 		isPush = true;
 	}
 
+	@Override
 	public void onScroll(AbsListView arg0, int firstVisiableItem, int arg2,
 			int arg3) {
 		firstItemIndex = firstVisiableItem;
@@ -131,6 +133,7 @@ public class RTPullListView extends ListView implements OnScrollListener {
 		this.setSelection(visibleLastIndex - visibleItemCount + 1);
 	}
 
+	@Override
 	public void onScrollStateChanged(AbsListView arg0, int arg1) {
 
 	}

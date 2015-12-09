@@ -37,6 +37,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.SetFragmentAdapter;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
@@ -50,7 +51,6 @@ import com.darly.activities.poll.HttpClient;
 import com.darly.activities.poll.HttpTaskerForString;
 import com.darly.activities.ui.InterlActivityVtoo;
 import com.darly.activities.ui.MainActivity;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.set.FieldsBackActivity;
 import com.darly.activities.ui.fragment.set.FieldsBackListener;
 import com.darly.activities.ui.login.LoginAcitvity;

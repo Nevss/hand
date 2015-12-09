@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.XAdapter;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
@@ -32,7 +33,6 @@ import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.HomtFragmentBase;
 import com.darly.activities.model.HomtFragmentModel;
 import com.darly.activities.ui.IndexShowViewActivity;
-import com.darly.activities.ui.R;
 import com.darly.activities.widget.carousel.Carousel;
 import com.darly.activities.widget.carousel.ImageHandler;
 import com.darly.activities.widget.xlistview.XListView;

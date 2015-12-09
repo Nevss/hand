@@ -22,7 +22,7 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 
 /**
  * @author zhangyuhui

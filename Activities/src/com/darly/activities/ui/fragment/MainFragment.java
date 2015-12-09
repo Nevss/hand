@@ -24,9 +24,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.FragmentAdapter;
 import com.darly.activities.base.BaseFragment;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.main.CaiyicaiFragment;
 import com.darly.activities.ui.fragment.main.ChatFragment;
 import com.darly.activities.ui.fragment.main.FragListener;

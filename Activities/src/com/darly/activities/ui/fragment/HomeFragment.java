@@ -14,17 +14,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.ToastApp;
-import com.darly.activities.ui.R;
 import com.darly.activities.widget.carousel.Carousel;
 import com.darly.activities.widget.carousel.ImageHandler;
 import com.lidroid.xutils.ViewUtils;
@@ -126,7 +126,7 @@ public class HomeFragment extends BaseFragment {
 	public void initView() {
 		// TODO Auto-generated method stub
 		LayoutParams lp = new LayoutParams(Constract.width / 2,
-				LayoutParams.MATCH_PARENT);
+				android.view.ViewGroup.LayoutParams.MATCH_PARENT);
 		tjyy.setLayoutParams(lp);
 		zndj.setLayoutParams(lp);
 		bgcx.setLayoutParams(lp);

@@ -9,9 +9,9 @@ import android.os.IBinder;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.darly.activities.R;
 import com.darly.activities.app.App;
 import com.darly.activities.ui.MainActivity;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.qinjia.util.AppUtil;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeDelegate;

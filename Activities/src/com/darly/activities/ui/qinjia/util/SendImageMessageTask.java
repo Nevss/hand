@@ -5,9 +5,9 @@ import java.io.File;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 
+import com.darly.activities.R;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.ChatPage;
-import com.darly.activities.ui.R;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeChatTarget;
 import com.gotye.api.GotyeCustomerService;

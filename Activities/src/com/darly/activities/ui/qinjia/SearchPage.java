@@ -17,11 +17,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.SearchAdapter;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.MainActivity;
-import com.darly.activities.ui.R;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeDelegate;
 import com.gotye.api.GotyeGroup;

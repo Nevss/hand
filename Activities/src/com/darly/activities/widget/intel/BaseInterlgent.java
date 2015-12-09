@@ -14,10 +14,10 @@ import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.IAPoisDataConfig;
 import com.darly.activities.model.RoomInfor;
-import com.darly.activities.ui.R;
 
 /**
  * 2015年9月15日 BaseInterlgent.java com.darly.interlgent.widget

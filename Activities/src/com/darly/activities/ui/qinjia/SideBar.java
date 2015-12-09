@@ -1,7 +1,5 @@
 package com.darly.activities.ui.qinjia;
 
-import com.darly.activities.ui.R;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -11,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
+
+import com.darly.activities.R;
 
 
 public class SideBar extends View {
@@ -45,6 +45,7 @@ public class SideBar extends View {
 	/**
 	 * 重写这个方法
 	 */
+	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		// 获取焦点改变背景颜色.

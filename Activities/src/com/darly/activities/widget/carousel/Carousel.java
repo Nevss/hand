@@ -17,11 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.model.UserInformation;
 import com.darly.activities.ui.ChatPage;
-import com.darly.activities.ui.R;
 import com.google.gson.Gson;
 import com.gotye.api.GotyeAPI;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;

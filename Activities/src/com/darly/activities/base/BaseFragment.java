@@ -8,11 +8,11 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.view.View.OnClickListener;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.poll.ThreadPoolManager;
-import com.darly.activities.ui.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;

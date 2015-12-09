@@ -25,6 +25,7 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.CityAdapter;
 import com.darly.activities.adapter.LocalAdapter;
 import com.darly.activities.app.App;

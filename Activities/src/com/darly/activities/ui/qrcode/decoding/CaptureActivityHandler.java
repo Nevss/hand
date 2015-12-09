@@ -27,7 +27,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 import com.darly.activities.ui.qrcode.MipcaActivityCapture;
 import com.darly.activities.ui.qrcode.camera.CameraManager;
 import com.darly.activities.ui.qrcode.view.ViewfinderResultPointCallback;

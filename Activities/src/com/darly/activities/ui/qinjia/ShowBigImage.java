@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 import com.darly.activities.ui.qinjia.photoview.PhotoView;
 import com.darly.activities.ui.qinjia.util.FileUtil;
 /**

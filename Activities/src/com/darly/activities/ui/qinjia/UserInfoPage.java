@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.darly.activities.R;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.MainActivity;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.qinjia.util.BitmapUtil;
 import com.darly.activities.ui.qinjia.util.ImageCache;
 import com.darly.activities.widget.load.ProgressDialogUtil;

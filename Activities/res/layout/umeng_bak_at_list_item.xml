@@ -8,7 +8,6 @@
 
     <ImageView
         android:id="@+id/umeng_socialize_avatar_imv"
-        android:contentDescription="@string/app_name"
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_centerVertical="true"
@@ -23,7 +22,7 @@
         android:layout_marginLeft="12dp"
         android:layout_toRightOf="@id/umeng_socialize_avatar_imv"
         android:layout_centerVertical="true"
-        android:text="@string/label"
+        android:text="Label"
         android:textColor="#ffffff"
         android:textSize="18sp" />
 

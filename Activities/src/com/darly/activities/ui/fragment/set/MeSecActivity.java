@@ -10,9 +10,9 @@ package com.darly.activities.ui.fragment.set;
 import android.os.Bundle;
 import android.view.View;
 
+import com.darly.activities.R;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.LogFileHelper;
-import com.darly.activities.ui.R;
 import com.lidroid.xutils.view.annotation.ContentView;
 
 /**

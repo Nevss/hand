@@ -9,9 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.darly.activities.R;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.ChatPage;
-import com.darly.activities.ui.R;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeDelegate;
 import com.gotye.api.GotyeMessage;

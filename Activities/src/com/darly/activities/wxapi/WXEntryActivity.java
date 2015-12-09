@@ -1,4 +1,4 @@
-package com.darly.activities.ui.wxapi;
+package com.darly.activities.wxapi;
 
 import com.umeng.socialize.weixin.view.WXCallbackActivity;
 
