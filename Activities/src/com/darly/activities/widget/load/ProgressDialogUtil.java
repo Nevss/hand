@@ -9,7 +9,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 
 public class ProgressDialogUtil extends Dialog {
 	protected Context context;

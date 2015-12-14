@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.model.SetFragmentModel;
-import com.darly.activities.ui.R;
 
 /**
  * 2015年9月17日 SetFragmentAdapter.java com.darly.activities.adapter

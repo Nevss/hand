@@ -33,7 +33,7 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 import com.darly.activities.ui.qrcode.camera.CameraManager;
 import com.google.zxing.ResultPoint;
 

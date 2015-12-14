@@ -19,13 +19,13 @@ import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.app.App;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
-import com.darly.activities.ui.R;
 import com.darly.activities.widget.clearedit.LoginClearEdit;
 import com.darly.activities.widget.intel.RectRestoreSurfaceView;
 import com.lidroid.xutils.view.annotation.ContentView;

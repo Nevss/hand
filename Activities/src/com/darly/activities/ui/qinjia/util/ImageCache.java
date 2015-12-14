@@ -9,7 +9,7 @@ import android.support.v4.util.LruCache;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 import com.gotye.api.GotyeAPI;
 import com.gotye.api.GotyeGroup;
 import com.gotye.api.GotyeUser;

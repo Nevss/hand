@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 import com.darly.activities.ui.qinjia.util.ImageCache;
 import com.gotye.api.GotyeGroup;
 import com.gotye.api.GotyeUser;

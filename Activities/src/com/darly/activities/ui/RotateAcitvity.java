@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.base.BaseActivity;
 import com.darly.activities.common.LogFileHelper;
 import com.lidroid.xutils.view.annotation.ContentView;

@@ -2,10 +2,6 @@ package com.darly.activities.adapter;
 
 import java.util.ArrayList;
 
-import com.darly.activities.ui.R;
-import com.darly.activities.ui.qinjia.bean.GotyeUserProxy;
-import com.darly.activities.ui.qinjia.util.ImageCache;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,6 +10,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.darly.activities.R;
+import com.darly.activities.ui.qinjia.bean.GotyeUserProxy;
+import com.darly.activities.ui.qinjia.util.ImageCache;
 
 
 @SuppressLint("DefaultLocale")

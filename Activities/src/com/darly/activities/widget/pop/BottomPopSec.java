@@ -12,10 +12,10 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.BottomGridViewAdapter;
 import com.darly.activities.app.Constract;
 import com.darly.activities.model.BottomModel;
-import com.darly.activities.ui.R;
 
 public class BottomPopSec extends PopupWindow implements OnItemClickListener {
 

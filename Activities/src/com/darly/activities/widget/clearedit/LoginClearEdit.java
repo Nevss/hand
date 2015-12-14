@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 
 /**
  * @author Zhangyuhui LoginClearEdit 下午2:32:27 TODO

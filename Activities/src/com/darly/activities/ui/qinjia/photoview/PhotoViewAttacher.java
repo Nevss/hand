@@ -268,6 +268,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 		return mScaleType;
 	}
 
+	@Override
 	public final boolean onDoubleTap(MotionEvent ev) {
 		try {
 			float scale = getScale();
@@ -290,11 +291,13 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 		return true;
 	}
 
+	@Override
 	public final boolean onDoubleTapEvent(MotionEvent e) {
 		// Wait for the confirmed onDoubleTap() instead
 		return false;
 	}
 
+	@Override
 	public final void onDrag(float dx, float dy) {
 		if (DEBUG) {
 			Log.d(LOG_TAG, String.format("onDrag: dx: %.2f. dy: %.2f", dx, dy));
@@ -368,6 +371,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 		}
 	}
 
+	@Override
 	public final void onScale(float scaleFactor, float focusX, float focusY) {
 		if (DEBUG) {
 			Log.d(LOG_TAG, String.format("onScale: scale: %.2f. fX: %.2f. fY: %.2f", scaleFactor, focusX, focusY));
@@ -379,6 +383,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 		}
 	}
 
+	@Override
 	public final boolean onSingleTapConfirmed(MotionEvent e) {
 		ImageView imageView = getImageView();
 
@@ -852,6 +857,7 @@ public class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, Vers
 			}
 		}
 
+		@Override
 		public void run() {
 			ImageView imageView = getImageView();
 

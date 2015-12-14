@@ -10,8 +10,8 @@ import android.media.MediaPlayer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
 
+import com.darly.activities.R;
 import com.darly.activities.common.LogFileHelper;
-import com.darly.activities.ui.R;
 
 public final class BeepManager {
 

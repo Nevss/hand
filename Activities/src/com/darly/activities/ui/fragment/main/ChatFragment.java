@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.ChatAdapter;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
@@ -29,7 +30,6 @@ import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GirlBase;
 import com.darly.activities.model.GirlModel;
 import com.darly.activities.poll.HttpTaskerForString;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.WebViewActivity;
 import com.darly.activities.widget.xlistview.XListView;
 import com.lidroid.xutils.ViewUtils;

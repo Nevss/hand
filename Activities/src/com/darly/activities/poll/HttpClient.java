@@ -7,12 +7,12 @@ import org.apache.http.entity.StringEntity;
 
 import android.content.Context;
 
+import com.darly.activities.R;
 import com.darly.activities.app.App;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.PreferenceUserInfor;
 import com.darly.activities.common.ToastApp;
-import com.darly.activities.ui.R;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.http.HttpHandler;
 import com.lidroid.xutils.http.RequestParams;

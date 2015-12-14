@@ -12,11 +12,11 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.NetUtils;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.poll.ThreadPoolManager;
-import com.darly.activities.ui.R;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.util.LogUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -57,7 +57,7 @@ public abstract class BaseActivity extends FragmentActivity implements
 		// 建立几个文件夹
 		creatFile();
 		LogUtils.customTagPrefix = "xUtilsSample"; // 方便调试时过滤 adb logcat 输出
-		LogUtils.allowI = false; // 关闭 LogUtils.i(...) 的 adb log 输出
+		LogUtils.allowI = true; // 关闭 LogUtils.i(...) 的 adb log 输出
 		ViewUtils.inject(this);// 注入view和事件
 
 		manager = ThreadPoolManager.getInstance(ThreadPoolManager.TYPE_FIFO,

@@ -12,6 +12,7 @@ import com.darly.activities.ui.qinjia.bean.GotyeUserProxy;
  */
 public class PinyinComparator implements Comparator<GotyeUserProxy> {
 
+	@Override
 	public int compare(GotyeUserProxy o1, GotyeUserProxy o2) {
 		if (o1.firstChar.equals("@") || o2.firstChar.equals("#")) {
 			return -1;

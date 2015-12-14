@@ -19,9 +19,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.ui.ChatPage;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.qinjia.util.BitmapUtil;
 import com.darly.activities.ui.qinjia.util.ImageCache;
 import com.darly.activities.ui.qinjia.util.TimeUtil;
@@ -120,6 +120,7 @@ public class ChatMessageAdapter extends BaseAdapter {
 		return position;
 	}
 
+	@Override
 	public int getItemViewType(int position) {
 		GotyeMessage message = getItem(position);
 		if (message.getType() == GotyeMessageType.GotyeMessageTypeText) {
@@ -142,6 +143,7 @@ public class ChatMessageAdapter extends BaseAdapter {
 		return -1;// invalid
 	}
 
+	@Override
 	public int getViewTypeCount() {
 		return 8;
 	}

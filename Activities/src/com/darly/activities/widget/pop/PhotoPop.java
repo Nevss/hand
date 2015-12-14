@@ -28,10 +28,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.PopupWindow;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.PreferencesJsonCach;
-import com.darly.activities.ui.R;
 
 public class PhotoPop extends PopupWindow implements OnClickListener {
 

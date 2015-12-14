@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.HTTPServ;
@@ -27,7 +28,6 @@ import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.common.ToastApp;
 import com.darly.activities.model.CaiModel;
 import com.darly.activities.poll.HttpTaskerForString;
-import com.darly.activities.ui.R;
 import com.google.gson.Gson;
 import com.lidroid.xutils.ViewUtils;
 

@@ -2,9 +2,9 @@ package com.darly.activities.common;
 
 import java.util.ArrayList;
 
+import com.darly.activities.R;
 import com.darly.activities.model.BottomModel;
 import com.darly.activities.model.UserInformation;
-import com.darly.activities.ui.R;
 import com.gotye.api.GotyeUser;
 
 /**

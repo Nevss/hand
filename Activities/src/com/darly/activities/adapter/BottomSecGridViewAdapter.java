@@ -14,8 +14,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.model.BottomModel;
-import com.darly.activities.ui.R;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
 
 /**

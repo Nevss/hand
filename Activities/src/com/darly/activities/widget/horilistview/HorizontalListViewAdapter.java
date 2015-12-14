@@ -16,8 +16,8 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
-import com.darly.activities.ui.R;
 
 public class HorizontalListViewAdapter extends BaseAdapter {
 	private int[] mTitles;
@@ -57,7 +57,7 @@ public class HorizontalListViewAdapter extends BaseAdapter {
 			convertView = mInflater
 					.inflate(R.layout.horizontal_list_item, null);
 			LayoutParams lp = new LayoutParams(Constract.width / 4,
-					LayoutParams.MATCH_PARENT);
+					android.view.ViewGroup.LayoutParams.MATCH_PARENT);
 			convertView.setLayoutParams(lp);
 			holder.mTitle = (Button) convertView
 					.findViewById(R.id.text_list_item);

@@ -30,7 +30,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.darly.activities.ui.R;
+import com.darly.activities.R;
 
 
 /**

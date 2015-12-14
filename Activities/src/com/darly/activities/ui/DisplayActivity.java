@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.darly.activities.R;
 import com.darly.activities.common.LogFileHelper;
 
 /**

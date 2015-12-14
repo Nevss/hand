@@ -21,12 +21,12 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.GridViewAdapter;
 import com.darly.activities.base.BaseFragment;
 import com.darly.activities.common.BaseData;
 import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.GridViewData;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.fragment.me.MeDetailsAcitvity;
 import com.lidroid.xutils.ViewUtils;
 import com.lidroid.xutils.view.annotation.ViewInject;

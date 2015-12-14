@@ -8,8 +8,8 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.darly.activities.R;
 import com.darly.activities.app.Constract;
-import com.darly.activities.ui.R;
 import com.darly.activities.widget.roundedimage.RoundedImageView;
 
 /**

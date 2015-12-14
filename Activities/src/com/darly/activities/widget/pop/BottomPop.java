@@ -15,6 +15,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.PopupWindow;
 
+import com.darly.activities.R;
 import com.darly.activities.adapter.BottomGridViewAdapter;
 import com.darly.activities.app.Constract;
 import com.darly.activities.common.BaseData;
@@ -22,7 +23,6 @@ import com.darly.activities.common.LogFileHelper;
 import com.darly.activities.model.BottomModel;
 import com.darly.activities.model.GridViewData;
 import com.darly.activities.ui.IndexShowViewActivity;
-import com.darly.activities.ui.R;
 import com.darly.activities.ui.RotateAcitvity;
 import com.darly.activities.ui.fragment.me.MeDetailsAcitvity;
 import com.darly.activities.ui.qrcode.MipcaActivityCapture;

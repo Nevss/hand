@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
+import com.darly.activities.R;
 import com.darly.activities.app.App;
 import com.darly.activities.app.Constract;
 import com.darly.activities.base.BaseActivity;
