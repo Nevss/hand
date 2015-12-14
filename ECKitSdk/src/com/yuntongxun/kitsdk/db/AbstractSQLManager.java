@@ -13,13 +13,13 @@
 package com.yuntongxun.kitsdk.db;
 
 import android.content.Context;
-
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.yuntongxun.ecsdk.ECMessage;
 import com.yuntongxun.kitsdk.ECDeviceKit;
+import com.yuntongxun.kitsdk.Literl;
 import com.yuntongxun.kitsdk.core.CCPAppManager;
 import com.yuntongxun.kitsdk.utils.LogUtil;
 
@@ -32,7 +32,7 @@ public abstract class AbstractSQLManager {
     private static SQLiteDatabase sqliteDB;
 
     public AbstractSQLManager() {
-        openDatabase(CCPAppManager.getContext(), CCPAppManager.getVersionCode());
+        openDatabase(CCPAppManager.getContext(), Literl.DB_VERSION/*CCPAppManager.getVersionCode()*/);
     }
 
     private void openDatabase(Context context, int databaseVersion) {
