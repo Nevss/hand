@@ -12,6 +12,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,6 +35,14 @@ import com.lidroid.xutils.http.callback.RequestCallBack;
 import com.rayelink.eckit.SDKCoreHelper;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.analytics.MobclickAgentJSInterface;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.QZoneSsoHandler;
+import com.umeng.socialize.sso.UMQQSsoHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 import com.ytdinfo.keephealth.R;
 import com.ytdinfo.keephealth.app.Constants;
 import com.ytdinfo.keephealth.app.HttpClient;
@@ -47,11 +56,13 @@ import com.ytdinfo.keephealth.utils.DBUtilsHelper;
 import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
+import com.ytdinfo.keephealth.wxapi.CustomShareBoard;
+import com.ytdinfo.keephealth.wxapi.WXCallBack;
 import com.yuntongxun.kitsdk.ECDeviceKit;
 import com.yuntongxun.kitsdk.beans.ChatInfoBean;
 
 @SuppressLint("JavascriptInterface")
-public class WebViewActivity extends BaseActivity {
+public class WebViewActivity extends BaseActivity implements WXCallBack {
 	private final String TAG = "WebViewActivity";
 	// private CommonActivityTopView commonActivityTopView;
 	private MyWebView webview;
@@ -69,6 +80,11 @@ public class WebViewActivity extends BaseActivity {
 	private Context context;
 	private String SubjectID;
 	private DocInfoBean docInfoBean;
+
+	public CustomShareBoard shareBoard;
+
+	private final UMSocialService mController = UMServiceFactory
+			.getUMSocialService(Constants.DESCRIPTOR);
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -464,13 +480,6 @@ public class WebViewActivity extends BaseActivity {
 		// finish();
 	}
 
-	// 标题 图片Url,网址Url,网址简单描述
-	@JavascriptInterface
-	public void shareWebSiteToPlatForm(String titleName, String thumbUrl,
-			String url, String siteDesc) {
-
-	}
-
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -485,6 +494,169 @@ public class WebViewActivity extends BaseActivity {
 
 		MobclickAgent.onPageEnd("WebViewActivity");
 		MobclickAgent.onPause(this);
+	}
+
+	// 标题 图片Url,网址Url,网址简单描述
+	@JavascriptInterface
+	public void shareWebSiteToPlatForm(String titleName, String thumbUrl,
+			String url, String siteDesc) {
+		setShareContent(titleName, thumbUrl, url, siteDesc);
+		postShare();
+	}
+
+	/**
+	 * 调用postShare分享。跳转至分享编辑页，然后再分享。</br> [注意]<li>
+	 * 对于新浪，豆瓣，人人，腾讯微博跳转到分享编辑页，其他平台直接跳转到对应的客户端
+	 */
+	private void postShare() {
+		shareBoard.showAtLocation(getWindow().getDecorView(), Gravity.BOTTOM,
+				0, 0);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.ytdinfo.keephealth.wxapi.WXCallBack#shareComplete(boolean)
+	 */
+	@Override
+	public void shareComplete(boolean flag) {
+		// TODO Auto-generated method stub
+		Log.i("shareComplete", "webview.loadUrl--s" + flag);
+		webview.loadUrl("javascript:shareCheck('" + flag + "')");
+		Log.i("shareComplete", "webview.loadUrl--e" + flag);
+	}
+
+	/**
+	 * @功能描述 : 添加微信平台分享
+	 * @return
+	 */
+	private void addWXPlatform() {
+		// 注意：在微信授权的时候，必须传递appSecret
+		// wx967daebe835fbeac是你在微信开发平台注册应用的AppID, 这里需要替换成你注册的AppID
+		String appId = "wxe9dfaf997a35d828";
+		String appSecret = "e98b52d02f8112bcc93181490b980aab";
+		// 添加微信平台
+		UMWXHandler wxHandler = new UMWXHandler(this, appId, appSecret);
+		wxHandler.addToSocialSDK();
+
+		// 支持微信朋友圈
+		UMWXHandler wxCircleHandler = new UMWXHandler(this, appId, appSecret);
+		wxCircleHandler.setToCircle(true);
+		wxCircleHandler.addToSocialSDK();
+	}
+
+	/**
+	 * @功能描述 : 添加QQ平台支持 QQ分享的内容， 包含四种类型， 即单纯的文字、图片、音乐、视频. 参数说明 : title, summary,
+	 *       image url中必须至少设置一个, targetUrl必须设置,网页地址必须以"http://"开头 . title :
+	 *       要分享标题 summary : 要分享的文字概述 image url : 图片地址 [以上三个参数至少填写一个] targetUrl
+	 *       : 用户点击该分享时跳转到的目标地址 [必填] ( 若不填写则默认设置为友盟主页 )
+	 * @return
+	 */
+	private void addQQQZonePlatform() {
+		String appId = "1104513231";
+		String appKey = "VFVBeqWa7Rv2ZeDf";
+		// 添加QQ支持, 并且设置QQ分享内容的target url
+		UMQQSsoHandler qqSsoHandler = new UMQQSsoHandler(this, appId, appKey);
+		qqSsoHandler.setTargetUrl("http://www.umeng.com/social");
+		qqSsoHandler.addToSocialSDK();
+
+		// 添加QZone平台
+		QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this, appId,
+				appKey);
+		qZoneSsoHandler.addToSocialSDK();
+	}
+
+	/**
+	 * 根据不同的平台设置不同的分享内容</br>
+	 */
+	private void setShareContent(String titleName, String thumbUrl, String url,
+			String siteDesc) {
+		//
+		// // 配置SSO
+		// mController.getConfig().setSsoHandler(new SinaSsoHandler());
+		// mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+
+		// // qq空间分享
+		// QZoneSsoHandler qZoneSsoHandler = new QZoneSsoHandler(this,
+		// "1104513231", "VFVBeqWa7Rv2ZeDf");
+		// qZoneSsoHandler.addToSocialSDK();
+		// mController
+		// .setShareContent("友盟社会化组件（SDK）让移动应用快速整合社交分享功能。http://www.umeng.com/social");
+		//
+		// UMImage urlImage = new UMImage(this,
+		// "http://www.umeng.com/images/pic/social/integrated_3.png");
+		//
+		// // 视频分享
+		// UMVideo video = new UMVideo(
+		// "http://v.youku.com/v_show/id_XNTc0ODM4OTM2.html");
+		// video.setTitle("友盟社会化组件视频");
+		// video.setThumb(urlImage);
+		//
+		// UMusic uMusic = new UMusic(
+		// "http://music.huoxing.com/upload/20130330/1364651263157_1085.mp3");
+		// uMusic.setAuthor("umeng");
+		// uMusic.setTitle("天籁之音");
+		// uMusic.setThumb("http://www.umeng.com/images/pic/social/chart_1.png");
+
+		Log.i("setShareContent", titleName + "======" + siteDesc + "======="
+				+ url + "========" + thumbUrl);
+		// 微信分享
+		WeiXinShareContent weixinContent = new WeiXinShareContent();
+		weixinContent.setShareContent(siteDesc);
+		weixinContent.setTitle(titleName);
+		weixinContent.setTargetUrl(url);
+		UMImage urlImage = new UMImage(this, thumbUrl);
+		weixinContent.setShareMedia(urlImage);
+		mController.setShareMedia(weixinContent);
+
+		// 设置微信圈分享的内容
+		CircleShareContent circleMedia = new CircleShareContent();
+		circleMedia.setShareContent(siteDesc);
+		circleMedia.setTitle(titleName);
+		circleMedia.setTargetUrl(url);
+		circleMedia.setShareMedia(urlImage);
+		mController.setShareMedia(circleMedia);
+
+		// UMImage image = new UMImage(this, BitmapFactory.decodeResource(
+		// getResources(), R.drawable.divider));
+		// image.setTitle("thumb title");
+		// image.setThumb("http://www.umeng.com/images/pic/social/integrated_3.png");
+		//
+		// UMImage qzoneImage = new UMImage(this,
+		// "http://www.umeng.com/images/pic/social/integrated_3.png");
+		// qzoneImage
+		// .setTargetUrl("http://www.umeng.com/images/pic/social/integrated_3.png");
+		//
+		// // 设置QQ空间分享内容
+		// QZoneShareContent qzone = new QZoneShareContent();
+		// qzone.setShareContent("share test");
+		// qzone.setTargetUrl("http://www.umeng.com");
+		// qzone.setTitle("QZone title");
+		// qzone.setShareMedia(urlImage);
+		// // qzone.setShareMedia(uMusic);
+		// mController.setShareMedia(qzone);
+		//
+		// video.setThumb(new UMImage(this, BitmapFactory.decodeResource(
+		// getResources(), R.drawable.divider)));
+		//
+		// QQShareContent qqShareContent = new QQShareContent();
+		// qqShareContent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能 -- QQ");
+		// qqShareContent.setTitle("hello, title");
+		// qqShareContent.setShareMedia(image);
+		// qqShareContent.setTargetUrl("http://www.umeng.com/social");
+		// mController.setShareMedia(qqShareContent);
+		//
+		// // 视频分享
+		// UMVideo umVideo = new UMVideo(
+		// "http://v.youku.com/v_show/id_XNTc0ODM4OTM2.html");
+		// umVideo.setThumb("http://www.umeng.com/images/pic/home/social/img-1.png");
+		// umVideo.setTitle("友盟社会化组件视频");
+		//
+		// TencentWbShareContent tencent = new TencentWbShareContent();
+		// tencent.setShareContent("来自友盟社会化组件（SDK）让移动应用快速整合社交分享功能-腾讯微博。http://www.umeng.com/social");
+		// // 设置tencent分享内容
+		// mController.setShareMedia(tencent);
+
 	}
 
 }

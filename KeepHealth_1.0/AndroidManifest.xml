@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ytdinfo.keephealth"
     android:versionCode="8"
@@ -104,8 +104,7 @@
         </activity>
         <activity
             android:name="com.ytdinfo.keephealth.ui.login.LoginActivity"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.ytdinfo.keephealth.ui.register.RegisterActivity"
             android:label="@string/title_activity_register"
@@ -154,7 +153,6 @@
             android:name="com.ytdinfo.keephealth.ui.OnlineVisits.OnlineQuesActivity"
             android:screenOrientation="portrait" >
         </activity>
-         
         <activity
             android:name="com.ytdinfo.keephealth.ui.forgetpass.ResetPassActivity"
             android:label="@string/title_activity_reset_pass"
@@ -181,7 +179,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
         </activity>
-         <activity
+        <activity
             android:name="com.ytdinfo.keephealth.zhangyuhui.IARecoverAcitvity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
@@ -312,16 +310,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" >
         </activity>
-
         <activity
             android:name="com.ytdinfo.keephealth.ui.setting.SettingActivity"
             android:label="@string/title_activity_setting"
             android:screenOrientation="portrait" >
         </activity>
-        
+
         <service android:name="com.yuntongxun.kitsdk.TimerService" >
             <intent-filter>
                 <action android:name="com.ytdinfo.keephealth" />
+
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </service>
@@ -331,9 +329,7 @@
             android:label="@string/title_activity_add_pictures"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.ytdinfo.keephealth.ui.ChatPhotoViewerActivity"
-            >
+        <activity android:name="com.ytdinfo.keephealth.ui.ChatPhotoViewerActivity" >
         </activity>
         <activity
             android:name="com.ytdinfo.keephealth.ui.GuideActivity"
@@ -351,31 +347,28 @@
             android:label="@string/title_activity_modify_pass"
             android:screenOrientation="portrait" >
         </activity>
-        
+
         <!-- 友盟统计 -->
-        <meta-data android:value="5641ab1567e58e0ec2000046" 
-            android:name="UMENG_APPKEY"></meta-data>
-		<meta-data android:value="default" android:name="UMENG_CHANNEL"/>
-		
-		
-		
-		
-		
-		<!-- 新版本云通讯添加 -->
-		
-		 <meta-data
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5641ab1567e58e0ec2000046" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="default" />
+
+        <!-- 新版本云通讯添加 -->
+
+        <meta-data
             android:name="LOGGING"
             android:value="true" />
         <meta-data
             android:name="ALPHA"
             android:value="true" />
+
         <activity
             android:name="com.yuntongxun.eckitimdemo.ui.MainActivity"
             android:label="@string/app_name" >
-            
         </activity>
-        
-        
         <activity
             android:name="com.yuntongxun.kitsdk.ui.ECChattingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -386,7 +379,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        
         <activity
             android:name="com.yuntongxun.kitsdk.ui.ECImagePreviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -403,85 +395,92 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        
-         
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.ECFileExplorerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-         
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.ECGroupNoticeActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.ECGroupListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.CreateGroupActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.SearchGroupActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.BaseSearch"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         
-         
-         <!-- voip配置 -->
-         
-         <activity
+
+        <!-- voip配置 -->
+
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.voip.VoIPCallActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="con.yuntongxun.ecdemo.intent.ACTION_VOICE_CALL" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-		<activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.voip.VideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-			<intent-filter>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
                 <action android:name="con.yuntongxun.ecdemo.intent.ACTION_VIDEO_CALL" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-		<activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.voip.VideoCallInActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="con.yuntongxun.ecdemo.intent.ACTION_VIDEO_CALL" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-         
-        
-         <service
+
+        <service
             android:name="com.yuntongxun.ecsdk.ECClientService"
             android:enabled="true"
             android:exported="false" />
-		
-		
-		
+
+        <activity
+            android:name="com.umeng.socialize.view.ShareActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/Theme.UMDialog"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
 
 </manifest>

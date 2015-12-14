@@ -7,7 +7,8 @@ public class Constants {
 //	AppSecret：e98b52d02f8112bcc93181490b980aab
 	private Constants() {
 	};
-
+	public static final String DESCRIPTOR = "com.umeng.share";
+	
 	/** 是否第一次使用 */
 	public static final String ISFIRSTCOME = "isfirstcome";
 	/** 新消息提醒 */
