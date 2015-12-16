@@ -3,15 +3,16 @@ package com.yuntongxun.kitsdk.fragment;
 import java.io.File;
 
 import android.app.Dialog;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -20,6 +21,7 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.yuntongxun.eckitsdk.R;
 import com.yuntongxun.kitsdk.beans.ViewImageInfo;
+import com.yuntongxun.kitsdk.db.IMessageSqlManager;
 import com.yuntongxun.kitsdk.db.ImgInfoSqlManager;
 import com.yuntongxun.kitsdk.ui.chatting.model.ImgInfo;
 import com.yuntongxun.kitsdk.ui.photoview.PhotoView;
@@ -119,31 +121,22 @@ public class ImageGalleryFragment extends CCPFragment {
 			finish();
 			return;
 		}
-		
-//		if(mEntry.isDownload())
-//		{
-//			mImageUrl = mEntry.getPicurl();
-//		}
-//		else {
-//			mImageUrl=mEntry.getThumbnailurl();
-//		}
 		if (mThumbnailBitmap == null) {
 			mThumbnailBitmap = BitmapFactory.decodeFile(FileAccessor
 					.getImagePathName() + "/" + mEntry.getThumbnailurl());
 		}
 
 		// 查看大图是否已经在本地
-
-		if (null != mImageUrl && !TextUtils.isEmpty(mImageUrl)
-				&& !mImageUrl.startsWith("http")) {
-			// load 本地
-			mImageUrl = "file://" + FileAccessor.getImagePathName() + "/"
-					+ mImageUrl;
-			
-		} else {
-			// 下载
-			mImageUrl = mEntry.getPicurl();
-		}
+		mImageUrl = selectInfo(mEntry.getThumbnailurl());/* mEntry.getPicurl(); */
+		// if (null != mImageUrl && !TextUtils.isEmpty(mImageUrl)
+		// && !mImageUrl.startsWith("http")) {
+		// // load 本地
+		// mImageUrl = "file://" + FileAccessor.getImagePathName() + "/"
+		// + mImageUrl;
+		// } else {
+		// // 下载
+		// mImageUrl = mEntry.getPicurl();
+		// }
 		DisplayImageOptions.Builder imageOptionsBuilder = DemoUtils
 				.getChatDisplayImageOptionsBuilder();
 		imageOptionsBuilder.showImageOnLoading(new BitmapDrawable(
@@ -153,7 +146,7 @@ public class ImageGalleryFragment extends CCPFragment {
 					@Override
 					public void onLoadingStarted(String imageUri, View view) {
 						progressBar.setVisibility(View.VISIBLE);
-//						mImageView.setImageBitmap(mThumbnailBitmap);
+						mImageView.setImageBitmap(mThumbnailBitmap);
 					}
 
 					@Override
@@ -180,8 +173,8 @@ public class ImageGalleryFragment extends CCPFragment {
 
 						}
 						if (message != null) {
-							// Toast.makeText(getActivity(), message,
-							// Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), message,
+									Toast.LENGTH_SHORT).show();
 						}
 						progressBar.setVisibility(View.GONE);
 						mEntry.setIsDownload(false);
@@ -273,4 +266,21 @@ public class ImageGalleryFragment extends CCPFragment {
 							.replace("img_url", s), "text/html", "utf-8", "");
 		}
 	}
+
+	private String selectInfo(String arg) {
+		String url = null;
+		String sql = "select url from im_message where localPath like '%" + arg
+				+ "' limit 1";
+
+		Cursor cursor = IMessageSqlManager.getInstance().sqliteDB()
+				.rawQuery(sql, null);
+		if (cursor != null && cursor.getCount() > 0) {
+			while (cursor.moveToNext()) {
+				url = cursor.getString(0);
+			}
+			cursor.close();
+		}
+		return url;
+	}
+
 }

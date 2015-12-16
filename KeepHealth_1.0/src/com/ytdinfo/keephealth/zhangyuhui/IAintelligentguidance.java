@@ -121,9 +121,10 @@ public class IAintelligentguidance extends BaseActivity {
 				String json = (String) msg.obj;
 				PreferencesJsonCach.putValue(orginfo.id + "", json,
 						IAintelligentguidance.this);
-				LogFileHelper.getInstance().i("智能导检开始连接，数据返回"+json);
+				LogFileHelper.getInstance().i("智能导检开始连接，数据返回" + json);
 				try {
-					roomOrgpari = new Gson().fromJson(json, IARoomNameHttp.class);
+					roomOrgpari = new Gson().fromJson(json,
+							IARoomNameHttp.class);
 				} catch (Exception e) {
 				}
 				LogFileHelper.getInstance().i("智能导检开始连接，数据返回,进行解析");
@@ -132,12 +133,20 @@ public class IAintelligentguidance extends BaseActivity {
 					getDataFHttp();
 				} else {
 					loading.dismiss();
-					ToastUtil.showMessage("网络链接失败，请检查网络");
+					ToastUtil.showMessage("网络链接失败，请检查网络！");
 				}
 				break;
 			case 100:
 				// 选取路线
-				locOrChoseToFindOrganization((OrgBase) msg.obj);
+				OrgBase sBase = (OrgBase) msg.obj;
+//				if (sBase != null
+//						&& !sBase.getSuccessfulstate().equalsIgnoreCase("Fail")) {
+					locOrChoseToFindOrganization(sBase);
+//				}else {
+//					if (loading != null) {
+//						loading.dismiss();
+//					}
+//				}
 				break;
 			case 101:
 				// 定位成功线路------------------------2
@@ -415,38 +424,41 @@ public class IAintelligentguidance extends BaseActivity {
 						loading.dismiss();
 					}
 					name.setText(orginfo.name);
-					String json = PreferencesJsonCach.getInfo(orginfo.id+"", IAintelligentguidance.this);
-					if (json!=null) {
-						roomOrgpari = new Gson().fromJson(json, IARoomNameHttp.class);
+					String json = PreferencesJsonCach.getInfo(orginfo.id + "",
+							IAintelligentguidance.this);
+					if (json != null) {
+						roomOrgpari = new Gson().fromJson(json,
+								IARoomNameHttp.class);
 					}
 					getOrgAndPoint();
-//					// 以ImageView为背景。进行全部适配，顶部的背景图片。覆盖到色彩之上。
-//					LayoutParams lp = new LayoutParams(IALiteral.width,
-//							IALiteral.width * IAPoisDataConfig.babaibanh
-//									/ IAPoisDataConfig.babaibanw);
-//					ImageView bake = new ImageView(IAintelligentguidance.this);
-//					bake.setLayoutParams(lp);
-//					bake.setBackgroundColor(getResources().getColor(
-//							R.color.do_not_check));
-//					IALiteral.bitmapwidth = IALiteral.width;
-//					IALiteral.bitmapheight = IALiteral.width
-//							* IAPoisDataConfig.babaibanh
-//							/ IAPoisDataConfig.babaibanw;
-//					switch (orginfo.id) {
-//					case 31:
-//						bake.setImageResource(R.drawable.babaiban);
-//						break;
-//					case 12:
-//						bake.setImageResource(R.drawable.jingan);
-//						break;
-//					case 24:
-//						bake.setImageResource(R.drawable.xuhui);
-//						break;
-//					default:
-//						break;
-//					}
-//					relative_fir.removeAllViews();
-//					relative_fir.addView(bake);
+					// // 以ImageView为背景。进行全部适配，顶部的背景图片。覆盖到色彩之上。
+					// LayoutParams lp = new LayoutParams(IALiteral.width,
+					// IALiteral.width * IAPoisDataConfig.babaibanh
+					// / IAPoisDataConfig.babaibanw);
+					// ImageView bake = new
+					// ImageView(IAintelligentguidance.this);
+					// bake.setLayoutParams(lp);
+					// bake.setBackgroundColor(getResources().getColor(
+					// R.color.do_not_check));
+					// IALiteral.bitmapwidth = IALiteral.width;
+					// IALiteral.bitmapheight = IALiteral.width
+					// * IAPoisDataConfig.babaibanh
+					// / IAPoisDataConfig.babaibanw;
+					// switch (orginfo.id) {
+					// case 31:
+					// bake.setImageResource(R.drawable.babaiban);
+					// break;
+					// case 12:
+					// bake.setImageResource(R.drawable.jingan);
+					// break;
+					// case 24:
+					// bake.setImageResource(R.drawable.xuhui);
+					// break;
+					// default:
+					// break;
+					// }
+					// relative_fir.removeAllViews();
+					// relative_fir.addView(bake);
 				} else {
 					LogFileHelper.getInstance().i("智能导检开始连接，网络正常，开始请求平面数据");
 					if (loading != null) {
@@ -484,7 +496,6 @@ public class IAintelligentguidance extends BaseActivity {
 		// }
 		// });
 	}
-
 
 	private void getOrgAndPoint() {
 		IABundleOrganiza baseView = null;
@@ -564,7 +575,7 @@ public class IAintelligentguidance extends BaseActivity {
 				break;
 			case 24:
 				// 获取对应机构的点阵
-				switch (orginfo.floor[i])  {
+				switch (orginfo.floor[i]) {
 				case 1:
 					IALiteral.roomName = roomOrgpari.model;
 					IALiteral.maps = IAPoisDataConfig.getData(

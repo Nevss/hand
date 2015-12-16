@@ -60,7 +60,7 @@ public class IMessageSqlManager extends AbstractSQLManager {
         super();
     }
 
-    private static IMessageSqlManager getInstance() {
+    public static IMessageSqlManager getInstance() {
         if (instance == null) {
             instance = new IMessageSqlManager();
         }
@@ -152,8 +152,9 @@ public class IMessageSqlManager extends AbstractSQLManager {
                             values.put(IMessageColumn.RECEIVE_DATE,System.currentTimeMillis());
                             values.put(IMessageColumn.CREATE_DATE,message.getMsgTime());
                             values.put(IMessageColumn.sender,message.getForm());
-                            if(message.getType()==ECMessage.Type.FILE&&((ECFileMessageBody)message.getBody()).getFileName().endsWith(".png"))
+                            if(message.getType()==ECMessage.Type.FILE)
                             {
+                            	//&&((ECFileMessageBody)message.getBody()).getFileName().endsWith(".png")
                             	values.put(IMessageColumn.MESSAGE_TYPE,ECMessage.Type.IMAGE.ordinal());
                             }else{
                             	values.put(IMessageColumn.MESSAGE_TYPE,message.getType().ordinal());

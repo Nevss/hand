@@ -1,8 +1,6 @@
 package com.yuntongxun.kitsdk.ui;
 
 import android.os.Bundle;
-
-
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
@@ -18,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.yuntongxun.eckitsdk.R;
@@ -30,206 +29,227 @@ import com.yuntongxun.kitsdk.utils.LogUtil;
 import com.yuntongxun.kitsdk.utils.ToastUtil;
 
 /**
- * com.yuntongxun.ecdemo.ui.chatting in ECDemo_Android
- * Created by Jorstin on 2015/3/30.
+ * com.yuntongxun.ecdemo.ui.chatting in ECDemo_Android Created by Jorstin on
+ * 2015/3/30.
  */
-public class ECImageGralleryPagerActivity extends ECSuperActivity implements View.OnClickListener{
+public class ECImageGralleryPagerActivity extends ECSuperActivity implements
+		View.OnClickListener {
 
-    private static final String TAG = "ImageGralleryPagerActivity";
+	private static final String TAG = "ImageGralleryPagerActivity";
 
-    private static final String STATE_POSITION = "STATE_POSITION";
-    public static final String EXTRA_IMAGE_INDEX = "image_index";
-    public static final String EXTRA_IMAGE_URLS = "image_urls";
+	private static final String STATE_POSITION = "STATE_POSITION";
+	public static final String EXTRA_IMAGE_INDEX = "image_index";
+	public static final String EXTRA_IMAGE_URLS = "image_urls";
 
-    /**
+	/**
      *
      */
-    private boolean mFullscreen = true;
-    private HackyViewPager mPager;
-    private int pagerPosition;
-    private TextView indicator;
-    private List<ViewImageInfo> urls;
-    @Override
-    protected int getLayoutId() {
-        return R.layout.ytx_image_grallery_container;
-    }
+	private boolean mFullscreen = true;
+	private HackyViewPager mPager;
+	private int pagerPosition;
+	private TextView indicator;
+	private List<ViewImageInfo> urls;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	private List<ViewImageInfo> url;
 
+	@Override
+	protected int getLayoutId() {
+		return R.layout.ytx_image_grallery_container;
+	}
 
-        getTopBarView().setTopBarToStatus(1, R.drawable.ytx_topbar_back_bt, -1, "1 / 1", this);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
-        pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
-        urls = getIntent().getParcelableArrayListExtra(EXTRA_IMAGE_URLS);
+		getTopBarView().setTopBarToStatus(1, R.drawable.ytx_topbar_back_bt, -1,
+				"1 / 1", this);
 
-        if(urls == null || urls.isEmpty()) {
-            finish();
-            return ;
-        }
-        if(pagerPosition > urls.size()) {
-            pagerPosition = 0;
-        }
+		pagerPosition = getIntent().getIntExtra(EXTRA_IMAGE_INDEX, 0);
+		urls = getIntent().getParcelableArrayListExtra(EXTRA_IMAGE_URLS);
 
-        setActionBarTitle(pagerPosition + "/" + (urls != null ? urls.size() : 0));
-        mPager = (HackyViewPager) findViewById(R.id.pager);
-        final ImagePagerAdapter mAdapter = new ImagePagerAdapter(getSupportFragmentManager(), urls);
-        mPager.setAdapter(mAdapter);
-        indicator = (TextView) findViewById(R.id.indicator);
-        findViewById(R.id.imagebrower_iv_save).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(mAdapter != null) {
-                    ViewImageInfo viewImageInfo = urls.get(mPager.getCurrentItem());
-                    if(viewImageInfo == null || !viewImageInfo.isDownload()) {
-                        ToastUtil.showMessage(R.string.save_img_waite_download);
-                        return ;
-                    }
-                    try {
-                        File file = new File(FileAccessor.getImagePathName() ,viewImageInfo.getPicurl());
-                        DemoUtils.saveImage(file.getAbsolutePath());
-                    } catch (Exception e) {
-                        LogUtil.e(TAG, "onContextItemSelected error ");
-                    }
+		if (urls == null || urls.isEmpty()) {
+			finish();
+			return;
+		}
 
-                }
-            }
-        });
-        // 更新下标
-        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrollStateChanged(int arg0) {
-            }
+		if (pagerPosition > urls.size()) {
+			pagerPosition = 0;
+		}
+		url = new ArrayList<ViewImageInfo>();
+		for (int i = 0, len = urls.size(); i < len; i++) {
+			if (i == pagerPosition) {
+				url.add(urls.get(i));
+				pagerPosition = 0;
+			}
+		}
+		setActionBarTitle(pagerPosition + "/"
+				+ (urls != null ? urls.size() : 0));
+		mPager = (HackyViewPager) findViewById(R.id.pager);
+		final ImagePagerAdapter mAdapter = new ImagePagerAdapter(
+				getSupportFragmentManager(), url);
+		mPager.setAdapter(mAdapter);
+		indicator = (TextView) findViewById(R.id.indicator);
+		findViewById(R.id.imagebrower_iv_save).setOnClickListener(
+				new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (mAdapter != null) {
+							ViewImageInfo viewImageInfo = urls.get(mPager
+									.getCurrentItem());
+							if (viewImageInfo == null
+									|| !viewImageInfo.isDownload()) {
+								ToastUtil
+										.showMessage(R.string.save_img_waite_download);
+								return;
+							}
+							try {
+								File file = new File(FileAccessor
+										.getImagePathName(), viewImageInfo
+										.getPicurl());
+								DemoUtils.saveImage(file.getAbsolutePath());
+							} catch (Exception e) {
+								LogUtil.e(TAG, "onContextItemSelected error ");
+							}
 
-            @Override
-            public void onPageScrolled(int arg0, float arg1, int arg2) {
-            }
+						}
+					}
+				});
+		// 更新下标
+		mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrollStateChanged(int arg0) {
+			}
 
-            @Override
-            public void onPageSelected(int arg0) {
-                initIndicatorIndex(arg0);
-            }
+			@Override
+			public void onPageScrolled(int arg0, float arg1, int arg2) {
+			}
 
-        });
-        if (savedInstanceState != null) {
-            pagerPosition = savedInstanceState.getInt(STATE_POSITION);
-        }
+			@Override
+			public void onPageSelected(int arg0) {
+				initIndicatorIndex(arg0);
+			}
 
-        mPager.setCurrentItem(pagerPosition);
-        initIndicatorIndex(pagerPosition);
-        setTitleFooterVisible(true);
-    }
+		});
+		if (savedInstanceState != null) {
+			pagerPosition = savedInstanceState.getInt(STATE_POSITION);
+		}
 
-    private void initIndicatorIndex(int arg0) {
-        CharSequence text = getString(R.string.viewpager_indicator, arg0 + 1, mPager.getAdapter().getCount());
-        SpannableString spannableString = new SpannableString(text);
-        spannableString.setSpan(new RelativeSizeSpan(1.5F), 0, text.toString().indexOf("/"), Spanned.SPAN_PRIORITY);
-        indicator.setText(spannableString);
-    }
+		mPager.setCurrentItem(pagerPosition);
+		initIndicatorIndex(pagerPosition);
+		setTitleFooterVisible(true);
+	}
 
-    @Override
-    public void onClick(View v) {
-        mHandlerCallbck.sendEmptyMessageDelayed(1, 350L);
-        
-        
-        if(v.getId()==R.id.btn_left){
-        	 hideSoftKeyboard();
-             finish();
-        }
-        
-        
-    }
+	private void initIndicatorIndex(int arg0) {
+		CharSequence text = getString(R.string.viewpager_indicator, arg0 + 1,
+				mPager.getAdapter().getCount());
+		SpannableString spannableString = new SpannableString(text);
+		spannableString.setSpan(new RelativeSizeSpan(1.5F), 0, text.toString()
+				.indexOf("/"), Spanned.SPAN_PRIORITY);
+		indicator.setText(spannableString);
+	}
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if(urls != null) {
-            urls.clear();
-            urls = null;
-        }
-        if(mHandlerCallbck != null) {
-            mHandlerCallbck.removeCallbacksAndMessages(null);
-        }
-        mPager = null;
-        System.gc();
+	@Override
+	public void onClick(View v) {
+		mHandlerCallbck.sendEmptyMessageDelayed(1, 350L);
 
-    }
+		if (v.getId() == R.id.btn_left) {
+			hideSoftKeyboard();
+			finish();
+		}
 
-    private final Handler mHandlerCallbck = new Handler() {
+	}
 
-        @Override
-        public void dispatchMessage(Message msg) {
-            super.dispatchMessage(msg);
-            mFullscreen = !mFullscreen;
-            setTitleFooterVisible(mFullscreen);
-        }
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (urls != null) {
+			urls.clear();
+			urls = null;
+		}
+		if (mHandlerCallbck != null) {
+			mHandlerCallbck.removeCallbacksAndMessages(null);
+		}
+		mPager = null;
+		System.gc();
 
-    };
+	}
 
-    @Override
-    public void onBaseContentViewAttach(View contentView) {
-        View activityLayoutView = getActivityLayoutView();
-        ((ViewGroup) activityLayoutView.getParent()).removeView(activityLayoutView);
-        ((ViewGroup) getWindow().getDecorView()).addView(activityLayoutView , 1);
+	private final Handler mHandlerCallbck = new Handler() {
 
-    }
+		@Override
+		public void dispatchMessage(Message msg) {
+			super.dispatchMessage(msg);
+			mFullscreen = !mFullscreen;
+			setTitleFooterVisible(mFullscreen);
+		}
 
+	};
 
-    /**
-     *
-     * @param request
-     */
-    private void requestStatusbars(boolean request) {
-        if(request) {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-            return ;
-        }
-        LogUtil.d(LogUtil.getLogUtilsTag(getClass()), "request custom title");
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-    }
+	@Override
+	public void onBaseContentViewAttach(View contentView) {
+		View activityLayoutView = getActivityLayoutView();
+		((ViewGroup) activityLayoutView.getParent())
+				.removeView(activityLayoutView);
+		((ViewGroup) getWindow().getDecorView()).addView(activityLayoutView, 1);
 
-    /**
-     * Full screen, hidden actionBar
-     * @param visible
-     */
-    void setTitleFooterVisible(boolean visible) {
-        if(visible) {
-            requestStatusbars(false);
-            showTitleView();
-            return ;
-        }
+	}
 
-        requestStatusbars(true);
-        hideTitleView();
-    }
+	/**
+	 *
+	 * @param request
+	 */
+	private void requestStatusbars(boolean request) {
+		if (request) {
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN);
+			return;
+		}
+		LogUtil.d(LogUtil.getLogUtilsTag(getClass()), "request custom title");
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	}
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(STATE_POSITION, mPager.getCurrentItem());
-    }
+	/**
+	 * Full screen, hidden actionBar
+	 * 
+	 * @param visible
+	 */
+	void setTitleFooterVisible(boolean visible) {
+		if (visible) {
+			requestStatusbars(false);
+			showTitleView();
+			return;
+		}
 
-    private class ImagePagerAdapter extends FragmentStatePagerAdapter {
+		requestStatusbars(true);
+		hideTitleView();
+	}
 
-        public List<ViewImageInfo> fileList;
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt(STATE_POSITION, mPager.getCurrentItem());
+	}
 
-        public ImagePagerAdapter(FragmentManager fm, List<ViewImageInfo> fileList) {
-            super(fm);
-            this.fileList = fileList;
-        }
+	private class ImagePagerAdapter extends FragmentStatePagerAdapter {
 
-        @Override
-        public int getCount() {
-            return fileList == null ? 0 : fileList.size();
-        }
+		public List<ViewImageInfo> fileList;
 
-        @Override
-        public Fragment getItem(int position) {
-            ViewImageInfo url = fileList.get(position);
-            return ImageGalleryFragment.newInstance(url);
-        }
+		public ImagePagerAdapter(FragmentManager fm,
+				List<ViewImageInfo> fileList) {
+			super(fm);
+			this.fileList = fileList;
+		}
 
-    }
+		@Override
+		public int getCount() {
+			return fileList == null ? 0 : fileList.size() ;
+		}
 
+		@Override
+		public Fragment getItem(int position) {
+			ViewImageInfo url = fileList.get(position);
+			return ImageGalleryFragment.newInstance(url);
+		}
+
+	}
 
 }

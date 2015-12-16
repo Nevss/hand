@@ -14,7 +14,6 @@ package com.yuntongxun.kitsdk.ui.chatting.model;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.view.ContextMenu;
@@ -29,7 +28,6 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.yuntongxun.eckitsdk.R;
 import com.yuntongxun.ecsdk.ECMessage;
-import com.yuntongxun.ecsdk.im.ECFileMessageBody;
 import com.yuntongxun.kitsdk.db.ImgInfoSqlManager;
 import com.yuntongxun.kitsdk.ui.ECChattingActivity;
 import com.yuntongxun.kitsdk.ui.chatting.holder.BaseHolder;
@@ -72,17 +70,6 @@ public class ImageRxRow extends BaseChattingRow {
 
 		final ImageRowViewHolder holder = (ImageRowViewHolder) baseHolder;
 		String userData = detail.getUserData();
-		if(userData.indexOf("THUMBNAIL://")==-1)
-		{
-			BitmapFactory.Options options = DemoUtils
-					.getBitmapOptions(((ECFileMessageBody)detail.getBody()).getLocalUrl());
-			userData ="outWidth://" + options.outWidth
-					+ ",outHeight://" + options.outHeight + ",THUMBNAIL://"
-					+ detail.getMsgId();
-		}
-		
-	
-		 
 		ViewHolderTag holderTag = ViewHolderTag.createTag(detail, ViewHolderTag.TagType.TAG_VIEW_PICTURE ,position);
 		View.OnClickListener onClickListener = ((ECChattingActivity) context).getChattingAdapter().getOnClickListener();
 		holder.chattingContentIv.setTag(holderTag);
@@ -114,12 +101,10 @@ public class ImageRxRow extends BaseChattingRow {
 						}
 					});
 				} else {
-					ImageLoader.getInstance().displayImage("file://" + FileAccessor.getImagePathName() + "/"+  imgInfo.getBigImgPath(), holder.chattingContentIv, optionsBuilder.build());
+					ImageLoader.getInstance().displayImage("file://"+FileAccessor.getImagePathName() + "/"+  imgInfo.getThumbImgPath(), holder.chattingContentIv, optionsBuilder.build());
 				}
-			}else {
-				ImageLoader.getInstance().displayImage("file://" + ((ECFileMessageBody)detail.getBody()).getLocalUrl(), holder.chattingContentIv, optionsBuilder.build());
 			}
-		} 
+		}
 
 		int startWidth = userData.indexOf("outWidth://");
 		int startHeight = userData.indexOf(",outHeight://");
@@ -130,10 +115,7 @@ public class ImageRxRow extends BaseChattingRow {
 			int height = DemoUtils.getInt(userData.substring(startHeight + ",outHeight://".length(), start - 1) , imageMinWidth);
 			holder.chattingContentIv.setMinimumWidth(imageMinWidth);
 			params.width = imageMinWidth;
-			int _height = 0;
-			if (width != 0) {
-				_height= height * imageMinWidth /width;
-			}
+			int _height = height * imageMinWidth /width;
 			if(_height > ResourceHelper.fromDPToPix(context , 230)) {
 				_height = ResourceHelper.fromDPToPix(context , 230);
 				holder.chattingContentIv.setScaleType(ImageView.ScaleType.CENTER_CROP);

@@ -48,9 +48,9 @@ public class ChattingsRowUtils {
 		} else if (message.getType()  == ECMessage.Type.VOICE) {
 			return 60;
 		} else if (message.getType()  == ECMessage.Type.FILE) {
-			if(((ECFileMessageBody)message.getBody()).getFileName().endsWith(".png"))
-				return 200;
-			else
+//			if(((ECFileMessageBody)message.getBody()).getFileName().endsWith(".png"))
+//				return 200;
+//			else
 				return 1024;
 		} else if (message.getType()  == ECMessage.Type.IMAGE) {
 			return 200;

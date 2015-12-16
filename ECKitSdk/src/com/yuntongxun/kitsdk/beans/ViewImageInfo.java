@@ -12,13 +12,11 @@ public class ViewImageInfo implements Parcelable {
 
     public static final Parcelable.Creator<ViewImageInfo> CREATOR
                  = new Parcelable.Creator<ViewImageInfo>() {
-                 @Override
-				public ViewImageInfo createFromParcel(Parcel in) {
+                 public ViewImageInfo createFromParcel(Parcel in) {
                          return new ViewImageInfo(in);
                      }
 
-                 @Override
-				public ViewImageInfo[] newArray(int size) {
+                 public ViewImageInfo[] newArray(int size) {
                          return new ViewImageInfo[size];
                      }
              };
@@ -84,11 +82,6 @@ public class ViewImageInfo implements Parcelable {
         this.picurl = cursor.getString(cursor.getColumnIndex(ImgInfoSqlManager.ImgInfoColumn.BIG_IMGPATH));
         this.msgLocalId = cursor.getString(cursor.getColumnIndex(ImgInfoSqlManager.ImgInfoColumn.MSG_LOCAL_ID));
         this.thumbnailurl = cursor.getString(cursor.getColumnIndex(ImgInfoSqlManager.ImgInfoColumn.THUMBIMG_PATH));
-//        if(cursor.getString(cursor.getColumnIndex("userData"))!=null&&cursor.getString(cursor.getColumnIndex("userData")).startsWith("fileName"))
-//        	setIsDownload(true);
-//        else  
-//        	setIsDownload(false);
-        
     }
 
     public boolean isDownload() {

@@ -231,16 +231,16 @@
         </service>
 
         <!-- Required SDK 核心功能 -->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
+<!--         <service -->
+<!--             android:name="cn.jpush.android.service.DaemonService" -->
+<!--             android:enabled="true" -->
+<!--             android:exported="true" > -->
+<!--             <intent-filter> -->
+<!--                 <action android:name="cn.jpush.android.intent.DaemonService" /> -->
 
-                <category android:name="com.ytdinfo.keephealth" />
-            </intent-filter>
-        </service>
+<!--                 <category android:name="com.ytdinfo.keephealth" /> -->
+<!--             </intent-filter> -->
+<!--         </service> -->
 
         <!-- Required SDK核心功能 -->
         <receiver

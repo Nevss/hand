@@ -411,21 +411,20 @@ public class IMChattingHelper implements OnChatReceiveListener,
 				boolean thumbnail = false;
 				String fileExt = DemoUtils
 						.getExtensionName(body.getRemoteUrl());
-				// 尝试当传递过来的是文件格式的图片内容。则进行文件和图片类型转换。
+//				// 尝试当传递过来的是文件格式的图片内容。则进行文件和图片类型转换。
 				if (msg.getType() == ECMessage.Type.FILE) {
 					if (fileExt.equalsIgnoreCase("png")
 							|| fileExt.equalsIgnoreCase("jpeg")
-							|| fileExt.equalsIgnoreCase("gif")
 							|| fileExt.equalsIgnoreCase("bmp")) {
 						// 假如文件后缀名为这些类型的图片。则进行转换。
 						msg.setType(ECMessage.Type.IMAGE);
 						ECImageMessageBody messageBody = new ECImageMessageBody();
-						messageBody.setThumbnailFileUrl(body.getRemoteUrl());
+						messageBody.setThumbnailFileUrl(body.getRemoteUrl()+"_thum");
 						messageBody.setRemoteUrl(body.getRemoteUrl());
 						msg.setBody(messageBody);
 					}
 				}
-				// 尝试当传递过来的是文件格式的图片内容。则进行文件和图片类型转换。
+//				// 尝试当传递过来的是文件格式的图片内容。则进行文件和图片类型转换。
 
 				if (msg.getType() == ECMessage.Type.VOICE) {
 					body.setLocalUrl(new File(FileAccessor.getVoicePathName(),
@@ -433,11 +432,10 @@ public class IMChattingHelper implements OnChatReceiveListener,
 									.currentTimeMillis())) + ".amr")
 							.getAbsolutePath());
 				} else if (msg.getType() == ECMessage.Type.IMAGE) {
-					ECImageMessageBody imageBody = (ECImageMessageBody) msg
-							.getBody();
+					ECImageMessageBody imageBody = (ECImageMessageBody) msg.getBody();
 					thumbnail = TextUtils.isEmpty(imageBody
 							.getThumbnailFileUrl());
-					imageBody.setLocalUrl(new File(FileAccessor
+					imageBody.setLocalUrl(new File(FileAccessor 
 							.getImagePathName(), DemoUtils
 							.md5(thumbnail ? imageBody.getThumbnailFileUrl()
 									: imageBody.getRemoteUrl())
@@ -454,7 +452,7 @@ public class IMChattingHelper implements OnChatReceiveListener,
 							showNotice, msg));
 				}
 				if (mChatManager != null) {
-					if (thumbnail) {
+					if (!thumbnail) {
 						mChatManager.downloadThumbnailMessage(msg, this);
 					} else {
 						mChatManager.downloadMediaMessage(msg, this);

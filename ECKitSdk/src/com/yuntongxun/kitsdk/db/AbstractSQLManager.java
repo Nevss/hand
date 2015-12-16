@@ -86,7 +86,7 @@ public abstract class AbstractSQLManager {
         }
     }
 
-    protected final SQLiteDatabase sqliteDB() {
+    public final SQLiteDatabase sqliteDB() {
         open(false);
         return sqliteDB;
     }

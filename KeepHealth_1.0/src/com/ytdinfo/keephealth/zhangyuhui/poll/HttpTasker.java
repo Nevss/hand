@@ -77,7 +77,7 @@ public class HttpTasker extends ThreadPoolTask {
 		Log.i("线程结束:", Thread.currentThread().getName());
 	}
 
-	private static final int TIMEOUT_IN_MILLIONS = 4000;
+	private static final int TIMEOUT_IN_MILLIONS = 5000;
 
 	/**
 	 * Title: doPostForJson Description: 发送请求的 URL,直接返回JSON数据解析。返回集合列表 return T
@@ -203,10 +203,10 @@ public class HttpTasker extends ThreadPoolTask {
 			URL realUrl = new URL(new String(geturl.toString().getBytes(),
 					"ISO-8859-1"));
 			// 打开和URL之间的连接
+			Log.i(TAG, realUrl.toString());
 			HttpURLConnection conn = (HttpURLConnection) realUrl
 					.openConnection();
 			// 设置通用的请求属性
-
 			conn.setReadTimeout(TIMEOUT_IN_MILLIONS);
 			conn.setConnectTimeout(TIMEOUT_IN_MILLIONS);
 			conn.setRequestMethod("GET");
@@ -217,7 +217,6 @@ public class HttpTasker extends ThreadPoolTask {
 			is = conn.getInputStream();
 			in = new InputStreamReader(is);
 			if (isString) {
-				Log.i(TAG, realUrl.toString());
 				ByteArrayOutputStream bos = new ByteArrayOutputStream();
 				byte[] buffer = new byte[1024];
 				int lenth = 0;
