@@ -42,7 +42,10 @@ public class DownLoadPop extends PopupWindow {
 
 	private String url;
 
-	private static int threadNUM = 10;
+	private static int threadNUM = 5;
+
+	private boolean isInstanll = false;
+
 	/**
 	 * 上午10:14:27 TODO 当Handler被创建会关联到创建它的当前线程的消息队列，该类用于往消息队列发送消息
 	 * 消息队列中的消息由当前线程内部进行处理
@@ -57,12 +60,13 @@ public class DownLoadPop extends PopupWindow {
 						/ (float) progressBar.getMax();
 				int result = (int) (num * 100);
 				resultView.setText(result + "%");
-
 				if (progressBar.getProgress() == progressBar.getMax()) {
 					ToastOOP.showToast(context, R.string.success);
-					if (msg.obj instanceof File) {
-						File file = (File) msg.obj;
-						Instanll(file, context);
+					if (!isInstanll) {
+						if (msg.obj instanceof File) {
+							File file = (File) msg.obj;
+							Instanll(file, context);
+						}
 					}
 				}
 				break;
@@ -189,5 +193,7 @@ public class DownLoadPop extends PopupWindow {
 		intent.setDataAndType(Uri.fromFile(file),
 				"application/vnd.android.package-archive");
 		context.startActivity(intent);
+		isInstanll = true;
+		dismiss();
 	}
 }

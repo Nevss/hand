@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -17,7 +19,6 @@ import com.darly.oop.base.BaseActivity;
 import com.darly.oop.db.DBMongo;
 import com.darly.oop.model.DarlyTableModel;
 import com.darly.oop.widget.share.CustomShareBoard;
-import com.darly.oop.widget.share.WXCallBack;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 import com.umeng.socialize.controller.UMServiceFactory;
@@ -35,12 +36,14 @@ import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 @ContentView(R.layout.activity_main)
-public class MainActivity extends BaseActivity implements WXCallBack {
+public class MainActivity extends BaseActivity {
 	/**
 	 * 下午2:46:54 TODO 测试ListView
 	 */
 	@ViewInject(R.id.main_list)
 	protected ListView lv;
+	@ViewInject(R.id.main_plugs)
+	protected Button plugs;
 
 	private MainController controller;
 
@@ -52,7 +55,7 @@ public class MainActivity extends BaseActivity implements WXCallBack {
 	public CustomShareBoard shareBoard;
 
 	protected ArrayList<DarlyTableModel> data;
-	
+
 	private long firstime;
 
 	/*
@@ -65,7 +68,7 @@ public class MainActivity extends BaseActivity implements WXCallBack {
 		// TODO Auto-generated method stub
 		controller = new MainController(this);
 		shareBoard = new CustomShareBoard(this);
-		shareBoard.setWXCallBack(this);
+		shareBoard.setWXCallBack(controller);
 	}
 
 	/*
@@ -77,8 +80,9 @@ public class MainActivity extends BaseActivity implements WXCallBack {
 	protected void initListener() {
 		// TODO Auto-generated method stub
 		lv.setOnItemClickListener(controller);
+		plugs.setVisibility(View.GONE);
+		plugs.setOnClickListener(controller);
 		DBMongo.getInstance().setOnMongoListener(controller);
-		// set = DBMongo.getInstance().getDB().getCollectionNames();
 		String lastesVersion = 12 + "";
 		String versionCode = 9 + "";
 		Log.i("版本", lastesVersion.compareTo(versionCode + "") + "");
@@ -238,16 +242,6 @@ public class MainActivity extends BaseActivity implements WXCallBack {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.darly.oop.widget.share.WXCallBack#shareComplete(boolean)
-	 */
-	@Override
-	public void shareComplete(boolean flag) {
-		Log.e("flag", "jsdiaoyong");
-		// webview.loadUrl("javascript:shareCheck('" + flag+ "')");
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -272,8 +266,6 @@ public class MainActivity extends BaseActivity implements WXCallBack {
 		// TODO Auto-generated method stub
 		super.finish();
 	}
-
-	
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -63,7 +63,7 @@ public class GuideAnim extends BaseActivity implements OnPageChangeListener {
 			initPoint();// 初始化导航小圆点
 			// 设置非第一次使用
 			SharePreferHelp
-					.putValue(APPEnum.ISFIRSTCOME.getDec(), false);
+					.putValue(APPEnum.ISFIRSTCOME.getDec(), true);
 		} else {
 			// 直接进入MainActivity
 			intoMain();

@@ -17,7 +17,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.darly.oop.R;
@@ -105,7 +104,7 @@ public class MainAdapter extends ParentAdapter<DarlyTableModel> {
 			// 进行断点续传代码混合。弹出一个窗口，进行文件下载。
 			DownLoadPop downLoadPop = new DownLoadPop(context,
 					APPEnum.DOWNLOADPATH.getDec(), v,
-					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, true);
+					android.view.ViewGroup.LayoutParams.MATCH_PARENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT, true);
 			downLoadPop.showAtLocation(v, Gravity.CENTER, 0, 0);
 		}
 

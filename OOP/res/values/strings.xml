@@ -19,4 +19,7 @@
     <string name="error">下载失败</string>
     <!-- 断点续传 -->
     <string name="degree">文件下载进度</string>
+    <string name="plugs">插件管理</string>
+    <string name="app_safe">应用 > 安全</string>
+    <string name="download">下  载</string>
 </resources>

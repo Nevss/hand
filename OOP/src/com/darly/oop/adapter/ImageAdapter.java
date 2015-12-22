@@ -2,8 +2,7 @@ package com.darly.oop.adapter;
 
 import java.util.List;
 
-import com.darly.oop.R;
-
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,8 @@ import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+
+import com.darly.oop.R;
 
 public class ImageAdapter extends PagerAdapter {
 	private List<View> list;
@@ -73,17 +74,18 @@ public class ImageAdapter extends PagerAdapter {
 		showAnim.setRepeatMode(Animation.RESTART);
 		showAnim.setRepeatCount(Animation.INFINITE);
 		showAnim.setInterpolator(new LinearInterpolator());
-		showAnim.setDuration(5000);
+		showAnim.setDuration(3000);
 		showAnim.setFillAfter(true);
 		iv.setAnimation(showAnim);
+		ImageView wave = (ImageView) view.findViewById(R.id.anim_wave);
+		AnimationDrawable drawable = (AnimationDrawable) wave.getBackground();
+		drawable.start();
 	}
 
 	/**
 	 * @param view
-	 * 下午5:52:04
-	 * @author zhangyh2
-	 * ImageAdapter.java
-	 * TODO 第二张动画效果
+	 *            下午5:52:04
+	 * @author zhangyh2 ImageAdapter.java TODO 第二张动画效果
 	 */
 	private void ViewSecAnim(View view) {
 		ImageView iv = (ImageView) view.findViewById(R.id.anim_sev);
@@ -100,10 +102,8 @@ public class ImageAdapter extends PagerAdapter {
 
 	/**
 	 * @param view
-	 * 下午5:52:14
-	 * @author zhangyh2
-	 * ImageAdapter.java
-	 * TODO 第三张动画效果
+	 *            下午5:52:14
+	 * @author zhangyh2 ImageAdapter.java TODO 第三张动画效果
 	 */
 	private void ViewDownAnim(View view) {
 		ImageView iv = (ImageView) view.findViewById(R.id.anim_down);

@@ -9,10 +9,13 @@ package com.darly.oop.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.darly.oop.R;
 import com.darly.oop.base.APPEnum;
 import com.darly.oop.common.ToastOOP;
 import com.darly.oop.db.DBMongo;
@@ -20,12 +23,14 @@ import com.darly.oop.model.DarlyModel;
 import com.darly.oop.model.DarlyTableModel;
 import com.darly.oop.ui.mongo.MainInsertActivity;
 import com.darly.oop.ui.mongo.MainUpdataActivity;
+import com.darly.oop.ui.plug.PlugActivity;
+import com.darly.oop.widget.share.WXCallBack;
 import com.google.gson.Gson;
 
 /**
  * @author zhangyh2 MainController $ 下午2:47:54 TODO MainActivity的控制类。
  */
-public class MainController implements OnItemClickListener,
+public class MainController implements OnItemClickListener,OnClickListener,WXCallBack,
 		DBMongo.MongoListener {
 
 	public MainActivity activity;
@@ -247,6 +252,31 @@ public class MainController implements OnItemClickListener,
 		default:
 			break;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see android.view.View.OnClickListener#onClick(android.view.View)
+	 */
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		switch (v.getId()) {
+		case R.id.main_plugs:
+			activity.startActivity(new Intent(activity, PlugActivity.class));
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	/* (non-Javadoc)
+	 * @see com.darly.oop.widget.share.WXCallBack#shareComplete(boolean)
+	 */
+	@Override
+	public void shareComplete(boolean flag) {
+		// TODO Auto-generated method stub
+		Log.e("flag", "jsdiaoyong");
 	}
 
 }

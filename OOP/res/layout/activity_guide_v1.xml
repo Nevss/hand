@@ -2,15 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:background="@color/umeng_socialize_text_share_content" >
+    android:background="@drawable/guide_one_bg"
+    android:orientation="vertical" >
 
     <ImageView
         android:id="@+id/anim_iv"
-        android:layout_centerInParent="true"
-        android:contentDescription="@string/app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/setting" />
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/ic_menu_preferences" />
+
+    <ImageView
+        android:id="@+id/anim_wave"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/anim_iv"
+        android:layout_marginTop="-20dp"
+        android:background="@anim/anim_wave"
+        android:contentDescription="@string/app_name" />
 
 </RelativeLayout>
