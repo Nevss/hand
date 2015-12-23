@@ -5,21 +5,69 @@
     android:background="@drawable/guide_one_bg"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/anim_v1_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="20dp"
+        android:text="@string/anim_v1"
+        
+        android:textColor="@android:color/darker_gray"
+        android:textSize="20sp"
+        android:textStyle="italic|bold" />
+
     <ImageView
         android:id="@+id/anim_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_menu_preferences" />
+        android:src="@drawable/google_earth" />
 
-    <ImageView
-        android:id="@+id/anim_wave"
+    <LinearLayout
+        android:id="@+id/anim_big"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/anim_iv"
-        android:layout_marginTop="-20dp"
-        android:background="@anim/anim_wave"
-        android:contentDescription="@string/app_name" />
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/action_settings"
+            android:src="@drawable/ic_satellite" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/anim_small"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="10dp"
+        android:orientation="horizontal" >
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="2" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/action_settings"
+            android:src="@drawable/ic_satellite" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" />
+    </LinearLayout>
 
 </RelativeLayout>

@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -16,6 +19,7 @@ import com.darly.oop.R;
 import com.darly.oop.adapter.MainAdapter;
 import com.darly.oop.base.APPEnum;
 import com.darly.oop.base.BaseActivity;
+import com.darly.oop.common.ToastOOP;
 import com.darly.oop.db.DBMongo;
 import com.darly.oop.model.DarlyTableModel;
 import com.darly.oop.widget.share.CustomShareBoard;
@@ -109,6 +113,43 @@ public class MainActivity extends BaseActivity {
 		addQQQZonePlatform();
 
 		setShareContent();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO Auto-generated method stub
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+
+		switch (item.getItemId()) {
+		case R.id.action_down:
+			ToastOOP.showToast(this, "action_down");
+			break;
+
+		case R.id.action_settings:
+			ToastOOP.showToast(this, "action_settings");
+			break;
+
+		default:
+			break;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	/**
@@ -241,7 +282,6 @@ public class MainActivity extends BaseActivity {
 		mController.setShareMedia(tencent);
 
 	}
-
 
 	/*
 	 * (non-Javadoc)

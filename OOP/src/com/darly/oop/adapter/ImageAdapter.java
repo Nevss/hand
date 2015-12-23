@@ -6,12 +6,17 @@ import android.graphics.drawable.AnimationDrawable;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.darly.oop.R;
+import com.darly.oop.base.APPEnum;
 
 public class ImageAdapter extends PagerAdapter {
 	private List<View> list;
@@ -74,12 +79,36 @@ public class ImageAdapter extends PagerAdapter {
 		showAnim.setRepeatMode(Animation.RESTART);
 		showAnim.setRepeatCount(Animation.INFINITE);
 		showAnim.setInterpolator(new LinearInterpolator());
-		showAnim.setDuration(3000);
+		showAnim.setDuration(30000);
 		showAnim.setFillAfter(true);
 		iv.setAnimation(showAnim);
-		ImageView wave = (ImageView) view.findViewById(R.id.anim_wave);
-		AnimationDrawable drawable = (AnimationDrawable) wave.getBackground();
-		drawable.start();
+
+		LinearLayout big = (LinearLayout) view.findViewById(R.id.anim_big);
+		Animation bigAnim = new RotateAnimation(0f, 359f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		bigAnim.setRepeatMode(Animation.RESTART);
+		bigAnim.setRepeatCount(Animation.INFINITE);
+		bigAnim.setInterpolator(new LinearInterpolator());
+		bigAnim.setDuration(60000);
+		bigAnim.setFillAfter(true);
+		big.setAnimation(bigAnim);
+		LinearLayout small = (LinearLayout) view.findViewById(R.id.anim_small);
+		Animation smallAnim = new RotateAnimation(359f, 0f,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+				0.5f);
+		smallAnim.setRepeatMode(Animation.RESTART);
+		smallAnim.setRepeatCount(Animation.INFINITE);
+		smallAnim.setInterpolator(new LinearInterpolator());
+		smallAnim.setDuration(15000);
+		smallAnim.setFillAfter(true);
+		small.setAnimation(smallAnim);
+
+		TextView v1 = (TextView) view.findViewById(R.id.anim_v1_text);
+		Animation animation = new AlphaAnimation(0f, 1f);
+		animation.setDuration(5000);
+		animation.setFillAfter(true);
+		v1.setAnimation(animation);
 	}
 
 	/**
@@ -106,16 +135,24 @@ public class ImageAdapter extends PagerAdapter {
 	 * @author zhangyh2 ImageAdapter.java TODO 第三张动画效果
 	 */
 	private void ViewDownAnim(View view) {
-		ImageView iv = (ImageView) view.findViewById(R.id.anim_down);
-		Animation downAnim = new RotateAnimation(359f, 0f,
-				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-				0.5f);
-		downAnim.setRepeatMode(Animation.RESTART);
-		downAnim.setRepeatCount(Animation.INFINITE);
-		downAnim.setInterpolator(new LinearInterpolator());
-		downAnim.setFillAfter(true);
-		downAnim.setDuration(2000);
-		iv.setAnimation(downAnim);
+		ImageView iv = (ImageView) view.findViewById(R.id.anim_ship);
+		Animation downAnims = new TranslateAnimation(0, APPEnum.WIDTH.getLen(),
+				0, 0);
+		downAnims.setRepeatCount(Animation.INFINITE);
+		downAnims.setRepeatMode(Animation.REVERSE);
+		downAnims.setFillAfter(true);
+		downAnims.setDuration(15000);
+		iv.setAnimation(downAnims);
+		ImageView wave = (ImageView) view.findViewById(R.id.anim_wave);
+		AnimationDrawable drawable = (AnimationDrawable) wave.getBackground();
+		drawable.start();
+		
+		TextView v3 = (TextView) view.findViewById(R.id.anim_v3_text);
+		Animation animation = new AlphaAnimation(0f, 1f);
+		animation.setDuration(5000);
+		animation.setFillAfter(true);
+		v3.setAnimation(animation);
+
 	}
 
 }

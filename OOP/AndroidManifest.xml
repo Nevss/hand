@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="10"
+        android:minSdkVersion="11"
         android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -32,15 +32,21 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.darly.oop.ui.welcome.GuideAnim"
-            android:label="@string/app_name" >
+            android:name="com.darly.oop.ui.welcome.Welcome"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.darly.oop.ui.MainActivity" >
+        <activity
+            android:name="com.darly.oop.ui.welcome.GuideAnim"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.darly.oop.ui.MainActivity"
+            android:theme="@android:style/Theme.Holo.Light" >
         </activity>
         <activity android:name="com.darly.oop.ui.mongo.MainInsertActivity" >
         </activity>

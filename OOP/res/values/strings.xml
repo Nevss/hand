@@ -22,4 +22,6 @@
     <string name="plugs">插件管理</string>
     <string name="app_safe">应用 > 安全</string>
     <string name="download">下  载</string>
+    <string name="anim_v1">环绕世界 围绕中心</string>
+    <string name="anim_v3">逆水行舟 顺水推舟</string>
 </resources>

@@ -55,19 +55,11 @@ public class GuideAnim extends BaseActivity implements OnPageChangeListener {
 	@Override
 	protected void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
-		boolean isFirstCome = SharePreferHelp.getValue(
-				APPEnum.ISFIRSTCOME.getDec(), true);
-		if (isFirstCome) {
-			// 第一次使用
-			initViewPager();// 初始化ViewPager对象
-			initPoint();// 初始化导航小圆点
-			// 设置非第一次使用
-			SharePreferHelp
-					.putValue(APPEnum.ISFIRSTCOME.getDec(), true);
-		} else {
-			// 直接进入MainActivity
-			intoMain();
-		}
+		// 第一次使用
+		initViewPager();// 初始化ViewPager对象
+		initPoint();// 初始化导航小圆点
+		// 设置非第一次使用
+		SharePreferHelp.putValue(APPEnum.ISFIRSTCOME.getDec(), false);
 
 	}
 
