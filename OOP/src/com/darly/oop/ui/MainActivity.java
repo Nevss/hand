@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,6 +27,7 @@ import com.darly.oop.db.DBMongo;
 import com.darly.oop.model.DarlyTableModel;
 import com.darly.oop.model.Menu;
 import com.darly.oop.model.Menu_Top;
+import com.darly.oop.ui.inditorviewpager.InditorViewpage;
 import com.darly.oop.widget.share.CustomShareBoard;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -43,7 +46,7 @@ import com.umeng.socialize.weixin.media.CircleShareContent;
 import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 @ContentView(R.layout.activity_main)
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnItemClickListener {
 	/**
 	 * 下午2:46:54 TODO 测试ListView
 	 */
@@ -112,6 +115,8 @@ public class MainActivity extends BaseActivity {
 
 		lv.setOnItemClickListener(controller);
 		plugs.setOnClickListener(controller);
+
+		drawerList.setOnItemClickListener(this);
 		DBMongo.getInstance().setOnMongoListener(controller);
 		String lastesVersion = 12 + "";
 		String versionCode = 9 + "";
@@ -346,6 +351,20 @@ public class MainActivity extends BaseActivity {
 			}
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget
+	 * .AdapterView, android.view.View, int, long)
+	 */
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		startActivity(new Intent(this, InditorViewpage.class));
 	}
 
 }
