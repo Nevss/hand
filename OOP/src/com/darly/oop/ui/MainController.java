@@ -10,6 +10,7 @@ package com.darly.oop.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -30,8 +31,8 @@ import com.google.gson.Gson;
 /**
  * @author zhangyh2 MainController $ 下午2:47:54 TODO MainActivity的控制类。
  */
-public class MainController implements OnItemClickListener,OnClickListener,WXCallBack,
-		DBMongo.MongoListener {
+public class MainController implements OnItemClickListener, OnClickListener,
+		WXCallBack, DBMongo.MongoListener {
 
 	public MainActivity activity;
 
@@ -254,7 +255,9 @@ public class MainController implements OnItemClickListener,OnClickListener,WXCal
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.view.View.OnClickListener#onClick(android.view.View)
 	 */
 	@Override
@@ -264,13 +267,18 @@ public class MainController implements OnItemClickListener,OnClickListener,WXCal
 		case R.id.main_plugs:
 			activity.startActivity(new Intent(activity, PlugActivity.class));
 			break;
+		case R.id.header_back:
+			activity.drawer.openDrawer(Gravity.LEFT);
+			break;
 
 		default:
 			break;
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.darly.oop.widget.share.WXCallBack#shareComplete(boolean)
 	 */
 	@Override

@@ -143,6 +143,7 @@ public class PlugActivity extends BaseActivity implements OnItemClickListener,
 					.setMessage("是否卸载此插件？")
 					.setNegativeButton("卸载",
 							new DialogInterface.OnClickListener() {
+								@Override
 								public void onClick(DialogInterface dialog,
 										int which) {
 									// 直接使用 Bundle.uninstall()卸载

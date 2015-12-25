@@ -36,6 +36,9 @@ public enum APPEnum {
 
 	public static final int DB_REQUST = 0x0005;
 
+	public static final int ITEMTITLE = 0x0006;
+
+	public static final int ITEMVIEW = 0x0007;
 	private String dec;
 
 	private int len;

@@ -5,23 +5,26 @@ import java.util.ArrayList;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.darly.oop.R;
 import com.darly.oop.adapter.MainAdapter;
+import com.darly.oop.adapter.MainDrawAdapter;
 import com.darly.oop.base.APPEnum;
 import com.darly.oop.base.BaseActivity;
-import com.darly.oop.common.ToastOOP;
 import com.darly.oop.db.DBMongo;
 import com.darly.oop.model.DarlyTableModel;
+import com.darly.oop.model.Menu;
+import com.darly.oop.model.Menu_Top;
 import com.darly.oop.widget.share.CustomShareBoard;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -48,6 +51,16 @@ public class MainActivity extends BaseActivity {
 	protected ListView lv;
 	@ViewInject(R.id.main_plugs)
 	protected Button plugs;
+	@ViewInject(R.id.header_back)
+	protected ImageView back;
+	@ViewInject(R.id.header_title)
+	protected TextView title;
+	@ViewInject(R.id.header_other)
+	protected ImageView other;
+	@ViewInject(R.id.drawer_drawer)
+	protected DrawerLayout drawer;
+	@ViewInject(R.id.drawer_list)
+	protected ListView drawerList;
 
 	private MainController controller;
 
@@ -60,6 +73,8 @@ public class MainActivity extends BaseActivity {
 
 	protected ArrayList<DarlyTableModel> data;
 
+	protected ArrayList<Menu> drawData;
+
 	private long firstime;
 
 	/*
@@ -70,9 +85,19 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void initView(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		title.setText(R.string.header_main);
+
+		back.setImageResource(R.drawable.ic_menu_select);
+
+		other.setImageResource(R.drawable.ic_menu_select);
+		other.setVisibility(View.INVISIBLE);
+
+		drawer.closeDrawers();
+
 		controller = new MainController(this);
 		shareBoard = new CustomShareBoard(this);
 		shareBoard.setWXCallBack(controller);
+
 	}
 
 	/*
@@ -83,8 +108,9 @@ public class MainActivity extends BaseActivity {
 	@Override
 	protected void initListener() {
 		// TODO Auto-generated method stub
+		back.setOnClickListener(controller);
+
 		lv.setOnItemClickListener(controller);
-		plugs.setVisibility(View.GONE);
 		plugs.setOnClickListener(controller);
 		DBMongo.getInstance().setOnMongoListener(controller);
 		String lastesVersion = 12 + "";
@@ -108,6 +134,16 @@ public class MainActivity extends BaseActivity {
 
 		lv.setAdapter(adapter);
 
+		drawerList.addHeaderView(LayoutInflater.from(this).inflate(
+				R.layout.header_menu, null));
+
+		drawListData();
+
+		MainDrawAdapter drawAdapter = new MainDrawAdapter(drawData,
+				R.layout.item_drawer_view, this);
+
+		drawerList.setAdapter(drawAdapter);
+
 		addWXPlatform();
 
 		addQQQZonePlatform();
@@ -115,41 +151,30 @@ public class MainActivity extends BaseActivity {
 		setShareContent();
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
 	 * 
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	/*
-	 * (non-Javadoc)
+	 * 上午11:24:21
 	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+	 * @author zhangyh2 MainActivity.java TODO 菜单列表数据
 	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
+	private void drawListData() {
 		// TODO Auto-generated method stub
-
-		switch (item.getItemId()) {
-		case R.id.action_down:
-			ToastOOP.showToast(this, "action_down");
-			break;
-
-		case R.id.action_settings:
-			ToastOOP.showToast(this, "action_settings");
-			break;
-
-		default:
-			break;
-		}
-		return super.onOptionsItemSelected(item);
+		drawData = new ArrayList<Menu>();
+		// 中间选项
+		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_index, "首页"),
+				APPEnum.ITEMVIEW));
+		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_me, "消息"),
+				APPEnum.ITEMVIEW));
+		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_set_press, "列表"),
+				APPEnum.ITEMVIEW));
+		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_me_press, "其他"),
+				APPEnum.ITEMVIEW));
+		// 底部选项
+		drawData.add(new Menu("个人设置", null, APPEnum.ITEMTITLE));
+		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_set, "设置"),
+				APPEnum.ITEMVIEW));
+		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_loacl, "关于"),
+				APPEnum.ITEMVIEW));
 	}
 
 	/**

@@ -24,4 +24,6 @@
     <string name="download">下  载</string>
     <string name="anim_v1">环绕世界 围绕中心</string>
     <string name="anim_v3">逆水行舟 顺水推舟</string>
+    <string name="header_main">首页</string>
+
 </resources>

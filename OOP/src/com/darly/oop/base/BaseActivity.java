@@ -12,6 +12,7 @@ import com.lidroid.xutils.util.LogUtils;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.Window;
 
 /**
  * @author zhangyh2 BaseActivity $ 下午2:33:01 TODO
@@ -26,17 +27,17 @@ public abstract class BaseActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 
 		initGlobalVariable();
 
 		initView(savedInstanceState);
-		
+
 		loadData();
-		
+
 		initListener();
 
-		
 	}
 
 	/**
@@ -60,7 +61,7 @@ public abstract class BaseActivity extends FragmentActivity {
 	 * @author zhangyh2 BaseActivity.java TODO 初始化控件
 	 */
 	protected abstract void initView(Bundle savedInstanceState);
-	
+
 	/**
 	 * 
 	 * 下午2:42:02
@@ -77,10 +78,9 @@ public abstract class BaseActivity extends FragmentActivity {
 	 */
 	protected abstract void loadData();
 
-	
-
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.FragmentActivity#onResume()
 	 */
 	@Override
@@ -88,8 +88,10 @@ public abstract class BaseActivity extends FragmentActivity {
 		// TODO Auto-generated method stub
 		super.onResume();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.FragmentActivity#onPause()
 	 */
 	@Override
