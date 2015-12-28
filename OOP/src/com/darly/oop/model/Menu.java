@@ -18,10 +18,13 @@ public class Menu {
 
 	public int type;
 
-	public Menu(String title, Menu_Top tops, int type) {
+	public boolean isSelect;
+
+	public Menu(String title, Menu_Top tops, int type, boolean isSelect) {
 		this.title = title;
 		this.tops = tops;
 		this.type = type;
+		this.isSelect = isSelect;
 	}
 
 }

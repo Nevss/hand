@@ -78,6 +78,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 
 	protected ArrayList<Menu> drawData;
 
+	private MainDrawAdapter drawAdapter;
+
 	private long firstime;
 
 	/*
@@ -144,8 +146,8 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 
 		drawListData();
 
-		MainDrawAdapter drawAdapter = new MainDrawAdapter(drawData,
-				R.layout.item_drawer_view, this);
+		drawAdapter = new MainDrawAdapter(drawData, R.layout.item_drawer_view,
+				this);
 
 		drawerList.setAdapter(drawAdapter);
 
@@ -167,19 +169,19 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 		drawData = new ArrayList<Menu>();
 		// 中间选项
 		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_index, "首页"),
-				APPEnum.ITEMVIEW));
+				APPEnum.ITEMVIEW, false));
 		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_me, "消息"),
-				APPEnum.ITEMVIEW));
+				APPEnum.ITEMVIEW, false));
 		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_set_press, "列表"),
-				APPEnum.ITEMVIEW));
+				APPEnum.ITEMVIEW, false));
 		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_me_press, "其他"),
-				APPEnum.ITEMVIEW));
+				APPEnum.ITEMVIEW, false));
 		// 底部选项
-		drawData.add(new Menu("个人设置", null, APPEnum.ITEMTITLE));
+		drawData.add(new Menu("个人设置", null, APPEnum.ITEMTITLE, false));
 		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_set, "设置"),
-				APPEnum.ITEMVIEW));
+				APPEnum.ITEMVIEW, false));
 		drawData.add(new Menu("", new Menu_Top(R.drawable.ic_loacl, "关于"),
-				APPEnum.ITEMVIEW));
+				APPEnum.ITEMVIEW, false));
 	}
 
 	/**
@@ -364,7 +366,15 @@ public class MainActivity extends BaseActivity implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// TODO Auto-generated method stub
+		for (Menu menu : drawData) {
+			menu.isSelect = false;
+		}
+		Menu menu = (Menu) parent.getItemAtPosition(position);
+		menu.isSelect = true;
+		drawAdapter.setData(drawData);
 		startActivity(new Intent(this, InditorViewpage.class));
+		drawer.closeDrawers();
+
 	}
 
 }

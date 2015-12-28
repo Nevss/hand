@@ -64,7 +64,7 @@ public class MainDrawAdapter extends ParentAdapter<Menu> {
 			hocker.viewname = (TextView) view
 					.findViewById(R.id.item_draw_viewname);
 			view.setTag(hocker);
-		}else {
+		} else {
 			hocker = (ViewHocker) view.getTag();
 		}
 		switch (t.type) {
@@ -78,11 +78,32 @@ public class MainDrawAdapter extends ParentAdapter<Menu> {
 			hocker.viewiv.setVisibility(View.VISIBLE);
 			hocker.viewiv.setImageResource(t.tops.imageRes);
 			hocker.viewname.setText(t.tops.name);
+			if (t.isSelect) {
+				hocker.views.setBackgroundColor(context.getResources()
+						.getColor(R.color.back_color));
+			} else {
+				hocker.views.setBackgroundColor(context.getResources()
+						.getColor(R.color.white));
+			}
 			break;
 		default:
 			break;
 		}
 		return view;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.BaseAdapter#isEnabled(int)
+	 */
+	@Override
+	public boolean isEnabled(int position) {
+		// TODO Auto-generated method stub
+		if (getItem(position).type == APPEnum.ITEMTITLE) {
+			return false;
+		}
+		return super.isEnabled(position);
 	}
 
 	class ViewHocker {

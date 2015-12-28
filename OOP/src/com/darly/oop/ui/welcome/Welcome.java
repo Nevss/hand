@@ -10,9 +10,13 @@ package com.darly.oop.ui.welcome;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationSet;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.TextView;
 
 import com.darly.oop.R;
 import com.darly.oop.base.APPEnum;
@@ -30,6 +34,8 @@ public class Welcome extends BaseActivity implements AnimationListener {
 
 	@ViewInject(R.id.welcome_iv)
 	private View view;
+	@ViewInject(R.id.welcome_tv)
+	private TextView tv;
 
 	/*
 	 * (non-Javadoc)
@@ -47,6 +53,8 @@ public class Welcome extends BaseActivity implements AnimationListener {
 		animation.setFillAfter(true);
 		view.setAnimation(animation);
 		animation.setAnimationListener(this);
+
+		applyRotation(0, 360);
 	}
 
 	/*
@@ -141,6 +149,25 @@ public class Welcome extends BaseActivity implements AnimationListener {
 	public void onAnimationRepeat(Animation animation) {
 		// TODO Auto-generated method stub
 
+	}
+
+	private void applyRotation(float start, float end) {
+		// 计算中心点
+		float centerX = tv.getWidth() / 2.0f;
+		float centerY = tv.getHeight() / 2.0f;
+		AnimationSet set = new AnimationSet(true);
+		AlphaAnimation alpha = new AlphaAnimation(0, 1);
+		alpha.setDuration(2500);
+		set.addAnimation(alpha);
+
+		Rotate3dAnimation rotation = new Rotate3dAnimation(start, end, centerX,
+				centerY, 0f, false);
+		rotation.setDuration(2500);
+		rotation.setFillAfter(true);
+		rotation.setInterpolator(new LinearInterpolator());
+		set.addAnimation(rotation);
+		// 设置监听
+		tv.startAnimation(set);
 	}
 
 }
