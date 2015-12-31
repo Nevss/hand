@@ -22,7 +22,7 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 	public ScrollIndicatorView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		fixedIndicatorView = new SFixedIndicatorView(context);
-		addView(fixedIndicatorView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		addView(fixedIndicatorView, new LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 		setHorizontalScrollBarEnabled(false);
 		setSplitAuto(true);
 	}
@@ -117,6 +117,7 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 			removeCallbacks(mTabSelector);
 		}
 		mTabSelector = new Runnable() {
+			@Override
 			public void run() {
 				final int scrollPos = tabView.getLeft() - (getWidth() - tabView.getWidth()) / 2;
 				smoothScrollTo(scrollPos, 0);
@@ -271,7 +272,7 @@ public class ScrollIndicatorView extends HorizontalScrollView implements Indicat
 
 		private int measureChildWidth(View view, int widthSpec, int heightSpec) {
 			LinearLayout.LayoutParams p = (LinearLayout.LayoutParams) view.getLayoutParams();
-			int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec, getPaddingLeft() + getPaddingRight(), LayoutParams.WRAP_CONTENT);
+			int childWidthSpec = ViewGroup.getChildMeasureSpec(widthSpec, getPaddingLeft() + getPaddingRight(), android.view.ViewGroup.LayoutParams.WRAP_CONTENT);
 			int childHeightSpec = ViewGroup.getChildMeasureSpec(heightSpec, getPaddingTop() + getPaddingBottom(), p.height);
 			view.measure(childWidthSpec, childHeightSpec);
 			return view.getMeasuredWidth() + p.leftMargin + p.rightMargin;

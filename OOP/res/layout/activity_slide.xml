@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.darly.oop.widget.slide.SlideView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ac="http://schemas.android.com/apk/res/com.darly.oop"
+    android:id="@+id/slide_view"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    ac:rightpadding="100dp"
+    android:background="@drawable/night"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <include layout="@layout/slide_menu" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white" >
+
+                <AutoCompleteTextView
+                    android:id="@+id/slide_search"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="4dp" />
+
+                <Button
+                    android:id="@+id/slide_search_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search" />
+            </TableRow>
+
+            <ListView
+                android:id="@+id/slide_list_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/tab_main_text_2" >
+            </ListView>
+        </LinearLayout>
+    </LinearLayout>
+
+</com.darly.oop.widget.slide.SlideView>

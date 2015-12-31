@@ -179,7 +179,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 				result.addView(view);
 				result.setOnClickListener(onClickListener);
 				result.setTag(i);
-				addView(result, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+				addView(result, new LinearLayout.LayoutParams(android.view.ViewGroup.LayoutParams.WRAP_CONTENT, android.view.ViewGroup.LayoutParams.MATCH_PARENT));
 			}
 			mPreSelectedTabIndex = -1;
 			setCurrentItem(mSelectedTabIndex, false);
@@ -251,6 +251,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 
 		private Scroller scroller;
 		private final Interpolator sInterpolator = new Interpolator() {
+			@Override
 			public float getInterpolation(float t) {
 				t -= 1.0f;
 				return t * t * t * t * t + 1.0f;
@@ -455,7 +456,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			for (int i = 0; i < count; i++) {
 				View view = getChildAt(i);
 				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-				layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+				layoutParams.width = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 				layoutParams.weight = 0;
 				view.setLayoutParams(layoutParams);
 			}
@@ -464,7 +465,7 @@ public class FixedIndicatorView extends LinearLayout implements Indicator {
 			for (int i = 0; i < count; i++) {
 				View view = getChildAt(i);
 				LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
-				layoutParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+				layoutParams.width = android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 				layoutParams.weight = 1;
 				view.setLayoutParams(layoutParams);
 			}

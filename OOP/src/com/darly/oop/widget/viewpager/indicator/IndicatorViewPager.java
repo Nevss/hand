@@ -285,7 +285,7 @@ public class IndicatorViewPager {
 		};
 
 		public int getItemPosition(Object object) {
-			return RecyclingPagerAdapter.POSITION_UNCHANGED;
+			return PagerAdapter.POSITION_UNCHANGED;
 		}
 
 		public abstract int getCount();
@@ -366,7 +366,7 @@ public class IndicatorViewPager {
 		};
 
 		public int getItemPosition(Object object) {
-			return FragmentListPageAdapter.POSITION_UNCHANGED;
+			return PagerAdapter.POSITION_UNCHANGED;
 		}
 
 		/**

@@ -21,10 +21,17 @@
             android:background="@drawable/btn_select"
             android:text="@string/plugs" />
 
+        <FrameLayout
+            android:id="@+id/main_frame"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" >
+        </FrameLayout>
+
         <ListView
             android:id="@+id/main_list"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:visibility="gone" />
     </LinearLayout>
 
     <ListView
@@ -32,8 +39,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:divider="@null"
-        android:background="@android:color/white" >
+        android:background="@android:color/white"
+        android:divider="@null" >
     </ListView>
 
 </android.support.v4.widget.DrawerLayout>

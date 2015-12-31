@@ -36,9 +36,26 @@ public enum APPEnum {
 
 	public static final int DB_REQUST = 0x0005;
 
+	/**
+	 * 下午1:45:21 TODO 抽屉菜单样式，标题样式
+	 */
 	public static final int ITEMTITLE = 0x0006;
 
+	/**
+	 * 下午1:45:25 TODO 抽屉菜单样式，条目样式
+	 */
 	public static final int ITEMVIEW = 0x0007;
+
+	/**
+	 * 下午1:46:52
+	 * TODO 抽屉菜单样式，条目样式(点击选择的效果)
+	 */
+	public static final int ITEMSELECTVIEW = 0x0010;
+	/**
+	 * 下午1:46:52
+	 * TODO 抽屉菜单样式，条目样式(点击选择的效果)
+	 */
+	public static final int ITEMSELECTITLE = 0x0011;
 	private String dec;
 
 	private int len;

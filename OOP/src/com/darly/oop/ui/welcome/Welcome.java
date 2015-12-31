@@ -23,6 +23,7 @@ import com.darly.oop.base.APPEnum;
 import com.darly.oop.base.BaseActivity;
 import com.darly.oop.common.SharePreferHelp;
 import com.darly.oop.ui.MainActivity;
+import com.darly.oop.ui.SlideActivity;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
 
@@ -36,6 +37,8 @@ public class Welcome extends BaseActivity implements AnimationListener {
 	private View view;
 	@ViewInject(R.id.welcome_tv)
 	private TextView tv;
+	
+	private int version = 2;
 
 	/*
 	 * (non-Javadoc)
@@ -87,7 +90,11 @@ public class Welcome extends BaseActivity implements AnimationListener {
 	 */
 	private void intoMain() {
 		// TODO Auto-generated method stub
-		startActivity(new Intent(this, MainActivity.class));
+		if (version == 2) {
+			startActivity(new Intent(this, SlideActivity.class));
+		} else {
+			startActivity(new Intent(this, MainActivity.class));
+		}
 		finish();
 	}
 

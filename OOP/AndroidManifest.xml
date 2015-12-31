@@ -42,6 +42,8 @@
         </activity>
         <activity android:name="com.darly.oop.ui.MainActivity" >
         </activity>
+        <activity android:name="com.darly.oop.ui.SlideActivity" >
+        </activity>
         <activity android:name="com.darly.oop.ui.mongo.MainInsertActivity" >
         </activity>
         <activity android:name="com.darly.oop.ui.mongo.MainUpdataActivity" >

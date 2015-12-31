@@ -16,6 +16,7 @@ import android.view.WindowManager;
 
 import com.darly.oop.common.ToastOOP;
 import com.darly.oop.db.DBMongo;
+import com.darly.oop.db.DBUtilsHelper;
 import com.lidroid.xutils.util.LogUtils;
 
 /**
@@ -51,6 +52,9 @@ public class APP extends Application {
 		if (APPEnum.WIDTH.getLen() == 0 || APPEnum.HEIGHT.getLen() == 0) {
 			getParamsWithWH();
 		}
+		
+		//初始化数据库。
+		DBUtilsHelper.getInstance().getDb();
 	}
 
 	/**

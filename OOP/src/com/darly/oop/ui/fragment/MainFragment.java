@@ -48,6 +48,7 @@ public class MainFragment extends LazyFragment {
 	}
 
 	private Handler handler = new Handler() {
+		@Override
 		public void handleMessage(android.os.Message msg) {
 			progressBar.setVisibility(View.GONE);
 			textView.setVisibility(View.VISIBLE);

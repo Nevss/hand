@@ -12,6 +12,7 @@ import java.util.List;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,6 @@ import android.widget.TextView;
 
 import com.darly.oop.R;
 import com.darly.oop.ui.fragment.MainFragment;
-import com.darly.oop.widget.viewpager.indicator.FragmentListPageAdapter;
 import com.darly.oop.widget.viewpager.indicator.IndicatorViewPager.IndicatorFragmentPagerAdapter;
 
 /**
@@ -75,7 +75,7 @@ public class InitorAdapter extends IndicatorFragmentPagerAdapter {
 
 	@Override
 	public int getItemPosition(Object object) {
-		return FragmentListPageAdapter.POSITION_NONE;
+		return PagerAdapter.POSITION_NONE;
 	}
 
 }
