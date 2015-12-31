@@ -33,10 +33,8 @@ import com.darly.oop.model.Menu;
 import com.darly.oop.model.Menu_Top;
 import com.darly.oop.model.SimplePazzle;
 import com.darly.oop.widget.slide.SlideView;
-import com.lidroid.xutils.exception.DbException;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
-import com.mongodb.DB;
 
 /**
  * @author zhangyh2 SlideActivity $ 上午11:17:51 TODO
