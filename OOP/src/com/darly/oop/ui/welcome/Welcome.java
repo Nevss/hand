@@ -52,7 +52,7 @@ public class Welcome extends BaseActivity implements AnimationListener {
 		Animation animation = new ScaleAnimation(1f, 1.2f, 1f, 1.2f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
 				0.5f);
-		animation.setDuration(3000);
+		animation.setDuration(1000);
 		animation.setFillAfter(true);
 		view.setAnimation(animation);
 		animation.setAnimationListener(this);

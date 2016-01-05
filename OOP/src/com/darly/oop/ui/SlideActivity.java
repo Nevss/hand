@@ -9,10 +9,13 @@ package com.darly.oop.ui;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -32,6 +35,7 @@ import com.darly.oop.model.DarlyTableModel;
 import com.darly.oop.model.Menu;
 import com.darly.oop.model.Menu_Top;
 import com.darly.oop.model.SimplePazzle;
+import com.darly.oop.ui.luckdraw.LuckDrawActivity;
 import com.darly.oop.widget.slide.SlideView;
 import com.lidroid.xutils.view.annotation.ContentView;
 import com.lidroid.xutils.view.annotation.ViewInject;
@@ -41,7 +45,7 @@ import com.lidroid.xutils.view.annotation.ViewInject;
  */
 @ContentView(R.layout.activity_slide)
 public class SlideActivity extends BaseActivity implements OnClickListener,
-		OnCheckedChangeListener {
+		OnCheckedChangeListener,OnItemClickListener {
 
 	@ViewInject(R.id.slide_view)
 	private SlideView slideView;
@@ -98,6 +102,8 @@ public class SlideActivity extends BaseActivity implements OnClickListener,
 				this);
 
 		drawerList.setAdapter(drawAdapter);
+		
+		drawerList.setOnItemClickListener(this);
 
 	}
 
@@ -213,6 +219,17 @@ public class SlideActivity extends BaseActivity implements OnClickListener,
 		default:
 			break;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see android.widget.AdapterView.OnItemClickListener#onItemClick(android.widget.AdapterView, android.view.View, int, long)
+	 */
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		// TODO Auto-generated method stub
+		startActivity(new Intent(this, LuckDrawActivity.class));
+		slideView.closeMenu();
 	}
 
 }

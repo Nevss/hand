@@ -54,6 +54,8 @@
         </activity>
         <activity android:name="com.darly.oop.ui.inditorviewpager.InditorViewpage" >
         </activity>
+        <activity android:name="com.darly.oop.ui.luckdraw.LuckDrawActivity" >
+        </activity>
 
         <!-- 插件平台需要的配置! -->
         <activity
