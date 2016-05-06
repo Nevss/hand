@@ -50,7 +50,7 @@
         android:visibility="visible" >
 
         <TextView
-            android:id="@+id/tv_b11"
+            android:id="@+id/tv_b13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -61,7 +61,7 @@
             android:id="@+id/id_bt_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_b11"
+            android:layout_below="@id/tv_b13"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp"
@@ -99,7 +99,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/login_bt_bg_blue"
             android:padding="10dp"
-            android:text="添加体检报告照片"
+            android:text="填写问诊信息"
             android:textColor="@color/white"
             android:textSize="18sp" />
     </RelativeLayout>

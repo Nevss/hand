@@ -15,7 +15,6 @@ package com.yuntongxun.kitsdk.ui.chatting.model;
 
 
 import com.yuntongxun.ecsdk.ECMessage;
-import com.yuntongxun.ecsdk.im.ECFileMessageBody;
 
 /**
  * @author Jorstin Chan@容联•云通讯

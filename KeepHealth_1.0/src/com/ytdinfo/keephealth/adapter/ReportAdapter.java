@@ -1,17 +1,22 @@
 package com.ytdinfo.keephealth.adapter;
 
 import java.util.List;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+
 import com.google.gson.Gson;
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.db.sqlite.Selector;
@@ -29,8 +34,10 @@ import com.ytdinfo.keephealth.model.ReportBean;
 import com.ytdinfo.keephealth.model.UserModel;
 import com.ytdinfo.keephealth.ui.MainActivity;
 import com.ytdinfo.keephealth.ui.view.MyProgressDialog;
+import com.ytdinfo.keephealth.utils.Chat_Dialog;
 import com.ytdinfo.keephealth.utils.DBUtilsHelper;
 import com.ytdinfo.keephealth.utils.LogUtil;
+import com.ytdinfo.keephealth.utils.NetworkReachabilityUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 import com.yuntongxun.kitsdk.ECDeviceKit;
@@ -134,8 +141,15 @@ public class ReportAdapter extends BaseAdapter {
 		public void onClick(View v) {
 			// requestDoctor(list.get(mPosition).getStudyId());
 			if (!DBUtilsHelper.getInstance().isHaveOnline()) {
-				buttons.setClickable(false);
-				requestDoctor(list.get(mPosition).getStudyId(), buttons);
+
+				if (!NetworkReachabilityUtil.isNetworkConnected(MyApp
+						.getInstance())) {
+					ToastUtil.showMessage("网络未连接...");
+					buttons.setClickable(true);
+				} else {
+					buttons.setClickable(false);
+					requestDoctor(list.get(mPosition).getStudyId(), buttons);
+				}
 			} else {
 				ToastUtil.showMessage("您当前正在进行在线咨询，结束后才能进行报告解读哦");
 				Intent intent = new Intent(ReportAdapter.this.context,
@@ -187,7 +201,7 @@ public class ReportAdapter extends BaseAdapter {
 							// TODO Auto-generated method stub
 							LogUtil.i(TAG, arg0.result);
 							myProgressDialog.dismiss();
-							analyzeJson(arg0.result);
+							analyzeJson(arg0.result, buttons);
 
 						}
 
@@ -207,8 +221,30 @@ public class ReportAdapter extends BaseAdapter {
 
 	ChatInfoBean chatInfoBean;
 
-	private void analyzeJson(String json) {
+	private void analyzeJson(String json, Button buttons) {
 		// TODO Auto-generated method stub
+//		if (!Chat_Dialog.timeCurl()) {
+//			final AlertDialog dialog = new AlertDialog.Builder(context)
+//					.create();
+//			dialog.show();
+//			dialog.setCanceledOnTouchOutside(false);
+//			Window window = dialog.getWindow();
+//			window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+//			TextView msg = (TextView) window.findViewById(R.id.chat_dialog_msg);
+//			String desString = "亲，非常抱歉，我们的服务时间是工作日9：00－18：00，欢迎下次来咨询，祝您身体健康！";
+//			msg.setText(desString);
+//			Button sure = (Button) window.findViewById(R.id.chat_dialog_sure);
+//			sure.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					dialog.dismiss();
+//				}
+//			});
+//			buttons.setClickable(true);
+//			return;
+//		}
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			JSONObject data = jsonObject.getJSONObject("Data");
@@ -217,11 +253,31 @@ public class ReportAdapter extends BaseAdapter {
 			String responser = data.getString("responser");
 			if (null == responser || responser.equals("")
 					|| responser.equals("null")) {
-				ToastUtil.showMessage("当前没有医生在线...");
+				final AlertDialog dialog = new AlertDialog.Builder(context)
+						.create();
+				dialog.show();
+				dialog.setCanceledOnTouchOutside(false);
+				Window window = dialog.getWindow();
+				window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+				TextView msg = (TextView) window
+						.findViewById(R.id.chat_dialog_msg);
+				String desString = "亲，我们的医生都在忙碌，请稍等~";
+				msg.setText(desString);
+				Button sure = (Button) window
+						.findViewById(R.id.chat_dialog_sure);
+				sure.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
+				buttons.setClickable(true);
 				return;
 			}
-			//开启计时
-			//......
+			// 开启计时
+			// ......
 			docInfoBean = new Gson().fromJson(responser, DocInfoBean.class);
 			try {
 				chatInfoBean = db.findFirst(Selector.from(ChatInfoBean.class)
@@ -241,11 +297,11 @@ public class ReportAdapter extends BaseAdapter {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(!SDKCoreHelper.isOnLine())
-			{
+			if (!SDKCoreHelper.isOnLine()) {
 				MyApp.ConnectYunTongXun();
-			}  
+			}
 			goIntent(chatInfoBean);
+			buttons.setClickable(true);
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -257,12 +313,13 @@ public class ReportAdapter extends BaseAdapter {
 		chatInfoBean.setSubjectType("1");
 		chatInfoBean.setStatus(false);
 		DBUtilsHelper.getInstance().saveChatinfo(chatInfoBean);
-		ECDeviceKit.getIMKitManager().startConversationActivity(chatInfoBean, null, null);
-	/*	Intent i = new Intent();
-		Bundle bundle = new Bundle();
-		bundle.putSerializable("chatInfoBean", chatInfoBean);
-		i.putExtras(bundle);
-		context.startActivity(i);*/
+		ECDeviceKit.getIMKitManager().startConversationActivity(chatInfoBean,
+				null, null);
+		/*
+		 * Intent i = new Intent(); Bundle bundle = new Bundle();
+		 * bundle.putSerializable("chatInfoBean", chatInfoBean);
+		 * i.putExtras(bundle); context.startActivity(i);
+		 */
 	}
 
 }

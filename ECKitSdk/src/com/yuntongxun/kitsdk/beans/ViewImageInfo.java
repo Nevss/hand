@@ -12,11 +12,13 @@ public class ViewImageInfo implements Parcelable {
 
     public static final Parcelable.Creator<ViewImageInfo> CREATOR
                  = new Parcelable.Creator<ViewImageInfo>() {
-                 public ViewImageInfo createFromParcel(Parcel in) {
+                 @Override
+				public ViewImageInfo createFromParcel(Parcel in) {
                          return new ViewImageInfo(in);
                      }
 
-                 public ViewImageInfo[] newArray(int size) {
+                 @Override
+				public ViewImageInfo[] newArray(int size) {
                          return new ViewImageInfo[size];
                      }
              };

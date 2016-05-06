@@ -26,6 +26,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,6 +43,7 @@ import com.yuntongxun.ecsdk.OnChatReceiveListener;
 import com.yuntongxun.ecsdk.PersonInfo;
 import com.yuntongxun.ecsdk.im.ECFileMessageBody;
 import com.yuntongxun.ecsdk.im.ECImageMessageBody;
+import com.yuntongxun.ecsdk.im.ECMessageNotify;
 import com.yuntongxun.ecsdk.im.ECTextMessageBody;
 import com.yuntongxun.ecsdk.im.ECVoiceMessageBody;
 import com.yuntongxun.ecsdk.im.group.ECGroupNoticeMessage;
@@ -151,6 +154,24 @@ public class IMChattingHelper implements OnChatReceiveListener,
 		}
 		return IMessageSqlManager.insertIMessage(msg,
 				ECMessage.Direction.SEND.ordinal());
+	}
+	
+	public static long sendECMessageNotSave(ECMessage msg) {
+		getInstance().checkChatManager();
+		// 获取一个聊天管理器
+		ECChatManager manager = getInstance().mChatManager;
+		if (manager != null) {
+			// 调用接口发送IM消息
+			msg.setMsgTime(System.currentTimeMillis());
+			if (msg.getUserData() == null
+					|| msg.getType() == ECMessage.Type.VOICE)
+				msg.setUserData(ECChattingActivity.USER_DATA);
+			manager.sendMessage(msg, getInstance().mListener);
+			// 保存发送的消息到数据库
+		} else {
+			msg.setMsgStatus(ECMessage.MessageStatus.FAILED);
+		}
+		 return 0;
 	}
 
 	/**
@@ -304,6 +325,10 @@ public class IMChattingHelper implements OnChatReceiveListener,
 				if (mOnMessageReportCallback != null) {
 					mOnMessageReportCallback.onMessageReport(error, message);
 				}
+				Intent intnet = new Intent("com.rayelink.refreshchat");
+				intnet.putExtra("docId",
+						message.getTo());
+				ECDeviceKit.getmContext().sendBroadcast(intnet);				
 				return;
 			}
 		}
@@ -320,6 +345,11 @@ public class IMChattingHelper implements OnChatReceiveListener,
 	public static void setOnMessageReportCallback(
 			OnMessageReportCallback callback) {
 		getInstance().mOnMessageReportCallback = callback;
+	}
+	
+	public static OnMessageReportCallback getOnMessageReportCallback()
+	{
+		return getInstance().mOnMessageReportCallback;
 	}
 
 	public interface OnMessageReportCallback {
@@ -343,6 +373,20 @@ public class IMChattingHelper implements OnChatReceiveListener,
 			return;
 		}
 
+
+		postReceiveMessage(msg, true);
+
+	}
+
+	/**
+	 * 处理接收消息
+	 * 
+	 * @param msg
+	 * @param showNotice
+	 */
+	private synchronized void postReceiveMessage(ECMessage msg,
+			boolean showNotice) {
+		
 		if (!msg.getForm().contains("g")) {
 			if (chatControllerListener != null) {
 				chatControllerListener.timeStart(msg.getForm());
@@ -366,7 +410,6 @@ public class IMChattingHelper implements OnChatReceiveListener,
 											"SubjectID", "=", subjectId));
 
 					if (chatInfoBean == null) {
-						IMChattingHelper.getInstance();
 						IMChattingHelper.chatControllerListener
 								.handleMessage(subjectId, msg.getForm());
 					} else {
@@ -389,19 +432,6 @@ public class IMChattingHelper implements OnChatReceiveListener,
 			}
 
 		}
-
-		postReceiveMessage(msg, true);
-
-	}
-
-	/**
-	 * 处理接收消息
-	 * 
-	 * @param msg
-	 * @param showNotice
-	 */
-	private synchronized void postReceiveMessage(ECMessage msg,
-			boolean showNotice) {
 		// 接收到的IM消息，根据IM消息类型做不同的处理
 		// IM消息类型：ECMessage.Type
 		if (msg.getType() != ECMessage.Type.TXT) {
@@ -479,6 +509,11 @@ public class IMChattingHelper implements OnChatReceiveListener,
 				if ("BMY://CloseSubject".equals(((ECTextMessageBody) msg
 						.getBody()).getMessage()))// 医生端主动结束咨询
 				{
+					String userData = msg.getUserData();
+					String userinfo2 = userData.substring(33);
+				 
+					String subjectId = userinfo2.substring(0, 32).replace("~", "");
+					
 					try {
 						ChatInfoBean chatInfoBean = chatControllerListener
 								.getChatInfoDb().findFirst(
@@ -489,12 +524,8 @@ public class IMChattingHelper implements OnChatReceiveListener,
 						chatInfoBean.setStatus(false);
 						chatControllerListener.getChatInfoDb().saveOrUpdate(
 								chatInfoBean);
-						// 计时关闭
-						if (chatControllerListener != null) {
-							chatControllerListener.timeStart(msg.getForm());
-						}
-						ECDeviceKit.getIMKitManager()
-								.startConversationActivity(msg.getForm());
+						IMChattingHelper.getInstance();
+						IMChattingHelper.chatControllerListener.closeSubject(subjectId, msg.getForm(), mHandler);
 						// 关闭当前聊天窗口变化
 					} catch (DbException e) {
 
@@ -529,6 +560,17 @@ public class IMChattingHelper implements OnChatReceiveListener,
 		} catch (Exception e) {
 
 		}
+		boolean flag=false;
+		if(msg.getType()==ECMessage.Type.TXT)
+		{
+			boolean flag1=((ECTextMessageBody) msg.getBody()).getMessage().toString().contains("该病人是由");
+			boolean flag2=((ECTextMessageBody) msg.getBody()).getMessage().toString().contains("医生转诊过来的咨询用户。");
+			flag=flag1&&flag2;
+		}
+		 
+		if(flag)
+			return;
+		
 		if (!(msg.getType() == ECMessage.Type.TXT && "BMY://CloseSubject"
 				.equals(((ECTextMessageBody) msg.getBody()).getMessage()))) {
 			if (IMessageSqlManager.insertIMessage(msg, msg.getDirection()
@@ -536,7 +578,7 @@ public class IMChattingHelper implements OnChatReceiveListener,
 				return;
 			}
 		}
-
+		
 		if (mOnMessageReportCallback != null) {
 			ArrayList<ECMessage> msgs = new ArrayList<ECMessage>();
 			msgs.add(msg);
@@ -547,7 +589,50 @@ public class IMChattingHelper implements OnChatReceiveListener,
 		if (isApplicationBroughtToBackground(ECDeviceKit.getmContext()
 				.getApplicationContext()))
 			showNotification(msg);
+		
+		if(IMChattingHelper.getOnMessageReportCallback()==null){
+			Intent intnet = new Intent("com.rayelink.refreshchat");
+			intnet.putExtra("docId",
+					msg.getForm());
+			ECDeviceKit.getmContext().sendBroadcast(intnet);
+		}
+		
 	}
+	
+	
+	private Handler mHandler=new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg) {
+			if(msg.what==0x01)
+			{
+				ECMessage message=(ECMessage)msg.obj;
+				try {
+					IMChattingHelper.getInstance();
+					ChatInfoBean	chatinfoBean = IMChattingHelper.chatControllerListener
+							.getChatInfoDb().findFirst(Selector
+							.from(ChatInfoBean.class).where("docInfoBeanId", "=", message.getTo()));
+					if(chatinfoBean!=null){
+					chatinfoBean.setTimeout(true);
+					chatinfoBean.setComment(false);
+					chatinfoBean.setStatus(false);
+					IMChattingHelper.getInstance();
+					IMChattingHelper.chatControllerListener
+					.getChatInfoDb().saveOrUpdate(chatinfoBean);
+					}
+				} catch (DbException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				Intent intnet = new Intent("com.rayelink.closesubject");
+				intnet.putExtra("docId",
+						message.getTo());
+				ECDeviceKit.getmContext().sendBroadcast(intnet);
+				IMChattingHelper.getInstance();
+				IMChattingHelper.chatControllerListener.timeStop(message.getTo());
+			}
+		}
+	};
 
 	public static boolean isApplicationBroughtToBackground(final Context context) {
 		ActivityManager am = (ActivityManager) context
@@ -857,5 +942,11 @@ public class IMChattingHelper implements OnChatReceiveListener,
 		isFirstSync = false;
 		isAutoGetOfflineMsg = true;
 		sInstance = null;
+	}
+
+	@Override
+	public void onReceiveMessageNotify(ECMessageNotify arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

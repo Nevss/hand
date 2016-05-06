@@ -38,6 +38,10 @@ public class MyPopWindow {
 		return uri_temp_crop_picture;
 	}
 
+	public MyPopWindow() {
+
+	}
+
 	public MyPopWindow(Context context) {
 		mContext = context;
 		initPop();
@@ -227,7 +231,6 @@ public class MyPopWindow {
 			if (uri_temp_crop_picture == null) {
 				return null;
 			}
-
 			return getImagePath(uri_temp_crop_picture);
 		}
 
@@ -245,8 +248,10 @@ public class MyPopWindow {
 	 * @return
 	 */
 	public String getImagePath(Uri originalUri) {
+		if (originalUri.toString().contains("file://")) {
+			return originalUri.toString().replace("file://", "");
+		}
 		String[] proj = { MediaColumns.DATA };
-
 		// 好像是android多媒体数据库的封装接口，具体的看Android文档
 		Cursor cursor = ((Activity) mContext).managedQuery(originalUri, proj,
 				null, null, null);

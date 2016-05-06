@@ -271,10 +271,16 @@ public class MyAdGallery extends Gallery implements OnItemClickListener,
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long arg3) {
-		LogUtil.i("wpc", "onItemClick---1");
-		if (mMyOnItemClickListener != null) {
-			LogUtil.i("wpc", "onItemClick---2");
-			mMyOnItemClickListener.onItemClick(curIndex);
+		try{
+			LogUtil.i("wpc", "onItemClick---1");
+			//修改内容 2016/01/21 21:23
+			if (mMyOnItemClickListener != null&&listImgs.size()!=0) {
+				LogUtil.i("wpc", "onItemClick---2");
+				mMyOnItemClickListener.onItemClick(curIndex);
+			}
+		}catch(Exception e)
+		{
+			
 		}
 	}
 

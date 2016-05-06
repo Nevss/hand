@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
@@ -110,6 +111,7 @@ public class IADrawView extends TextView {
 		// TODO Auto-generated method stub
 //		this.text = text;
 		/* 去锯齿 */
+		paint=new Paint();
 		paint.setAntiAlias(true);
 		/* 设置paint的颜色 */
 		paint.setColor(res);
@@ -136,6 +138,8 @@ public class IADrawView extends TextView {
 //			x = (width + textWidth) / 2;
 //			y = textCenterVerticalBaselineY;
 //		}
-		invalidate();
+		postInvalidate();
+//		invalidate();
+		Log.i("invalidate", "invalidate is run");
 	}
 }

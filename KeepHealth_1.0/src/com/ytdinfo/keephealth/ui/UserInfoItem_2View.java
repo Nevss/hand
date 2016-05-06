@@ -46,7 +46,11 @@ public class UserInfoItem_2View extends RelativeLayout {
 	 * @param drawable
 	 */
 	public void setIcon(Drawable drawable) {
-		iv_icon.setBackground(drawable);
+		try{
+			iv_icon.setBackground(drawable);
+		}catch(Exception e){
+			iv_icon.setBackgroundDrawable(drawable);
+		}
 	}
 
 	/**

@@ -64,6 +64,9 @@ public class TimerService extends Service {
 					case 3://停止计时
 						stopTimer(contactId);
 						break;
+					case 4:
+						exit();
+						break;
 				}
 
 			}
@@ -97,6 +100,18 @@ public class TimerService extends Service {
 		}
 	}
 	
+	
+	public void exit()
+	{
+		Iterator it=mTimers.keySet().iterator();      
+        while(it.hasNext())
+        {
+            String str=(String)it.next();               
+            mTimers.get(str).stop();
+            mTimers.remove(str);      
+        }   
+		
+	}
 
 	@Override
 	public void onDestroy() {

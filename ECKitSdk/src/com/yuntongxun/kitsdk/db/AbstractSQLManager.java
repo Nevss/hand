@@ -134,9 +134,9 @@ public abstract class AbstractSQLManager {
                 onUpdateOld(db);
             }
             createTables(db);
-            if(oldVersion < 9) {
-                onGroupUpgrade(db);
-            }
+//            if(oldVersion < 9) {
+//                onGroupUpgrade(db);
+//            }
         }
 
         private void onUpdateOld(SQLiteDatabase db) {
@@ -511,12 +511,17 @@ public abstract class AbstractSQLManager {
     }
 
     private static void onGroupUpgrade(SQLiteDatabase db) {
-        String sql3 = "insert into groups2 select * , 1 from groups ";
-        String sql4 = "delete from groups ";
-        db.execSQL(sql3);
-        LogUtil.v(TAG + ":" + sql3);
-        db.execSQL(sql4);
-        LogUtil.v(TAG + ":" + sql4);
+    	try{
+	        String sql3 = "insert into groups2 select * , 1 from groups ";
+	        String sql4 = "delete from groups ";
+	        db.execSQL(sql3);
+	        LogUtil.v(TAG + ":" + sql3);
+	        db.execSQL(sql4);
+	        LogUtil.v(TAG + ":" + sql4);
+    	}catch(Exception  e)
+    	{
+    		 LogUtil.v(TAG + ":" + "groups==null");
+    	}
     }
 
 

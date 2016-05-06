@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.lidroid.xutils.util.LogUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.umeng.analytics.MobclickAgent;
@@ -31,6 +32,8 @@ public class UserInfoFragment extends Fragment {
 	private UserInfoItem_2View userInfoItem_2View_2;
 	private UserInfoItem_2View userInfoItem_2View_3;
 	private UserInfoItem_2View userInfoItem_2View_4;
+	// ----------V3添加关于我们
+	private UserInfoItem_2View userInfoItem_2View_5;
 
 	private UserInfoItem_1View userInfoItem_1View;
 
@@ -61,24 +64,29 @@ public class UserInfoFragment extends Fragment {
 				.findViewById(R.id.id_UserInfoItem_2View_3);
 		userInfoItem_2View_4 = (UserInfoItem_2View) rootView
 				.findViewById(R.id.id_UserInfoItem_2View_4);
+		userInfoItem_2View_5 = (UserInfoItem_2View) rootView
+				.findViewById(R.id.id_UserInfoItem_2View_5);
 
 		userInfoItem_1View = (UserInfoItem_1View) rootView
 				.findViewById(R.id.id_UserInfoItem_1View);
 
 		// 设置各个图标
 		userInfoItem_2View_1.setIcon(getResources().getDrawable(
-				R.drawable.health_archives));
+				R.drawable.ic_bmy_declare));
 		userInfoItem_2View_2.setIcon(getResources().getDrawable(
 				R.drawable.my_reservation));
 		userInfoItem_2View_3.setIcon(getResources().getDrawable(
 				R.drawable.opinion_feedback));
 		userInfoItem_2View_4.setIcon(getResources().getDrawable(
 				R.drawable.setting));
+		userInfoItem_2View_5.setIcon(getResources().getDrawable(
+				R.drawable.about_us_icon));
 		// 设置各个标题
-		userInfoItem_2View_1.setTitle("健康档案");
+		userInfoItem_2View_1.setTitle("体检报告解读");
 		userInfoItem_2View_2.setTitle("我的预约");
 		userInfoItem_2View_3.setTitle("意见反馈");
 		userInfoItem_2View_4.setTitle("设置");
+		userInfoItem_2View_5.setTitle("关于我们");
 
 	}
 
@@ -105,6 +113,10 @@ public class UserInfoFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
+				// ----------V3调整为体检报告解读页面
+				// Intent intent = new Intent();
+				// intent.setClass(getActivity(), ChooseReportActivity.class);
+				// startActivity(intent);
 				Log.i(TAG, "webview");
 				Intent ii = new Intent();
 				ii.setClass(getActivity(), WebViewActivity.class);
@@ -150,6 +162,19 @@ public class UserInfoFragment extends Fragment {
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), SettingActivity.class);
 				startActivity(intent);
+			}
+		});
+
+		userInfoItem_2View_5.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				Log.i(TAG, "webview");
+				Intent i = new Intent();
+				i.setClass(getActivity(), WebViewActivity.class);
+				i.putExtra("loadUrl", Constants.ABOUTUS);
+				startActivity(i);
 			}
 		});
 

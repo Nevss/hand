@@ -11,11 +11,7 @@
  *  be found in the AUTHORS file in the root of the source tree.
  */package com.yuntongxun.kitsdk.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,7 +29,6 @@ import com.yuntongxun.kitsdk.adapter.ConversationAdapter;
 import com.yuntongxun.kitsdk.core.ECKitConstant;
 import com.yuntongxun.kitsdk.core.ECKitCustomProviderManager;
 import com.yuntongxun.kitsdk.custom.provider.conversation.ECCustomConversationListActionProvider;
-import com.yuntongxun.kitsdk.custom.provider.conversation.ECCustomConversationListUIProvider;
 import com.yuntongxun.kitsdk.db.GroupNoticeSqlManager;
 import com.yuntongxun.kitsdk.db.IMessageSqlManager;
 import com.yuntongxun.kitsdk.ui.ECChattingActivity;
@@ -43,7 +38,6 @@ import com.yuntongxun.kitsdk.ui.chatting.model.IMChattingHelper;
 import com.yuntongxun.kitsdk.utils.LogUtil;
 import com.yuntongxun.kitsdk.utils.ToastUtil;
 import com.yuntongxun.kitsdk.view.BaseFragment;
-import com.yuntongxun.kitsdk.view.ECListDialog;
 import com.yuntongxun.kitsdk.view.ECProgressDialog;
 import com.yuntongxun.kitsdk.view.NetWarnBannerView;
 
@@ -125,76 +119,76 @@ public class ConversationListFragment extends BaseFragment implements
 		}
 	};
 
-	private final AdapterView.OnItemLongClickListener mOnLongClickListener = new AdapterView.OnItemLongClickListener() {
-		@Override
-		public boolean onItemLongClick(AdapterView<?> parent, View view,
-				int position, long id) {
-			if (mAdapter != null) {
-				int headerViewsCount = mListView.getHeaderViewsCount();
-				if (position < headerViewsCount) {
-					return false;
-				}
-				int _position = position - headerViewsCount;
-
-				if (mAdapter == null || mAdapter.getItem(_position) == null) {
-					return false;
-				}
-				ECConversation conversation = mAdapter.getItem(_position);
-
-				ECCustomConversationListActionProvider obj = ECKitCustomProviderManager
-						.getCustomConversationAction();
-
-				if (obj != null
-						) {
-
-					boolean result= obj.onCustonConversationLongClick(getActivity(),
-							conversation);
-					
-					if(result){
-					
-					return false;
-					}
-				}
-
-				List<String> list = new ArrayList<String>();
-				list.add(getString(R.string.main_delete));
-
-				ECCustomConversationListUIProvider uiObj = ECKitCustomProviderManager
-						.getCustomConversationListUIProvider();
-
-				if (uiObj != null) {
-					List<String> uiList = uiObj
-							.getCustomConversationItemLongClickMenu(
-									ConversationListFragment.this, conversation);
-					if (uiList != null && uiList.size() > 0) {
-
-						for (String item : uiList) {
-
-							list.add(item);
-
-						}
-
-					}
-
-				}
-
-				final int itemPosition = position;
-				ECListDialog dialog = new ECListDialog(getActivity(),
-						list.toArray(new String[list.size()]));
-
-				dialog.setOnDialogItemClickListener(new ECListDialog.OnDialogItemClickListener() {
-					@Override
-					public void onDialogItemClick(Dialog d, int position) {
-						handleContentMenuClick(itemPosition, position);
-					}
-				});
-				dialog.setTitle(conversation.getUsername());
-				dialog.show();
-				return true;
-			}
-			return false;
-		}
-	};
+//	private final AdapterView.OnItemLongClickListener mOnLongClickListener = new AdapterView.OnItemLongClickListener() {
+//		@Override
+//		public boolean onItemLongClick(AdapterView<?> parent, View view,
+//				int position, long id) {
+//			if (mAdapter != null) {
+//				int headerViewsCount = mListView.getHeaderViewsCount();
+//				if (position < headerViewsCount) {
+//					return false;
+//				}
+//				int _position = position - headerViewsCount;
+//
+//				if (mAdapter == null || mAdapter.getItem(_position) == null) {
+//					return false;
+//				}
+//				ECConversation conversation = mAdapter.getItem(_position);
+//
+//				ECCustomConversationListActionProvider obj = ECKitCustomProviderManager
+//						.getCustomConversationAction();
+//
+//				if (obj != null
+//						) {
+//
+//					boolean result= obj.onCustonConversationLongClick(getActivity(),
+//							conversation);
+//					
+//					if(result){
+//					
+//					return false;
+//					}
+//				}
+//
+//				List<String> list = new ArrayList<String>();
+//				list.add(getString(R.string.main_delete));
+//
+//				ECCustomConversationListUIProvider uiObj = ECKitCustomProviderManager
+//						.getCustomConversationListUIProvider();
+//
+//				if (uiObj != null) {
+//					List<String> uiList = uiObj
+//							.getCustomConversationItemLongClickMenu(
+//									ConversationListFragment.this, conversation);
+//					if (uiList != null && uiList.size() > 0) {
+//
+//						for (String item : uiList) {
+//
+//							list.add(item);
+//
+//						}
+//
+//					}
+//
+//				}
+//
+//				final int itemPosition = position;
+//				ECListDialog dialog = new ECListDialog(getActivity(),
+//						list.toArray(new String[list.size()]));
+//
+//				dialog.setOnDialogItemClickListener(new ECListDialog.OnDialogItemClickListener() {
+//					@Override
+//					public void onDialogItemClick(Dialog d, int position) {
+//						handleContentMenuClick(itemPosition, position);
+//					}
+//				});
+//				dialog.setTitle(conversation.getUsername());
+//				dialog.show();
+//				return true;
+//			}
+//			return false;
+//		}
+//	};
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -248,7 +242,7 @@ public class ConversationListFragment extends BaseFragment implements
 	private OnGetConversationInfoListener onGetPublicInfoInterface;
 	
 	public interface OnGetConversationInfoListener{
-		public void getConversationInfo(ECConversation conversation,TextView textView,ImageView imageView);
+		public void getConversationInfo(ECConversation conversation,TextView textView,ImageView imageView,ImageView isonline);
 		public void getBMYXZSConversationInfo(ECConversation conversation,TextView msgView,TextView timeView);
 	};
 	
@@ -281,7 +275,7 @@ public class ConversationListFragment extends BaseFragment implements
 		mListView.setDrawingCacheEnabled(false);
 		mListView.setScrollingCacheEnabled(false);
 
-		mListView.setOnItemLongClickListener(mOnLongClickListener);
+		//mListView.setOnItemLongClickListener(mOnLongClickListener);
 		mListView.setOnItemClickListener(mItemClickListener);
 		mBannerView = new NetWarnBannerView(getActivity());
 		mListView.addHeaderView(mBannerView);
@@ -379,6 +373,14 @@ public class ConversationListFragment extends BaseFragment implements
 	@Override
 	protected int getLayoutId() {
 		return R.layout.ytx_conversation;
+	}
+	
+	
+	/**
+	 * @return the mAdapter
+	 */
+	public ConversationAdapter getmAdapter() {
+		return mAdapter;
 	}
 
 	@Override

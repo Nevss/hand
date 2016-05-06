@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.ytdinfo.keephealth"
-    android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionCode="5"
+    android:versionName="1.5" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -56,7 +56,7 @@
     <!-- Optional for location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
@@ -104,8 +104,7 @@
         </activity>
         <activity
             android:name="com.ytdinfo.keephealth.ui.login.LoginActivity"
-            android:screenOrientation="portrait"
-             />
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.ytdinfo.keephealth.ui.register.RegisterActivity"
             android:label="@string/title_activity_register"
@@ -154,7 +153,6 @@
             android:name="com.ytdinfo.keephealth.ui.OnlineVisits.OnlineQuesActivity"
             android:screenOrientation="portrait" >
         </activity>
-         
         <activity
             android:name="com.ytdinfo.keephealth.ui.forgetpass.ResetPassActivity"
             android:label="@string/title_activity_reset_pass"
@@ -163,6 +161,7 @@
         <activity
             android:name="com.ytdinfo.keephealth.ui.WebViewActivity"
             android:label="@string/title_activity_web_view"
+                 android:windowSoftInputMode = "adjustResize"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -181,7 +180,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
         </activity>
-         <activity
+        <activity
             android:name="com.ytdinfo.keephealth.zhangyuhui.IARecoverAcitvity"
             android:launchMode="singleTask"
             android:screenOrientation="landscape" >
@@ -199,7 +198,15 @@
                 <category android:name="jpush.testCategory" />
             </intent-filter>
         </activity>
+        
+        <activity
+            android:name="com.ytdinfo.keephealth.ui.OnlineVisits.OnlineQuesActivityForV3"
+            android:label="@string/title_activity_little_helper_web_view"
+            android:screenOrientation="portrait" >
+        </activity>
 
+        <service android:name="com.ytdinfo.keephealth.service.UpdateService" >
+        </service>
         <!-- Required SDK核心功能 -->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
@@ -233,16 +240,12 @@
         </service>
 
         <!-- Required SDK 核心功能 -->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService" />
 
-                <category android:name="com.ytdinfo.keephealth" />
-            </intent-filter>
-        </service>
+
+        <!-- <category android:name="com.ytdinfo.keephealth" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+
 
         <!-- Required SDK核心功能 -->
         <receiver
@@ -290,13 +293,7 @@
             </intent-filter>
         </receiver>
 
-        <meta-data
-            android:name="JPUSH_CHANNEL"
-            android:value="developer-default" />
-        <meta-data
-            android:name="JPUSH_APPKEY"
-            android:value="f43593b2702a7e58ae4b3569" />
-        <!-- </>值来自开发者平台取得的AppKey -->
+      
         <activity
             android:name="com.ytdinfo.keephealth.ui.TmallWebViewActivity"
             android:label="@string/title_activity_tmall_web_view"
@@ -312,16 +309,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/Transparent" >
         </activity>
-
         <activity
             android:name="com.ytdinfo.keephealth.ui.setting.SettingActivity"
             android:label="@string/title_activity_setting"
             android:screenOrientation="portrait" >
         </activity>
-        
+
         <service android:name="com.yuntongxun.kitsdk.TimerService" >
             <intent-filter>
                 <action android:name="com.ytdinfo.keephealth" />
+
                 <category android:name="android.intent.category.default" />
             </intent-filter>
         </service>
@@ -331,9 +328,7 @@
             android:label="@string/title_activity_add_pictures"
             android:screenOrientation="portrait" >
         </activity>
-        <activity
-            android:name="com.ytdinfo.keephealth.ui.ChatPhotoViewerActivity"
-            >
+        <activity android:name="com.ytdinfo.keephealth.ui.ChatPhotoViewerActivity" >
         </activity>
         <activity
             android:name="com.ytdinfo.keephealth.ui.GuideActivity"
@@ -351,31 +346,17 @@
             android:label="@string/title_activity_modify_pass"
             android:screenOrientation="portrait" >
         </activity>
-        
-        <!-- 友盟统计 -->
-        <meta-data android:value="5641ab1567e58e0ec2000046" 
-            android:name="UMENG_APPKEY"></meta-data>
-		<meta-data android:value="default" android:name="UMENG_CHANNEL"/>
-		
-		
-		
-		
-		
-		<!-- 新版本云通讯添加 -->
-		
-		 <meta-data
+
+        <!-- 新版本云通讯添加 -->
+
+
+        <!-- 新版本云通讯添加 -->
+        <meta-data
             android:name="LOGGING"
             android:value="true" />
         <meta-data
             android:name="ALPHA"
             android:value="true" />
-        <activity
-            android:name="com.yuntongxun.eckitimdemo.ui.MainActivity"
-            android:label="@string/app_name" >
-            
-        </activity>
-        
-        
         <activity
             android:name="com.yuntongxun.kitsdk.ui.ECChattingActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -386,7 +367,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        
         <activity
             android:name="com.yuntongxun.kitsdk.ui.ECImagePreviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -403,85 +383,120 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-        
-         
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.ECFileExplorerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-         
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.ECGroupNoticeActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.ECGroupListActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.CreateGroupActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.SearchGroupActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         <activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.group.BaseSearch"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-         
-         
-         <!-- voip配置 -->
-         
-         <activity
+
+        <!-- voip配置 -->
+
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.voip.VoIPCallActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="con.yuntongxun.ecdemo.intent.ACTION_VOICE_CALL" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-		<activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.voip.VideoActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-			<intent-filter>
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
+            <intent-filter>
                 <action android:name="con.yuntongxun.ecdemo.intent.ACTION_VIDEO_CALL" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
-		<activity
+        <activity
             android:name="com.yuntongxun.kitsdk.ui.voip.VideoCallInActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="con.yuntongxun.ecdemo.intent.ACTION_VIDEO_CALL" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-         
-        
-         <service
+
+        <service
             android:name="com.yuntongxun.ecsdk.ECClientService"
             android:enabled="true"
             android:exported="false" />
-		
-		
-		
+
+        <activity
+            android:name="com.umeng.socialize.view.ShareActivity"
+            android:configChanges="orientation|keyboard"
+            android:launchMode="singleTask"
+            android:noHistory="true"
+            android:theme="@style/Theme.UMDialog"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        
+        
+           <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="f43593b2702a7e58ae4b3569" />
+        <!-- </>值来自开发者平台取得的AppKey -->
+        <!-- 友盟统计 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5641ab1567e58e0ec2000046" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="default" />
+        
+           <!-- 友盟升级 -->
+        <service
+            android:name="com.umeng.update.net.DownloadingService"
+            android:process=":DownloadingService" >
+        </service>
+
+        <activity
+            android:name="com.umeng.update.UpdateDialogActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
     </application>
 
 </manifest>

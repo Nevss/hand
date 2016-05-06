@@ -193,7 +193,7 @@
                   android:background="@drawable/login_bt_bg"
                 android:padding="10dp"
             android:text="再次咨询"
-             android:textColor="#FFFFFF"
+             android:textColor="@color/w_white"
                 android:textSize="16sp" >
         </Button>
     </RelativeLayout>

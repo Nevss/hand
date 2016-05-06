@@ -609,11 +609,11 @@ public class IAJingAnDistrict extends IABaseFrame {
 		}
 	}
 
+	
 	private void setColorByid(OrgView tv, IAOrganization_Departments dept) {
 		switch (dept.departments_state) {
 		case 0:
 			// 未体检
-
 			tv.getDraw().reDraw(
 					getResources().getColor(R.color.has_not_checked), null, 0,
 					0, false);

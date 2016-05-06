@@ -29,6 +29,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,7 +78,21 @@ import com.yuntongxun.kitsdk.view.CCPEditText;
  */
 public class CCPChattingFooter2 extends LinearLayout {
 
-
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		// TODO Auto-generated method stub
+		return super.onTouchEvent(event);
+	}
+	
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		// TODO Auto-generated method stub
+		return super.dispatchTouchEvent(ev);
+	}
+	
+	
+	
     private static final String TAG = LogUtil.getLogUtilsTag(CCPChattingFooter2.class);
     private static final int WHAT_ON_DIMISS_DIALOG = 0x1;
 
@@ -129,7 +144,7 @@ public class CCPChattingFooter2 extends LinearLayout {
 
     private TextView mVoiceNormalWording;
 
-    private ImageButton mVoiceRecord;
+    private  Button mVoiceRecord;
 
     private Button mChattingSend;
 
@@ -312,9 +327,10 @@ public class CCPChattingFooter2 extends LinearLayout {
 
             switch (event.getAction()) {
                 case  MotionEvent.ACTION_DOWN:
-                	animate(mVoiceRecord,true);
+                	//animate(mVoiceRecord,true);
                     mVoiceButtonTouched = true;
                     //mVoiceRecord.setEnabled(false);
+                    mVoiceRecord.setText("松开停止");
                     onPause();
                     LogUtil.d(LogUtil.getLogUtilsTag(CCPChattingFooter2.class), "CCPChatFooter voice recording action down");
                     if(mChattingFooterLinstener != null) {
@@ -352,7 +368,8 @@ public class CCPChattingFooter2 extends LinearLayout {
 
                     break;
                 case MotionEvent.ACTION_UP:
-                	animate(mVoiceRecord,false);
+                	mVoiceRecord.setText("按住说话");
+                	//animate(mVoiceRecord,false);
                 	mChronometer.stop();
                 	mChronometer.setBase(SystemClock.elapsedRealtime());
                     LogUtil.d(LogUtil.getLogUtilsTag(CCPChattingFooter2.class), "CCPChatFooter voice recording action up ");
@@ -566,7 +583,7 @@ public class CCPChattingFooter2 extends LinearLayout {
         mChattingSend = ((Button) findViewById(R.id.chatting_send_btn));
 //        mVoiceRecord = ((Button) findViewById(R.id.voice_record_bt));
         mChronometer = ((Chronometer) findViewById(R.id.chronometer));
-        mVoiceRecord = ((ImageButton) findViewById(R.id.voice_record_imgbtn));
+        mVoiceRecord = ((Button) findViewById(R.id.btn_voice_final));
         mChattingModeButton = ((ImageButton) findViewById(R.id.chatting_mode_btn));
 
         enableChattingSend(false);
@@ -616,7 +633,7 @@ public class CCPChattingFooter2 extends LinearLayout {
         mChattingMode = CHATTING_MODE_KEYBORD;
         /*mTextPanel*/mEditText.setVisibility(View.VISIBLE);
         ll_voice_area.setVisibility(View.GONE);
-        //mVoiceRecord.setVisibility(View.GONE);
+        mVoiceRecord.setVisibility(View.GONE);
 
         if(mChatFooterPanel != null) {
             mChatFooterPanel.reset();
@@ -847,6 +864,7 @@ public class CCPChattingFooter2 extends LinearLayout {
         mChattingMode = mode;
         switch (mode) {
             case CHATTING_MODE_KEYBORD:
+            	 mVoiceRecord.setVisibility(View.GONE);
             	//隐藏voice操作区域
             	ll_voice_area.setVisibility(View.GONE);
                 /*mTextPanel*/mEditText.setVisibility(View.VISIBLE);
@@ -856,10 +874,10 @@ public class CCPChattingFooter2 extends LinearLayout {
                 break;
             case CHATTING_MODE_VOICE:
             	//展开voice操作区域
-            	ll_voice_area.setVisibility(View.VISIBLE);
-                /*mTextPanel*/mEditText.setVisibility(View.INVISIBLE);//gone
-                ll_voice_area.setVisibility(View.VISIBLE);
-//                mVoiceRecord.setVisibility(View.VISIBLE);
+            	ll_voice_area.setVisibility(View.GONE);
+                /*mTextPanel*/mEditText.setVisibility(View.GONE);//gone
+                ll_voice_area.setVisibility(View.GONE);
+                mVoiceRecord.setVisibility(View.VISIBLE);
                 setChattingModeImageResource(R.drawable.ytx_chatting_setmode_keyboard_btn);
                 break;
             default:
@@ -962,7 +980,7 @@ public class CCPChattingFooter2 extends LinearLayout {
             mVoiceHintTooshort.setVisibility(View.GONE);
             mVoiceHintRcding.setVisibility(View.GONE);
             mVoiceHintLoading.setVisibility(View.VISIBLE);
-//          popupWindow.showAtLocation(this, Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, yLocation);
+            popupWindow.showAtLocation(this, Gravity.CENTER_HORIZONTAL|Gravity.TOP, 0, yLocation);
         }
     }
 

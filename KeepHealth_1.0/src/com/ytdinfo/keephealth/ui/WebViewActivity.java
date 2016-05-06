@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -23,7 +25,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.DbUtils;
@@ -52,6 +54,7 @@ import com.ytdinfo.keephealth.model.UserModel;
 import com.ytdinfo.keephealth.ui.login.LoginActivity;
 import com.ytdinfo.keephealth.ui.view.MyProgressDialog;
 import com.ytdinfo.keephealth.ui.view.MyWebView;
+import com.ytdinfo.keephealth.utils.Chat_Dialog;
 import com.ytdinfo.keephealth.utils.DBUtilsHelper;
 import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
@@ -66,7 +69,7 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 	private final String TAG = "WebViewActivity";
 	// private CommonActivityTopView commonActivityTopView;
 	private MyWebView webview;
-	private RelativeLayout rl;
+	// private RelativeLayout rl;
 	private Button bt_update;
 	private Intent intent;
 	private String loadUrl;
@@ -83,7 +86,7 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 
 	public CustomShareBoard shareBoard;
 
-	private final UMSocialService mController = UMServiceFactory
+	private UMSocialService mController = UMServiceFactory
 			.getUMSocialService(Constants.DESCRIPTOR);
 
 	@Override
@@ -103,7 +106,14 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 		// commonActivityTopView = (CommonActivityTopView)
 		// findViewById(R.id.id_CommonActivityTopView);
 		// commonActivityTopView.tv_title.setText("webview");
-		rl = (RelativeLayout) findViewById(R.id.id_rl);
+		// rl = (RelativeLayout) findViewById(R.id.id_rl);
+
+		// shareBoard = new CustomShareBoard(this);
+		// shareBoard.setWXCallBack(this);
+		//
+		// addWXPlatform();
+
+		// addQQQZonePlatform();
 
 		loadWebView();
 		webViewListener();
@@ -311,6 +321,20 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 	 * JS调用的方法
 	 */
 	@JavascriptInterface
+	public void goToActivity(String packageName, String className,
+			boolean isCloseCurrent) {
+		Intent intent = new Intent();
+		intent.setClassName(packageName, className);
+
+		startActivity(intent);
+		if (isCloseCurrent)
+			this.finish();
+	}
+
+	/**
+	 * JS调用的方法
+	 */
+	@JavascriptInterface
 	public void goToUpdateUrl() {
 		Log.i(TAG, "goToUpdateUrl()");
 		webview.loadUrl("file:///android_asset/a.html？'" + current_url + "'");
@@ -392,6 +416,27 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 
 	private void analyzeJson(String json) {
 		// TODO Auto-generated method stub
+//		if (!Chat_Dialog.timeCurl()) {
+//			final AlertDialog dialog = new AlertDialog.Builder(context)
+//					.create();
+//			dialog.show();
+//			dialog.setCanceledOnTouchOutside(false);
+//			Window window = dialog.getWindow();
+//			window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+//			TextView msg = (TextView) window.findViewById(R.id.chat_dialog_msg);
+//			String desString = "亲，非常抱歉，我们的服务时间是工作日9：00－18：00，欢迎下次来咨询，祝您身体健康！";
+//			msg.setText(desString);
+//			Button sure = (Button) window.findViewById(R.id.chat_dialog_sure);
+//			sure.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					dialog.dismiss();
+//				}
+//			});
+//			return;
+//		}
 		try {
 			JSONObject jsonObject = new JSONObject(json);
 			JSONObject data = jsonObject.getJSONObject("Data");
@@ -400,7 +445,31 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 			String responser = data.getString("responser");
 			if (null == responser || responser.equals("")
 					|| responser.equals("null")) {
-				ToastUtil.showMessage("当前没有医生在线...");
+				final AlertDialog dialog = new AlertDialog.Builder(context)
+						.create();
+				dialog.show();
+				dialog.setCanceledOnTouchOutside(false);
+				Window window = dialog.getWindow();
+				window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+				TextView msg = (TextView) window
+						.findViewById(R.id.chat_dialog_msg);
+				String desString = null;
+				if (!Chat_Dialog.timeCurl()) {
+					desString = "亲，非常抱歉，我们的服务时间是工作日9：00－18：00，欢迎下次来咨询，祝您身体健康！";
+				}else {
+					 desString = "亲，我们的医生都在忙碌，请稍等~";
+				}
+				msg.setText(desString);
+				Button sure = (Button) window
+						.findViewById(R.id.chat_dialog_sure);
+				sure.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
 				return;
 			}
 			// 开始计时
@@ -501,6 +570,7 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 	public void shareWebSiteToPlatForm(String titleName, String thumbUrl,
 			String url, String siteDesc) {
 		setShareContent(titleName, thumbUrl, url, siteDesc);
+		Log.i("shareWebSiteToPlatForm", titleName + thumbUrl + url + siteDesc);
 		postShare();
 	}
 
@@ -657,6 +727,16 @@ public class WebViewActivity extends BaseActivity implements WXCallBack {
 		// // 设置tencent分享内容
 		// mController.setShareMedia(tencent);
 
+	}
+
+	@JavascriptInterface
+	public void setSharedTheme(String theme) {
+		Constants.DESCRIPTOR = theme;
+		mController = UMServiceFactory.getUMSocialService(Constants.DESCRIPTOR);
+		LogUtil.i("变更分享主题" + theme);
+		shareBoard = new CustomShareBoard(WebViewActivity.this);
+		shareBoard.setWXCallBack(WebViewActivity.this);
+		addWXPlatform();
 	}
 
 }

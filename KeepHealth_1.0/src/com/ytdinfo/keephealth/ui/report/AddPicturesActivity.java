@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,12 +17,15 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lidroid.xutils.DbUtils;
@@ -45,10 +49,12 @@ import com.ytdinfo.keephealth.ui.MainActivity;
 import com.ytdinfo.keephealth.ui.view.CommonActivityTopView;
 import com.ytdinfo.keephealth.ui.view.MyPopWindow;
 import com.ytdinfo.keephealth.ui.view.MyProgressDialog;
+import com.ytdinfo.keephealth.utils.Chat_Dialog;
 import com.ytdinfo.keephealth.utils.DBUtilsHelper;
 import com.ytdinfo.keephealth.utils.ImageTools;
 import com.ytdinfo.keephealth.utils.JsonUtil;
 import com.ytdinfo.keephealth.utils.LogUtil;
+import com.ytdinfo.keephealth.utils.NetworkReachabilityUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
 import com.ytdinfo.keephealth.utils.ToastUtil;
 import com.yuntongxun.ecsdk.ECDevice.ECConnectState;
@@ -62,8 +68,13 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 		public void handleMessage(Message msg) {
 			if (msg.what == 0x123) {
 				if (croped_bitmap != null) {
-
-					requestImagesUrl();
+					if (!NetworkReachabilityUtil.isNetworkConnected(MyApp
+							.getInstance())) {
+						ToastUtil.showMessage("网络未连接...");
+						myProgressDialog2.dismiss();
+					} else {
+						requestImagesUrl();
+					}
 
 				}
 			}
@@ -80,7 +91,7 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 	private LinearLayout ll_parent;
 
 	private List<String> list_imagesUrl = new ArrayList<String>();
-    private List<String> list_imagesPath= new ArrayList<String>(); 
+	private List<String> list_imagesPath = new ArrayList<String>();
 
 	private Bitmap croped_bitmap;
 	private String image_path;
@@ -108,7 +119,8 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 		gridView = (GridView) findViewById(R.id.aor_gridview);
 		listData.add("file:///android_asset/add.png");
 
-		photoGridViewAdapter = new PhotoGridViewAdapter(this, listData, this,"请上传体检报告");
+		photoGridViewAdapter = new PhotoGridViewAdapter(this, listData, this,
+				"请上传体检报告");
 		gridView.setAdapter(photoGridViewAdapter);
 
 	}
@@ -132,7 +144,8 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 						requestAddReportPic();
 					} else {
 						ToastUtil.showMessage("您当前正在进行在线咨询，结束后才能进行报告解读哦");
-						SharedPrefsUtil.putValue(Constants.CHECKEDID_RADIOBT, 1);
+						SharedPrefsUtil
+								.putValue(Constants.CHECKEDID_RADIOBT, 1);
 						Intent intent = new Intent(AddPicturesActivity.this,
 								MainActivity.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -155,9 +168,10 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 				if (position == (listData.size() - 1)) {
 					// 点击最后一个，添加照片
 					pop.showAtLocation(ll_parent, Gravity.BOTTOM, 0, 0);
-					
-//					Intent intent = new Intent(AddPicturesActivity.this, MyPopWindow.class);
-//					startActivityForResult(intent, 0x123);
+
+					// Intent intent = new Intent(AddPicturesActivity.this,
+					// MyPopWindow.class);
+					// startActivityForResult(intent, 0x123);
 				}
 
 			}
@@ -227,6 +241,27 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 	ChatInfoBean chatInfoBean;
 
 	private void parseJson(String jsonStr) {
+//		if (!Chat_Dialog.timeCurl()) {
+//			final AlertDialog dialog = new AlertDialog.Builder(this).create();
+//			dialog.show();
+//			dialog.setCanceledOnTouchOutside(false);
+//			Window window = dialog.getWindow();
+//			window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+//			TextView msg = (TextView) window.findViewById(R.id.chat_dialog_msg);
+//			String desString = "亲，非常抱歉，我们的服务时间是工作日9：00－18：00，欢迎下次来咨询，祝您身体健康！";
+//			msg.setText(desString);
+//			Button sure = (Button) window.findViewById(R.id.chat_dialog_sure);
+//			sure.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					dialog.dismiss();
+//				}
+//			});
+//			return;
+//		}
+
 		try {
 			JSONObject jsonObject = new JSONObject(jsonStr);
 			JSONObject jsonData = jsonObject.getJSONObject("Data");
@@ -235,11 +270,35 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 			String docInfoBeanStr = jsonData.getString("responser");
 			if (null == docInfoBeanStr || docInfoBeanStr.equals("")
 					|| docInfoBeanStr.equals("null")) {
-				ToastUtil.showMessage("当前没有医生在线...");
+				final AlertDialog dialog = new AlertDialog.Builder(this)
+						.create();
+				dialog.show();
+				dialog.setCanceledOnTouchOutside(false);
+				Window window = dialog.getWindow();
+				window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+				TextView msg = (TextView) window
+						.findViewById(R.id.chat_dialog_msg);
+				String desString = null;
+				if (!Chat_Dialog.timeCurl()) {
+					desString = "亲，非常抱歉，我们的服务时间是工作日9：00－18：00，欢迎下次来咨询，祝您身体健康！";
+				}else {
+					 desString = "亲，我们的医生都在忙碌，请稍等~";
+				}
+				msg.setText(desString);
+				Button sure = (Button) window
+						.findViewById(R.id.chat_dialog_sure);
+				sure.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
 				return;
 			}
-			//开始计时
-			//TimerService.count = 0;
+			// 开始计时
+			// TimerService.count = 0;
 			final DocInfoBean docInfoBean = new Gson().fromJson(docInfoBeanStr,
 					DocInfoBean.class);
 			saveDoc(docInfoBean);
@@ -261,13 +320,13 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if (SDKCoreHelper.getConnectState()!=ECConnectState.CONNECT_SUCCESS) {
+			if (SDKCoreHelper.getConnectState() != ECConnectState.CONNECT_SUCCESS) {
 				myProgressDialog = new MyProgressDialog(
 						AddPicturesActivity.this);
 				myProgressDialog.setMessage("正在连接对话....");
 				myProgressDialog.show();
 				MyApp.ConnectYunTongXun();
-			}  
+			}
 			goIntent(chatInfoBean);
 
 		} catch (JSONException e) {
@@ -276,15 +335,15 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 		}
 
 	}
-	
+
 	private void goIntent(ChatInfoBean chatInfoBean) {
 		// TODO Auto-generated method stub
 		chatInfoBean.setSubjectType("2");
 		chatInfoBean.setStatus(false);
 		DBUtilsHelper.getInstance().saveChatinfo(chatInfoBean);
-		ECDeviceKit.getIMKitManager().startConversationActivity(chatInfoBean, list_imagesPath, null);
+		ECDeviceKit.getIMKitManager().startConversationActivity(chatInfoBean,
+				list_imagesPath, null);
 	}
-	
 
 	private void saveDoc(DocInfoBean docInfoBean) {
 		// TODO Auto-generated method stub
@@ -313,15 +372,15 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		
-//		if(resultCode==1001){
-//			Bundle bundle = data.getExtras();
-//			image_path = bundle.getString("imageUrl");
-//		}
+
+		// if(resultCode==1001){
+		// Bundle bundle = data.getExtras();
+		// image_path = bundle.getString("imageUrl");
+		// }
 		LogUtil.i(TAG, "onActivityResult");
 
 		image_path = mypop.INonActivityResult(requestCode, data, 0);
-		if(image_path==null){
+		if (image_path == null) {
 			return;
 		}
 
@@ -449,7 +508,8 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 	public void updateAdapter() {
 		if (croped_bitmap != null) {
 			listData.add(listData.size() - 1, image_path);
-//			gridView.setAdapter(new PhotoGridViewAdapter(this, listData, this));
+			// gridView.setAdapter(new PhotoGridViewAdapter(this, listData,
+			// this));
 			photoGridViewAdapter.notifyDataSetChanged();
 			ImageTools.recycleBitmap(croped_bitmap);
 		}
@@ -461,16 +521,17 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 	@Override
 	public void click(View v, int position) {
 		listData.remove(position);
-//		gridView.setAdapter(new PhotoGridViewAdapter(this, listData, this));
+		// gridView.setAdapter(new PhotoGridViewAdapter(this, listData, this));
 		photoGridViewAdapter.notifyDataSetChanged();
 		// 将list_imagesUrl中第position位置的图片URl删除
 		list_imagesUrl.remove(position);
 		list_imagesPath.remove(position);
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		MobclickAgent.onPageStart("AddPicturesActivity");
 		MobclickAgent.onResume(this);
 	}
@@ -478,7 +539,7 @@ public class AddPicturesActivity extends BaseActivity implements Callback {
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		MobclickAgent.onPageEnd("AddPicturesActivity");
 		MobclickAgent.onPause(this);
 	}

@@ -161,7 +161,8 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 				Uri.fromFile(new File(capUri)));
 		((Activity) context).startActivityForResult(openCameraIntent,
 				Constract.REQUESTCODE_CAP);
-		LogFileHelper.getInstance().i(TAG, "文件路径" + capUri + "文件" /* + imageUri */);
+		LogFileHelper.getInstance()
+				.i(TAG, "文件路径" + capUri + "文件" /* + imageUri */);
 
 	}
 
@@ -420,7 +421,8 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 			if (bitmap != returnBm) {
 				recycleBitmap(bitmap);
 			}
-			PreferencesJsonCach.saveBitmap(Constract.SROOT + rota, returnBm, TAG);
+			PreferencesJsonCach.saveBitmap(Constract.SROOT + rota, returnBm,
+					TAG);
 		} catch (OutOfMemoryError e) {
 			e.printStackTrace();
 		}
@@ -435,11 +437,17 @@ public class PhotoPop extends PopupWindow implements OnClickListener {
 	public String getImagePath(Uri originalUri) {
 		String[] proj = { MediaColumns.DATA };
 
+		if (originalUri.toString().contains("file")) {
+			String urlString = originalUri.toString().replaceAll("file://", "");
+			return urlString;
+		}
+
 		// 好像是android多媒体数据库的封装接口，具体的看Android文档
 		Cursor cursor = null;
 		try {
 			cursor = context.getContentResolver().query(originalUri, proj,
 					null, null, null);
+
 			// 按我个人理解 这个是获得用户选择的图片的索引值
 			int column_index = cursor.getColumnIndexOrThrow(MediaColumns.DATA);
 			// 将光标移至开头 ，这个很重要，不小心很容易引起越界

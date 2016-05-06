@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,10 +22,12 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -45,19 +49,30 @@ import com.lidroid.xutils.exception.HttpException;
 import com.lidroid.xutils.http.RequestParams;
 import com.lidroid.xutils.http.ResponseInfo;
 import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.util.LogUtils;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.rayelink.eckit.SDKCoreHelper;
 import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengDialogButtonListener;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 import com.ytdinfo.keephealth.R;
 import com.ytdinfo.keephealth.app.Constants;
 import com.ytdinfo.keephealth.app.HttpClient;
 import com.ytdinfo.keephealth.app.MyApp;
 import com.ytdinfo.keephealth.jpush.ExampleUtil;
 import com.ytdinfo.keephealth.model.DocInfoBean;
+import com.ytdinfo.keephealth.model.DocOnline;
 import com.ytdinfo.keephealth.model.TBNews;
 import com.ytdinfo.keephealth.service.UpdateService;
 import com.ytdinfo.keephealth.ui.login.LoginActivity;
 import com.ytdinfo.keephealth.utils.DBUtil;
+import com.ytdinfo.keephealth.utils.ImageLoaderUtils;
 import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
+import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.kitsdk.ECDeviceKit;
 import com.yuntongxun.kitsdk.db.ContactSqlManager;
 import com.yuntongxun.kitsdk.db.ConversationSqlManager;
@@ -96,23 +111,23 @@ public class MainActivity extends Base2Activity implements
 	private String fromPersonData;
 	private ImageView newsPoint;
 
+	public static List<DocOnline> onlines;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		LogUtil.i("wpc", "Main---onCreate()");
-		LogUtil.i("wpc",
-				SharedPrefsUtil.getValue(Constants.CHECKISUPDATE, false) + "");
-
 		// 检查更新
-		if (SharedPrefsUtil.getValue(Constants.CHECKISUPDATE, false)
-				&& SharedPrefsUtil.getValue(Constants.NOTUPDATE, 0) <= Calendar.DAY_OF_YEAR) {
-
-			checkISupdate();
-
-			// showUpdateDialog();
-		}
+		// if (SharedPrefsUtil.getValue(Constants.CHECKISUPDATE, false)
+		// && SharedPrefsUtil.getValue(Constants.NOTUPDATE, 0) <= Calendar
+		// .getInstance().get(Calendar.DAY_OF_YEAR)) {
+		//
+		// checkISupdate();
+		//
+		// // showUpdateDialog();
+		// }
+		startCheck();
 
 		// 统计活跃用户
 		statisticActiveUser();
@@ -129,22 +144,88 @@ public class MainActivity extends Base2Activity implements
 			changeRadioButtonTextColor();
 			initHome2();
 			radioButton2.setChecked(true);
-			radioButton2.setTextColor(getResources().getColor(R.color.w_RadioButton));
+			radioButton2.setTextColor(getResources().getColor(
+					R.color.w_RadioButton));
 		} else if (getIntent().hasExtra("news")) {
 			changeRadioButtonTextColor();
 			initHome1();
 			radioButton1.setChecked(true);
-			radioButton1.setTextColor(getResources().getColor(R.color.w_RadioButton));
+			radioButton1.setTextColor(getResources().getColor(
+					R.color.w_RadioButton));
 		} else {
 			changeRadioButtonTextColor();
 			initHome();
 			radioButton0.setChecked(true);
-			radioButton0.setTextColor(getResources().getColor(R.color.w_RadioButton));
+			radioButton0.setTextColor(getResources().getColor(
+					R.color.w_RadioButton));
 		}
 		initListener();
-
 		registerMessageReceiver(); // used for receive msg
 		init();
+	}
+
+	/**
+	 * 下午3:01:16
+	 * 
+	 * @author zhangyh2 TODO 版本更新
+	 */
+	protected void startCheck() {
+		// TODO Auto-generated method stub
+		// 考虑到用户流量的限制，目前我们默认在Wi-Fi接入情况下才进行自动提醒。如需要在任意网络环境下都进行更新自动提醒，
+		// 则请在update调用之前添加以下代码：UmengUpdateAgent.setUpdateOnlyWifi(false)。
+		// 特别提示：针对机顶盒等可能不支持或者没有无线网络的设备， 请同样添加上述代码。
+		UmengUpdateAgent.setUpdateOnlyWifi(false);
+		String upgrade_mode = MobclickAgent.getConfigParams(this, "updata");
+		// OnlineConfigAgent.getInstance().updateOnlineConfig(this);
+		// OnlineConfigAgent.getInstance().setDebugMode(true);
+		// String upgrade_mode =
+		// OnlineConfigAgent.getInstance().getConfigParams(
+		// this, "updata");
+		LogUtils.i("获取的参数" + upgrade_mode);
+		LogUtils.i("获取的参数是否为空" + TextUtils.isEmpty(upgrade_mode));
+		if (TextUtils.isEmpty(upgrade_mode)) {
+			return;
+		}
+		UmengUpdateAgent.setUpdateOnlyWifi(false);
+		UmengUpdateAgent.update(this);
+		UmengUpdateAgent.forceUpdate(this);// 这行如果是强制更新就一定加上
+		int versionName = MyApp.getInstance().getVersionCode();
+		LogUtils.i("进行参数的对比" + upgrade_mode + "--" + versionName);
+		int serv = 0;
+		try {
+			serv = Integer.parseInt(upgrade_mode);
+		} catch (Exception e) {
+			// TODO: handle exception
+			LogUtil.i(upgrade_mode + "不能转换成int类型");
+			return;
+		}
+		if (serv > versionName) {
+			// 进入强制更新
+			UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+
+				@Override
+				public void onUpdateReturned(int updateStatus,
+						UpdateResponse updateResponse) {
+				}
+			});
+			UmengUpdateAgent.setDialogListener(new UmengDialogButtonListener() {
+				@Override
+				public void onClick(int status) {
+
+					switch (status) {
+					case UpdateStatus.Update:
+					default:
+						// 退出应用
+						Toast.makeText(MainActivity.this, "请等待升级完成后再次使用，谢谢合作！",
+								0).show();
+						MainActivity.this.finish();
+					}
+				}
+			});
+
+		} else {
+			UmengUpdateAgent.update(this);
+		}
 	}
 
 	public void showUpdateDialog(final String lastestUrl) {
@@ -168,7 +249,7 @@ public class MainActivity extends Base2Activity implements
 						// 计算间隔几天进行重新检验更新。
 						Calendar calendar = Calendar.getInstance();
 						calendar.set(Calendar.DAY_OF_YEAR,
-								Calendar.DAY_OF_YEAR + 3);
+								calendar.get(Calendar.DAY_OF_YEAR) + 3);
 						SharedPrefsUtil.putValue(Constants.NOTUPDATE,
 								calendar.get(Calendar.DAY_OF_YEAR));
 					}
@@ -198,7 +279,9 @@ public class MainActivity extends Base2Activity implements
 						UpdateService.class);
 				intent.putExtra("url", lastestUrl);
 				MainActivity.this.startService(intent);
-				// finish();
+				if (isQZupdate) {
+					finish();
+				}
 			}
 		});
 
@@ -218,7 +301,7 @@ public class MainActivity extends Base2Activity implements
 					// 计算间隔几天进行重新检验更新。
 					Calendar calendar = Calendar.getInstance();
 					calendar.set(Calendar.DAY_OF_YEAR,
-							Calendar.DAY_OF_YEAR + 3);
+							calendar.get(Calendar.DAY_OF_YEAR) + 3);
 					SharedPrefsUtil.putValue(Constants.NOTUPDATE,
 							calendar.get(Calendar.DAY_OF_YEAR));
 				}
@@ -308,7 +391,7 @@ public class MainActivity extends Base2Activity implements
 
 				LogUtil.i("paul", "服务器上版本： " + lastesVersion + "====="
 						+ "本地版本： " + versionCode);
-				if (lastesVersion.compareTo(versionCode + "") > 0) {
+				if (Integer.parseInt(lastesVersion) - versionCode > 0) {
 					// 需要更新
 					showUpdateDialog(lastestUrl);
 					// update(lastestUrl);
@@ -393,17 +476,22 @@ public class MainActivity extends Base2Activity implements
 		transaction.commit();
 	}
 
+	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private OnGetConversationInfoListener infoInterface = new OnGetConversationInfoListener() {
 
 		@Override
 		public void getConversationInfo(final ECConversation conversation,
-				final TextView textView, final ImageView imageView) {
+				final TextView textView, final ImageView imageView,
+				final ImageView isonline) {
 			if (conversation.getSessionId().startsWith("g")) {
 				imageView.setImageResource(R.drawable.group_head);
 				textView.setText(conversation.getUsername() == null ? conversation
 						.getSessionId() : conversation.getUsername());
 				return;
 			}
+
+			LogUtil.i("医生是否在线判断数组" + onlines);
+			// 根据医生是否在线。来判断如何展示。医生状态都在此类中。可以直接判断获取。
 			ECContacts contact = ContactSqlManager.getContact(conversation
 					.getSessionId());
 			if (contact == null
@@ -426,11 +514,43 @@ public class MainActivity extends Base2Activity implements
 								}
 								DocInfoBean docInfoBean = new Gson().fromJson(
 										responser.toString(), DocInfoBean.class);
-								textView.setText(docInfoBean.getUserName());
-								BitmapUtils bitmapUtils = new BitmapUtils(MyApp
-										.getInstance());
-								bitmapUtils.display(imageView,
-										docInfoBean.getHeadPicture());
+								boolean isOnline = false;
+								if (onlines != null) {
+									for (DocOnline docOnline : onlines) {
+										if (conversation.getSessionId().equals(
+												docOnline.getDoc())) {
+											isOnline = docOnline.isOnline();
+											break;
+										}
+									}
+								}
+								if (isOnline) {
+									// 医生在线
+									textView.setText(docInfoBean.getUserName());
+//									BitmapUtils bitmapUtils = new BitmapUtils(
+//											MyApp.getInstance());
+//									bitmapUtils.display(imageView,
+//											docInfoBean.getHeadPicture());
+									
+									imageLoader.displayImage(docInfoBean.getHeadPicture(),
+											imageView,
+											ImageLoaderUtils.getOptions2());
+									imageView.setAlpha(1.0f);
+									isonline.setImageResource(R.drawable.choices_icon_selected);
+								} else {
+									// 医生离线
+									textView.setText(docInfoBean.getUserName());
+//									BitmapUtils bitmapUtils = new BitmapUtils(
+//											MyApp.getInstance());
+//									bitmapUtils.display(imageView,
+//											docInfoBean.getHeadPicture());
+									imageLoader.displayImage(docInfoBean.getHeadPicture(),
+											imageView,
+											ImageLoaderUtils.getOptions2());
+									imageView.setAlpha(0.5f);
+									isonline.setImageResource(R.drawable.close_icon_selected);
+								}
+
 								ECContacts contacts = new ECContacts();
 								contacts.setContactid(conversation
 										.getSessionId());
@@ -448,34 +568,61 @@ public class MainActivity extends Base2Activity implements
 						});
 
 			} else {
-				textView.setText(contact.getNickname());
-				BitmapUtils bitmapUtils = new BitmapUtils(MyApp.getInstance());
-				bitmapUtils.display(imageView, contact.getRemark());
+				boolean isOnline = false;
+				if (onlines != null) {
+					for (DocOnline docOnline : onlines) {
+						if (conversation.getSessionId().equals(
+								docOnline.getDoc())) {
+							isOnline = docOnline.isOnline();
+							break;
+						}
+					}
+				}
+				if (isOnline) {
+					// 医生在线
+					textView.setText(contact.getNickname());
+//					BitmapUtils bitmapUtils = new BitmapUtils(
+//							MyApp.getInstance());
+//					bitmapUtils.display(imageView, contact.getRemark());
+//					imageView.setAlpha(1.0f);
+					imageView.setAlpha(1.0f);
+					imageLoader.displayImage(contact.getRemark(),
+							imageView,
+							ImageLoaderUtils.getOptions2());
+//					imageView.setImageResource(R.drawable.ic_launcher);
+//					imageView.setAlpha(1.0f);
+					isonline.setImageResource(R.drawable.choices_icon_selected);
+				} else {
+					// 医生离线
+					textView.setText(contact.getNickname());
+					imageLoader.displayImage(contact.getRemark(),
+							imageView,
+							ImageLoaderUtils.getOptions2());
+					imageView.setAlpha(0.5f);
+					isonline.setImageResource(R.drawable.close_icon_selected);
+				}
 			}
 		}
 
 		@Override
 		public void getBMYXZSConversationInfo(ECConversation arg0,
-				TextView arg1 ,TextView arg2) {
-						DBUtil dbUtil=new DBUtil(MyApp.getInstance());
-						 TBNews news=dbUtil.queryFirst();
-						 if(news!=null)
-						 {
-							 Log.e("mGetPersonInfoListener-news",news.getDesc());
-							 Log.e("mGetPersonInfoListener-news",news.getTitle());
-							 arg1.setText(news.getTitle());
-							 arg2.setText(DateUtil.getDateString(Long.parseLong(news.getDateCreate()),
-                DateUtil.SHOW_TYPE_CALL_LOG).trim());
-						 }
-						 else  {
-							 Log.e("mGetPersonInfoListener-news","110-kong");
-							 arg1.setText("");
-							 arg2.setText("");
-						 }
+				TextView arg1, TextView arg2) {
+			DBUtil dbUtil = new DBUtil(MyApp.getInstance());
+			TBNews news = dbUtil.queryFirst();
+			if (news != null) {
+				Log.e("mGetPersonInfoListener-news", news.getDesc());
+				Log.e("mGetPersonInfoListener-news", news.getTitle());
+				arg1.setText(news.getTitle());
+				arg2.setText(DateUtil.getDateString(
+						Long.parseLong(news.getDateCreate()),
+						DateUtil.SHOW_TYPE_CALL_LOG).trim());
+			} else {
+				Log.e("mGetPersonInfoListener-news", "110-kong");
+				arg1.setText("");
+				arg2.setText("");
+			}
 		}
- 
 
-	 
 	};
 
 	private void initHome2() {
@@ -557,7 +704,65 @@ public class MainActivity extends Base2Activity implements
 					transaction.show(newsFragment);
 				}
 				transaction.commitAllowingStateLoss();
+				// 每次打开此页面。或者刷新此页面都进行请求服务端，医生在线列表。<b>需要在这里查询数据库获取DoctorID</b>
+				Cursor cursor = ConversationSqlManager.getConversationCursor();
+				if (cursor!=null) {
+					List<String> param = new ArrayList<String>();
+					while (cursor.moveToNext()) {
+						int num = cursor.getColumnIndex("sessionId");
+						String s = cursor.getString(num);
+						param.add(s);
+					}
+					RequestParams params = new RequestParams();
+					params.addQueryStringParameter(new BasicNameValuePair(
+							"voipAccounts", param.toString()));
+					params.addQueryStringParameter(new BasicNameValuePair("rType",
+							"Android"));
+					HttpClient.get(this, Constants.DOCISONLINE, params,
+							new RequestCallBack<String>() {
 
+								@Override
+								public void onSuccess(ResponseInfo<String> arg0) {
+									// TODO Auto-generated method stub
+									LogUtils.i(arg0.result);
+									onlines = new ArrayList<DocOnline>();
+									try {
+										JSONObject json = new JSONObject(
+												arg0.result);
+										JSONObject data = json
+												.getJSONObject("Data");
+										JSONArray doctorInfos = data
+												.getJSONArray("DoctorInfos");
+										if (null != doctorInfos) {
+											for (int i = 0; i < doctorInfos
+													.length(); i++) {
+												JSONObject jsonObject = doctorInfos
+														.getJSONObject(i);
+												String info = jsonObject
+														.getString("VoipAccount");
+												onlines.add(new DocOnline(
+														info,
+														jsonObject
+																.getBoolean("IsOnline")));
+											}
+										}
+									} catch (Exception e) {
+										// TODO: handle exception
+										onlines = new ArrayList<DocOnline>();
+									}
+									newsFragment.getmAdapter().notifyChange();
+								}
+
+								@Override
+								public void onFailure(HttpException arg0,
+										String arg1) {
+									// TODO Auto-generated method stub
+									LogUtils.i(arg1);
+									onlines = new ArrayList<DocOnline>();
+									newsFragment.getmAdapter().notifyChange();
+								}
+							});
+				}
 				/*
 				 * System.out.println("device///"+CCPHelper.getInstance().getDevice
 				 * ()); if(null==CCPHelper.getInstance().getDevice()||CCPHelper.
@@ -758,11 +963,24 @@ public class MainActivity extends Base2Activity implements
 	protected void onResume() {
 		isForeground = true;
 		super.onResume();
+		try {
+			if (null != SharedPrefsUtil.getValue(Constants.TOKEN, null)
+					&& newsFragment == null&&SDKCoreHelper.getInstance().mConnect== ECDevice.ECConnectState.CONNECT_SUCCESS ) {
+				fragmentManager = getSupportFragmentManager();
+				FragmentTransaction transaction = fragmentManager
+						.beginTransaction();
+				newsFragment = new ConversationListFragment();
+				newsFragment.setOnGetConversationInfoListener(infoInterface);
+				transaction.add(R.id.framelayout, newsFragment);
+				transaction.hide(newsFragment);
+				transaction.commit();
+			}
+		} catch (Exception e) {
 
+		}
 		JPushInterface.onResume(this);
 
 		MobclickAgent.onResume(this);
-		
 	}
 
 	@Override
@@ -831,48 +1049,44 @@ public class MainActivity extends Base2Activity implements
 
 	@Override
 	public void OnUpdateMsgUnreadCounts() {
-		new Thread()
-		{
+		new Thread() {
 			@Override
-			public void run()
-			{
-				  if(ECDeviceKit.userId!=null){
-						if(ConversationSqlManager.getInstance().qureyAllSessionUnreadCount()==0)
-						{
-							runOnUiThread(new Runnable() {
+			public void run() {
+				if (ECDeviceKit.userId != null) {
+					if (ConversationSqlManager.getInstance()
+							.qureyAllSessionUnreadCount() == 0) {
+						runOnUiThread(new Runnable() {
 
-							     @Override
-							     public void run() {
-							    		newsPoint.setVisibility(View.GONE);
-							     }
-							    }
-							);
-						
-						}else {
-							runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								newsPoint.setVisibility(View.GONE);
+							}
+						});
 
-							     @Override
-							     public void run() {
-							    	 	newsPoint.setVisibility(View.VISIBLE);
-							     }
-							    }
-							);
-						}
+					} else {
+						runOnUiThread(new Runnable() {
+
+							@Override
+							public void run() {
+								newsPoint.setVisibility(View.VISIBLE);
+							}
+						});
 					}
+				}
 			}
 		}.start();
-		
-//		try{
-//			if(ConversationSqlManager.getInstance().qureyAllSessionUnreadCount()==0)
-//			{
-//				newsPoint.setVisibility(View.GONE);
-//			}else {
-//				newsPoint.setVisibility(View.VISIBLE);
-//			}
-//		}catch(Exception e )
-//		{
-//			
-//		}
+
+		// try{
+		// if(ConversationSqlManager.getInstance().qureyAllSessionUnreadCount()==0)
+		// {
+		// newsPoint.setVisibility(View.GONE);
+		// }else {
+		// newsPoint.setVisibility(View.VISIBLE);
+		// }
+		// }catch(Exception e )
+		// {
+		//
+		// }
 
 	}
 

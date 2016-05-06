@@ -32,7 +32,6 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -52,6 +51,7 @@ public class UpdateService extends Service {
 	private int download_precent = 0;
 	private RemoteViews views;
 	private int notificationId = 1234;
+	private boolean isfirstDown;
 
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -91,7 +91,11 @@ public class UpdateService extends Service {
 		myHandler.sendMessage(message);
 
 		// 启动线程开始执行下载任务
-		downFile(intent.getStringExtra("url"));
+		if (!isfirstDown) {
+			isfirstDown = true;
+			downFile(intent.getStringExtra("url"));
+		}
+
 		return super.onStartCommand(intent, flags, startId);
 	}
 
@@ -102,7 +106,6 @@ public class UpdateService extends Service {
 
 	// 下载更新文件
 	private void downFile(final String url) {
-		Log.i("123123", url);
 		new Thread() {
 			@Override
 			public void run() {
@@ -161,11 +164,16 @@ public class UpdateService extends Service {
 						bis.close();
 					}
 
-					if (!cancelUpdate) {
-						Message message = myHandler.obtainMessage(2, tempFile);
+					if (response.getStatusLine().getStatusCode() == 200) {
+						if (cancelUpdate) {
+							Message message = myHandler.obtainMessage(2, tempFile);
+							myHandler.sendMessage(message);
+						} else {
+							tempFile.delete();
+						}
+					}else {
+						Message message = myHandler.obtainMessage(4, "下载更新文件失败");
 						myHandler.sendMessage(message);
-					} else {
-						tempFile.delete();
 					}
 				} catch (ClientProtocolException e) {
 					Message message = myHandler.obtainMessage(4, "下载更新文件失败");
@@ -230,6 +238,7 @@ public class UpdateService extends Service {
 					nm.notify(notificationId, notification);
 					break;
 				case 4:
+					isfirstDown = false;
 					nm.cancel(notificationId);
 					break;
 				}

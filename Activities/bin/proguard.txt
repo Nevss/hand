@@ -20,6 +20,9 @@
 # view AndroidManifest.xml #generated:87
 -keep class com.darly.activities.ui.InterlActivityVtoo { <init>(...); }
 
+# view AndroidManifest.xml #generated:71
+-keep class com.darly.activities.ui.MainActivity { <init>(...); }
+
 # view AndroidManifest.xml #generated:115
 -keep class com.darly.activities.ui.RotateAcitvity { <init>(...); }
 
@@ -37,9 +40,6 @@
 
 # view AndroidManifest.xml #generated:121
 -keep class com.darly.activities.ui.login.LoginAcitvity { <init>(...); }
-
-# view AndroidManifest.xml #generated:71
--keep class com.darly.activities.ui.oo.OrientedAcitvity { <init>(...); }
 
 # view AndroidManifest.xml #generated:229
 -keep class com.darly.activities.ui.qinjia.GotyeService { <init>(...); }

@@ -40,7 +40,7 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
 
 		initView();
 		initListener();
-		if (SharedPrefsUtil.getValue(Constants.ALERT, false)) {
+		if (SharedPrefsUtil.getValue(Constants.ALERT, true)) {
 			ibt_switch.setBackgroundResource(R.drawable.on_switch);
 			swh = 1;
 		} else {

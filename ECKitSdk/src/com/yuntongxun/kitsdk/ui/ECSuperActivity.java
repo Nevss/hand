@@ -19,10 +19,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.Window;
 
-
-
-
-
 public abstract class ECSuperActivity extends FragmentActivity {
 	
 	protected static final Object CODE_OK = "000000";

@@ -16,6 +16,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.yuntongxun.ecsdk.ECMessage;
 import com.yuntongxun.kitsdk.utils.LogUtil;
@@ -48,6 +49,7 @@ public class ConversationSqlManager extends AbstractSQLManager {
                     "      LEFT JOIN groups2 ON im_thread.sessionId = groups2.groupid order by dateTime desc;";
             return getInstance().sqliteDB().rawQuery(sql, null);
         } catch (Exception e) {
+        	Log.e("getConversationCursor", e.getMessage()+"|"+e.getCause());
             e.printStackTrace();
         }
         return null;

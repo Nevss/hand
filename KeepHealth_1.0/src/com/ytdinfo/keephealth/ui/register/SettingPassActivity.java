@@ -31,6 +31,7 @@ import com.ytdinfo.keephealth.model.UserGroupBean;
 import com.ytdinfo.keephealth.model.UserModel;
 import com.ytdinfo.keephealth.ui.BaseActivity;
 import com.ytdinfo.keephealth.ui.MainActivity;
+import com.ytdinfo.keephealth.ui.login.LoginActivity;
 import com.ytdinfo.keephealth.ui.personaldata.PersonalDataActivity;
 import com.ytdinfo.keephealth.ui.view.CommonActivityTopView;
 import com.ytdinfo.keephealth.ui.view.CommonButton;
@@ -64,6 +65,8 @@ public class SettingPassActivity extends BaseActivity implements
 
 	Handler handler;
 
+	private MyProgressDialog myProgressDialog;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -135,7 +138,6 @@ public class SettingPassActivity extends BaseActivity implements
 					ToastUtil.showMessage("两次密码不一致");
 				} else {
 					requestPassSetting();
-
 				}
 			}
 
@@ -150,7 +152,8 @@ public class SettingPassActivity extends BaseActivity implements
 	 * 请求服务器进行密码设置
 	 */
 	private void requestPassSetting() {
-
+		myProgressDialog = new MyProgressDialog(SettingPassActivity.this);
+		myProgressDialog.setMessage("正在登录...");
 		try {
 			// 向服务器发送请求
 			JSONObject jsonParam = new JSONObject();
@@ -161,6 +164,7 @@ public class SettingPassActivity extends BaseActivity implements
 						@Override
 						public void onStart() {
 							Log.i("HttpUtil", "onStart");
+							myProgressDialog.show();
 						}
 
 						@Override
@@ -182,6 +186,7 @@ public class SettingPassActivity extends BaseActivity implements
 						public void onFailure(HttpException error, String msg) {
 							Log.i("HttpUtil", "onFailure===" + msg);
 							ToastUtil.showMessage("网络获取失败");
+							myProgressDialog.dismiss();
 							// testTextView.setText(error.getExceptionCode() +
 							// ":" +
 							// msg);
@@ -212,14 +217,14 @@ public class SettingPassActivity extends BaseActivity implements
 				// startActivity(i);
 			}else {
 				ToastUtil.showMessage(msg);
+				myProgressDialog.dismiss();
 			}
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			myProgressDialog.dismiss();
 		}
 	}
-
-	private MyProgressDialog myProgressDialog;
 
 	/** 用户Token标示 */
 	String token;
@@ -236,8 +241,6 @@ public class SettingPassActivity extends BaseActivity implements
 	 * @author zhangyh2 SettingPassActivity.java TODO 直接调用登录接口
 	 */
 	private void requestLogin(String userString, String passwordString) {
-		myProgressDialog = new MyProgressDialog(SettingPassActivity.this);
-		myProgressDialog.setMessage("正在登录...");
 
 		JSONObject jsonObject = new JSONObject();
 		try {
@@ -251,8 +254,6 @@ public class SettingPassActivity extends BaseActivity implements
 				new RequestCallBack<String>() {
 					@Override
 					public void onStart() {
-						super.onStart();
-						myProgressDialog.show();
 						handler.sendEmptyMessage(0x342);
 					}
 
@@ -294,7 +295,7 @@ public class SettingPassActivity extends BaseActivity implements
 				String s = SharedPrefsUtil.getValue(Constants.TOKEN, null);
 				//连接云通讯
 			    MyApp.ConnectYunTongXun();
-			    requestGetUserGroup();
+			 //   requestGetUserGroup();
 				// 跳到首页
 				UserModel userModel = new Gson().fromJson(usermodel,
 						UserModel.class);
@@ -313,8 +314,11 @@ public class SettingPassActivity extends BaseActivity implements
 				finish();
 			
 			} else {
-				ToastUtil.showMessage(message);
 				handler.sendEmptyMessage(0x341);
+				Intent intent = new Intent(this, LoginActivity.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+				startActivity(intent);
+				finish();
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();

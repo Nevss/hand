@@ -22,6 +22,12 @@ import com.ytdinfo.keephealth.utils.ToastUtil;
 public class HttpClient {
 	private static final String TAG = HttpClient.class.getName();
 //private static final Context context = MyApp.getInstance().getApplicationContext();
+	
+	private static int  VersionCode=MyApp.getInstance().getVersionCode();
+	
+	private static final String APPSYS_STRING="Android_";
+	
+	
 	private HttpClient() {
 	}
 
@@ -38,6 +44,11 @@ public class HttpClient {
 			params.addHeader("Content-Type", "application/json;charset=UTF-8");
 			params.addHeader("Accept", "application/json");
 			params.addHeader("charset", "utf-8");
+			if(VersionCode==0)
+			{
+				VersionCode=MyApp.getInstance().getVersionCode();
+			}
+			params.addHeader("version",APPSYS_STRING+VersionCode);
 			//params.addBodyParameter("param", s);
 			try {
 				StringEntity se = new StringEntity(s, "utf-8");
@@ -52,7 +63,7 @@ public class HttpClient {
 			params.addHeader("token", token);	
 			
 			}
-			httpUtils.configTimeout(30*1000);
+			httpUtils.configTimeout(5*1000);
 			httpUtils.configRequestRetryCount(1);
 			httpUtils.configRequestThreadPoolSize(3);
 			httpUtils.configResponseTextCharset("utf-8");
@@ -72,6 +83,11 @@ public class HttpClient {
 			params.addHeader("Content-Type", "application/json;charset=UTF-8");
 			params.addHeader("Accept", "application/json");
 			params.addHeader("charset", "utf-8");
+			if(VersionCode==0)
+			{
+				VersionCode=MyApp.getInstance().getVersionCode();
+			}
+			params.addHeader("version",APPSYS_STRING+VersionCode);
 			//params.addBodyParameter("param", s);
 			try {
 				StringEntity se = new StringEntity(s, "utf-8");
@@ -85,7 +101,7 @@ public class HttpClient {
 			params.addHeader("token", SharedPrefsUtil.getValue(Constants.TOKEN, null));	
 			
 			}
-			httpUtils.configTimeout(30*1000);
+			httpUtils.configTimeout(5*1000);
 			httpUtils.configRequestRetryCount(1);
 			httpUtils.configRequestThreadPoolSize(3);
 			httpUtils.configResponseTextCharset("utf-8");
@@ -104,7 +120,12 @@ public class HttpClient {
 			RequestParams params = new RequestParams();
 			params.addBodyParameter("param", param);
 			params.addHeader("token", SharedPrefsUtil.getValue(Constants.TOKEN, null));
-			httpUtils.configTimeout(30*1000);
+			if(VersionCode==0)
+			{
+				VersionCode=MyApp.getInstance().getVersionCode();
+			}
+			params.addHeader("version",APPSYS_STRING+VersionCode);
+			httpUtils.configTimeout(5*1000);
 			httpUtils.configRequestRetryCount(1);
 			httpUtils.configRequestThreadPoolSize(3);
 			httpUtils.configResponseTextCharset("utf-8");
@@ -138,6 +159,12 @@ public class HttpClient {
 			params.addHeader("token", SharedPrefsUtil.getValue(Constants.TOKEN, null));
 			params.addHeader("Content-Type", "application/json");
 			params.addHeader("Accept", "application/json");
+			if(VersionCode==0)
+			{
+				VersionCode=MyApp.getInstance().getVersionCode();
+			}
+			params.addHeader("version",APPSYS_STRING+VersionCode);
+			httpUtils.configTimeout(5*1000);
 			httpUtils.configResponseTextCharset("utf-8");
 			httpUtils.configCurrentHttpCacheExpiry(500);
 			httpUtils.send(HttpMethod.GET, url, params, callBack);
@@ -155,6 +182,12 @@ public class HttpClient {
 			params.addHeader("token", SharedPrefsUtil.getValue(Constants.TOKEN, null));
 			params.addHeader("Content-Type", "application/json");
 			params.addHeader("Accept", "application/json");
+			if(VersionCode==0)
+			{
+				VersionCode=MyApp.getInstance().getVersionCode();
+			}
+			params.addHeader("version",APPSYS_STRING+VersionCode);
+			httpUtils.configTimeout(5*1000);
 			httpUtils.configResponseTextCharset("utf-8");
 			httpUtils.send(HttpMethod.DELETE, url, params, callBack);
 		}

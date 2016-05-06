@@ -206,6 +206,8 @@ public class ECChattingActivity extends ECSuperActivity implements
 		IntentFilter filter = new IntentFilter();
 		filter.addAction("com.rayelink.transfertreat");
 		filter.addAction("com.rayelink.subtitle");
+		filter.addAction("com.rayelink.closesubject");
+		filter.addAction("com.rayelink.refreshchat");
 		myReceiver = new SdcardStateChanageReceiver();
 		registerReceiver(myReceiver, filter);
 		IMChattingHelper.setOnMessageReportCallback(this);
@@ -349,7 +351,7 @@ public class ECChattingActivity extends ECSuperActivity implements
 		mListView.setStackFromBottom(false);
 		mListView.setFocusable(false);
 		mListView.setFocusableInTouchMode(false);
-		mListView.setOnItemLongClickListener(mOnItemLongClickListener);
+		//mListView.setOnItemLongClickListener(mOnItemLongClickListener);
 		registerForContextMenu(mListView);
 		mProgressBar = (ProgressBar) findViewById(R.id.gc_progressbar);
 		mProgressBar.setMax(15 * 60);
@@ -687,17 +689,20 @@ public class ECChattingActivity extends ECSuperActivity implements
 						.findFirst(
 								Selector.from(ChatInfoBean.class).where(
 										"docInfoBeanId", "=", mRecipients));
+				IMChattingHelper.chatControllerListener.isChattingDocOnline(tempInfo,mRecipients, btn_retry_chat);
 				if (tempInfo != null) {
 					if (tempInfo.isTimeout()) {
 						mChattingFooter.setVisibility(View.GONE);
 						retryChatLayout.setVisibility(View.VISIBLE);
 						rightButton.setVisibility(View.GONE);
+						
 						if (tempInfo.isComment()) {
 							btn_retry_chat.setText("再次咨询");
 						} else {
 							// 打开评论页面
 							btn_retry_chat.setText("评价医生");
 						}
+						
 						secondTitle.setVisibility(View.GONE);
 					} else {
 						rightButton.setVisibility(View.VISIBLE);
@@ -1701,6 +1706,7 @@ public class ECChattingActivity extends ECSuperActivity implements
 		} else if (v.getId() == R.id.btn_retry_chat) {
 			if (v instanceof Button) {
 				if ("再次咨询".equals(((Button) v).getText().toString())) {
+			/*		if (chatInfo != null) {
 					/*if (chatInfo != null) {
 						if (chatInfo.isTimeout()) {
 							IMChattingHelper.getInstance();
@@ -1710,12 +1716,16 @@ public class ECChattingActivity extends ECSuperActivity implements
 						} else {
 							ToastUtil.showMessage("您当前正在进行在线咨询，结束后才能进行在线问医生哦");
 						}
-					*/
+					} else {*/
 				ConnectivityManager cm = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
 				NetworkInfo ni = cm.getActiveNetworkInfo();
 				if (!(ni != null && ni.isConnectedOrConnecting())) {
 					ToastUtil.showMessage("网络未连接...");
 				} else {
+					if(isHaveOnline()){
+						ToastUtil
+						.showMessage("您当前正在进行在线咨询，结束后才能进行在线问医生哦");
+					}else{
 						try {
 							IMChattingHelper.getInstance();
 							ChatInfoBean tempInfo = IMChattingHelper.chatControllerListener.getChatInfoDb()
@@ -1729,25 +1739,20 @@ public class ECChattingActivity extends ECSuperActivity implements
 									IMChattingHelper.chatControllerListener
 											.retryChat(ECChattingActivity.this,
 													tempInfo.getSubjectID(),
-													mRecipients);
+													mRecipients,retryComplete);
 								} else {
 									ToastUtil
 											.showMessage("您当前正在进行在线咨询，结束后才能进行在线问医生哦");
 								}
 							} else {
-								if(isHaveOnline()){
-									ToastUtil
-									.showMessage("您当前正在进行在线咨询，结束后才能进行在线问医生哦");
-								}else {
 										IMChattingHelper.getInstance();
 										if(IMChattingHelper.chatControllerListener!=null){
 											IMChattingHelper.getInstance();
 											IMChattingHelper.chatControllerListener
 											.retryChat(ECChattingActivity.this,
 													 "0",
-													mRecipients);
+													mRecipients,retryComplete);
 										}
-								}
 							}
 
 						} catch (DbException e) {
@@ -1755,6 +1760,7 @@ public class ECChattingActivity extends ECSuperActivity implements
 							e.printStackTrace();
 						}
 					}
+				}
 
 				} else {
 					IMChattingHelper.getInstance();
@@ -1990,11 +1996,11 @@ public class ECChattingActivity extends ECSuperActivity implements
 			}
 			ECMessage msg = mChattingAdapter.getItem(_position);
 			switch (position) {
-			case 0: // 删除
+	/*		case 0: // 删除
 				doDelMsgTips(msg, _position);
 
-				break;
-			case 1: // 复制
+				break;*/
+			case 0: // 复制
 				try {
 					if (msg.getType() == ECMessage.Type.TXT) {
 						ECTextMessageBody body = (ECTextMessageBody) msg
@@ -2133,10 +2139,13 @@ public class ECChattingActivity extends ECSuperActivity implements
 
 	@Override
 	public int onDataChanged(String contactid, int i) {
-		if (contactid.equals(mRecipients)) {
-			if (mProgressBar != null&&mProgressBar.getProgress()!=i)
-				mProgressBar.setProgress(i);
-		}
+//		if(!(mProgressBar.getProgress()==0&&i-mProgressBar.getProgress()>1))
+//		{
+			if (contactid.equals(mRecipients)) {
+				if (mProgressBar != null&&mProgressBar.getProgress()!=i)
+					mProgressBar.setProgress(i);
+			}
+//		}
 		return 0;
 	}
 
@@ -2177,9 +2186,144 @@ public class ECChattingActivity extends ECSuperActivity implements
 				if (mRecipients.equals(docId))
 					secondTitle.setVisibility(docStatus ? View.GONE
 							: View.VISIBLE);
+			}else if("com.rayelink.closesubject".equals(intent.getAction()))
+			{
+				String docId = intent.getStringExtra("docId");
+				if (mRecipients.equals(docId)){
+					restart();
+					retryChatDialog(mRecipients);
+				}
+			}else if("com.rayelink.refreshchat".equals(intent.getAction()))
+			{
+				String docId = intent.getStringExtra("docId");
+				if (mRecipients.equals(docId)){
+//					if(IMChattingHelper.getOnMessageReportCallback()==null){
+						IMChattingHelper.setOnMessageReportCallback(ECChattingActivity.this);
+						refreshUIMessage();
+						CustomTimer.observer=ECChattingActivity.this;
+						setIMessageNomalThreadRead();
+//					}
+				}
 			}
 		}
 
 	};
+	
+	
+	private RetryComplete retryComplete=new RetryComplete() {
+		@Override
+		public void onComplete() {
+			// TODO Auto-generated method stub
+			restart();
+			handleSendTextMessage("您好，医生，麻烦您帮我解读一下这次的体检报告，我有点看不明白，我需要复查一次吗？");
+			insertBangMangYiMessage("您好！很高兴收到你的提问，医生正在接入中，请你稍后。");
+			refreshUIMessage();
+			setIMessageNomalThreadRead();
+			
+		}
+	};
+	
+	public interface RetryComplete
+	{
+		public void onComplete();
+	}
+	public void retryChatDialog(String contactId) {
+		// TODO Auto-generated method stub
+		if(contactId.equals(mRecipients))
+		{
+			mProgressBar.setProgress(0);
+			View view = View.inflate(getApplicationContext(), R.layout.ytx_continue_chat,
+					null);
+			//TextView tips=(TextView) view.findViewById(R.id.tipad);
+			Button sure = (Button) view.findViewById(R.id.ec_sure);
+			Button cancel = (Button) view.findViewById(R.id.ec_cancel);
+			//tips.setText("鏄惁鍐嶆鍜ㄨ?");
+			sure.setOnClickListener(this);
+			cancel.setOnClickListener(this);
+			sure.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					mpopupWindow.dismiss();
+					try {
+						IMChattingHelper.getInstance();
+						ChatInfoBean tempInfo = IMChattingHelper.chatControllerListener.getChatInfoDb()
+								.findFirst(
+										Selector.from(ChatInfoBean.class)
+												.where("docInfoBeanId",
+														"=", mRecipients));
+						if (tempInfo != null) {
+							if (tempInfo.isTimeout()) {
+								IMChattingHelper.getInstance();
+								IMChattingHelper.chatControllerListener
+										.retryChat(ECChattingActivity.this,
+												tempInfo.getSubjectID(),
+												mRecipients,retryComplete);
+							} else {
+								ToastUtil
+										.showMessage("您当前正在进行在线咨询，结束后才能进行在线问医生哦");
+							}
+						} else {
+							if(isHaveOnline()){
+								ToastUtil
+								.showMessage("您当前正在进行在线咨询，结束后才能进行在线问医生哦");
+							}else {
+									IMChattingHelper.getInstance();
+									if(IMChattingHelper.chatControllerListener!=null){
+										IMChattingHelper.getInstance();
+										IMChattingHelper.chatControllerListener
+										.retryChat(ECChattingActivity.this,
+												 "0",
+												mRecipients,retryComplete);
+									}
+							}
+						}
+
+					} catch (DbException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			});
+			cancel.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					// TODO Auto-generated method stub
+					mpopupWindow.dismiss();
+					
+				}
+			});
+			view.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+
+					mpopupWindow.dismiss();
+				}
+			});
+
+			view.startAnimation(AnimationUtils.loadAnimation(
+					getApplicationContext(), R.anim.fade_in));
+			// RelativeLayout ll_popup = (RelativeLayout)
+			// view.findViewById(R.id.ll_popup);
+			// ll_popup.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+			// R.anim.push_bottom_in));
+
+			if (mpopupWindow == null) {
+				mpopupWindow = new PopupWindow(this);
+				mpopupWindow.setWidth(LayoutParams.MATCH_PARENT);
+				mpopupWindow.setHeight(LayoutParams.MATCH_PARENT);
+				mpopupWindow.setBackgroundDrawable(new BitmapDrawable());
+				mpopupWindow.setFocusable(true);
+				mpopupWindow.setOutsideTouchable(true);
+			}
+
+			mpopupWindow.setContentView(view);
+			mpopupWindow.showAtLocation(mListView, Gravity.CENTER,0,0);
+			mpopupWindow.update();
+		}
+	}
 
 }

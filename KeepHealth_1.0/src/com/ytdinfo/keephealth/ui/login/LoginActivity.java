@@ -258,7 +258,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 				String s = SharedPrefsUtil.getValue(Constants.TOKEN, null);
 				//连接云通讯
 			    MyApp.ConnectYunTongXun();
-			    requestGetUserGroup();
+			   // requestGetUserGroup();
 				// 跳到首页
 				UserModel userModel = new Gson().fromJson(usermodel,
 						UserModel.class);
@@ -385,7 +385,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 							JSONObject data = jsonObject.getJSONObject("Data");
 							String statusCode = data.getString("statusCode");
 							if (statusCode.equals("000000")) {
-								if(!data.getString("groups").equals("null")){
+								if(data.has("groups")&&data.getString("groups")!=null&&!data.getString("groups").equals("null")){
 									List<UserGroupBean> list = new Gson().fromJson(
 											data.getString("groups"),
 											new TypeToken<List<UserGroupBean>>() {

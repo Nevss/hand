@@ -24,6 +24,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
@@ -67,6 +68,7 @@ import com.ytdinfo.keephealth.ui.MainActivity;
 import com.ytdinfo.keephealth.ui.view.CommonActivityTopView;
 import com.ytdinfo.keephealth.ui.view.MyPopWindow;
 import com.ytdinfo.keephealth.ui.view.MyProgressDialog;
+import com.ytdinfo.keephealth.utils.Chat_Dialog;
 import com.ytdinfo.keephealth.utils.DBUtilsHelper;
 import com.ytdinfo.keephealth.utils.ImageTools;
 import com.ytdinfo.keephealth.utils.JsonUtil;
@@ -117,7 +119,7 @@ public class OnlineQuesActivity extends BaseActivity implements Callback,
 
 	private OnlineQuestionUserModel onlineQuestionUserModel;
 	private List<String> list_imagesUrl = new ArrayList<String>();
-    private List<String> list_imagesPath= new ArrayList<String>(); 
+	private List<String> list_imagesPath = new ArrayList<String>();
 	private AlertDialog builder;
 
 	private CommonActivityTopView commonActivityTopView;
@@ -910,6 +912,27 @@ public class OnlineQuesActivity extends BaseActivity implements Callback,
 	private DocInfoBean docInfoBean;
 
 	private void parseJson(String jsonStr) {
+//		if (!Chat_Dialog.timeCurl()) {
+//			final AlertDialog dialog = new AlertDialog.Builder(this).create();
+//			dialog.show();
+//			dialog.setCanceledOnTouchOutside(false);
+//			Window window = dialog.getWindow();
+//			window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+//			TextView msg = (TextView) window.findViewById(R.id.chat_dialog_msg);
+//			String desString = "亲，非常抱歉，我们的服务时间是工作日9：00－18：00，欢迎下次来咨询，祝您身体健康！";
+//			msg.setText(desString);
+//			Button sure = (Button) window.findViewById(R.id.chat_dialog_sure);
+//			sure.setOnClickListener(new OnClickListener() {
+//
+//				@Override
+//				public void onClick(View v) {
+//					// TODO Auto-generated method stub
+//					dialog.dismiss();
+//				}
+//			});
+//			return;
+//		}
+
 		try {
 			JSONObject jsonObject = new JSONObject(jsonStr);
 			JSONObject jsonData = jsonObject.getJSONObject("Data");
@@ -918,11 +941,35 @@ public class OnlineQuesActivity extends BaseActivity implements Callback,
 			String docInfoBeanStr = jsonData.getString("responser");
 			if (null == docInfoBeanStr || docInfoBeanStr.equals("")
 					|| docInfoBeanStr.equals("null")) {
-				ToastUtil.showMessage("当前没有医生在线...");
+				final AlertDialog dialog = new AlertDialog.Builder(this)
+						.create();
+				dialog.show();
+				dialog.setCanceledOnTouchOutside(false);
+				Window window = dialog.getWindow();
+				window.setContentView(R.layout.chat_dialog);// 设置对话框的布局
+				TextView msg = (TextView) window
+						.findViewById(R.id.chat_dialog_msg);
+				String desString = null;
+				if (!Chat_Dialog.timeCurl()) {
+					desString = "亲，非常抱歉，我们的服务时间是工作日9：00－18：00，欢迎下次来咨询，祝您身体健康！";
+				}else {
+					 desString = "亲，我们的医生都在忙碌，请稍等~";
+				}
+				msg.setText(desString);
+				Button sure = (Button) window
+						.findViewById(R.id.chat_dialog_sure);
+				sure.setOnClickListener(new OnClickListener() {
+
+					@Override
+					public void onClick(View v) {
+						// TODO Auto-generated method stub
+						dialog.dismiss();
+					}
+				});
 				return;
 			}
-			//开始计时
-			//TimerService.count = 0;
+			// 开始计时
+			// TimerService.count = 0;
 			docInfoBean = new Gson()
 					.fromJson(docInfoBeanStr, DocInfoBean.class);
 			saveDoc(docInfoBean);
@@ -951,13 +998,13 @@ public class OnlineQuesActivity extends BaseActivity implements Callback,
 			 */
 			// SharedPrefsUtil.putValue(Constants.CHATINFO,
 			// chatInfoBean.toString());
-			if (SDKCoreHelper.getConnectState()!=ECConnectState.CONNECT_SUCCESS)  {
+			if (SDKCoreHelper.getConnectState() != ECConnectState.CONNECT_SUCCESS) {
 				myProgressDialog = new MyProgressDialog(OnlineQuesActivity.this);
 				myProgressDialog.setMessage("正在连接对话....");
 				myProgressDialog.show();
 				MyApp.ConnectYunTongXun();
-			} 
-				goIntent(chatInfoBean);
+			}
+			goIntent(chatInfoBean);
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -971,7 +1018,8 @@ public class OnlineQuesActivity extends BaseActivity implements Callback,
 		chatInfoBean.setSubjectType("3");
 		chatInfoBean.setStatus(false);
 		DBUtilsHelper.getInstance().saveChatinfo(chatInfoBean);
-		ECDeviceKit.getIMKitManager().startConversationActivity(chatInfoBean, list_imagesPath, bodyContenet);
+		ECDeviceKit.getIMKitManager().startConversationActivity(chatInfoBean,
+				list_imagesPath, bodyContenet);
 	}
 
 	private void saveDoc(DocInfoBean docInfoBean) {

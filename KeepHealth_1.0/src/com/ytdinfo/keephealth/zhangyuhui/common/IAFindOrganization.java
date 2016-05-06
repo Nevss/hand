@@ -35,7 +35,7 @@ public class IAFindOrganization {
 					Integer.parseInt(room.get(j).DepartmentID), stata));
 		}
 		if (base == null) {
-			ToastUtil.showMessage("网络链接失败，请检查网络");
+			ToastUtil.showMessage("网络请求失败");
 			organization.setOrganization_hasstate(false);
 			organization.setOrganization_departments(data);
 			floo.add(organization);

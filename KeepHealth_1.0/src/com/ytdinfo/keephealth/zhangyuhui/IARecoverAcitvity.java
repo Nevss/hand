@@ -87,7 +87,7 @@ public class IARecoverAcitvity extends BaseActivity {
 		relative.removeAllViews();
 		getView();
 		if (!NetworkReachabilityUtil.isNetworkConnected(IARecoverAcitvity.this)) {
-			ToastUtil.showMessage("网络链接失败，请检查网络");
+			ToastUtil.showMessage("网络请求失败");
 			if (loading != null) {
 				loading.dismiss();
 			}
@@ -241,7 +241,7 @@ public class IARecoverAcitvity extends BaseActivity {
 	protected void getDataFHttp() {
 		// TODO Auto-generated method stub
 		if (!NetworkReachabilityUtil.isNetworkConnected(IARecoverAcitvity.this)) {
-			ToastUtil.showMessage("网络链接失败，请检查网络");
+			ToastUtil.showMessage("网络请求失败");
 			if (loading != null) {
 				loading.dismiss();
 			}

@@ -60,6 +60,9 @@ public class GuideActivity extends BaseActivity implements OnPageChangeListener,
 		
 	}
 	
+	
+	
+	
 	@Override
 	protected void onResume() {
 		super.onResume();

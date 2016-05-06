@@ -160,6 +160,10 @@
     <color name="w_l_gray">#FFa4a4a4</color>
     <!-- 字体纯白色 -->
     <color name="w_white">#FFffffff</color>
+   <!-- 字体不可点击色 -->
+    <color name="w_white_unclick">#AFE1C8</color>
     <!-- 字体浅绿色 -->
     <color name="w_l_green">#FF00abb0</color>
+    
+    
 </resources>

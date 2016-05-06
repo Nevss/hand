@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
@@ -128,15 +129,13 @@ public class ImageGalleryFragment extends CCPFragment {
 
 		// 查看大图是否已经在本地
 		mImageUrl = selectInfo(mEntry.getThumbnailurl());/* mEntry.getPicurl(); */
-		// if (null != mImageUrl && !TextUtils.isEmpty(mImageUrl)
-		// && !mImageUrl.startsWith("http")) {
-		// // load 本地
-		// mImageUrl = "file://" + FileAccessor.getImagePathName() + "/"
-		// + mImageUrl;
-		// } else {
-		// // 下载
-		// mImageUrl = mEntry.getPicurl();
-		// }
+
+		if (null == mImageUrl || TextUtils.isEmpty(mImageUrl)
+				|| !mImageUrl.startsWith("http")) {
+			// load 本地
+			mImageUrl = "file://" + FileAccessor.getImagePathName() + "/"
+					+ mEntry.getPicurl();
+		}
 		DisplayImageOptions.Builder imageOptionsBuilder = DemoUtils
 				.getChatDisplayImageOptionsBuilder();
 		imageOptionsBuilder.showImageOnLoading(new BitmapDrawable(

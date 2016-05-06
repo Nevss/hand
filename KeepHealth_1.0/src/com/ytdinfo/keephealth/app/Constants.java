@@ -3,14 +3,15 @@ package com.ytdinfo.keephealth.app;
 import android.os.Environment;
 
 public class Constants {
-//	AppID：wxe9dfaf997a35d828
-//	AppSecret：e98b52d02f8112bcc93181490b980aab
+	// AppID：wxe9dfaf997a35d828
+	// AppSecret：e98b52d02f8112bcc93181490b980aab
 	private Constants() {
 	};
-	public static final String DESCRIPTOR = "com.umeng.share";
-	
+ 
+	public static  String DESCRIPTOR = "com.umeng.share";
+ 
 	/** 是否第一次使用 */
-	public static final String ISFIRSTCOME = "isfirstcome";
+	public static final String ISFIRSTCOME = "isfirstcome_new";
 	/** 新消息提醒 */
 	public static final String ALERT = "MessageObrive";
 	/** viewPager的本地图片路径 */
@@ -52,17 +53,23 @@ public class Constants {
 	public static final String ONLINE_QUES_USERMODEL_ME = "OnlineQuestionUserModel_me";
 	/** 服务器地址 */
 	// 开发环境
-	public static final String ROOT_URl = "http://172.3.207.15";
+
+//	public static final String ROOT_URl = "http://172.3.207.15";
+ 
 	// 测试环境
 //	 public static final String ROOT_URl = "http://172.3.207.26";
+	// 正式环境
+	  public static final String ROOT_URl = "http://api.bmyi.cn";
+ 
+	// public static final String ROOT_URl = "http://172.3.207.26";
 	// public static final String ROOT_URl = "http://test.rayelink.com";
 	// public static final String ROOT_URl = "http://192.168.0.148:818";
 	// public static final String ROOT_URl = "http://192.168.0.155";
 	// public static final String ROOT_URl = "http://api.bmyi.cn";
-
+ 
 	public static final String SERVICE_URl = ROOT_URl + "/APIAccount/";
 	/** 登录地址 */
-	public static final String LOGIN_URl = SERVICE_URl + "GetAPIAccountInfo";
+	public static final String LOGIN_URl = SERVICE_URl + "GetAPIAccountInfo2";
 	/** 获取验证码地址 */
 	public static final String VERIFICATION_URl = SERVICE_URl
 			+ "GetVerificationcode";
@@ -96,13 +103,18 @@ public class Constants {
 	/** 体检报告图片 地址 */
 	public static final String REPORT_IMAGES_URl = SERVICE_URl
 			+ "ApiUploadPicforExaminationReport";
-	/**登录关闭清空会话地址*/
-	public static final String LOGIN_CLOSE_SUBJECT=ROOT_URl + "/api/subject";//GET方式
+	/** 登录关闭清空会话地址 */
+	public static final String LOGIN_CLOSE_SUBJECT = ROOT_URl + "/api/subject";// GET方式
 	/** 评价 地址 */
 	public static final String EVALUATION_URL = ROOT_URl + "/api/Chat/Comment";
 	/** 上传消息 */
 	public static final String UPLOAD_MESSAGE_URL = ROOT_URl
 			+ "/api/Message/SaveMessage";
+	/** 判断医生是否在线的接口 */
+	public static final String DOCISONLINE = ROOT_URl + "/api/Retry";
+	/** 云通讯服务器地址判断接口 */
+	public static final String CHANGECHANNEL = ROOT_URl + "/api/ChangeChannel";
+
 	/** 帮忙医APP的存储位置 */
 	public static final String STORAGE_ROOT_DIR = Environment
 			.getExternalStorageDirectory() + "/KeepHealth/";
@@ -160,6 +172,11 @@ public class Constants {
 	/* 健康档案 */
 	public static final String HEALTHARCHIVE = ROOT_URl
 			+ "/Go/?url=/Html/PersonalCenter/healthArchive.html";
+
+	/**
+	 * 下午4:06:35 TODO 关于我们
+	 */
+	public static final String ABOUTUS = ROOT_URl+"/Html/about_us.html";
 	/** 获取体检报告 */
 	public static final String CHOICE_REPORT_URl = ROOT_URl
 			+ "/api/AppClient/ReportList";
@@ -243,6 +260,7 @@ public class Constants {
 
 	/* 报告解读首页,0 */
 	public static final String UMENG_EVENT_23 = "event_23";
+
 	/* 活跃用户数,0 */
 	public static final String UMENG_EVENT_24 = "event_24";
 

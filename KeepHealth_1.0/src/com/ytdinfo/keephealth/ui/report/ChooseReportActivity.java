@@ -32,6 +32,7 @@ import com.ytdinfo.keephealth.model.UserModel;
 import com.ytdinfo.keephealth.ui.BaseActivity;
 import com.ytdinfo.keephealth.ui.MainActivity;
 import com.ytdinfo.keephealth.ui.WebViewActivity;
+import com.ytdinfo.keephealth.ui.OnlineVisits.OnlineQuesActivityForV3;
 import com.ytdinfo.keephealth.ui.view.CommonActivityTopView;
 import com.ytdinfo.keephealth.ui.view.MyProgressDialog;
 import com.ytdinfo.keephealth.utils.ACache;
@@ -47,11 +48,12 @@ public class ChooseReportActivity extends BaseActivity {
 	private ListView listView;
 	private List<ReportBean> list = new ArrayList<ReportBean>();
 	private ReportAdapter reportAdapter;
-	private Button bt_add,bt_search;
+	private Button bt_add, bt_search;
 	private Button nodata;
-private RelativeLayout parent;
-private  ACache aCache;
-private UserModel userModel;
+	private RelativeLayout parent;
+	private ACache aCache;
+	private UserModel userModel;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -66,16 +68,18 @@ private UserModel userModel;
 		commonActivityTopView.setTitle("选择体检报告");
 		reportAdapter = new ReportAdapter(ChooseReportActivity.this, list);
 		listView.setAdapter(reportAdapter);
-		if (NetworkReachabilityUtil.isNetworkConnected(ChooseReportActivity.this)) {
+		if (NetworkReachabilityUtil
+				.isNetworkConnected(ChooseReportActivity.this)) {
 			requestRrport();
-		}
-		else {
-			String s = aCache.getAsString(userModel.getID()+Constants.CHOICE_REPORT_URl);
-			System.out.println(s);
-			if (aCache.getAsString(userModel.getID()+Constants.CHOICE_REPORT_URl)!=null) {
-				analyzeJson(aCache.getAsString(userModel.getID()+Constants.CHOICE_REPORT_URl));
-			}
-			else{
+		} else {
+			// String s =
+			// aCache.getAsString(userModel.getID()+Constants.CHOICE_REPORT_URl);
+			// System.out.println(s);
+			if (aCache.getAsString(userModel.getID()
+					+ Constants.CHOICE_REPORT_URl) != null) {
+				analyzeJson(aCache.getAsString(userModel.getID()
+						+ Constants.CHOICE_REPORT_URl));
+			} else {
 				showWhich();
 			}
 		}
@@ -89,7 +93,7 @@ private UserModel userModel;
 		bt_add = (Button) findViewById(R.id.id_bt_add);
 		bt_search = (Button) findViewById(R.id.id_bt_search);
 		nodata = (Button) findViewById(R.id.id_iv_nodata);
-		parent  = (RelativeLayout) findViewById(R.id.id_rl_parent);
+		parent = (RelativeLayout) findViewById(R.id.id_rl_parent);
 
 	}
 
@@ -107,11 +111,17 @@ private UserModel userModel;
 			// 添加体检报告照片
 			@Override
 			public void onClick(View v) {
-				MobclickAgent.onEvent(ChooseReportActivity.this, Constants.UMENG_EVENT_8);
-				
-				 if (null ==SharedPrefsUtil.getValue(Constants.SUBJECTID, null)) {
-						startActivity(new Intent(ChooseReportActivity.this, AddPicturesActivity.class));
-				}else {
+				MobclickAgent.onEvent(ChooseReportActivity.this,
+						Constants.UMENG_EVENT_8);
+
+				if (null == SharedPrefsUtil.getValue(Constants.SUBJECTID, null)) {
+					Intent intent = new Intent();
+					intent.setClass(ChooseReportActivity.this,
+							OnlineQuesActivityForV3.class);
+					startActivity(intent);
+					// new Intent(ChooseReportActivity.this,
+					// AddPicturesActivity.class)
+				} else {
 					ToastUtil.showMessage("您当前正在进行在线咨询，结束后才能进行报告解读哦");
 					SharedPrefsUtil.putValue(Constants.CHECKEDID_RADIOBT, 1);
 					Intent intent = new Intent(ChooseReportActivity.this,
@@ -121,11 +131,11 @@ private UserModel userModel;
 					startActivity(intent);
 					finish();
 				}
-			
+
 			}
 		});
 		bt_search.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -133,13 +143,11 @@ private UserModel userModel;
 				i.setClass(ChooseReportActivity.this, WebViewActivity.class);
 				i.putExtra("loadUrl", Constants.REPORTQUERY);
 				startActivity(i);
-				
-				
+
 			}
 		});
 
 	}
-	
 
 	private MyProgressDialog progressDialog;
 
@@ -171,7 +179,8 @@ private UserModel userModel;
 						progressDialog.dismiss();
 						LogUtil.i(TAG, arg0.result);
 						analyzeJson(arg0.result);
-						aCache.put(userModel.getID()+Constants.CHOICE_REPORT_URl, arg0.result);
+						aCache.put(userModel.getID()
+								+ Constants.CHOICE_REPORT_URl, arg0.result);
 					}
 
 					@Override
@@ -180,7 +189,7 @@ private UserModel userModel;
 						progressDialog.dismiss();
 						LogUtils.d(arg1);
 						ToastUtil.showMessage("网络请求失败...");
-				
+
 					}
 				});
 
@@ -201,10 +210,8 @@ private UserModel userModel;
 					list.add(reportBean);
 				}
 			}
-		//	list.addAll(list2);
+			// list.addAll(list2);
 			reportAdapter.notifyDataSetChanged();
-			
-			
 
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
@@ -214,20 +221,21 @@ private UserModel userModel;
 	}
 
 	private void showWhich() {
-		if(list.isEmpty()){
+		if (list.isEmpty()) {
 			nodata.setVisibility(View.VISIBLE);
 			listView.setVisibility(View.GONE);
 			parent.setBackgroundColor(Color.parseColor("#FFffffff"));
-		}else {
+		} else {
 			nodata.setVisibility(View.GONE);
 			listView.setVisibility(View.VISIBLE);
 			parent.setBackgroundColor(Color.parseColor("#FFEBEBEB"));
 		}
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
-		
+
 		MobclickAgent.onPageStart("ChooseReportActivity");
 		MobclickAgent.onResume(this);
 	}
@@ -235,7 +243,7 @@ private UserModel userModel;
 	@Override
 	public void onPause() {
 		super.onPause();
-		
+
 		MobclickAgent.onPageEnd("ChooseReportActivity");
 		MobclickAgent.onPause(this);
 	}

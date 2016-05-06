@@ -1,6 +1,10 @@
 package com.ytdinfo.keephealth.app;
 
 import java.io.File;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +22,11 @@ import android.util.Log;
 import android.widget.Toast;
 import cn.jpush.android.api.JPushInterface;
 
+import com.lidroid.xutils.exception.HttpException;
+import com.lidroid.xutils.http.RequestParams;
+import com.lidroid.xutils.http.ResponseInfo;
+import com.lidroid.xutils.http.callback.RequestCallBack;
+import com.lidroid.xutils.util.LogUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.UsingFreqLimitedMemoryCache;
@@ -31,16 +40,23 @@ import com.rayelink.eckit.AppUserAccount;
 import com.rayelink.eckit.MainChatControllerListener;
 import com.rayelink.eckit.SDKCoreHelper;
 import com.umeng.analytics.MobclickAgent;
+import com.ytdinfo.keephealth.utils.CommomUtil;
 import com.ytdinfo.keephealth.utils.LogUtil;
 import com.ytdinfo.keephealth.utils.SharedPrefsUtil;
+import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.kitsdk.ECDeviceKit;
 import com.yuntongxun.kitsdk.beans.ChatInfoBean;
 import com.yuntongxun.kitsdk.ui.chatting.model.IMChattingHelper;
 
-
 public class MyApp extends Application {
 	public static final String TAG = MyApp.class.getName();
 	private static MyApp instance;
+
+	/**
+	 * 上午11:35:19 TODO 服务器地址
+	 */
+	private static String xml = CommomUtil.setUpXml("ruiyi.cloopen.com", "8085",
+			"ruiyi.cloopen.com", "8888", "ruiyi.cloopen.com", "8090");
 
 	/**
 	 * 单例，返回一个实例
@@ -59,6 +75,7 @@ public class MyApp extends Application {
 		// TODO Auto-generated method stub
 		super.onCreate();
 		instance = this;
+
 		SharedPrefsUtil.putValue(Constants.ISLOADED, false);
 		SharedPrefsUtil.putValue(Constants.CHECKEDID_RADIOBT, 0);
 		SharedPrefsUtil.putValue(Constants.CHECKISUPDATE, true);
@@ -69,20 +86,82 @@ public class MyApp extends Application {
 		// 禁止默认的页面统计方式
 		MobclickAgent.openActivityDurationTrack(false);
 		initImageLoader();
-		ConnectYunTongXun();
-		InitChatController();
+		initYunTongXunConfig();
 	}
-	
+
+	/**
+	 * 上午11:18:39
+	 * 
+	 * @author zhangyh2 TODO
+	 */
+	private void initYunTongXunConfig() {
+		// TODO Auto-generated method stub
+		LogUtils.i("initYunTongXunConfig");
+		HttpClient.get(this, Constants.CHANGECHANNEL, new RequestParams(),
+				new RequestCallBack<String>() {
+
+					@Override
+					public void onSuccess(ResponseInfo<String> arg0) {
+						// TODO Auto-generated method stub
+						// 服务器返回获取到的地址
+						SharedPrefsUtil.putValue("CHANGECHANNEL", arg0.result);
+						LogUtils.i(arg0.result);
+						try {
+							JSONObject jsonObject = new JSONObject(arg0.result);
+							JSONObject data = jsonObject.getJSONObject("Data");
+							String change = data.getString("isChange");
+							if ("true".equals(change)) {
+//								AppUserAccount.changeToZYAppConfig();
+								// 新通道
+								Log.i("MyApp_ConnectYunTongXun", "链接云云通讯");
+								Log.i("MyApp_ConnectYunTongXun", xml);
+								ECDevice.initServer(instance, xml);
+							}
+						} catch (JSONException e) {
+						}
+						finally{
+							ConnectYunTongXun();
+							InitChatController();
+						}
+					}
+
+					@Override
+					public void onFailure(HttpException arg0, String arg1) {
+						// TODO Auto-generated method stub
+						// 服务端异常，则获取上次保存在本地的可用地址
+						;
+						try {
+							JSONObject jsonObject = new JSONObject(
+									SharedPrefsUtil.getValue("CHANGECHANNEL",
+											""));
+							JSONObject data = jsonObject.getJSONObject("Data");
+							String change = data.getString("isChange");
+							if ("true".equals(change)) {
+//								AppUserAccount.changeToZYAppConfig();
+								Log.i("MyApp_ConnectYunTongXun", "链接云云通讯");
+								Log.i("MyApp_ConnectYunTongXun", xml);
+								ECDevice.initServer(instance, xml);
+							}
+						} catch (JSONException e) {
+							
+						}finally{
+							ConnectYunTongXun();
+							InitChatController();
+						}
+						
+
+					}
+				});
+
+	}
+
 	public void InitChatController() {
-		IMChattingHelper.getInstance().setChatControllerListener(MainChatControllerListener.getInstance());
+		IMChattingHelper.getInstance().setChatControllerListener(
+				MainChatControllerListener.getInstance());
 	}
 
-
- 
-	
 	public static void ConnectYunTongXun() {
 		if (AppUserAccount.getCurUserAccount() != null) {
-			Log.e("MyApp_ConnectYunTongXun", "链接云云通讯");
 			ECDeviceKit.init(AppUserAccount.getCurUserAccount()
 					.getVoipAccount(), MyApp.getInstance(), SDKCoreHelper
 					.getInstance());// 初始化kit sdk
@@ -108,7 +187,7 @@ public class MyApp extends Application {
 	}
 
 	ChatInfoBean chatInfoBean;
- 
+
 	/**
 	 * 返回当前程序版本名
 	 */

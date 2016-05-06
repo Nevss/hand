@@ -57,7 +57,7 @@ public class HttpTasker extends ThreadPoolTask {
 	public void run() {
 		// TODO Auto-generated method stub
 		Process.setThreadPriority(Process.THREAD_PRIORITY_LOWEST);
-		Log.i("线程开始:", Thread.currentThread().getName());
+		Log.i("线程开始:", Thread.currentThread().getName()+"线程开始");
 		Message message = new Message();
 		if (isString) {
 			if (isGet) {
@@ -74,7 +74,7 @@ public class HttpTasker extends ThreadPoolTask {
 		}
 		message.what = handlerCode;
 		handler.sendMessage(message);
-		Log.i("线程结束:", Thread.currentThread().getName());
+		Log.i("线程结束:", Thread.currentThread().getName()+"线程结束");
 	}
 
 	private static final int TIMEOUT_IN_MILLIONS = 5000;

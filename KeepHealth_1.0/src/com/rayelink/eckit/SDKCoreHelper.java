@@ -47,12 +47,12 @@ public class SDKCoreHelper implements OnInitSDKListener, OnConnectSDKListener,
 	private static final String TAG = "SDKCoreHelper";
 
 	private static SDKCoreHelper sInstance;
-	private ECDevice.ECConnectState mConnect = ECDevice.ECConnectState.CONNECT_FAILED;
+	public ECDevice.ECConnectState mConnect = ECDevice.ECConnectState.CONNECT_FAILED;
 	private ECInitParams mInitParams;
 	private boolean mKickOff = false;
 
 	private SDKCoreHelper() {
-
+		
 	}
 
 	public static SDKCoreHelper getInstance() {

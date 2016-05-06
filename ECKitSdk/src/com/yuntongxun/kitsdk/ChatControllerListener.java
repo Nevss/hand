@@ -1,11 +1,15 @@
 package com.yuntongxun.kitsdk;
 
 import android.content.Context;
+import android.os.Handler;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.lidroid.xutils.DbUtils;
 import com.lidroid.xutils.exception.DbException;
 import com.yuntongxun.kitsdk.adapter.ConversationAdapter;
+import com.yuntongxun.kitsdk.beans.ChatInfoBean;
+import com.yuntongxun.kitsdk.ui.ECChattingActivity.RetryComplete;
 
 public interface ChatControllerListener {
 			// 初始化医生信息
@@ -20,7 +24,7 @@ public interface ChatControllerListener {
 
 			// 再次咨询
 			public void retryChat(Context mContext, String sujectId,
-					String contactid);
+					String contactid,RetryComplete retryComplete);
 
 			// 时间控制,时间停止
 			public void timeStop(String contactid);
@@ -54,5 +58,8 @@ public interface ChatControllerListener {
 			
 			//获取chatInfoDB
 			public DbUtils getChatInfoDb();
-
+			
+			public void closeSubject(final String subjectId,final String docVip,final Handler mHandler);
+			
+			public void isChattingDocOnline(final ChatInfoBean tempInfo, final String docid,final Button retry);
 }

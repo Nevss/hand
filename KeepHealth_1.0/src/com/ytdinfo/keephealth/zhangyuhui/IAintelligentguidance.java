@@ -133,16 +133,16 @@ public class IAintelligentguidance extends BaseActivity {
 					getDataFHttp();
 				} else {
 					loading.dismiss();
-					ToastUtil.showMessage("网络链接失败，请检查网络！");
+					ToastUtil.showMessage("网络请求失败");
 				}
 				break;
 			case 100:
 				// 选取路线
 				OrgBase sBase = (OrgBase) msg.obj;
-//				if (sBase != null
-//						&& !sBase.getSuccessfulstate().equalsIgnoreCase("Fail")) {
+//				if (sBase != null) {
 					locOrChoseToFindOrganization(sBase);
-//				}else {
+//				} else {
+//					ToastUtil.showMessage("网络请求失败");
 //					if (loading != null) {
 //						loading.dismiss();
 //					}
@@ -418,7 +418,7 @@ public class IAintelligentguidance extends BaseActivity {
 				LogFileHelper.getInstance().i("智能导检开始连接");
 				if (!NetworkReachabilityUtil
 						.isNetworkConnected(IAintelligentguidance.this)) {
-					ToastUtil.showMessage("网络链接失败，请检查网络");
+					ToastUtil.showMessage("网络请求失败");
 					LogFileHelper.getInstance().i("智能导检开始连接，网络链接失败，请检查网络");
 					if (loading != null) {
 						loading.dismiss();
@@ -624,6 +624,7 @@ public class IAintelligentguidance extends BaseActivity {
 	 * 通过定位或用户选择，获取对应的机构信息。 传递参数分为两种情况，一种未定位获取的位置信息。另一种为用户选取的位置信息。两种都需要传递用户信息。
 	 * 返回数据后进行如下操作。第一通过机构ID得到，已经静态写入程序的机构平面图。 第二，通过获取到的机构信息。绑定平面图。
 	 */
+	private boolean isfinish = false;
 
 	private void locOrChoseToFindOrganization(OrgBase base) {
 
@@ -635,7 +636,7 @@ public class IAintelligentguidance extends BaseActivity {
 		msg.what = 200;
 		msg.obj = organization;
 		handler.sendMessage(msg);
-		if (timer == null) {
+		if (timer == null && !isfinish) {
 			// 启动请求。
 			timer = new Timer();
 			timer.schedule(new TimerTask() {
@@ -671,6 +672,7 @@ public class IAintelligentguidance extends BaseActivity {
 	@Override
 	public void finish() {
 		// TODO Auto-generated method stub
+		isfinish = true;
 		if (timer != null) {
 			timer.cancel();
 		}
@@ -680,6 +682,7 @@ public class IAintelligentguidance extends BaseActivity {
 	@Override
 	protected void onDestroy() {
 		// TODO Auto-generated method stub
+		isfinish = true;
 		if (timer != null) {
 			timer.cancel();
 		}

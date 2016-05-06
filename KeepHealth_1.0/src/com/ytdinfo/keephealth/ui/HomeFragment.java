@@ -334,9 +334,11 @@ public class HomeFragment extends Fragment implements OnClickListener,
 
 			if (checkUser()) {
 				MobclickAgent.onEvent(getActivity(), Constants.UMENG_EVENT_23);
-
+				// ----------V3调整为在线问诊
 				Intent intent = new Intent();
 				intent.setClass(getActivity(), ChooseReportActivity.class);
+				// intent.setClass(getActivity(),
+				// OnlineQuesActivityForV3.class);
 				startActivity(intent);
 			}
 
@@ -461,8 +463,8 @@ public class HomeFragment extends Fragment implements OnClickListener,
 		String path = Constants.IMAGES_DIR;
 		String photoName = "banner_default";
 		ImageTools.savePhotoToSDCard(bit, path, photoName);
-		listImagePath.clear();
-		listUrl.clear();
+		listImagePath = new ArrayList<String>();
+		listUrl = new ArrayList<String>();
 		listImagePath.add(path + photoName + ".png");
 		listUrl.add(Constants.PRIVATEDOCTOR);
 		gallery.start(getActivity(), new ArrayList<String>(), listImagePath,

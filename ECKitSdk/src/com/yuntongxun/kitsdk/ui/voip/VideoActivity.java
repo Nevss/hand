@@ -4,7 +4,6 @@ import java.util.Arrays;
 
 
 
-import org.webrtc.videoengine.ViERenderer;
 
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -17,16 +16,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-
 import com.yuntongxun.eckitsdk.R;
 import com.yuntongxun.ecsdk.CameraCapability;
 import com.yuntongxun.ecsdk.CameraInfo;
 import com.yuntongxun.ecsdk.ECDevice;
 import com.yuntongxun.ecsdk.ECError;
-import com.yuntongxun.ecsdk.ECVoIPCallManager;
-import com.yuntongxun.ecsdk.ECVoIPSetupManager;
+import com.yuntongxun.ecsdk.voip.video.ECCaptureView;
 import com.yuntongxun.kitsdk.utils.LogUtil;
 import com.yuntongxun.kitsdk.utils.TextUtil;
 
@@ -43,7 +38,7 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
     private View mCameraSwitch;
     boolean isConnect = false;
     CameraInfo[] cameraInfos;
-    public RelativeLayout mLoaclVideoViewLate;
+    public ECCaptureView mLoaclVideoViewLate;
     int numberOfCameras;
     private ImageButton video_switch;
     private int mWidth;
@@ -83,19 +78,9 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
         	mPhone.setText(mCallNumber);
         }
         
-        cameraInfos = ECDevice.getECVoIPSetupManager().getCameraInfos();
-        if (cameraInfos != null) {
-            numberOfCameras = cameraInfos.length;
-        }
-        for (int i = 0; i < numberOfCameras; i++) {
-            if (cameraInfos[i].index == android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                defaultCameraId = i;
-                comportCapbilityIndex(cameraInfos[i].caps);
-            }
-        }
-        ECDevice.getECVoIPSetupManager().setVideoView(mVideoView, null);
+
+        ECDevice.getECVoIPSetupManager().setVideoView(mVideoView, mLoaclVideoViewLate);
         mCallId = VoIPCallHelper.makeCall(mCallType ,  mCallNumber);
-        DisplayLocalSurfaceView();
     }
     
     private void initResourceRefs() {
@@ -112,7 +97,8 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
 		
 		mVedioLate = (FrameLayout) findViewById(R.id.Video_layout_late);
 		mVideoView = (SurfaceView) findViewById(R.id.video_view);
-        mLoaclVideoViewLate = (RelativeLayout) findViewById(R.id.localvideo_view_late);
+        mLoaclVideoViewLate = (ECCaptureView) findViewById(R.id.localvideo_view_late);
+        mLoaclVideoViewLate.setZOrderMediaOverlay(true);
         mCameraSwitch = findViewById(R.id.camera_switch);
         mCameraSwitch.setOnClickListener(this);
         video_switch = (ImageButton) findViewById(R.id.video_switch);
@@ -124,24 +110,7 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
         mVideoView.getHolder().setFixedSize(240, 320);
 	}
     
-    public void DisplayLocalSurfaceView() {
-        if (mCallType == ECVoIPCallManager.CallType.VIDEO && mLoaclVideoViewLate != null
-                && mLoaclVideoViewLate.getVisibility() == View.VISIBLE) {
-        	
-//            SurfaceView localViewBefore = ViERenderer.CreateLocalRenderer(this);
-//            localViewBefore.setZOrderOnTop(true);
-//            mLoaclVideoViewBefore.removeAllViews();
-//            mLoaclVideoViewBefore.setBackgroundColor(getResources().getColor(R.color.white));
-//            mLoaclVideoViewBefore.addView(localViewBefore);
-        	
 
-            SurfaceView localViewLate = ViERenderer.CreateLocalRenderer(this);
-            localViewLate.setZOrderOnTop(true);
-            mLoaclVideoViewLate.removeAllViews();
-            mLoaclVideoViewLate.setBackgroundColor(getResources().getColor(R.color.white));
-            mLoaclVideoViewLate.addView(localViewLate);
-        }
-    }
     
     @Override
     protected void onResume() {
@@ -186,11 +155,10 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
         mChronometer.setBase(SystemClock.elapsedRealtime());
         mChronometer.setVisibility(View.VISIBLE);
         mChronometer.start();
+        mLoaclVideoViewLate.setVisibility(View.VISIBLE);
+
         
-		cameraCurrentlyLocked = defaultCameraId;
-		comportCapbilityIndex(cameraInfos[cameraCurrentlyLocked].caps);
-        ECDevice.getECVoIPSetupManager().selectCamera(cameraCurrentlyLocked,
-                mCameraCapbilityIndex, 15, ECVoIPSetupManager.Rotate.ROTATE_AUTO, true);
+
 	}
 
 	@Override
@@ -216,10 +184,8 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
     		duration = SystemClock.elapsedRealtime() - mChronometer.getBase();
     		mChronometer.stop();
     		mVedioLate.setVisibility(View.GONE);
-            mLoaclVideoViewLate.removeAllViews();
             mLoaclVideoViewLate.setVisibility(View.GONE);
     	}
-    	insertCallLog();
     	finish();
     	isConnect = false;
     }
@@ -228,7 +194,6 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
     	mVedioBefore.setVisibility(View.VISIBLE);
     	handUpBefore.setVisibility(View.GONE);
     	mVideoTopTips.setText(CallFailReason.getCallFailReason(reason));
-        mLoaclVideoViewLate.removeAllViews();
         mLoaclVideoViewLate.setVisibility(View.GONE);
         cameraSwitchBefore.setVisibility(View.GONE);
         if (isConnect) {
@@ -241,35 +206,10 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
         if(reason == 175603){
         	return;
         }
-        insertCallLog();
         finish();
     }
     
-	/**
-	 * 通话记录入库
-	 */
-	private void insertCallLog() {
-		
-//		if(mCallFrom.endsWith("@chat")){
-//			Intent intent = new Intent(CASIntent.ACTION_IM_VIDEO_CALL_LOG_INIT);
-//			intent.putExtra("Duration", duration);
-//			CCPAppManager.sendBroadcast(this ,intent);
-//			return;
-//		}
-//
-//		VoipCalls vc = new VoipCalls();
-//		//vc.setDuration(time + "");
-//		vc.setPhoneNum(mCallNumber);
-//		vc.setCallDate(System.currentTimeMillis() + "");
-//		//呼出或者呼入
-//		vc.setCallType(VoipCalls.OUTGOING_TYPE);
-//		//通话类型
-//		vc.setVoip_type(mCallType.ordinal() + "");
-//		vc.setDuration(duration + "");
-////		vc.setSipaccount(mVoipAccount);
-//		VoipCallRecordSqlManager.getInstance().saveVoipCall(vc);
-//		CCPAppManager.sendBroadcast(this ,CASIntent.ACTION_CALL_LOG_INIT);
-	}
+
 
 	@Override
 	public void onClick(View v) {
@@ -285,19 +225,7 @@ public class VideoActivity extends ECVoIPBaseActivity implements OnClickListener
                 return;
             }
             mCameraSwitch.setEnabled(false);
-            cameraCurrentlyLocked = (cameraCurrentlyLocked + 1) % numberOfCameras;
-            comportCapbilityIndex(cameraInfos[cameraCurrentlyLocked].caps);
-
-            ECDevice.getECVoIPSetupManager().selectCamera(cameraCurrentlyLocked,
-                    mCameraCapbilityIndex, 15, ECVoIPSetupManager.Rotate.ROTATE_AUTO, false);
-
-            if (cameraCurrentlyLocked == android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT) {
-                defaultCameraId = android.hardware.Camera.CameraInfo.CAMERA_FACING_FRONT;
-                Toast.makeText(VideoActivity.this, R.string.camera_switch_front, Toast.LENGTH_SHORT).show();
-            } else {
-                defaultCameraId = android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK;
-                Toast.makeText(VideoActivity.this, R.string.camera_switch_back, Toast.LENGTH_SHORT).show();
-            }
+            mLoaclVideoViewLate.switchCamera();
             mCameraSwitch.setEnabled(true);
 			
 		}else if(v.getId()==R.id.mute){
